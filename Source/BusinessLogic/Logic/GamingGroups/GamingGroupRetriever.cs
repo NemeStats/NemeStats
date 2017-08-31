@@ -16,71 +16,49 @@
 #endregion LICENSE
 
 using BusinessLogic.DataAccess;
-using BusinessLogic.Logic.GameDefinitions;
-using BusinessLogic.Logic.PlayedGames;
-using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
 using System.Collections.Generic;
 using System.Linq;
-using System;
 
 namespace BusinessLogic.Logic.GamingGroups
 {
     public class GamingGroupRetriever : IGamingGroupRetriever
     {
-        private readonly IDataContext dataContext;
-        private readonly IPlayerRetriever playerRetriever;
-        private readonly IGameDefinitionRetriever gameDefinitionRetriever;
-        private readonly IPlayedGameRetriever playedGameRetriever;
+        private readonly IDataContext _dataContext;
 
         public GamingGroupRetriever(
-            IDataContext dataContext,
-            IPlayerRetriever playerRetriever,
-            IGameDefinitionRetriever gameDefinitionRetriever,
-            IPlayedGameRetriever playedGameRetriever)
+            IDataContext dataContext)
         {
-            this.dataContext = dataContext;
-            this.playerRetriever = playerRetriever;
-            this.gameDefinitionRetriever = gameDefinitionRetriever;
-            this.playedGameRetriever = playedGameRetriever;
+            this._dataContext = dataContext;
         }
 
         public GamingGroup GetGamingGroupById(int gamingGroupID)
         {
-            var gamingGroup = dataContext.FindById<GamingGroup>(gamingGroupID);
+            var gamingGroup = _dataContext.FindById<GamingGroup>(gamingGroupID);
 
             return gamingGroup;
         }
 
         public GamingGroupSummary GetGamingGroupDetails(GamingGroupFilter filter)
         {
-            var gamingGroup = dataContext.FindById<GamingGroup>(filter.GamingGroupId);
+            var gamingGroup = _dataContext.FindById<GamingGroup>(filter.GamingGroupId);
             var summary = new GamingGroupSummary
             {
                 Id = gamingGroup.Id,
                 DateCreated = gamingGroup.DateCreated,
                 Name = gamingGroup.Name,
-                OwningUserId = gamingGroup.OwningUserId,
                 PublicDescription = gamingGroup.PublicDescription,
                 PublicGamingGroupWebsite = gamingGroup.PublicGamingGroupWebsite
             };
-
-            summary.PlayedGames = playedGameRetriever.GetRecentGames(filter.NumberOfRecentGamesToShow, filter.GamingGroupId, filter.DateRangeFilter);
-
-            summary.Players = playerRetriever.GetAllPlayersWithNemesisInfo(filter.GamingGroupId, filter.DateRangeFilter);
-
-            summary.GameDefinitionSummaries = gameDefinitionRetriever.GetAllGameDefinitions(filter.GamingGroupId, filter.DateRangeFilter);
-
-            summary.OwningUser = dataContext.GetQueryable<ApplicationUser>().First(user => user.Id == gamingGroup.OwningUserId);
 
             return summary;
         }
 
         public IList<GamingGroupListItemModel> GetGamingGroupsForUser(ApplicationUser applicationUser)
         {
-            return dataContext.GetQueryable<GamingGroup>()
+            return _dataContext.GetQueryable<GamingGroup>()
                               .Where(gamingGroup => gamingGroup.UserGamingGroups.Any(ugg => ugg.ApplicationUserId == applicationUser.Id))
                               .Select(gg => new GamingGroupListItemModel { Id = gg.Id, Name = gg.Name })
                               .ToList();
@@ -88,7 +66,7 @@ namespace BusinessLogic.Logic.GamingGroups
 
         public List<TopGamingGroupSummary> GetTopGamingGroups(int numberOfTopGamingGroupsToShow)
         {
-            return (from gamingGroup in dataContext.GetQueryable<GamingGroup>()
+            return (from gamingGroup in _dataContext.GetQueryable<GamingGroup>()
                     select new TopGamingGroupSummary
                     {
                         GamingGroupId = gamingGroup.Id,
@@ -104,7 +82,7 @@ namespace BusinessLogic.Logic.GamingGroups
 
         public List<GamingGroupSitemapInfo> GetGamingGroupsSitemapInfo()
         {
-            return dataContext.GetQueryable<GamingGroup>()
+            return _dataContext.GetQueryable<GamingGroup>()
                 .Select(x => new GamingGroupSitemapInfo
                 {
                     GamingGroupId = x.Id,

@@ -2,16 +2,16 @@
 @using UI.HtmlHelpers
 @model UI.Models.GamingGroup.GamingGroupViewModel
 @{
-    ViewBag.Title = Model.Name;
-    ViewBag.Description = $"View stats, recent plays, and other details about the Gaming Group '{Model.Name}' on NemeStats.";
+    ViewBag.Title = Model.PublicDetailsView.GamingGroupName;
+    ViewBag.Description = $"View stats, recent plays, and other details about the Gaming Group '{Model.PublicDetailsView.GamingGroupName}' on NemeStats.";
     Layout = MVC.Shared.Views._BaseLayout;
 }
 
 <h2 class="page-header">
-    @Model.Name
+    @Model.PublicDetailsView.GamingGroupName
     @if (Model.UserCanEdit)
     {
-        <a href="@Url.Action(MVC.GamingGroup.Edit(Model.Id))" class="btn btn-xs btn-default">
+        <a href="@Url.Action(MVC.GamingGroup.Edit(Model.PublicDetailsView.GamingGroupId))" class="btn btn-xs btn-default">
             <span class="fa fa-pencil"></span>&nbsp;Edit
         </a>
     }
@@ -26,105 +26,97 @@
 @Html.RenderTempDataMessage(TempMessageKeys.TEMP_MESSAGE_KEY_PLAYER_DELETED)
 
 <div class="well well-sm filter">
-    @using (Html.BeginForm(MVC.GamingGroup.Details(), FormMethod.Get))
-    {
-        <div class="control-block">
-            <div>
-                <label for="from-date-picker">Filter Data From:</label>
-                <i class="fa fa-question-circle" data-toggle="popover" data-placement="top" data-content="All data will be filtered to be on our after this date."></i>
-            </div>
-            <div>
-                @Html.ValidationMessage("Iso8601FromDate")
-                <input class="form-control input-sm" type="date" id="from-date-picker" name="Iso8601FromDate" value="@Model.DateRangeFilter.Iso8601FromDate"/>
-            </div>
+    <div class="control-block">
+        <div>
+            <label for="from-date-picker">Filter Data From:</label>
+            <i class="fa fa-question-circle" data-toggle="popover" data-placement="top" data-content="All data will be filtered to be on our after this date."></i>
         </div>
-        <div class="control-block">
-            <div>
-                <label for="to-date-picker">Ending Date:</label>
-                <i class="fa fa-question-circle" data-toggle="popover" data-placement="top" data-content="All data will be filtered to be on our before this date."></i>
-            </div>
-            <div>
-                @Html.ValidationMessage("Iso8601ToDate")
-                <input class="form-control input-sm" type="date" id="to-date-picker" name="Iso8601ToDate" value="@Model.DateRangeFilter.Iso8601ToDate"/>
-            </div>
+        <div>
+            @Html.ValidationMessage("Iso8601FromDate")
+            <input class="form-control input-sm" type="date" id="from-date-picker" name="Iso8601FromDate" value="@Model.DateRangeFilter.Iso8601FromDate"/>
         </div>
-        <div class="control-block">
-            <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-filter"></span> Filter Statistics</button>
-            @Html.ValidationMessage("dateRangeFilter")
+    </div>
+    <div class="control-block">
+        <div>
+            <label for="to-date-picker">Ending Date:</label>
+            <i class="fa fa-question-circle" data-toggle="popover" data-placement="top" data-content="All data will be filtered to be on our before this date."></i>
         </div>
-    }
+        <div>
+            @Html.ValidationMessage("Iso8601ToDate")
+            <input class="form-control input-sm" type="date" id="to-date-picker" name="Iso8601ToDate" value="@Model.DateRangeFilter.Iso8601ToDate"/>
+        </div>
+    </div>
+    <div class="control-block">
+        <button class="btn btn-primary btn-sm" id="dateFilterButton"><span class="fa fa-filter"></span> Filter Statistics</button>
+        @Html.ValidationMessage("dateRangeFilter")
+    </div>
 </div>
 
-<a name="@ViewBag.PlayerSectionAnchorText"></a>
 
-    @Html.Partial(MVC.Player.Views._PlayersPartial, Model.Players, new ViewDataDictionary { { "canEdit", Model.UserCanEdit } })
+<div id="neme-tab" class="container">
+    <ul class="nav nav-pills">
+        <li class="active"><a href="#playersListDivId" data-toggle="tab" id="playersTab">Players</a></li>
+        <li><a href="#gamesListDivId" data-toggle="tab" id="gamesTab">Games</a></li>
+        <li><a href="#playedGamesListDivId" data-toggle="tab" id="playedGamesTab">Plays</a></li>
+    </ul>
 
-
-<a name="@ViewBag.GameDefinitionSectionAnchorText"></a>
-
-    @Html.Partial(MVC.GameDefinition.Views._GameDefinitionsPartial, Model.GameDefinitionSummaries, new ViewDataDictionary { { "canEdit", Model.UserCanEdit } })
-
-
-<a name="@ViewBag.RecentGamesSectionAnchorText"></a>
-
-    @Html.Partial(MVC.PlayedGame.Views._PlayedGamesPartial, Model.PlayedGames, new ViewDataDictionary { { "canEdit", Model.UserCanEdit }, { "gamingGroupId", Model.Id} })
-
+    <div class="tab-content clearfix">
+        <div class="tab-pane active" id="playersListDivId">
+            <div class="loader"></div>
+        </div>
+        <div class="tab-pane" id="gamesListDivId">
+            <div class="loader"></div>
+        </div>
+        <div class="tab-pane" id="playedGamesListDivId">
+            <div class="loader"></div>
+        </div>
+    </div>
+</div>
 
 <div id="NemeStatsPointsLineGraph">
     <svg style='height:500px;'> </svg>
 </div>
 
 @section Scripts {
-        @Scripts.Render("~/bundles/d3")
-        @Styles.Render("~/bundles/d3/css")
-        @Scripts.Render("~/bundles/moment")
+    @Scripts.Render("~/bundles/d3")
+    @Styles.Render("~/bundles/d3/css")
+    @Scripts.Render("~/bundles/moment")
 
-<script type="text/javascript">
-            //Creation
-            $(document).ready(function () {
-                var players = new window.Views.Player.Players();
-                players.init();
+    <script type="text/javascript">
+        //Creation
+        $(document).ready(function () {
+            var fromDate = new Date(@Model.DateRangeFilter.FromDate.Year, (@Model.DateRangeFilter.FromDate.Month - 1), @Model.DateRangeFilter.FromDate.Day);
 
-                var createOrUpdatePlayer = new window.Views.Player.CreateOrUpdate();
-                createOrUpdatePlayer.init($.proxy(players.onPlayerSaved, players));
+            var toDate;
+            @if(Model.DateRangeFilter.HasCustomDate)
+            {
+                @:toDate = new Date(@Model.DateRangeFilter.ToDate.Year, (@Model.DateRangeFilter.ToDate.Month - 1), @Model.DateRangeFilter.ToDate.Day);
+            }
+            else
+            {
+                @:toDate = new moment().toDate();
+            }
 
-                var gameDefinition = new window.Views.GameDefinition.CreateGameDefinitionPartial();
-                gameDefinition.init();
-                gameDefinition.configureViewModel();
+            var gamingGroupView = new Views.GamingGroup.GamingGroupView();
 
-                var gameDefinitions = new window.Views.GameDefinition.GameDefinitions();
-                gameDefinitions.init();
-                gameDefinition.onDefinitionCreated = $.proxy(gameDefinitions.onGameCreated, gameDefinitions);
+            var googleAnalyticsObject = new window.Views.Shared.GoogleAnalytics();
 
-                var fromDate = new Date(@Model.DateRangeFilter.FromDate.Year, (@Model.DateRangeFilter.FromDate.Month - 1), @Model.DateRangeFilter.FromDate.Day);
+            var options = {
+                fromDate : fromDate,
+                toDate : toDate,
+                gamingGroupId : @Model.PublicDetailsView.GamingGroupId,
+                playersTabId : "playersTab",
+                playersDivId : "playersListDivId",
+                gamesTabId: "gamesTab",
+                dateFilterButtonId: "dateFilterButton",
+                gamesDivId: "gamesListDivId",
+                playedGamesTabId: "playedGamesTab",
+                playedGamesDivId: "playedGamesListDivId"
+            };
+            gamingGroupView.init(googleAnalyticsObject, options);
 
-                var toDate;
-                var toDateYYYYMMDD;
-                @if(Model.DateRangeFilter.HasCustomDate)
-                    {
-                        @:toDate = new Date(@Model.DateRangeFilter.ToDate.Year, (@Model.DateRangeFilter.ToDate.Month - 1), @Model.DateRangeFilter.ToDate.Day);
-                                        @:toDateYYYYMMDD = moment(toDate).format('YYYY-MM-DD');
-                                    }
-                    else
-                    {
-                        @:toDate = new moment().toDate();
-                                        @:toDateYYYYMMDD = moment().format('YYYY-MM-DD');
-                                    }
-
-                var gamingGroupView = new Views.GamingGroup.GamingGroupView();
-                var fromDateYYYYMMDD = fromDate.toISOString().split("T")[0];
-                gamingGroupView.renderNemeStatsPointsLineGraph("/api/v2/PlayedGames/?gamingGroupId=" + @Model.Id + "&datePlayedFrom=" + fromDateYYYYMMDD + "&datePlayedTo=" + toDateYYYYMMDD);
-
-                var googleAnalyticsObject = new window.Views.Shared.GoogleAnalytics();
-
-                var options = {
-                    fromDate : fromDate,
-                    toDate : toDate
-                };
-                gamingGroupView.init(googleAnalyticsObject, options);
-
-                var recordexceldownload = new window.Views._PlayedGamesPartial.EventTracking();
-                recordexceldownload.init(googleAnalyticsObject);
-            });
-</script>
-    }
+            var recordexceldownload = new window.Views._PlayedGamesPartial.EventTracking();
+            recordexceldownload.init(googleAnalyticsObject);
+        });
+    </script>
+}

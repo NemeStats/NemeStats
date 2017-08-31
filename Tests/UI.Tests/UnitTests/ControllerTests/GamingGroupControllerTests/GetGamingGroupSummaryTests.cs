@@ -5,7 +5,6 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using UI.Controllers;
-using UI.Models.GamingGroup;
 
 namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 {

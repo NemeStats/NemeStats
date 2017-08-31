@@ -275,6 +275,9 @@
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\EditGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\EditPostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GamingGroupControllerTestBase.cs" />
+    <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetGamingGroupPlayedGamesTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetGamingGroupGameDefinitionsTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetGamingGroupPlayersTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetGamingGroupSummaryTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetTopGamingGroupsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\UserGamingGroupsTests.cs" />
@@ -312,7 +315,6 @@
     <Compile Include="UnitTests\TransformationsTests\GameDefinitionSummaryViewModelBuilderTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\GameDefinitionDetailsViewModelBuilderTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\GamingGroupInvitationViewModelBuilderTests.cs" />
-    <Compile Include="UnitTests\TransformationsTests\GamingGroupViewModelBuilderTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\PlayedGameDetailsViewModelBuilderTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\GameResultViewModelBuilderTests\BuildTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\PlayerTransformationTests\MinionViewModelBuilderTests.cs" />

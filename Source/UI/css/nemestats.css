@@ -416,6 +416,20 @@ ul input[type=text] {
 .autocomplete-loading {
   background: #fff url("/Content/Images/spinner.gif") no-repeat right center; }
 
+.loader {
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #3498db;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite; }
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(360deg); } }
+
 .leftItem {
   display: inline-block;
   /*max-width: 120px;*/
@@ -696,10 +710,13 @@ button > i.fa {
   .btn.btn-google:active, .btn.btn-google.active,
   .open > .btn.btn-google.dropdown-toggle {
     background-image: none; }
-  .btn.btn-google.disabled:hover, .btn.btn-google.disabled:focus, .btn.btn-google.disabled.focus, .btn.btn-google[disabled]:hover, .btn.btn-google[disabled]:focus, .btn.btn-google[disabled].focus,
+  .btn.btn-google.disabled, .btn.btn-google.disabled:hover, .btn.btn-google.disabled:focus, .btn.btn-google.disabled.focus, .btn.btn-google.disabled:active, .btn.btn-google.disabled.active, .btn.btn-google[disabled], .btn.btn-google[disabled]:hover, .btn.btn-google[disabled]:focus, .btn.btn-google[disabled].focus, .btn.btn-google[disabled]:active, .btn.btn-google[disabled].active,
+  fieldset[disabled] .btn.btn-google,
   fieldset[disabled] .btn.btn-google:hover,
   fieldset[disabled] .btn.btn-google:focus,
-  fieldset[disabled] .btn.btn-google.focus {
+  fieldset[disabled] .btn.btn-google.focus,
+  fieldset[disabled] .btn.btn-google:active,
+  fieldset[disabled] .btn.btn-google.active {
     background-color: #2196F3;
     border-color: #2196F3; }
   .btn.btn-google .badge {
@@ -734,10 +751,13 @@ button > i.fa {
   .btn.btn-action:active, .btn.btn-action.active,
   .open > .btn.btn-action.dropdown-toggle {
     background-image: none; }
-  .btn.btn-action.disabled:hover, .btn.btn-action.disabled:focus, .btn.btn-action.disabled.focus, .btn.btn-action[disabled]:hover, .btn.btn-action[disabled]:focus, .btn.btn-action[disabled].focus,
+  .btn.btn-action.disabled, .btn.btn-action.disabled:hover, .btn.btn-action.disabled:focus, .btn.btn-action.disabled.focus, .btn.btn-action.disabled:active, .btn.btn-action.disabled.active, .btn.btn-action[disabled], .btn.btn-action[disabled]:hover, .btn.btn-action[disabled]:focus, .btn.btn-action[disabled].focus, .btn.btn-action[disabled]:active, .btn.btn-action[disabled].active,
+  fieldset[disabled] .btn.btn-action,
   fieldset[disabled] .btn.btn-action:hover,
   fieldset[disabled] .btn.btn-action:focus,
-  fieldset[disabled] .btn.btn-action.focus {
+  fieldset[disabled] .btn.btn-action.focus,
+  fieldset[disabled] .btn.btn-action:active,
+  fieldset[disabled] .btn.btn-action.active {
     background-color: #3A9AD9;
     border-color: #354458; }
   .btn.btn-action .badge {
@@ -771,10 +791,13 @@ button > i.fa {
   .btn.btn-twitter:active, .btn.btn-twitter.active,
   .open > .btn.btn-twitter.dropdown-toggle {
     background-image: none; }
-  .btn.btn-twitter.disabled:hover, .btn.btn-twitter.disabled:focus, .btn.btn-twitter.disabled.focus, .btn.btn-twitter[disabled]:hover, .btn.btn-twitter[disabled]:focus, .btn.btn-twitter[disabled].focus,
+  .btn.btn-twitter.disabled, .btn.btn-twitter.disabled:hover, .btn.btn-twitter.disabled:focus, .btn.btn-twitter.disabled.focus, .btn.btn-twitter.disabled:active, .btn.btn-twitter.disabled.active, .btn.btn-twitter[disabled], .btn.btn-twitter[disabled]:hover, .btn.btn-twitter[disabled]:focus, .btn.btn-twitter[disabled].focus, .btn.btn-twitter[disabled]:active, .btn.btn-twitter[disabled].active,
+  fieldset[disabled] .btn.btn-twitter,
   fieldset[disabled] .btn.btn-twitter:hover,
   fieldset[disabled] .btn.btn-twitter:focus,
-  fieldset[disabled] .btn.btn-twitter.focus {
+  fieldset[disabled] .btn.btn-twitter.focus,
+  fieldset[disabled] .btn.btn-twitter:active,
+  fieldset[disabled] .btn.btn-twitter.active {
     background-color: #6cadde;
     border-color: #6cadde; }
   .btn.btn-twitter .badge {
@@ -977,6 +1000,20 @@ button > i.fa {
         margin-top: 10px; } }
     .filter .control-block button {
       margin-top: 25px; }
+
+#neme-tab ul.nav.nav-pills a {
+  border-radius: 0; }
+
+#neme-tab .tab-content .tab-pane .panel {
+  border-radius: 0; }
+  #neme-tab .tab-content .tab-pane .panel .panel-heading {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0; }
+
+#neme-tab .tab-content .tab-pane .loader {
+  margin-top: 200px;
+  margin-left: auto;
+  margin-right: auto; }
 
 .bgguser-integration img {
   margin-right: 10px; }

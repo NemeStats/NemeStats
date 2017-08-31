@@ -56,9 +56,6 @@ namespace UI.DependencyResolution
 
             For<IPlayerDetailsViewModelBuilder>().Singleton().Use<PlayerDetailsViewModelBuilder>();
 
-            For<IGamingGroupViewModelBuilder>().Singleton()
-                                               .Use<GamingGroupViewModelBuilder>();
-
             For<IGamingGroupInvitationViewModelBuilder>().Singleton()
                                                          .Use<GamingGroupInvitationViewModelBuilder>();
 

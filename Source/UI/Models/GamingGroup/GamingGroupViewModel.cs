@@ -15,13 +15,8 @@
 
 #endregion LICENSE
 
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using BusinessLogic.Models.Utility;
-using UI.Models.GameDefinitionModels;
-using UI.Models.PlayedGame;
-using UI.Models.Players;
 
 namespace UI.Models.GamingGroup
 {
@@ -29,30 +24,11 @@ namespace UI.Models.GamingGroup
     {
         public GamingGroupViewModel()
         {
-            PlayedGames = new PlayedGamesViewModel
-            {
-                PlayedGameDetailsViewModels = new List<PlayedGameDetailsViewModel>()
-            };
-            this.PublicDetailsView = new GamingGroupPublicDetailsViewModel();
+            PublicDetailsView = new GamingGroupPublicDetailsViewModel();
         }
 
-        public int Id { get; set; }
-        [DisplayName("Gaming Group Name")]
-        public string Name { get; set; }
         public bool UserCanEdit { get; set; }
         public GamingGroupPublicDetailsViewModel PublicDetailsView { get; set; }
-        public List<GameDefinitionSummaryViewModel> GameDefinitionSummaries { get; set; }
-        public IList<PlayerWithNemesisViewModel> Players { get; set; }
-        public PlayedGamesViewModel PlayedGames { get; set; }
         public BasicDateRangeFilter DateRangeFilter { get; set; }
-
-
-        public string OwningUserId { get; set; }
-        [DisplayName("Owning User Name")]
-        public string OwningUserName { get; set; }
-        [DataType(DataType.EmailAddress)]
-        [DisplayName("Invitee Email")]
-        [Required(ErrorMessage = "Please enter an e-mail!", AllowEmptyStrings = false)]
-        public string InviteeEmail { get; set; }
     }
 }

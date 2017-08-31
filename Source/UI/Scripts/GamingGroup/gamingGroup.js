@@ -7,56 +7,118 @@ Views.GamingGroup.GamingGroupView = function () {
     this.$title = null;
     this.$fromDatePicker = null;
     this.$toDatePicker = null;
-    this.$settings = {
+
+    this._settings = {
         fromDate: null,
-        toDate: new Date()
+        toDate: new Date(),
+        gamingGroupId: null,
+        dateFilterButtonId: null,
+        playersTabId : null,
+        playersDivId: null,
+        gamesTabId: null,
+        gamesDivId: null,
+        playedGamesTabId: null,
+        playedGamesDivId: null
     };
-    this._serviceAddress = "/GamingGroup/UpdateGamingGroupName";
+//TODO NOT SURE THIS IS WORKING AT THE MOMENT
+    this._updateGamingGroupNameServiceAddress = "/GamingGroup/UpdateGamingGroupName";
+    this._getGamingGroupPlayersServiceAddress = "/GamingGroup/GetGamingGroupPlayers/";
+    this._getGamingGroupGameDefinitionsServiceAddress = "/GamingGroup/GetGamingGroupGameDefinitions/";
+    this._getGamingGroupPlayedGamesServiceAddress = "/GamingGroup/GetGamingGroupPlayedGames/";
+
     this._googleAnalytics = null;
+    this._playersTabLoaded = false;
+    this._gamesTabLoaded = false;
+    this._playedGamesTabLoaded = false;
+    this._tabEnum = {
+        PLAYERS : "players",
+        GAMES : "games",
+        PLAYS : "plays"
+    }
 };
 
 //Implementation
 Views.GamingGroup.GamingGroupView.prototype = {
     init: function (gaObject, options) {
-        var parent = this;
+        var owner = this;
         this.$title = $("#gamingGroupTitle");
-        this.$title.toEditBox({ onFocusOut: $.proxy(parent.renameGamingGroup, this), cssClass: "gaming-group-name" });
+        this.$title.toEditBox({ onFocusOut: $.proxy(owner.renameGamingGroup, this), cssClass: "gaming-group-name" });
         this._googleAnalytics = gaObject;
 
+        if (options.gamingGroupId == null) {
+            throw "gamingGroupId is required for panels to be able to load.";
+        }
+        this._settings.gamingGroupId = options.gamingGroupId;
+
+        if (options.dateFilterButtonId == null) {
+            throw "dateFilterButtonId is required.";
+        }
+        this._settings.dateFilterButtonId = options.dateFilterButtonId;
+
+        if (options.playersTabId == null) {
+            throw "playersTabId is required.";
+        }
+        this._settings.playersTabId = options.playersTabId;
+
+        if (options.playersDivId == null) {
+            throw "playersDivId is required.";
+        }
+        this._settings.playersDivId = options.playersDivId;
+
+        if (options.gamesTabId == null) {
+            throw "gamesTabId is required.";
+        }
+        this._settings.gamesTabId = options.gamesTabId;
+
+        if (options.gamesDivId == null) {
+            throw "gamesDivId is required.";
+        }
+        this._settings.gamesDivId = options.gamesDivId;
+
+        if (options.playedGamesTabId == null) {
+            throw "playedGamesTabId is required.";
+        }
+        this._settings.playedGamesTabId = options.playedGamesTabId;
+
+        if (options.playedGamesDivId == null) {
+            throw "playedGamesDivId is required.";
+        }
+        this._settings.playedGamesDivId = options.playedGamesDivId;
+
+        this._settings.gamingGroupId = options.gamingGroupId;
+
         if (options.fromDate != null) {
-            this.$settings.fromDate = options.fromDate;
+            this._settings.fromDate = options.fromDate;
         }
 
         if (options.toDate != null) {
-            this.$settings.toDate = options.toDate;
+            this._settings.toDate = options.toDate;
         }
+
         this.$fromDatePicker = $("#from-date-picker");
         this.$toDatePicker = $("#to-date-picker");
         var minDate = new Date(2000, 0, 1);
         var currentMoment = moment();
-        var currentLocalIso8601Date = currentMoment.format("YYYY-MM-DD");
 
         if (Modernizr.inputtypes.date) {
             //if supports HTML5 then use native date picker
-            var toDateIso8601 = new moment(this.$settings.toDate).format("YYYY-MM-DD");
+            var toDateIso8601 = new moment(this._settings.toDate).format("YYYY-MM-DD");
             this.$toDatePicker.attr("value", toDateIso8601);
             var minDateIso8601 = minDate.toISOString().split("T")[0];
-            this.$fromDatePicker.attr("max", currentMoment.add("days", 1).format("YYYY-MM-DD"));
+            this.$fromDatePicker.attr("max", currentMoment.add(1, "days").format("YYYY-MM-DD"));
             this.$fromDatePicker.attr("min", minDateIso8601);
-            this.$toDatePicker.attr("max", currentMoment.add("days", 1).format("YYYY-MM-DD"));
+            this.$toDatePicker.attr("max", currentMoment.add(1, "days").format("YYYY-MM-DD"));
             this.$toDatePicker.attr("min", minDateIso8601);
         } else {
+
             // If not native HTML5 support, fallback to jQuery datePicker
             this.$fromDatePicker.datepicker({
                 showOn: "button",
                 buttonText: "<i class='fa fa-calendar'></i>",
                 showButtonPanel: true,
                 maxDate: new Date(),
-                minDate: minDate,
-                onClose: function (selectedDate) {
-                    $("#to-date-picker").datepicker("option", "minDate", selectedDate);
-                }
-            }).datepicker("setDate", this.$settings.fromDate)
+                minDate: minDate
+            }).datepicker("setDate", this._settings.fromDate)
                 .datepicker("option", "dateFormat", "yy-mm-dd");
 
             this.$toDatePicker.datepicker({
@@ -64,40 +126,150 @@ Views.GamingGroup.GamingGroupView.prototype = {
                 buttonText: "<i class='fa fa-calendar'></i>",
                 showButtonPanel: true,
                 maxDate: new Date(),
-                minDate: minDate,
-                onClose: function (selectedDate) {
-                    $("#from-date-picker").datepicker("option", "minDate", selectedDate);
-                }
-            }).datepicker("setDate", this.$settings.toDate)
+                minDate: minDate
+            }).datepicker("setDate", this._settings.toDate)
               .datepicker("option", "dateFormat", "yy-mm-dd");
         }
 
-        this.initListJs();
 
+        var $playersTab = $("#" + this._settings.playersTabId);
+        $playersTab.click((function (event) {
+            event.preventDefault();
+            return owner.getPlayers(owner._settings.gamingGroupId, owner.$fromDatePicker, owner.$toDatePicker, owner._settings.playersDivId, owner);
+        }));
+
+        var $gamesTab = $("#" + this._settings.gamesTabId);
+        $gamesTab.click((function (event) {
+            event.preventDefault();
+            return owner.getGameDefinitions(owner._settings.gamingGroupId, owner.$fromDatePicker, owner.$toDatePicker, owner._settings.gamesDivId, owner);
+        }));
+
+        var $playedGamesTab = $("#" + this._settings.playedGamesTabId);
+        $playedGamesTab.click((function (event) {
+            event.preventDefault();
+            return owner.getPlayedGames(owner._settings.gamingGroupId, owner.$fromDatePicker, owner.$toDatePicker, owner._settings.playedGamesDivId, owner);
+        }));
+
+        var $dateFilteredButton = $("#" + this._settings.dateFilterButtonId);
+        $dateFilteredButton.click(function () {
+            owner.reloadCurrentTabAndResetOthers($playersTab, $gamesTab, $playedGamesTab, owner.$fromDatePicker, owner.$toDatePicker, owner._settings, owner);
+        });
+
+        this.reloadCurrentTabAndResetOthers($playersTab, $gamesTab, $playedGamesTab, owner.$fromDatePicker, owner.$toDatePicker, owner._settings, owner);
     },
-    initListJs: function () {
+    getPlayers: function (gamingGroupId, $fromDatePicker, toDatePicker, divIdForRenderingResults, parent) {
+        var fromDate = $fromDatePicker.val();
+        var toDate = toDatePicker.val();
+        parent.updateUrl(parent._tabEnum.PLAYERS, fromDate, toDate);
 
-        var gamedefinitionsValues = ['name', 'plays-col', { name: 'champion-col', attr: 'data-champion' }];
-        var gameDefinitionTableId = "gameDefinitionsList";
+        if (!parent._playersTabLoaded) {
+            $.ajax({
+                url: parent._getGamingGroupPlayersServiceAddress,
+                data: {
+                    "id": gamingGroupId,
+                    "Iso8601FromDate": fromDate,
+                    "Iso8601ToDate": toDate
+                },
+                cache: false,
+                type: "GET",
+                success: function(html) {
+                    $("#" + divIdForRenderingResults).html(html);
+                    var players = new window.Views.Player.Players();
+                    players.init();
 
-        var playersValues = [{ name: 'player-name-col', attr: 'data-name' }, { name: 'total-nemepoints-col', attr: 'data-nemepoints' }, 'played-games-col', 'avg-nemepoints-col', 'overall-win-col', 'championed-games-col', { name: 'nemesis-col', attr: 'data-nemesis' }, { name: 'achievements-col', attr: 'data-achievements' }];
-        var playersTableId = "playersList";
+                    var createOrUpdatePlayer = new window.Views.Player.CreateOrUpdate();
+                    createOrUpdatePlayer.init($.proxy(players.onPlayerSaved, players));
 
+                    var playersValues = [{ name: 'player-name-col', attr: 'data-name' }, { name: 'total-nemepoints-col', attr: 'data-nemepoints' }, 'played-games-col', 'avg-nemepoints-col', 'overall-win-col', 'championed-games-col', { name: 'nemesis-col', attr: 'data-nemesis' }, { name: 'achievements-col', attr: 'data-achievements' }];
+                    var playersTableId = "playersList";
 
-        if (ResponsiveBootstrapToolkit.is('>=md')) {
-            new List(gameDefinitionTableId, { valueNames: gamedefinitionsValues, page: 10, plugins: [ListPagination({ innerWindow: 10 })] });
-            new List(playersTableId, { valueNames: playersValues, page: 10, plugins: [ListPagination({ innerWindow: 10 })] });
-        } else {
-            new List(gameDefinitionTableId, { valueNames: gamedefinitionsValues });
-            new List(playersTableId, { valueNames: playersValues });
+                    if (ResponsiveBootstrapToolkit.is('>=md')) {
+                        new List(playersTableId, { valueNames: playersValues, page: 20, plugins: [ListPagination({ innerWindow: 20 })] });
+                    } else {
+                        new List(playersTableId, { valueNames: playersValues });
+                    }
+
+                    parent._playersTabLoaded = true;
+                }
+            });
         }
+    },
+    getGameDefinitions: function (gamingGroupId, $fromDatePicker, toDatePicker, divIdForRenderingResults, parent) {
+        var fromDate = $fromDatePicker.val();
+        var toDate = toDatePicker.val();
+        parent.updateUrl(parent._tabEnum.GAMES, fromDate, toDate);
 
+        if (!parent._gamesTabLoaded) {
+            $.ajax({
+                url: parent._getGamingGroupGameDefinitionsServiceAddress,
+                data: {
+                    "id": gamingGroupId,
+                    "Iso8601FromDate": fromDate,
+                    "Iso8601ToDate": toDate
+                },
+                cache: false,
+                type: "GET",
+                success: function (html) {
+                    $("#" + divIdForRenderingResults).html(html);
+
+                    var gameDefinition = new window.Views.GameDefinition.CreateGameDefinitionPartial();
+                    gameDefinition.init();
+                    gameDefinition.configureViewModel();
+
+                    var gameDefinitions = new window.Views.GameDefinition.GameDefinitions();
+                    gameDefinitions.init();
+                    gameDefinition.onDefinitionCreated = $.proxy(gameDefinitions.onGameCreated, gameDefinitions);
+
+                    var gamedefinitionsValues = ['name', 'plays-col', { name: 'champion-col', attr: 'data-champion' }];
+                    var gameDefinitionTableId = "gameDefinitionsList";
+
+                    if (ResponsiveBootstrapToolkit.is('>=md')) {
+                        new List(gameDefinitionTableId, { valueNames: gamedefinitionsValues, page: 20, plugins: [ListPagination({ innerWindow: 20 })] });
+                    } else {
+                        new List(gameDefinitionTableId, { valueNames: gamedefinitionsValues });
+                    }
+
+                    parent._gamesTabLoaded = true;
+                }
+            });
+        }
+    },
+    getPlayedGames: function (gamingGroupId, $fromDatePicker, toDatePicker, divIdForRenderingResults, parent) {
+        var fromDate = $fromDatePicker.val();
+        var toDate = toDatePicker.val();
+        parent.updateUrl(parent._tabEnum.PLAYS, fromDate, toDate);
+
+        if (!parent._playedGamesTabLoaded) {
+            $.ajax({
+                url: parent._getGamingGroupPlayedGamesServiceAddress,
+                data: {
+                    "id": gamingGroupId,
+                    "Iso8601FromDate": fromDate,
+                    "Iso8601ToDate": toDate
+                },
+                cache: false,
+                type: "GET",
+                success: function (html) {
+                    $("#" + divIdForRenderingResults).html(html);
+
+                    var gameDefinition = new window.Views.GameDefinition.CreateGameDefinitionPartial();
+                    gameDefinition.init();
+                    gameDefinition.configureViewModel();
+
+                    var gameDefinitions = new window.Views.GameDefinition.GameDefinitions();
+                    gameDefinitions.init();
+                    gameDefinition.onDefinitionCreated = $.proxy(gameDefinitions.onGameCreated, gameDefinitions);
+
+                    parent._playedGamesTabLoaded = true;
+                }
+            });
+        }
     },
     renameGamingGroup: function (element) {
         var parent = this;
         $.ajax({
             type: "POST",
-            url: parent._serviceAddress,
+            url: parent._updateGamingGroupNameServiceAddress,
             data: { "gamingGroupName": element.value },
             success: function (data) {
 
@@ -109,6 +281,47 @@ Views.GamingGroup.GamingGroupView.prototype = {
         });
 
         this.trackGAEvent("GamingGroups", "GamingGroupRenamed", "GamingGroupRenamed");
+    },
+    reloadCurrentTabAndResetOthers: function ($playersTab, $gamesTab, $playedGamesTab, $fromDatePicker, $toDatePicker, settings, parent) {
+        parent._playersTabLoaded = false;
+        parent._gamesTabLoaded = false;
+        parent._playedGamesTabLoaded = false;
+
+        var tabEnum = parent.getCurrentTab(parent);
+
+        switch (tabEnum) {
+            case parent._tabEnum.PLAYERS:
+                $playersTab.trigger("click");
+                break;
+            case parent._tabEnum.GAMES:
+                $gamesTab.trigger("click");
+                break;
+            case parent._tabEnum.PLAYS:
+                $playedGamesTab.trigger("click");
+                break;
+            default:
+                $playersTab.trigger("click");
+                break;
+        }
+        var fromDateYYYYMMDD = $fromDatePicker.val();
+        var toDateYYYYMMDD = $toDatePicker.val();
+        parent.renderNemeStatsPointsLineGraph("/api/v2/PlayedGames/?gamingGroupId=" + settings.gamingGroupId + "&datePlayedFrom=" + fromDateYYYYMMDD + "&datePlayedTo=" + toDateYYYYMMDD);
+    },
+    getCurrentTab : function(parent) {
+        var existingQueryString = window.location.search;
+        if (!existingQueryString || existingQueryString.indexOf("tab=" + parent._tabEnum.PLAYERS) !== -1) {
+            return parent._tabEnum.PLAYERS;
+        }
+
+        if (existingQueryString.indexOf("tab=" + parent._tabEnum.GAMES) !== -1) {
+            return parent._tabEnum.GAMES;
+        }
+
+        if (existingQueryString.indexOf("tab=" + parent._tabEnum.PLAYS) !== -1) {
+            return parent._tabEnum.PLAYS;
+        }
+
+        return parent._tabEnum.PLAYERS;
     },
     renderNemeStatsPointsLineGraph: function (url) {
         $.ajax({
@@ -158,6 +371,31 @@ Views.GamingGroup.GamingGroupView.prototype = {
                 });
             }
         });
+    },
+    updateUrl: function (newTab, iso8601FromDate, iso8601ToDate) {
+        if (history.pushState) {
+            var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            var params = new Object();
+
+            if (iso8601FromDate) {
+                params.Iso8601FromDate = iso8601FromDate;
+            }
+
+            if (iso8601ToDate) {
+                params.Iso8601ToDate = iso8601ToDate;
+            }
+
+            if (newTab) {
+                params.tab = newTab;
+            }
+
+            var newQueryString = jQuery.param(params);
+            if (newQueryString) {
+                newUrl += "?" + newQueryString;
+            }
+
+            window.history.pushState({ path: newUrl }, "", newUrl);
+        }
     }
 }
 

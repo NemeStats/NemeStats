@@ -499,8 +499,8 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         parent.gaObject.trackGAEvent("PlayedGames", "Summary", "GoToRecentlyCreatedPlayedGame", this.newPlayedGameUrl);
                     },
                     postTweet: function () {
-                        var url = `https://nemestats.com${this.newPlayedGameUrl}&utm_source=twitter&utm_medium=tweet&utm_campaign=recentlycreatedplayedgame`;
-                        var twitterurl = `https://twitter.com/intent/tweet?hashtags=boardgames&original_referer=${encodeURIComponent(url)}&ref_src=twsrc%5Etfw&related=nemestats&text=Check%20out%20this%20game%20I%20played%20on%20%40nemestats&tw_p=tweetbutton&url=${url}`;
+                        var url = "https://nemestats.com" + this.newPlayedGameUrl + "&utm_source=twitter&utm_medium=tweet&utm_campaign=recentlycreatedplayedgame";
+                        var twitterurl = "https://twitter.com/intent/tweet?hashtags=boardgames&original_referer=" + "encodeURIComponent(url)" + "&ref_src=twsrc%5Etfw&related=nemestats&text=Check%20out%20this%20game%20I%20played%20on%20%40nemestats&tw_p=tweetbutton&url=" + url;
                         parent.gaObject.trackGAEvent("PlayedGames", "Summary", "Tweet", url);
                         window.open(twitterurl);
                     },

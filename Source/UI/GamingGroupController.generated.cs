@@ -70,6 +70,12 @@ namespace UI.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult GetGamingGroupPlayers()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GetGamingGroupPlayers);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult GetCurrentUserGamingGroupGameDefinitions()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GetCurrentUserGamingGroupGameDefinitions);
@@ -110,6 +116,7 @@ namespace UI.Controllers
         {
             public readonly string Index = "Index";
             public readonly string Details = "Details";
+            public readonly string GetGamingGroupPlayers = "GetGamingGroupPlayers";
             public readonly string GetTopGamingGroups = "GetTopGamingGroups";
             public readonly string GetCurrentUserGamingGroupGameDefinitions = "GetCurrentUserGamingGroupGameDefinitions";
             public readonly string SwitchGamingGroups = "SwitchGamingGroups";
@@ -122,6 +129,7 @@ namespace UI.Controllers
         {
             public const string Index = "Index";
             public const string Details = "Details";
+            public const string GetGamingGroupPlayers = "GetGamingGroupPlayers";
             public const string GetTopGamingGroups = "GetTopGamingGroups";
             public const string GetCurrentUserGamingGroupGameDefinitions = "GetCurrentUserGamingGroupGameDefinitions";
             public const string SwitchGamingGroups = "SwitchGamingGroups";
@@ -143,6 +151,16 @@ namespace UI.Controllers
         public ActionParamsClass_Details DetailsParams { get { return s_params_Details; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Details
+        {
+            public readonly string id = "id";
+            public readonly string currentUser = "currentUser";
+            public readonly string dateRangeFilter = "dateRangeFilter";
+        }
+        static readonly ActionParamsClass_GetGamingGroupPlayers s_params_GetGamingGroupPlayers = new ActionParamsClass_GetGamingGroupPlayers();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_GetGamingGroupPlayers GetGamingGroupPlayersParams { get { return s_params_GetGamingGroupPlayers; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_GetGamingGroupPlayers
         {
             public readonly string id = "id";
             public readonly string currentUser = "currentUser";
@@ -241,6 +259,20 @@ namespace UI.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "dateRangeFilter", dateRangeFilter);
             DetailsOverride(callInfo, id, currentUser, dateRangeFilter);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void GetGamingGroupPlayersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, BusinessLogic.Models.User.ApplicationUser currentUser, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult GetGamingGroupPlayers(int id, BusinessLogic.Models.User.ApplicationUser currentUser, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GetGamingGroupPlayers);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "dateRangeFilter", dateRangeFilter);
+            GetGamingGroupPlayersOverride(callInfo, id, currentUser, dateRangeFilter);
             return callInfo;
         }
 

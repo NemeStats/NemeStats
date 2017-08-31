@@ -26,13 +26,13 @@
     }
   ],
   "dependencies": {
-    "bootstrap-sass": "^3.3.5",
+    "bootstrap-sass": "3.3.5",
     "font-awesome": "^4.4.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-sass": "^1.1.0",
+    "grunt-sass": "2.0.0",
     "grunt-contrib-copy": "^0.8.2"
   }
 }

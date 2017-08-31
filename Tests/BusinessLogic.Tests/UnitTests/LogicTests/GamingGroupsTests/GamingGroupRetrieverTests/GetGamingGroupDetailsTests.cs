@@ -19,7 +19,6 @@
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.GamingGroups;
-using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -27,46 +26,44 @@ using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.GameDefinitions;
-using BusinessLogic.Logic.PlayedGames;
-using BusinessLogic.Logic.Players;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroupRetrieverTests
 {
     [TestFixture]
     public class GetGamingGroupDetailsTests : GamingGroupRetrieverTestBase
     {
-        private GamingGroup expectedGamingGroup;
-        private List<GameDefinitionSummary> gameDefinitionSummaries;
-        private GamingGroupFilter filter;
+        private GamingGroup _expectedGamingGroup;
+        private List<GameDefinitionSummary> _gameDefinitionSummaries;
+        private GamingGroupFilter _filter;
 
-        private int gamingGroupId = 13511;
+        private int _gamingGroupId = 13511;
 
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
 
-            expectedGamingGroup = new GamingGroup
+            _expectedGamingGroup = new GamingGroup
             {
-                Id = gamingGroupId, 
+                Id = _gamingGroupId, 
                 OwningUserId = CurrentUser.Id
             };
 
-            filter = new GamingGroupFilter
+            _filter = new GamingGroupFilter
             {
-                GamingGroupId = gamingGroupId
+                GamingGroupId = _gamingGroupId
             };
 
-            AutoMocker.Get<IDataContext>().Expect(mock => mock.FindById<GamingGroup>(gamingGroupId))
-                .Return(expectedGamingGroup);
+            AutoMocker.Get<IDataContext>().Expect(mock => mock.FindById<GamingGroup>(_gamingGroupId))
+                .Return(_expectedGamingGroup);
 
-            gameDefinitionSummaries = new List<GameDefinitionSummary>
+            _gameDefinitionSummaries = new List<GameDefinitionSummary>
             {
                 new GameDefinitionSummary()
             };
 
-            AutoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitions(gamingGroupId, filter.DateRangeFilter))
-                                       .Return(gameDefinitionSummaries);
+            AutoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitions(_gamingGroupId, _filter.DateRangeFilter))
+                                       .Return(_gameDefinitionSummaries);
 
             List<ApplicationUser> applicationUsers = new List<ApplicationUser>();
             applicationUsers.Add(CurrentUser);
@@ -81,52 +78,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public void ItReturnsTheGamingGroupSummary()
         {
-            GamingGroupSummary actualGamingGroup = AutoMocker.ClassUnderTest.GetGamingGroupDetails(filter);
+            GamingGroupSummary actualGamingGroup = AutoMocker.ClassUnderTest.GetGamingGroupDetails(_filter);
 
-            Assert.AreEqual(expectedGamingGroup.Id, actualGamingGroup.Id);
-            Assert.AreEqual(expectedGamingGroup.Name, actualGamingGroup.Name);
-            Assert.AreEqual(expectedGamingGroup.OwningUserId, actualGamingGroup.OwningUserId);
-            Assert.AreEqual(expectedGamingGroup.DateCreated, actualGamingGroup.DateCreated);
-        }
-
-        [Test]
-        public void ItReturnsTheOwningUserOnTheGameDefinition()
-        {
-            GamingGroupSummary actualGamingGroup = AutoMocker.ClassUnderTest.GetGamingGroupDetails(filter);
-
-            Assert.NotNull(actualGamingGroup.OwningUser);
-        }
-
-        [Test]
-        public void ItReturnsAllActivePlayersInTheGamingGroup()
-        {
-            List<PlayerWithNemesis> expectedPlayers = new List<PlayerWithNemesis>();
-            AutoMocker.Get<IPlayerRetriever>().Expect(mock => mock.GetAllPlayersWithNemesisInfo(gamingGroupId, filter.DateRangeFilter))
-                .Return(expectedPlayers);
-
-            GamingGroupSummary actualGamingGroup = AutoMocker.ClassUnderTest.GetGamingGroupDetails(filter);
-
-            Assert.AreSame(expectedPlayers, actualGamingGroup.Players);
-        }
-
-        [Test]
-        public void ItReturnsAllGameDefinitionsForTheGamingGroup()
-        {
-            GamingGroupSummary actualGamingGroup = AutoMocker.ClassUnderTest.GetGamingGroupDetails(filter);
-
-            Assert.AreSame(gameDefinitionSummaries, actualGamingGroup.GameDefinitionSummaries);
-        }
-
-        [Test]
-        public void ItReturnsTheSpecifiedNumberOfPlayedGamesForTheGamingGroup()
-        {
-            List<PlayedGame> playedGames = new List<PlayedGame>();
-            AutoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentGames(filter.NumberOfRecentGamesToShow, filter.GamingGroupId, filter.DateRangeFilter))
-                .Return(playedGames);
-
-            GamingGroupSummary actualGamingGroup = AutoMocker.ClassUnderTest.GetGamingGroupDetails(filter);
-
-            Assert.AreSame(playedGames, actualGamingGroup.PlayedGames);
+            Assert.AreEqual(_expectedGamingGroup.Id, actualGamingGroup.Id);
+            Assert.AreEqual(_expectedGamingGroup.Name, actualGamingGroup.Name);
+            Assert.AreEqual(_expectedGamingGroup.DateCreated, actualGamingGroup.DateCreated);
         }
     }
 }
