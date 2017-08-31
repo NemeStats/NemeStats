@@ -88,7 +88,7 @@
             </div>
         </div>
 
-        <div class="col-md-6">
+        @*<div class="col-md-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     Top @Model.TopGamingGroups.Count() Gaming Groups @Html.ActionLink(" - View More", MVC.GamingGroup.GetTopGamingGroups())
@@ -99,7 +99,7 @@
                     @Html.Partial(MVC.GamingGroup.Views._TopGamingGroupsPartial, Model.TopGamingGroups)
                 </div>
             </div>
-        </div>
+        </div>*@
     </div>
 </div>
 @{ Html.RenderPartial(MVC.Shared.Views.Footer);}

@@ -81,9 +81,10 @@ namespace UI.Controllers
             };
             var publicGameSummaries = _recentPublicGamesRetriever.GetResults(recentlyPlayedGamesFilter);
 
-            var topGamingGroups = _topGamingGroupsRetriever.GetResults(NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW);
+            //TODO Had to take this out for now since it was crashing the home page consistently
+            //var topGamingGroups = _topGamingGroupsRetriever.GetResults(NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW);
 
-            var topGamingGroupViewModels = topGamingGroups.Select(_transformer.Transform<TopGamingGroupSummaryViewModel>).ToList();
+            //var topGamingGroupViewModels = topGamingGroups.Select(_transformer.Transform<TopGamingGroupSummaryViewModel>).ToList();
 
             var trendingGamesRequest = new TrendingGamesRequest(NUMBER_OF_TRENDING_GAMES_TO_SHOW, NUMBER_OF_DAYS_OF_TRENDING_GAMES);
             var trendingGames = _trendingGamesRetriever.GetResults(trendingGamesRequest);
@@ -93,7 +94,7 @@ namespace UI.Controllers
             {
                 RecentAchievementsUnlocked = recentPlayerAchievementWinnerViewModel,
                 RecentPublicGames = publicGameSummaries,
-                TopGamingGroups = topGamingGroupViewModels,
+                //TopGamingGroups = topGamingGroupViewModels,
                 TrendingGames = trendingGameViewModels
             };
             ViewBag.NumTrendingGameDays = NUMBER_OF_DAYS_OF_TRENDING_GAMES;
