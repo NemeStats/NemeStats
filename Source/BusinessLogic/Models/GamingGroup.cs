@@ -39,7 +39,7 @@ namespace BusinessLogic.Models
 		public string PublicGamingGroupWebsite { get; set; }
 
 		public string OwningUserId { get; set; }
-        public int GamingGroupChampionPlayerId { get; set; }
+        public int? GamingGroupChampionPlayerId { get; set; }
 		public DateTime DateCreated { get; set; }
 
 		[ForeignKey("OwningUserId")]

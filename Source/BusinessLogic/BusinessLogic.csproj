@@ -451,9 +451,9 @@
     <Compile Include="Migrations\201611171855541_BGGGameDefinition_Dates.Designer.cs">
       <DependentUpon>201611171855541_BGGGameDefinition_Dates.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201709071131090_GamingGroupChampion.cs" />
-    <Compile Include="Migrations\201709071131090_GamingGroupChampion.Designer.cs">
-      <DependentUpon>201709071131090_GamingGroupChampion.cs</DependentUpon>
+    <Compile Include="Migrations\201709081638275_GamingGroupChampion.cs" />
+    <Compile Include="Migrations\201709081638275_GamingGroupChampion.Designer.cs">
+      <DependentUpon>201709081638275_GamingGroupChampion.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Achievements\AchievementLevel.cs" />
     <Compile Include="Models\Achievements\AchievementId.cs" />
@@ -1126,8 +1126,8 @@
     <EmbeddedResource Include="Migrations\201611171855541_BGGGameDefinition_Dates.resx">
       <DependentUpon>201611171855541_BGGGameDefinition_Dates.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201709071131090_GamingGroupChampion.resx">
-      <DependentUpon>201709071131090_GamingGroupChampion.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201709081638275_GamingGroupChampion.resx">
+      <DependentUpon>201709081638275_GamingGroupChampion.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

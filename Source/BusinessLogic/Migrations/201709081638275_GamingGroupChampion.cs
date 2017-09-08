@@ -7,9 +7,9 @@ namespace BusinessLogic.Migrations
     {
         public override void Up()
         {
-            AddColumn("dbo.GamingGroup", "GamingGroupChampionPlayerId", c => c.Int(nullable: false));
+            AddColumn("dbo.GamingGroup", "GamingGroupChampionPlayerId", c => c.Int());
             CreateIndex("dbo.GamingGroup", "GamingGroupChampionPlayerId");
-            AddForeignKey("dbo.GamingGroup", "GamingGroupChampionPlayerId", "dbo.Player", "Id", cascadeDelete: true);
+            AddForeignKey("dbo.GamingGroup", "GamingGroupChampionPlayerId", "dbo.Player", "Id");
         }
         
         public override void Down()

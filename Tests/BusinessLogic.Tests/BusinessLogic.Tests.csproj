@@ -253,6 +253,7 @@
     <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\FindByIdTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\NemeStatsDataContextTestBase.cs" />
     <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\GetQueryableTests.cs" />
+    <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\AdminSaveTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\SaveTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\EntityWithTechnicalKeyTests\AlreadyInDatabaseTests.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\RecalculateNemesisIntegrationTests.cs" />
