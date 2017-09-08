@@ -40,5 +40,12 @@ namespace BusinessLogic.DataAccess
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>
         void DetachEntities<TEntity>() where TEntity : class, IEntityWithTechnicalKey;
+        /// <summary>
+        /// Saves without checking security. Use carefully.
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        TEntity AdminSave<TEntity>(TEntity entity) where TEntity : class, IEntityWithTechnicalKey;
     }
 }

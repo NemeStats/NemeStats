@@ -180,5 +180,10 @@ namespace BusinessLogic.DataAccess
                 entity.State = EntityState.Detached;
             }
         }
+
+        public TEntity AdminSave<TEntity>(TEntity entity) where TEntity : class, IEntityWithTechnicalKey
+        {
+            throw new NotImplementedException();
+        }
     }
 }
