@@ -106,7 +106,7 @@ namespace BusinessLogic.Logic.Achievements
                 {
                     currentPlayerAchievement.AchievementLevel = achievementAwarded.LevelAwarded.Value;
                     currentPlayerAchievement.LastUpdatedDate = DateTime.UtcNow;
-                    _dataContext.Save(currentPlayerAchievement, new AnonymousApplicationUser());
+                    _dataContext.AdminSave(currentPlayerAchievement);
                     _dataContext.CommitAllChanges();
 
                     NotifyPlayer(player, achievement, achievementAwarded.LevelAwarded);

@@ -641,6 +641,14 @@ namespace BusinessLogic.Tests.IntegrationTests
 
             if (playerToDelete != null)
             {
+                //--can never have more than one of these so firstOrDefault should be fine
+                var championedGamingGroup =
+                    _nemeStatsDbContext.GamingGroups.FirstOrDefault(gamingGroup => gamingGroup.GamingGroupChampionPlayerId == playerToDelete.Id);
+                if (championedGamingGroup != null)
+                {
+                    championedGamingGroup.GamingGroupChampionPlayerId = null;
+                }
+
                 try
                 {
                     _nemeStatsDbContext.Players.Remove(playerToDelete);

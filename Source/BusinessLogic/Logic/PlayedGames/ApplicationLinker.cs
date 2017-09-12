@@ -25,7 +25,7 @@ namespace BusinessLogic.Logic.PlayedGames
                 PlayedGameId = playedGameId
             };
 
-            dataContext.Save(applicationLinkage, new AnonymousApplicationUser());
+            dataContext.AdminSave(applicationLinkage);
         }
     }
 }

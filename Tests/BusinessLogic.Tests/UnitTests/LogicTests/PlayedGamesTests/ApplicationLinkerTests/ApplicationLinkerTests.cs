@@ -35,7 +35,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.ApplicationL
 
             //--assert
             var callsMadeOn = _dataContext.GetArgumentsForCallsMadeOn(
-                mock => mock.Save(Arg<PlayedGameApplicationLinkage>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
+                mock => mock.AdminSave(Arg<PlayedGameApplicationLinkage>.Is.Anything));
 
             callsMadeOn.ShouldNotBeNull();
             callsMadeOn.Count.ShouldBe(1);
@@ -45,9 +45,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.ApplicationL
             applicationLinkage.PlayedGameId.ShouldBe(playedGameId);
             applicationLinkage.ApplicationName.ShouldBe(applicationName);
             applicationLinkage.EntityId.ShouldBe(entityId);
-
-            var applicationUser = firstCall[1];
-            applicationUser.ShouldBeAssignableTo<AnonymousApplicationUser>();
         }
 
     }
