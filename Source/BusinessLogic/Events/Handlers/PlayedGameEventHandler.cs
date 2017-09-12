@@ -5,7 +5,6 @@ using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Nemeses;
-using BusinessLogic.Models.User;
 using Exceptionless;
 using RollbarSharp;
 
@@ -15,6 +14,7 @@ namespace BusinessLogic.Events.Handlers
     {
         private readonly INemeStatsEventTracker _playedGameEventTracker;
         private readonly INemesisRecalculator _nemesisRecalculator;
+        private readonly IGamingGroupChampionRecalculator _gamingGroupChampionRecalculator;
         private readonly IChampionRecalculator _championRecalculator;
         private readonly IAchievementProcessor _achievementProcessor;
         private readonly IRollbarClient _rollbar;
@@ -25,19 +25,21 @@ namespace BusinessLogic.Events.Handlers
             IAchievementProcessor achievementProcessor, 
             IChampionRecalculator championRecalculator, 
             INemesisRecalculator nemesisRecalculator, 
+            IGamingGroupChampionRecalculator gamingGroupChampionRecalculator,
             IRollbarClient rollbar) : base(dataContext)
         {
             _playedGameEventTracker = playedGameEventTracker;
             _achievementProcessor = achievementProcessor;
             _championRecalculator = championRecalculator;
             _nemesisRecalculator = nemesisRecalculator;
+            _gamingGroupChampionRecalculator = gamingGroupChampionRecalculator;
             _rollbar = rollbar;
         }
 
         private static readonly object ChampionLock = new object();
         private static readonly object NemesisLock = new object();
         private static readonly object AchievementsLock = new object();
-
+        private static readonly object GamingGroupChampionLock = new object();
 
         public bool Handle(PlayedGameCreatedEvent @event)
         {
@@ -70,6 +72,11 @@ namespace BusinessLogic.Events.Handlers
                 {
                     _nemesisRecalculator.RecalculateNemesis(playerId, @event.CurrentUser, DataContext);
                 }
+            }
+
+            lock (GamingGroupChampionLock)
+            {
+                _gamingGroupChampionRecalculator.RecalculateGamingGroupChampion(@event.TriggerEntityId);
             }
 
             lock (AchievementsLock)

@@ -79,6 +79,11 @@ namespace BusinessLogic.Tests.UnitTests.EventsTests
                     Arg<ApplicationUser>.Is.Equal(anonymousApplicationUser),
                     Arg<IDataContext>.Is.Anything));
 
+            _autoMocker.Get<IGamingGroupChampionRecalculator>().AssertWasCalled(mock => mock.RecalculateGamingGroupChampion(
+                Arg<int>.Is.Equal(playedGameEvent.TriggerEntityId)),
+               options => options.WhenCalled(y => _autoMocker.Get<IAchievementProcessor>().AssertWasNotCalled(
+                        mock => mock.ProcessAchievements(playedGameEvent.TriggerEntityId))));
+
             //--make sure the achievement processor gets called
             _autoMocker.Get<IAchievementProcessor>().AssertWasCalled(
                 mock => mock.ProcessAchievements(playedGameEvent.TriggerEntityId));
