@@ -18,7 +18,7 @@ namespace BusinessLogic.Logic.Champions
 
         public void RecalculateGamingGroupChampion(int playedGameId)
         {
-            int gamingGroupId = _dataContext.GetQueryable<PlayerGameResult>()
+            var gamingGroupId = _dataContext.GetQueryable<PlayerGameResult>()
                 .Where(x => x.PlayedGameId == playedGameId)
                 .Select(x => x.PlayedGame.GamingGroupId)
                 .FirstOrDefault();
@@ -28,6 +28,11 @@ namespace BusinessLogic.Logic.Champions
                 throw new ArgumentException($"PlayedGame with id '{playedGameId}' does not exist.");
             }
 
+            RecalculateGamingGroupChampionUsingGamingGroupId(gamingGroupId);
+        }
+
+        public void RecalculateGamingGroupChampionUsingGamingGroupId(int gamingGroupId)
+        {
             var topPlayer = (from playerGameResult in _dataContext.GetQueryable<PlayerGameResult>()
                     where playerGameResult.PlayedGame.GamingGroupId == gamingGroupId
                     group playerGameResult by playerGameResult.PlayerId
@@ -38,7 +43,7 @@ namespace BusinessLogic.Logic.Champions
                         TotalPoints = groupedResults.Sum(x => x.TotalPoints),
                         PlayerId = groupedResults.Key
                     })
-                    .Where(x => x.TotalPoints >= MINIMUM_POINTS_TO_BE_GAMING_GROUP_CHAMPION)
+                .Where(x => x.TotalPoints >= MINIMUM_POINTS_TO_BE_GAMING_GROUP_CHAMPION)
                 .OrderByDescending(r => r.TotalPoints)
                 .ThenBy(x => x.PlayerId)
                 .FirstOrDefault();
