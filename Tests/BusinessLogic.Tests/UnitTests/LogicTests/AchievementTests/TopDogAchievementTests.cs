@@ -4,7 +4,6 @@ using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
-using NemeStats.TestingHelpers.NemeStatsTestingExtensions;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
@@ -54,7 +53,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
         }
 
         [Test]
-        public void ItAwardsTheAchievementAndSetsTheGamingGroupGladiatorWhenThePlayerIsThePlayerWithMostNemepoints()
+        public void ItAwardsTheAchievementWhenThePlayerIsThePlayerWithMostNemepoints()
         {
             //--arrange
             SetupPlayedGames(winnerId: _playerId, loserId: _otherId, winnerPoints: TopDogAchievement.MinNemePointsToUnlock);
@@ -64,10 +63,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
 
             //--assert
             results.LevelAwarded.ShouldBe(AchievementLevel.Silver);
-            var args = _autoMocker.Get<IDataContext>().GetArgumentsForCallsMadeOn(mock => mock.AdminSave(Arg<GamingGroup>.Is.Anything));
-            var firstCall = args.AssertFirstCallIsType<GamingGroup>();
-            firstCall.Id.ShouldBe(_gamingGroupId);
-            firstCall.GamingGroupChampionPlayerId.ShouldBe(_playerId);
         }
 
         private void SetupPlayedGames(int winnerId, int loserId, int winnerPoints)

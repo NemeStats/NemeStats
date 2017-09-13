@@ -56,19 +56,10 @@ namespace BusinessLogic.Logic.Achievements
                 {
                     result.LevelAwarded = LevelThresholds.First().Key;
                     result.PlayerProgress = 1;
-                    
-                    UpdateGamingGroupChampion(player);
                 }
             }
 
             return result;
-        }
-
-        private void UpdateGamingGroupChampion(Player player)
-        {
-            var gamingGroup = DataContext.GetQueryable<GamingGroup>().First(x => x.Id == player.GamingGroupId);
-            gamingGroup.GamingGroupChampionPlayerId = player.Id;
-            DataContext.AdminSave(gamingGroup);
         }
     }
 }
