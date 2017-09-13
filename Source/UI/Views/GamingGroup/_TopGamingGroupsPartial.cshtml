@@ -18,7 +18,12 @@
 				<td>@Html.ActionLink(topGamingGroup.GamingGroupName, "Details", "GamingGroup", new { id = topGamingGroup.GamingGroupId }, new { })</td>
 				<td>@topGamingGroup.NumberOfGamesPlayed</td>
 				<td>@topGamingGroup.NumberOfPlayers</td>
-				<td>@Html.ActionLink(topGamingGroup.GamingGroupChampion.Name, "Details", "Player", new { id = topGamingGroup.GamingGroupChampion.Id }, new { })</td>
+			    <td>
+			        @if (topGamingGroup.GamingGroupChampion != null)
+			        {
+			            @Html.ActionLink(topGamingGroup.GamingGroupChampion.Name, "Details", "Player", new { id = topGamingGroup.GamingGroupChampion.Id }, new { })
+                    }
+			    </td>
 			</tr>
 		}
 	</table>
