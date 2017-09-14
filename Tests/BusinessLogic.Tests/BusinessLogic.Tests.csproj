@@ -253,6 +253,7 @@
     <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\FindByIdTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\NemeStatsDataContextTestBase.cs" />
     <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\GetQueryableTests.cs" />
+    <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\AdminSaveTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\SaveTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\EntityWithTechnicalKeyTests\AlreadyInDatabaseTests.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\RecalculateNemesisIntegrationTests.cs" />
@@ -331,6 +332,7 @@
     <Compile Include="UnitTests\LogicTests\BoardGameGeekTests\BoardGameGeekGamesImporterTests\BoardGameGeekGamesImporterTests.cs" />
     <Compile Include="UnitTests\LogicTests\ChampionsTests\ChampionRecalculatorTests\RecalculateAllChampionsTests.cs" />
     <Compile Include="UnitTests\LogicTests\ChampionsTests\ChampionRecalculatorTests\RecalculateChampionTests.cs" />
+    <Compile Include="UnitTests\LogicTests\ChampionsTests\GamingGroupChampionRecalculatorTests\RecalculateGamingGroupChampionTests.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\BoardGameGeekGameDefinitionCreatorTests\CreateBoardGameGeekGameDefinitionTests.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\CreateGameDefinitionComponentTests\ExecuteTests.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GetAllGameDefinitionNamesTests.cs" />

@@ -73,7 +73,7 @@ namespace BusinessLogic.Logic.GamingGroups
                         GamingGroupName = gamingGroup.Name,
                         NumberOfGamesPlayed = gamingGroup.PlayedGames.Count,
                         NumberOfPlayers = gamingGroup.Players.Count,
-                        GamingGroupChampion = gamingGroup.Players.OrderByDescending(p => p.PlayerGameResults.Select(pgr => pgr.TotalPoints).DefaultIfEmpty(0).Sum()).FirstOrDefault()
+                        GamingGroupChampion = gamingGroup.GamingGroupChampion,
                     }).OrderByDescending(gg => gg.NumberOfGamesPlayed)
                       .ThenByDescending(gg => gg.NumberOfPlayers)
                       .Take(numberOfTopGamingGroupsToShow)

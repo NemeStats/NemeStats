@@ -81,8 +81,7 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.BoardGameGeekBatchUpdateServic
         private void AssertBoardGameGeekGameDefinitionSaved(GameDetails expectedGameDetails)
         {
             var argumentsForCallsMadeOn = _autoMocker.Get<IDataContext>().GetArgumentsForCallsMadeOn(
-                                                                                                     mock => mock.Save(Arg<BoardGameGeekGameDefinition>.Is.Anything,
-                                                                                                                       Arg<ApplicationUser>.Is.Anything));
+                                                                                                     mock => mock.AdminSave(Arg<BoardGameGeekGameDefinition>.Is.Anything));
             Assert.That(argumentsForCallsMadeOn, Is.Not.Null);
             BoardGameGeekGameDefinition actualBoardGameGeekGameDefinition = null;
             foreach (var call in argumentsForCallsMadeOn)

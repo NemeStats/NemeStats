@@ -314,6 +314,8 @@
     <Compile Include="Logic\BoardGameGeek\IBoardGameGeekGameDefinitionCreator.cs" />
     <Compile Include="Logic\BoardGameGeek\IBoardGameGeekGamesImporter.cs" />
     <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
+    <Compile Include="Logic\Champions\GamingGroupChampionRecalculator.cs" />
+    <Compile Include="Logic\Champions\IGamingGroupChampionRecalculator.cs" />
     <Compile Include="Logic\Email\EmailService.cs" />
     <Compile Include="Logic\GameDefinitions\CreateGameDefinitionComponent.cs" />
     <Compile Include="Logic\GameDefinitions\ICreateGameDefinitionComponent.cs" />
@@ -450,6 +452,10 @@
     <Compile Include="Migrations\201611171855541_BGGGameDefinition_Dates.cs" />
     <Compile Include="Migrations\201611171855541_BGGGameDefinition_Dates.Designer.cs">
       <DependentUpon>201611171855541_BGGGameDefinition_Dates.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709081638275_GamingGroupChampion.cs" />
+    <Compile Include="Migrations\201709081638275_GamingGroupChampion.Designer.cs">
+      <DependentUpon>201709081638275_GamingGroupChampion.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Achievements\AchievementLevel.cs" />
     <Compile Include="Models\Achievements\AchievementId.cs" />
@@ -1121,6 +1127,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611171855541_BGGGameDefinition_Dates.resx">
       <DependentUpon>201611171855541_BGGGameDefinition_Dates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709081638275_GamingGroupChampion.resx">
+      <DependentUpon>201709081638275_GamingGroupChampion.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

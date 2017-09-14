@@ -56,7 +56,6 @@ namespace BusinessLogic.Logic.Achievements
                 {
                     result.LevelAwarded = LevelThresholds.First().Key;
                     result.PlayerProgress = 1;
-
                 }
             }
 

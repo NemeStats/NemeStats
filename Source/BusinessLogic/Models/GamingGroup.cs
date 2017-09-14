@@ -39,10 +39,13 @@ namespace BusinessLogic.Models
 		public string PublicGamingGroupWebsite { get; set; }
 
 		public string OwningUserId { get; set; }
+        public int? GamingGroupChampionPlayerId { get; set; }
 		public DateTime DateCreated { get; set; }
 
 		[ForeignKey("OwningUserId")]
 		public virtual ApplicationUser OwningUser { get; set; }
+        [ForeignKey("GamingGroupChampionPlayerId")]
+        public virtual Player GamingGroupChampion { get; set; }
 		public virtual IList<Player> Players { get; set; }
 		public virtual IList<GameDefinition> GameDefinitions { get; set; }
 		public virtual IList<PlayedGame> PlayedGames { get; set; }

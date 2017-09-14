@@ -203,7 +203,6 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdate
 
         private int UpdateBoardGameGeekDefinitions(List<BoardGameGeekGameDefinition> boardGameGeekGameDefinitions)
         {
-            var anonymousUser = new AnonymousApplicationUser();
             int totalGamesUpdated = 0;
             foreach (var existingBoardGameGeekGameDefinition in boardGameGeekGameDefinitions)
             {
@@ -276,7 +275,7 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdate
                         }
                     }
 
-                    _dataContext.Save(existingBoardGameGeekGameDefinition, anonymousUser);
+                    _dataContext.AdminSave(existingBoardGameGeekGameDefinition);
 
                     if (totalGamesUpdated++ % 10 == 0)
                     {

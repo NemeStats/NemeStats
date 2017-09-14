@@ -48,12 +48,17 @@ namespace BusinessLogic.Models
 
         [ForeignKey("ApplicationUserId")]
         public virtual ApplicationUser User { get; set; }
+        [ForeignKey("GamingGroupId")]
         public virtual GamingGroup GamingGroup { get; set; }
         public virtual Nemesis Nemesis { get; set; }
         public virtual Nemesis PreviousNemesis { get; set; }
         public virtual IList<PlayerGameResult> PlayerGameResults { get; set; }
         public virtual IList<Champion> ChampionedGames { get; set; }
         public virtual IList<PlayerAchievement> PlayerAchievements { get; set; }
+        //--considering a Player can only be a part of one Gaming Group at most, there should only be one or zero values in this collection. However, I had
+        //  to add this because I couldn't find any other way to trick Entity Framework into not creating a nfew foreign key on Player called GamingGroup_Id
+        [InverseProperty("GamingGroupChampion")]
+        public virtual IList<GamingGroup> GamingGroupsChampioned { get; set; }
 
         //--records where this player was the Minion
         [InverseProperty("MinionPlayer")]

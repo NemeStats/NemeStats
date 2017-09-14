@@ -6,6 +6,7 @@ using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Shouldly;
 using StructureMap.AutoMocking;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
@@ -16,6 +17,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
         private RhinoAutoMocker<TopDogAchievement> _autoMocker;
         private readonly int _playerId = 1;
         private readonly int _otherId = 2;
+        private int _gamingGroupId = 11;
 
         [SetUp]
         public void SetUp()
@@ -33,7 +35,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
             var results = _autoMocker.ClassUnderTest.IsAwardedForThisPlayer(_playerId);
 
             //--assert
-            Assert.That(results.LevelAwarded, Is.Null);
+            results.LevelAwarded.ShouldBeNull();
         }
 
 
@@ -47,32 +49,31 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
             var results = _autoMocker.ClassUnderTest.IsAwardedForThisPlayer(_playerId);
 
             //--assert
-            Assert.That(results.LevelAwarded, Is.Null);
+            results.LevelAwarded.ShouldBeNull();
         }
 
         [Test]
-        public void ItAwardTheAchievementWhenThePlayerIsThePlayerWithMostNemepoints()
+        public void ItAwardsTheAchievementWhenThePlayerIsThePlayerWithMostNemepoints()
         {
             //--arrange
-            SetupPlayedGames(winnerId: _playerId, loserId: _otherId,winnerPoints: TopDogAchievement.MinNemePointsToUnlock);
+            SetupPlayedGames(winnerId: _playerId, loserId: _otherId, winnerPoints: TopDogAchievement.MinNemePointsToUnlock);
 
             //--act
             var results = _autoMocker.ClassUnderTest.IsAwardedForThisPlayer(_playerId);
 
             //--assert
-            Assert.That(results.LevelAwarded, Is.EqualTo(AchievementLevel.Silver));
+            results.LevelAwarded.ShouldBe(AchievementLevel.Silver);
         }
 
         private void SetupPlayedGames(int winnerId, int loserId, int winnerPoints)
         {
-            var gamingGroupId = 1;
             var results = new List<PlayerGameResult>()
             {
                 new PlayerGameResult
                 {
                     PlayedGame = new PlayedGame()
                     {
-                        GamingGroupId = gamingGroupId
+                        GamingGroupId = _gamingGroupId
                     },
                     PlayerId = winnerId,
                     NemeStatsPointsAwarded = winnerPoints
@@ -81,7 +82,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
                 {
                     PlayedGame = new PlayedGame()
                     {
-                        GamingGroupId = gamingGroupId
+                        GamingGroupId = _gamingGroupId
                     },
                     PlayerId = loserId,
                     NemeStatsPointsAwarded = 5
@@ -94,11 +95,21 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
                 new Player
                 {
                     Id = _playerId,
-                    GamingGroupId = gamingGroupId
+                    GamingGroupId = _gamingGroupId
                 }
 
             };
             _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>()).Return(players.AsQueryable());
+
+            var testingGamingGroup = new GamingGroup
+            {
+                Id = _gamingGroupId
+            };
+            var gamingGroups = new List<GamingGroup>
+            {
+                testingGamingGroup
+            };
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GamingGroup>()).Return(gamingGroups.AsQueryable());
         }
 
     }

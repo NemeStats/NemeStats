@@ -107,7 +107,7 @@ namespace BusinessLogic.DataAccess
             }
         }
 
-        private static void SetGamingGroupIdIfEntityIsSecured<TEntity>(TEntity entity, ApplicationUser currentUser) 
+        internal virtual void SetGamingGroupIdIfEntityIsSecured<TEntity>(TEntity entity, ApplicationUser currentUser) 
             where TEntity : class, IEntityWithTechnicalKey
         {
             if (typeof(SecuredEntityWithTechnicalKey).IsAssignableFrom(typeof(TEntity)))
@@ -179,6 +179,25 @@ namespace BusinessLogic.DataAccess
             {
                 entity.State = EntityState.Detached;
             }
+        }
+
+        public TEntity AdminSave<TEntity>(TEntity entity) where TEntity : class, IEntityWithTechnicalKey
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
+            var securedEntity = entity as SecuredEntityWithTechnicalKey;
+            if (securedEntity != null && securedEntity.GamingGroupId == default(int))
+            {
+                throw new ArgumentException("GamingGroupId must be set on an ISecuredEntityWithTechnicalKey");
+            }
+
+            var savedEntity = AddOrInsertOverride(entity);
+            CommitAllChanges();
+
+            return savedEntity;
         }
     }
 }
