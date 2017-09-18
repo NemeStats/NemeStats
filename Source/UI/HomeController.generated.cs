@@ -73,6 +73,7 @@ namespace UI.Controllers
         public class ActionNamesClass
         {
             public readonly string Index = "Index";
+            public readonly string TrendingGames = "TrendingGames";
             public readonly string About = "About";
             public readonly string AboutNemePoints = "AboutNemePoints";
             public readonly string AboutBadgesAndAchievements = "AboutBadgesAndAchievements";
@@ -82,6 +83,7 @@ namespace UI.Controllers
         public class ActionNameConstants
         {
             public const string Index = "Index";
+            public const string TrendingGames = "TrendingGames";
             public const string About = "About";
             public const string AboutNemePoints = "AboutNemePoints";
             public const string AboutBadgesAndAchievements = "AboutBadgesAndAchievements";
@@ -125,6 +127,17 @@ namespace UI.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
             IndexOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void TrendingGamesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult TrendingGames()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.TrendingGames);
+            TrendingGamesOverride(callInfo);
             return callInfo;
         }
 

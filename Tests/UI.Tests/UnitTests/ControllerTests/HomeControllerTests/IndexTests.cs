@@ -147,14 +147,6 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
         }
 
         [Test]
-        public void TheIndexHasTopGames()
-        {
-            var actualViewModel = (HomeIndexViewModel)_viewResult.ViewData.Model;
-
-            Assert.AreSame(_expectedTrendingGameViewModel, actualViewModel.TrendingGames[0]);
-        }
-
-        [Test]
         public void TheIndexHasTopGamingGroups()
         {
             var actualViewModel = (HomeIndexViewModel)_viewResult.ViewData.Model;

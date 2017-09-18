@@ -55,8 +55,9 @@
                     <div id="topGlobalGameDefinitionsVote" class="fl-right"></div>
                     <div class="fl-clear"></div>
                 </div>
-                <div class="panel-body">
-                    @Html.Partial(MVC.GameDefinition.Views._TrendingGamesPartial, Model.TrendingGames)
+                <div class="panel-body" id="trendingGamesWidget">
+                    <div class="loader"></div>
+                    @*@Html.Partial(MVC.GameDefinition.Views._TrendingGamesPartial, Model.TrendingGames)*@
                 </div>
             </div>
         </div>
@@ -82,7 +83,7 @@
                     <div id="recentAchievementsUnlockedVote" class="fl-right"></div>
                     <div class="fl-clear"></div>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body" id="achiementsWidget">
                     @Html.Partial(MVC.Achievement.Views._RecentAchievementsUnlocked, Model.RecentAchievementsUnlocked)
                 </div>
             </div>
@@ -95,7 +96,7 @@
                     <div id="gamingGroupsVote" class="fl-right"></div>
                     <div class="fl-clear"></div>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body" id="topGamingGroupsWidget">
                     @Html.Partial(MVC.GamingGroup.Views._TopGamingGroupsPartial, Model.TopGamingGroups)
                 </div>
             </div>
@@ -112,6 +113,13 @@
             $("#recentAchievementsUnlockedVote").rank({ votableFeatureId: "RecentAchievementsUnlocked" });
             $("#topGlobalGameDefinitionsVote").rank({ votableFeatureId: "RecentGlobalTopGameDefinitions" });
             $("#gamingGroupsVote").rank({ votableFeatureId: "TopGlobalGamingGroups" });
+
+            var homeView = new Views.Home.IndexView();
+            var options = {
+                widget1DivId: "trendingGamesWidget",
+                widget1ServiceEndpoint : "/Home/TrendingGames"
+            };
+            homeView.init(options);
         });
     </script>
 }

@@ -29,6 +29,7 @@
 /// <reference path="handlebars.min.js" />
 /// <reference path="handlebars.runtime.amd.min.js" />
 /// <reference path="handlebars.runtime.min.js" />
+/// <reference path="home/home.js" />
 /// <reference path="idea.informer/tab6.js" />
 /// <reference path="jquery.cookie.js" />
 /// <reference path="jquery.signalr-2.2.0.min.js" />

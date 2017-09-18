@@ -70,6 +70,7 @@ namespace UI.Controllers
             _mapperFactory = mapperFactory;
         }
 
+        [HttpGet]
         public virtual ActionResult Index()
         {
             var recentPlayerAchievementWinners = _recentPlayerAchievementsUnlockedRetriever.GetResults(new GetRecentPlayerAchievementsUnlockedQuery {PageSize = NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW });
@@ -85,19 +86,24 @@ namespace UI.Controllers
 
             var topGamingGroupViewModels = topGamingGroups.Select(_transformer.Transform<TopGamingGroupSummaryViewModel>).ToList();
 
-            var trendingGamesRequest = new TrendingGamesRequest(NUMBER_OF_TRENDING_GAMES_TO_SHOW, NUMBER_OF_DAYS_OF_TRENDING_GAMES);
-            var trendingGames = _trendingGamesRetriever.GetResults(trendingGamesRequest);
-            var trendingGameViewModels = trendingGames.Select(_transformer.Transform<TrendingGameViewModel>).ToList();
-
             var homeIndexViewModel = new HomeIndexViewModel()
             {
                 RecentAchievementsUnlocked = recentPlayerAchievementWinnerViewModel,
                 RecentPublicGames = publicGameSummaries,
                 TopGamingGroups = topGamingGroupViewModels,
-                TrendingGames = trendingGameViewModels
             };
-            ViewBag.NumTrendingGameDays = NUMBER_OF_DAYS_OF_TRENDING_GAMES;
             return View(MVC.Home.Views.Index, homeIndexViewModel);
+        }
+
+        [HttpGet]
+        public virtual ActionResult TrendingGames()
+        {
+            var trendingGamesRequest = new TrendingGamesRequest(NUMBER_OF_TRENDING_GAMES_TO_SHOW, NUMBER_OF_DAYS_OF_TRENDING_GAMES);
+            var trendingGames = _trendingGamesRetriever.GetResults(trendingGamesRequest);
+            var trendingGameViewModels = trendingGames.Select(_transformer.Transform<TrendingGameViewModel>).ToList();
+
+            ViewBag.NumTrendingGameDays = NUMBER_OF_DAYS_OF_TRENDING_GAMES;
+            return View(MVC.GameDefinition.Views._TrendingGamesPartial, trendingGameViewModels);
         }
 
         public virtual ActionResult About()
