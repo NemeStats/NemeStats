@@ -52,7 +52,6 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
         private ViewResult _viewResult;
 
         private IPagedList<PlayerAchievementWinner> _recentAchievementsUnlocks;
-        private List<PublicGameSummary> _publicGameSummaries;
 
         [SetUp]
         public override void SetUp()
@@ -72,11 +71,6 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
             _autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<PlayerAchievementWinnerViewModel>(Arg<PlayerAchievementWinner>.Is.Anything))
                 .Repeat.Any()
                 .Return(new PlayerAchievementWinnerViewModel());
-
-
-            _publicGameSummaries = new List<PublicGameSummary>();
-            _autoMocker.Get<IRecentPublicGamesRetriever>().Expect(mock => mock.GetResults(Arg<RecentlyPlayedGamesFilter>.Matches(x => x.NumberOfGamesToRetrieve == HomeController.NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW)))
-                .Return(_publicGameSummaries);
 
             var expectedNemesisChanges = new List<NemesisChange>();
             _autoMocker.Get<INemesisHistoryRetriever>().Expect(mock => mock.GetRecentNemesisChanges(HomeController.NUMBER_OF_RECENT_NEMESIS_CHANGES_TO_SHOW))
@@ -136,14 +130,6 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
             var actualViewModel = (HomeIndexViewModel)_viewResult.ViewData.Model;
 
             actualViewModel.RecentAchievementsUnlocked.Count.ShouldBe(_recentAchievementsUnlocks.Count);
-        }
-
-        [Test]
-        public void TheIndexHasRecentPublicGameSummaries()
-        {
-            var actualViewModel = (HomeIndexViewModel)_viewResult.ViewData.Model;
-
-            actualViewModel.RecentPublicGames.ShouldBeSameAs(_publicGameSummaries);
         }
 
         [Test]
