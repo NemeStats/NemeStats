@@ -42,6 +42,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
             viewResult.ShouldNotBeNull();
             var viewModel = viewResult.Model as List<TrendingGameViewModel>;
             viewModel.ShouldNotBeNull();
+            viewResult.ViewName.ShouldBe(MVC.GameDefinition.Views._TrendingGamesPartial);
             viewModel[0].ShouldBeSameAs(expectedViewModel1);
             viewModel[1].ShouldBeSameAs(expectedViewModel2);
         }

@@ -3,14 +3,7 @@ Namespace("Views.Home");
 
 //Initialization
 Views.Home.IndexView = function () {
-    this._settings = {
-        widget1DivId: null,
-        widget1ServiceEndpoint : null
-    };
-    this._updateGamingGroupNameServiceAddress = "/GamingGroup/UpdateGamingGroupName";
-    this._getGamingGroupPlayersServiceAddress = "/GamingGroup/GetGamingGroupPlayers/";
-    this._getGamingGroupGameDefinitionsServiceAddress = "/GamingGroup/GetGamingGroupGameDefinitions/";
-    this._getGamingGroupPlayedGamesServiceAddress = "/GamingGroup/GetGamingGroupPlayedGames/";
+   
 };
 
 //Implementation

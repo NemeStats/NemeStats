@@ -286,6 +286,7 @@
     <Compile Include="UnitTests\ControllerTests\HomeControllerTests\HomeControllerTestBase.cs" />
     <Compile Include="UnitTests\ControllerTests\HomeControllerTests\IndexTests.cs" />
     <Compile Include="UnitTests\ControllerTests\HomeControllerTests\RecentPlayedGamesTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\HomeControllerTests\RecentAchievementsUnlockedTests.cs" />
     <Compile Include="UnitTests\ControllerTests\HomeControllerTests\TrendingGamesTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\SaveTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

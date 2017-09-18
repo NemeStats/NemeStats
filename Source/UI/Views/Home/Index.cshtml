@@ -69,7 +69,7 @@
                     <div id="recentGamesVote" class="fl-right"></div>
                     <div class="fl-clear"></div>
                 </div>
-                <div class="panel-body" id="RecentPlayedGamesWidget">
+                <div class="panel-body" id="recentPlayedGamesWidget">
                     <div class="loader"></div>
                 </div>
             </div>
@@ -79,12 +79,12 @@
         <div class="col-md-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    Recent @Model.RecentAchievementsUnlocked.Count Achievements Unlocked @Html.ActionLink(" - View More", MVC.Achievement.RecentAchievementsUnlocked())
+                    Recent @HomeController.NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW Achievements Unlocked @Html.ActionLink(" - View More", MVC.Achievement.RecentAchievementsUnlocked())
                     <div id="recentAchievementsUnlockedVote" class="fl-right"></div>
                     <div class="fl-clear"></div>
                 </div>
                 <div class="panel-body" id="achiementsWidget">
-                    @Html.Partial(MVC.Achievement.Views._RecentAchievementsUnlocked, Model.RecentAchievementsUnlocked)
+                    <div class="loader"></div>
                 </div>
             </div>
         </div>
@@ -122,8 +122,12 @@
                     widgetServiceEndpoint: "/Home/TrendingGames"
                 },
                 {
-                    widgetDivId: "RecentPlayedGamesWidget",
+                    widgetDivId: "recentPlayedGamesWidget",
                     widgetServiceEndpoint: "/Home/RecentPlayedGames"
+                },
+                {
+                    widgetDivId: "achiementsWidget",
+                    widgetServiceEndpoint: "/Home/RecentAchievementsUnlocked"
                 }
             ]
         };

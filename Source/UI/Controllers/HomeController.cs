@@ -42,7 +42,6 @@ namespace UI.Controllers
     {
         public const int NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW = 10;
         public const int NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW = 5;
-        public const int NUMBER_OF_RECENT_NEMESIS_CHANGES_TO_SHOW = 5;
         public const int NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW = 15;
         public const int NUMBER_OF_DAYS_OF_TRENDING_GAMES = 90;
         public const int NUMBER_OF_TRENDING_GAMES_TO_SHOW = 5;
@@ -52,7 +51,6 @@ namespace UI.Controllers
         private readonly ITrendingGamesRetriever _trendingGamesRetriever;
         private readonly ITransformer _transformer;
         private readonly IRecentPlayerAchievementsUnlockedRetriever _recentPlayerAchievementsUnlockedRetriever;
-        private readonly IMapperFactory _mapperFactory;
 
         public HomeController(
             IRecentPublicGamesRetriever recentPublicGamesRetriever,
@@ -67,22 +65,17 @@ namespace UI.Controllers
             _trendingGamesRetriever = trendingGamesRetriever;
             _transformer = transformer;
             _recentPlayerAchievementsUnlockedRetriever = recentPlayerAchievementsUnlockedRetriever;
-            _mapperFactory = mapperFactory;
         }
 
         [HttpGet]
         public virtual ActionResult Index()
         {
-            var recentPlayerAchievementWinners = _recentPlayerAchievementsUnlockedRetriever.GetResults(new GetRecentPlayerAchievementsUnlockedQuery {PageSize = NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW });
-            var recentPlayerAchievementWinnerViewModel = recentPlayerAchievementWinners.ToTransformedPagedList<PlayerAchievementWinner, PlayerAchievementWinnerViewModel>(_transformer);
-       
             var topGamingGroups = _topGamingGroupsRetriever.GetResults(NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW);
 
             var topGamingGroupViewModels = topGamingGroups.Select(_transformer.Transform<TopGamingGroupSummaryViewModel>).ToList();
 
             var homeIndexViewModel = new HomeIndexViewModel
             {
-                RecentAchievementsUnlocked = recentPlayerAchievementWinnerViewModel,
                 TopGamingGroups = topGamingGroupViewModels
             };
             return View(MVC.Home.Views.Index, homeIndexViewModel);
@@ -108,6 +101,15 @@ namespace UI.Controllers
             };
             var publicGameSummaries = _recentPublicGamesRetriever.GetResults(recentlyPlayedGamesFilter);
             return View(MVC.PlayedGame.Views._RecentlyPlayedGamesPartial, publicGameSummaries);
+        }
+
+        [HttpGet]
+        public virtual ActionResult RecentAchievementsUnlocked()
+        {
+            var recentPlayerAchievementWinners = _recentPlayerAchievementsUnlockedRetriever.GetResults(new GetRecentPlayerAchievementsUnlockedQuery { PageSize = NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW });
+            var recentPlayerAchievementWinnerViewModel = recentPlayerAchievementWinners.ToTransformedPagedList<PlayerAchievementWinner, PlayerAchievementWinnerViewModel>(_transformer);
+
+            return View(MVC.Achievement.Views._RecentAchievementsUnlocked, recentPlayerAchievementWinnerViewModel);
         }
 
         public virtual ActionResult About()

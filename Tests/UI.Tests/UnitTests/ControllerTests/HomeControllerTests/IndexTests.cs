@@ -58,28 +58,6 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
         {
             base.SetUp();
 
-            _recentAchievementsUnlocks = new List<PlayerAchievementWinner>
-            {
-                new PlayerAchievementWinner(),
-                new PlayerAchievementWinner()
-            }.ToPagedList(1, int.MaxValue);
-
-            _autoMocker.Get<IRecentPlayerAchievementsUnlockedRetriever>().Expect(mock => mock.GetResults(Arg<GetRecentPlayerAchievementsUnlockedQuery>.Is.Anything))
-                .Return(_recentAchievementsUnlocks);
-
-            //--this is the transformation that happens in the ToTransformedPagedList
-            _autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<PlayerAchievementWinnerViewModel>(Arg<PlayerAchievementWinner>.Is.Anything))
-                .Repeat.Any()
-                .Return(new PlayerAchievementWinnerViewModel());
-
-            var expectedNemesisChanges = new List<NemesisChange>();
-            _autoMocker.Get<INemesisHistoryRetriever>().Expect(mock => mock.GetRecentNemesisChanges(HomeController.NUMBER_OF_RECENT_NEMESIS_CHANGES_TO_SHOW))
-                                   .Return(expectedNemesisChanges);
-
-            _expectedNemesisChangeViewModels = new List<NemesisChangeViewModel>();
-            _autoMocker.Get<INemesisChangeViewModelBuilder>().Expect(mock => mock.Build(expectedNemesisChanges))
-                                         .Return(_expectedNemesisChangeViewModels);
-
             _expectedTopGamingGroup = new TopGamingGroupSummary()
             {
                 GamingGroupId = 1,
@@ -99,22 +77,6 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
                 .Expect(mock => mock.Transform<TopGamingGroupSummaryViewModel>(expectedTopGamingGroupSummaries[0]))
                 .Return(_expectedTopGamingGroupViewModel);
 
-            _expectedTrendingGame = new TrendingGame
-            {
-                BoardGameGeekGameDefinitionId = 1,
-                GamesPlayed = 1,
-                GamingGroupsPlayingThisGame = 2,
-                ThumbnailImageUrl = "some thumbnail"
-            };
-            var expectedTopGames = new List<TrendingGame>
-            {
-                _expectedTrendingGame
-            };
-            _expectedTrendingGameViewModel = new TrendingGameViewModel();
-            var trendingGamesRequest = new TrendingGamesRequest(HomeController.NUMBER_OF_TRENDING_GAMES_TO_SHOW, HomeController.NUMBER_OF_DAYS_OF_TRENDING_GAMES);
-            _autoMocker.Get<ITrendingGamesRetriever>().Expect(mock => mock.GetResults(Arg<TrendingGamesRequest>.Is.Equal(trendingGamesRequest))).Return(expectedTopGames);
-            _autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<TrendingGameViewModel>(expectedTopGames[0])).Return(_expectedTrendingGameViewModel);
-
             _viewResult = _autoMocker.ClassUnderTest.Index() as ViewResult;
         }
 
@@ -122,14 +84,6 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
         public void ItReturnsAnIndexView()
         {
             _viewResult.ViewName.ShouldBe(MVC.Home.Views.Index);
-        }
-
-        [Test]
-        public void TheIndexHasTheRecentPlayerAchievementUnlocks()
-        {
-            var actualViewModel = (HomeIndexViewModel)_viewResult.ViewData.Model;
-
-            actualViewModel.RecentAchievementsUnlocked.Count.ShouldBe(_recentAchievementsUnlocks.Count);
         }
 
         [Test]

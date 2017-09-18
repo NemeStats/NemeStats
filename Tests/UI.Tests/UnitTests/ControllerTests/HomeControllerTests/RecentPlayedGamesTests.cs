@@ -34,6 +34,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
                     x => x.NumberOfGamesToRetrieve == HomeController.NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW)));
             var viewResult = results as ViewResult;
             viewResult.ShouldNotBeNull();
+            viewResult.ViewName.ShouldBe(MVC.PlayedGame.Views._RecentlyPlayedGamesPartial);
             var viewModel = viewResult.Model as List<PublicGameSummary>;
             viewModel.ShouldNotBeNull();
             viewModel.ShouldBeSameAs(expectedResults);
