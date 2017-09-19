@@ -199,5 +199,10 @@ namespace BusinessLogic.DataAccess
 
             return savedEntity;
         }
+
+        public void SetCommandTimeout(int timeoutInSeconds)
+        {
+            nemeStatsDbContext.Database.CommandTimeout = timeoutInSeconds;
+        }
     }
 }

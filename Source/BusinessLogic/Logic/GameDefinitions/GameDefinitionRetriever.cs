@@ -333,6 +333,8 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         public List<TrendingGame> GetTrendingGames(int maxNumberOfGames, int numberOfDaysOfTrendingGames)
         {
+            //--this particular query is expensive and times out a lot. Until we can come up with a better query just increase the timeout.
+            _dataContext.SetCommandTimeout(45);
             var startDate = DateTime.Now.Date.AddDays(-1 * numberOfDaysOfTrendingGames);
             return (from result in _dataContext.GetQueryable<BoardGameGeekGameDefinition>()
                     select new TrendingGame

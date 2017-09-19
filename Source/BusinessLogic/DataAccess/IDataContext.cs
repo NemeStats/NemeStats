@@ -47,5 +47,7 @@ namespace BusinessLogic.DataAccess
         /// <param name="entity"></param>
         /// <returns></returns>
         TEntity AdminSave<TEntity>(TEntity entity) where TEntity : class, IEntityWithTechnicalKey;
+
+        void SetCommandTimeout(int timeoutInSeconds);
     }
 }
