@@ -40,19 +40,17 @@ namespace UI.Controllers
 {
     public partial class HomeController : BaseController
     {
-        internal const int NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW = 10;
-        internal const int NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW = 5;
-        internal const int NUMBER_OF_RECENT_NEMESIS_CHANGES_TO_SHOW = 5;
-        internal const int NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW = 15;
-        internal const int NUMBER_OF_DAYS_OF_TRENDING_GAMES = 90;
-        internal const int NUMBER_OF_TRENDING_GAMES_TO_SHOW = 5;
+        public const int NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW = 10;
+        public const int NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW = 5;
+        public const int NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW = 15;
+        public const int NUMBER_OF_DAYS_OF_TRENDING_GAMES = 90;
+        public const int NUMBER_OF_TRENDING_GAMES_TO_SHOW = 5;
 
         private readonly IRecentPublicGamesRetriever _recentPublicGamesRetriever;
         private readonly ITopGamingGroupsRetriever _topGamingGroupsRetriever;
         private readonly ITrendingGamesRetriever _trendingGamesRetriever;
         private readonly ITransformer _transformer;
         private readonly IRecentPlayerAchievementsUnlockedRetriever _recentPlayerAchievementsUnlockedRetriever;
-        private readonly IMapperFactory _mapperFactory;
 
         public HomeController(
             IRecentPublicGamesRetriever recentPublicGamesRetriever,
@@ -67,37 +65,56 @@ namespace UI.Controllers
             _trendingGamesRetriever = trendingGamesRetriever;
             _transformer = transformer;
             _recentPlayerAchievementsUnlockedRetriever = recentPlayerAchievementsUnlockedRetriever;
-            _mapperFactory = mapperFactory;
         }
 
+        [HttpGet]
         public virtual ActionResult Index()
         {
-            var recentPlayerAchievementWinners = _recentPlayerAchievementsUnlockedRetriever.GetResults(new GetRecentPlayerAchievementsUnlockedQuery {PageSize = NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW });
-            var recentPlayerAchievementWinnerViewModel = recentPlayerAchievementWinners.ToTransformedPagedList<PlayerAchievementWinner, PlayerAchievementWinnerViewModel>(_transformer);
 
+            var homeIndexViewModel = new HomeIndexViewModel
+            {
+            };
+            return View(MVC.Home.Views.Index, homeIndexViewModel);
+        }
+
+        [HttpGet]
+        public virtual ActionResult TrendingGames()
+        {
+            var trendingGamesRequest = new TrendingGamesRequest(NUMBER_OF_TRENDING_GAMES_TO_SHOW, NUMBER_OF_DAYS_OF_TRENDING_GAMES);
+            var trendingGames = _trendingGamesRetriever.GetResults(trendingGamesRequest);
+            var trendingGameViewModels = trendingGames.Select(_transformer.Transform<TrendingGameViewModel>).ToList();
+
+            ViewBag.NumTrendingGameDays = NUMBER_OF_DAYS_OF_TRENDING_GAMES;
+            return View(MVC.GameDefinition.Views._TrendingGamesPartial, trendingGameViewModels);
+        }
+
+        [HttpGet]
+        public virtual ActionResult RecentPlayedGames()
+        {
             var recentlyPlayedGamesFilter = new RecentlyPlayedGamesFilter
             {
                 NumberOfGamesToRetrieve = NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW
             };
             var publicGameSummaries = _recentPublicGamesRetriever.GetResults(recentlyPlayedGamesFilter);
-            
+            return View(MVC.PlayedGame.Views._RecentlyPlayedGamesPartial, publicGameSummaries);
+        }
+
+        [HttpGet]
+        public virtual ActionResult RecentAchievementsUnlocked()
+        {
+            var recentPlayerAchievementWinners = _recentPlayerAchievementsUnlockedRetriever.GetResults(new GetRecentPlayerAchievementsUnlockedQuery { PageSize = NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW });
+            var recentPlayerAchievementWinnerViewModel = recentPlayerAchievementWinners.ToTransformedPagedList<PlayerAchievementWinner, PlayerAchievementWinnerViewModel>(_transformer);
+
+            return View(MVC.Achievement.Views._RecentAchievementsUnlocked, recentPlayerAchievementWinnerViewModel);
+        }
+
+        [HttpGet]
+        public virtual ActionResult TopGamingGroups()
+        {
             var topGamingGroups = _topGamingGroupsRetriever.GetResults(NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW);
 
             var topGamingGroupViewModels = topGamingGroups.Select(_transformer.Transform<TopGamingGroupSummaryViewModel>).ToList();
-
-            var trendingGamesRequest = new TrendingGamesRequest(NUMBER_OF_TRENDING_GAMES_TO_SHOW, NUMBER_OF_DAYS_OF_TRENDING_GAMES);
-            var trendingGames = _trendingGamesRetriever.GetResults(trendingGamesRequest);
-            var trendingGameViewModels = trendingGames.Select(_transformer.Transform<TrendingGameViewModel>).ToList();
-
-            var homeIndexViewModel = new HomeIndexViewModel()
-            {
-                RecentAchievementsUnlocked = recentPlayerAchievementWinnerViewModel,
-                RecentPublicGames = publicGameSummaries,
-                TopGamingGroups = topGamingGroupViewModels,
-                TrendingGames = trendingGameViewModels
-            };
-            ViewBag.NumTrendingGameDays = NUMBER_OF_DAYS_OF_TRENDING_GAMES;
-            return View(MVC.Home.Views.Index, homeIndexViewModel);
+            return View(MVC.GamingGroup.Views._TopGamingGroupsPartial, topGamingGroupViewModels);
         }
 
         public virtual ActionResult About()

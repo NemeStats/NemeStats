@@ -80,6 +80,7 @@ namespace UI
                 .Include("~/Scripts/Plugins/toEditBoxPlugin.js")
                 .Include("~/Scripts/Plugins/rankPlugin.js")
                 .Include("~/Scripts/GamingGroup/gamingGroup.js")
+                .Include("~/Scripts/Home/home.js")
                 .Include("~/Scripts/CreatePlayedGame/createplayedgame.js")
                 .Include("~/Scripts/PlayedGame/search.js")
                 .Include("~/Scripts/PlayedGame/recordexceldownload.js")

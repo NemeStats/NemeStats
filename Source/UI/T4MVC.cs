@@ -152,6 +152,14 @@ namespace Links
         public static readonly string handlebars_runtime_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/handlebars.runtime.min.js") ? Url("handlebars.runtime.min.js") : Url("handlebars.runtime.js");
         public static readonly string handlebars_runtime_min_js = Url("handlebars.runtime.min.js");
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public static class Home {
+            private const string URLPATH = "~/Scripts/Home";
+            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
+            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+            public static readonly string home_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/home.min.js") ? Url("home.min.js") : Url("home.js");
+        }
+    
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public static class Idea_Informer {
             private const string URLPATH = "~/Scripts/Idea.Informer";
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
@@ -370,6 +378,13 @@ namespace Links
                 public static class Assets
                 {
                     public const string gamingGroup_js = "~/Scripts/GamingGroup/gamingGroup.js"; 
+                }
+            }
+            public static partial class Home 
+            {
+                public static class Assets
+                {
+                    public const string home_js = "~/Scripts/Home/home.js"; 
                 }
             }
             public static partial class Idea_Informer 

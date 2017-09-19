@@ -76,6 +76,18 @@ namespace UI.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult GetGamingGroupGameDefinitions()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GetGamingGroupGameDefinitions);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult GetGamingGroupPlayedGames()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GetGamingGroupPlayedGames);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult GetCurrentUserGamingGroupGameDefinitions()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GetCurrentUserGamingGroupGameDefinitions);
@@ -117,6 +129,8 @@ namespace UI.Controllers
             public readonly string Index = "Index";
             public readonly string Details = "Details";
             public readonly string GetGamingGroupPlayers = "GetGamingGroupPlayers";
+            public readonly string GetGamingGroupGameDefinitions = "GetGamingGroupGameDefinitions";
+            public readonly string GetGamingGroupPlayedGames = "GetGamingGroupPlayedGames";
             public readonly string GetTopGamingGroups = "GetTopGamingGroups";
             public readonly string GetCurrentUserGamingGroupGameDefinitions = "GetCurrentUserGamingGroupGameDefinitions";
             public readonly string SwitchGamingGroups = "SwitchGamingGroups";
@@ -130,6 +144,8 @@ namespace UI.Controllers
             public const string Index = "Index";
             public const string Details = "Details";
             public const string GetGamingGroupPlayers = "GetGamingGroupPlayers";
+            public const string GetGamingGroupGameDefinitions = "GetGamingGroupGameDefinitions";
+            public const string GetGamingGroupPlayedGames = "GetGamingGroupPlayedGames";
             public const string GetTopGamingGroups = "GetTopGamingGroups";
             public const string GetCurrentUserGamingGroupGameDefinitions = "GetCurrentUserGamingGroupGameDefinitions";
             public const string SwitchGamingGroups = "SwitchGamingGroups";
@@ -165,6 +181,27 @@ namespace UI.Controllers
             public readonly string id = "id";
             public readonly string currentUser = "currentUser";
             public readonly string dateRangeFilter = "dateRangeFilter";
+        }
+        static readonly ActionParamsClass_GetGamingGroupGameDefinitions s_params_GetGamingGroupGameDefinitions = new ActionParamsClass_GetGamingGroupGameDefinitions();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_GetGamingGroupGameDefinitions GetGamingGroupGameDefinitionsParams { get { return s_params_GetGamingGroupGameDefinitions; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_GetGamingGroupGameDefinitions
+        {
+            public readonly string id = "id";
+            public readonly string currentUser = "currentUser";
+            public readonly string dateRangeFilter = "dateRangeFilter";
+        }
+        static readonly ActionParamsClass_GetGamingGroupPlayedGames s_params_GetGamingGroupPlayedGames = new ActionParamsClass_GetGamingGroupPlayedGames();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_GetGamingGroupPlayedGames GetGamingGroupPlayedGamesParams { get { return s_params_GetGamingGroupPlayedGames; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_GetGamingGroupPlayedGames
+        {
+            public readonly string id = "id";
+            public readonly string currentUser = "currentUser";
+            public readonly string dateRangeFilter = "dateRangeFilter";
+            public readonly string numberOfItems = "numberOfItems";
         }
         static readonly ActionParamsClass_GetCurrentUserGamingGroupGameDefinitions s_params_GetCurrentUserGamingGroupGameDefinitions = new ActionParamsClass_GetCurrentUserGamingGroupGameDefinitions();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -273,6 +310,35 @@ namespace UI.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "dateRangeFilter", dateRangeFilter);
             GetGamingGroupPlayersOverride(callInfo, id, currentUser, dateRangeFilter);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void GetGamingGroupGameDefinitionsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, BusinessLogic.Models.User.ApplicationUser currentUser, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult GetGamingGroupGameDefinitions(int id, BusinessLogic.Models.User.ApplicationUser currentUser, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GetGamingGroupGameDefinitions);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "dateRangeFilter", dateRangeFilter);
+            GetGamingGroupGameDefinitionsOverride(callInfo, id, currentUser, dateRangeFilter);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void GetGamingGroupPlayedGamesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, BusinessLogic.Models.User.ApplicationUser currentUser, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter, int numberOfItems);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult GetGamingGroupPlayedGames(int id, BusinessLogic.Models.User.ApplicationUser currentUser, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter, int numberOfItems)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GetGamingGroupPlayedGames);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "dateRangeFilter", dateRangeFilter);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "numberOfItems", numberOfItems);
+            GetGamingGroupPlayedGamesOverride(callInfo, id, currentUser, dateRangeFilter, numberOfItems);
             return callInfo;
         }
 
