@@ -47,6 +47,7 @@ accepting decimal places in pointsScored
 * 2016-09-13 Can now pass flag "preserveExistingAuthenticationToken" to POST /UserSessions and it will not overwrite the existing authentication token.
 * 2016-10-28 Fixed major design issue with previous change and eliminated "preserveExistingAuthenticationToken" entirely in favor of a new optional field "uniqueDeviceId" so you can create a separate auth token per device.
 * 2016-11-07 Added support for PUT /PlayedGames/ for editing existing Played Games.
+* 2017-09-19 Removed linkedPlayerId from documentation of the GET /Users endpoint since it was never implemented.
 
 ### General Information
 
@@ -202,15 +203,13 @@ will return a valid response.
                         {
                             "gamingGroupId" : "209",
                             "gamingGroupName" : "sparklepants's Gaming Group",
-                            "gamingGroupPublicDescription" : "This group was created to record games we play as a family on the weekends.",
-                            "linkedPlayerId" : "51509"
+                            "gamingGroupPublicDescription" : "This group was created to record games we play as a family on the weekends."
                         },
                         {
                             "gamingGroupId" : "225",
                             "gamingGroupName" : "Weekend Warriors",
                             "gamingGroupPublicDescription" : "We are the Weekend Warriors and we like to play Magic the Gathering, Dominion, Star Realms, and other deck-building games. We play on the weekends at Dominic's Gaming House in downtown Mumbai. Email us at dgh@mailinator.com for details.",
-                            "gamingGroupPublicUrl" : "https://dghmumbai.com",
-                            "linkedPlayerId" : "53510"
+                            "gamingGroupPublicUrl" : "https://dghmumbai.com"
                         }
                         ],
                     "players" : [
