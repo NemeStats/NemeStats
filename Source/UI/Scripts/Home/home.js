@@ -29,6 +29,9 @@ Views.Home.IndexView.prototype = {
             type: "GET",
             success: function (html) {
                 $("#" + widgetDivId).html(html);
+            },
+            error: function (XMLHTttpRequest, status, error) {
+                $("#" + widgetDivId).html("<div>Content failed to load due to a timeout. Reloading the page should solve the problem.");
             }
         });
     }
