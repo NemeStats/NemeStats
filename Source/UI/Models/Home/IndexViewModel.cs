@@ -15,25 +15,10 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using BusinessLogic.Models.Games;
-using System.Collections.Generic;
-using PagedList;
-using UI.Models.GameDefinitionModels;
-using UI.Models.GamingGroup;
-using UI.Models.Players;
 
 namespace UI.Models.Home
 {
     public class HomeIndexViewModel
     {
-        public HomeIndexViewModel()
-        {
-            RecentPublicGames = new List<PublicGameSummary>();
-        }
-
-        public IPagedList<PlayerAchievementWinnerViewModel> RecentAchievementsUnlocked { get; set; }
-        public List<PublicGameSummary> RecentPublicGames { get; set; }
-        public List<TopGamingGroupSummaryViewModel> TopGamingGroups { get; set; }
-        public List<TrendingGameViewModel> TrendingGames { get; set; }
     }
 }

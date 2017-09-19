@@ -70,13 +70,9 @@ namespace UI.Controllers
         [HttpGet]
         public virtual ActionResult Index()
         {
-            var topGamingGroups = _topGamingGroupsRetriever.GetResults(NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW);
-
-            var topGamingGroupViewModels = topGamingGroups.Select(_transformer.Transform<TopGamingGroupSummaryViewModel>).ToList();
 
             var homeIndexViewModel = new HomeIndexViewModel
             {
-                TopGamingGroups = topGamingGroupViewModels
             };
             return View(MVC.Home.Views.Index, homeIndexViewModel);
         }
@@ -110,6 +106,15 @@ namespace UI.Controllers
             var recentPlayerAchievementWinnerViewModel = recentPlayerAchievementWinners.ToTransformedPagedList<PlayerAchievementWinner, PlayerAchievementWinnerViewModel>(_transformer);
 
             return View(MVC.Achievement.Views._RecentAchievementsUnlocked, recentPlayerAchievementWinnerViewModel);
+        }
+
+        [HttpGet]
+        public virtual ActionResult TopGamingGroups()
+        {
+            var topGamingGroups = _topGamingGroupsRetriever.GetResults(NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW);
+
+            var topGamingGroupViewModels = topGamingGroups.Select(_transformer.Transform<TopGamingGroupSummaryViewModel>).ToList();
+            return View(MVC.GamingGroup.Views._TopGamingGroupsPartial, topGamingGroupViewModels);
         }
 
         public virtual ActionResult About()
