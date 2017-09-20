@@ -33,7 +33,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         {
             AutoMocker = new RhinoAutoMocker<GamingGroupRetriever>();
 
-            CurrentUser = new ApplicationUser()
+            CurrentUser = new ApplicationUser
             {
                 Id = "application user",
                 UserName = "user name",

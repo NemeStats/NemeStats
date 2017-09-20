@@ -93,5 +93,36 @@ namespace BusinessLogic.Logic.GamingGroups
                 .OrderBy(x => x.GamingGroupId)
                 .ToList();
         }
+
+        public GamingGroupStats GetGamingGroupStats(int gamingGroupId)
+        {
+            var results = _dataContext.GetQueryable<PlayedGame>()
+                .Where(x => x.GamingGroupId == gamingGroupId)
+                .GroupBy(x => x.GameDefinitionId)
+                .Select(g => new
+                {
+                    Id = g.Key,
+                    NumberOfGamesPlayed = g.Count()
+                }).ToList();
+
+            if (results.Count == 0)
+            {
+                return GamingGroupStats.NullStats;
+            }
+
+            var result = new GamingGroupStats
+            {
+                TotalPlayedGames = results.Sum(x => x.NumberOfGamesPlayed),
+                DistinctGamesPlayed = results.Distinct().Count()
+            };
+
+
+            //result.DistinctGamesPlayed = _dataContext.GetQueryable<GameDefinition>()
+            //    .Where(x => x.GamingGroupId == gamingGroupId)
+            //    .GroupBy(x => x.Id)
+            //    .Select(x => x.Key).Count();
+
+            return result;
+        }
     }
 }
