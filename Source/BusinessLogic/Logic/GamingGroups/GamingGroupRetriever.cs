@@ -110,19 +110,11 @@ namespace BusinessLogic.Logic.GamingGroups
                 return GamingGroupStats.NullStats;
             }
 
-            var result = new GamingGroupStats
+            return new GamingGroupStats
             {
                 TotalPlayedGames = results.Sum(x => x.NumberOfGamesPlayed),
                 DistinctGamesPlayed = results.Distinct().Count()
             };
-
-
-            //result.DistinctGamesPlayed = _dataContext.GetQueryable<GameDefinition>()
-            //    .Where(x => x.GamingGroupId == gamingGroupId)
-            //    .GroupBy(x => x.Id)
-            //    .Select(x => x.Key).Count();
-
-            return result;
         }
     }
 }

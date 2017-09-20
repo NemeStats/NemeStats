@@ -765,7 +765,6 @@
     <Content Include="Views\GameDefinition\Edit.cshtml" />
     <Content Include="Views\PlayedGame\Delete.cshtml" />
     <Content Include="Views\PlayedGame\Details.cshtml" />
-    <Content Include="Views\GamingGroup\Index.cshtml" />
     <Content Include="Views\Shared\_BaseLayout.cshtml" />
     <Content Include="Views\Player\_CreateOrUpdatePartial.cshtml" />
     <Content Include="Views\Player\Edit.cshtml" />
