@@ -58,6 +58,8 @@
         <li class="active"><a href="#playersListDivId" data-toggle="tab" id="playersTab">Players</a></li>
         <li><a href="#gamesListDivId" data-toggle="tab" id="gamesTab">Games</a></li>
         <li><a href="#playedGamesListDivId" data-toggle="tab" id="playedGamesTab">Plays</a></li>
+        <li><a href="#statsDivId" data-toggle="tab" id="statsTab">Stats</a></li>
+
     </ul>
 
     <div class="tab-content clearfix">
@@ -70,12 +72,12 @@
         <div class="tab-pane" id="playedGamesListDivId">
             <div class="loader"></div>
         </div>
+        <div class="tab-pane" id="statsDivId">
+            <div class="loader"></div>
+        </div>
     </div>
 </div>
 
-<div id="NemeStatsPointsLineGraph">
-    <svg style='height:500px;'> </svg>
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/d3")
@@ -111,7 +113,9 @@
                 dateFilterButtonId: "dateFilterButton",
                 gamesDivId: "gamesListDivId",
                 playedGamesTabId: "playedGamesTab",
-                playedGamesDivId: "playedGamesListDivId"
+                playedGamesDivId: "playedGamesListDivId",
+                statsTabId: "statsTab",
+                statsDivId: "statsDivId"
             };
             gamingGroupView.init(googleAnalyticsObject, options);
 
