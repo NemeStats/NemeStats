@@ -2,7 +2,6 @@
 using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
-using BusinessLogic.Models.GamingGroups;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
@@ -21,7 +20,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         {
             base.SetUp();
 
-            var queryable = new List<PlayedGame>
+            var playedGameQueryable = new List<PlayedGame>
             {
                 new PlayedGame
                 {
@@ -35,7 +34,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
                 },
                 new PlayedGame{
                     GameDefinitionId = 1,
-                    GamingGroupId = 999
+                    GamingGroupId = -1
                 },
                 new PlayedGame{
                     GameDefinitionId = _gameDefinitionIdForOnePlayedGame,
@@ -43,31 +42,101 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
                 }
             }.AsQueryable();
 
-            AutoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayedGame>()).Return(queryable);
+            AutoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayedGame>()).Return(playedGameQueryable);
+
+            var gameDefinitionsQueryable = new List<GameDefinition>
+            {
+                new GameDefinition
+                {
+                    GamingGroupId = _gamingGroupId
+                },
+                new GameDefinition
+                {
+                    GamingGroupId = _gamingGroupId
+                },
+                new GameDefinition
+                {
+                    GamingGroupId = -1
+                }
+            }.AsQueryable();
+
+            AutoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionsQueryable);
         }
 
         [Test]
-        public void It_Returns_The_Number_Of_Total_Played_Games()
+        public void It_Returns_The_Number_Of_Total_Played_Games_And_Total_Number_Of_Game_Definitions()
         {
             //--arrange
+            AutoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>()).Return(new List<Player>().AsQueryable());
 
             //--act
             var result = AutoMocker.ClassUnderTest.GetGamingGroupStats(_gamingGroupId);
 
             //--assert
             result.TotalPlayedGames.ShouldBe(3);
-            result.DistinctGamesPlayed.ShouldBe(2);
+            result.TotalNumberOfGamesWithPlays.ShouldBe(2);
         }
 
         [Test]
-        public void It_A_NullGamingGroupStats_If_The_Gaming_Group_Id_Isnt_For_A_Real_Gaming_Group()
+        public void It_Returns_The_Total_Number_Of_Players_And_Players_With_Plays()
         {
             //--arrange
-            var result = AutoMocker.ClassUnderTest.GetGamingGroupStats(-1);
+            var playersQueryable = new List<Player>
+            {
+                new Player
+                {
+                    Id = 1,
+                    GamingGroupId = _gamingGroupId,
+                    PlayerGameResults = new List<PlayerGameResult>
+                    {
+                        new PlayerGameResult()
+                    }
+                },
+                new Player
+                {
+                    Id = 2,
+                    GamingGroupId = _gamingGroupId,
+                    PlayerGameResults = new List<PlayerGameResult>
+                    {
+                        new PlayerGameResult()
+                    }
+                },
+                //--player without played games
+                new Player
+                {
+                    Id = 3,
+                    GamingGroupId = _gamingGroupId,
+                    PlayerGameResults = new List<PlayerGameResult>()
+                },
+                //--bad gaming group id to make sure filter works
+                new Player
+                {
+                    Id = 1,
+                    GamingGroupId = -1
+                }
+            }.AsQueryable();
+
+            AutoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>()).Return(playersQueryable);
+
+            //--act
+            var result = AutoMocker.ClassUnderTest.GetGamingGroupStats(_gamingGroupId);
 
             //--assert
-            result.ShouldBeSameAs(GamingGroupStats.NullStats);
+            result.TotalNumberOfPlayersWithPlays.ShouldBe(2);
+            result.TotalNumberOfPlayers.ShouldBe(3);
         }
 
+        [Test]
+        public void It_Returns_The_Total_Number_Of_Games_Owned()
+        {
+            //--arrange
+            AutoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>()).Return(new List<Player>().AsQueryable());
+
+            //--act
+            var result = AutoMocker.ClassUnderTest.GetGamingGroupStats(_gamingGroupId);
+
+            //--assert
+            result.TotalGamesOwned.ShouldBe(2);
+        }
     }
 }

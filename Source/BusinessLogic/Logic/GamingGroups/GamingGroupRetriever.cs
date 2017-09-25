@@ -96,7 +96,7 @@ namespace BusinessLogic.Logic.GamingGroups
 
         public GamingGroupStats GetGamingGroupStats(int gamingGroupId)
         {
-            var results = _dataContext.GetQueryable<PlayedGame>()
+            var playedGameTotals = _dataContext.GetQueryable<PlayedGame>()
                 .Where(x => x.GamingGroupId == gamingGroupId)
                 .GroupBy(x => x.GameDefinitionId)
                 .Select(g => new
@@ -105,15 +105,35 @@ namespace BusinessLogic.Logic.GamingGroups
                     NumberOfGamesPlayed = g.Count()
                 }).ToList();
 
-            if (results.Count == 0)
+            var totalPlayedGames = playedGameTotals.Sum(x => x.NumberOfGamesPlayed);
+            var totalNumberOfGamesWithPlays = playedGameTotals.Distinct().Count();
+
+            var numberOfGamesOwned = _dataContext.GetQueryable<GameDefinition>().Count(x => x.GamingGroupId == gamingGroupId);
+
+            var playerResults = _dataContext.GetQueryable<Player>()
+                .Where(x => x.GamingGroupId == gamingGroupId)
+                .GroupBy(x => x.PlayerGameResults.Any())
+                .Select(x => new
+                {
+                    HasPlays = x.Key,
+                    NumberOfRecords = x.Count()
+                }).ToList();
+            var totalNumberOfPlayersWithPlays = 0;
+            var resultForPlayersWithPlays = playerResults.SingleOrDefault(x => x.HasPlays);
+            if (resultForPlayersWithPlays != null)
             {
-                return GamingGroupStats.NullStats;
+                totalNumberOfPlayersWithPlays = resultForPlayersWithPlays.NumberOfRecords;
             }
+
+            var totalNumberOfPlayers = playerResults.Sum(x => x.NumberOfRecords);
 
             return new GamingGroupStats
             {
-                TotalPlayedGames = results.Sum(x => x.NumberOfGamesPlayed),
-                DistinctGamesPlayed = results.Distinct().Count()
+                TotalPlayedGames = totalPlayedGames,
+                TotalNumberOfGamesWithPlays = totalNumberOfGamesWithPlays,
+                TotalGamesOwned = numberOfGamesOwned,
+                TotalNumberOfPlayersWithPlays = totalNumberOfPlayersWithPlays,
+                TotalNumberOfPlayers = totalNumberOfPlayers 
             };
         }
     }
