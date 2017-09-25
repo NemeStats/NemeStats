@@ -15,7 +15,6 @@
 
 #endregion LICENSE
 
-using System.Collections.Generic;
 using AutoMapper;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.GamingGroups;
@@ -32,7 +31,6 @@ using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Models.GamingGroup;
 using UI.Models.PlayedGame;
-using UI.Models.Players;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
 
@@ -55,6 +53,7 @@ namespace UI.Controllers
         internal IGameDefinitionRetriever gameDefinitionRetriever;
         internal IPlayedGameRetriever playedGameRetriever;
         internal IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
+        internal ITransformer transformer;
 
         public GamingGroupController(
             IGamingGroupSaver gamingGroupSaver,
@@ -65,7 +64,8 @@ namespace UI.Controllers
             IPlayerRetriever playerRetriever, 
             IGameDefinitionRetriever gameDefinitionRetriever, 
             IPlayedGameRetriever playedGameRetriever, 
-            IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder)
+            IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder,
+            ITransformer transformer)
         {
             this.gamingGroupSaver = gamingGroupSaver;
             this.gamingGroupRetriever = gamingGroupRetriever;
@@ -76,6 +76,7 @@ namespace UI.Controllers
             this.gameDefinitionRetriever = gameDefinitionRetriever;
             this.playedGameRetriever = playedGameRetriever;
             this.playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
+            this.transformer = transformer;
         }
 
         // GET: /GamingGroup
@@ -190,6 +191,15 @@ namespace UI.Controllers
             var topGamingGroupViewModels = topGamingGroups.Select(Mapper.Map<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>).ToList();
 
             return View(MVC.GamingGroup.Views.TopGamingGroups, topGamingGroupViewModels);
+        }
+
+        [HttpGet]
+        public virtual ActionResult GetGamingGroupStats(int gamingGroupId)
+        {
+            var gamingGroupStats = gamingGroupRetriever.GetGamingGroupStats(gamingGroupId);
+            var viewModel = transformer.Transform<GamingGroupStatsViewModel>(gamingGroupStats);
+
+            return View(MVC.GamingGroup.Views._GamingGroupStatsPartial, viewModel);
         }
 
         [HttpGet]

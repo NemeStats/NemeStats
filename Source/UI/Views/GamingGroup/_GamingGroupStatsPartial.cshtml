@@ -1,0 +1,29 @@
+﻿@model UI.Models.GamingGroup.GamingGroupStatsViewModel
+
+<div class="row">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4>High Level Statistics</h4>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover table-striped">
+                <tr>
+                    <td class="col-md-2"><strong>Total Games Recorded:</strong></td>
+                    <td class="col-md-2">@Model.TotalPlayedGames</td>
+                </tr>
+                <tr>
+                    <td><strong>Total Players:</strong></td>
+                    <td>@Model.TotalNumberOfPlayers</td>
+                </tr>
+                <tr>
+                    <td><strong>Total Games With Plays:</strong></td>
+                    <td>@Model.TotalNumberOfGamesWithPlays</td>
+                </tr>
+                <tr>
+                    <td><strong>Total Games Owned</strong></td>
+                    <td>@Model.TotalGamesOwned</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

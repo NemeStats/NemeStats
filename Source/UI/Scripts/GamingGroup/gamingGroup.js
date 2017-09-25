@@ -27,6 +27,7 @@ Views.GamingGroup.GamingGroupView = function () {
     this._getGamingGroupPlayersServiceAddress = "/GamingGroup/GetGamingGroupPlayers/";
     this._getGamingGroupGameDefinitionsServiceAddress = "/GamingGroup/GetGamingGroupGameDefinitions/";
     this._getGamingGroupPlayedGamesServiceAddress = "/GamingGroup/GetGamingGroupPlayedGames/";
+    this._getGamingGroupStatsServiceAddress = "/GamingGroup/GetGamingGroupStats/";
 
     this._googleAnalytics = null;
     this._playersTabLoaded = false;
@@ -300,6 +301,8 @@ Views.GamingGroup.GamingGroupView.prototype = {
                 "&datePlayedTo=" +
                 toDateYYYYMMDD;
 
+            var $divForResults = $("#" + divIdForRenderingResults);
+
             $.ajax({
                 type: "GET",
                 url: url,
@@ -322,7 +325,6 @@ Views.GamingGroup.GamingGroupView.prototype = {
                         }
                     }
 
-                    var $divForResults = $("#" + divIdForRenderingResults);
                     var numberOfPlayers = Object.keys(playerDataMap).length;
                     //--subtract 90 for left margin
                     var divWidth = $divForResults.width() - 90;
@@ -357,7 +359,8 @@ Views.GamingGroup.GamingGroupView.prototype = {
                             .tickFormat(d3.format("d"));
 
                         //--clear loader and add svg
-                        $divForResults.html("<svg style='height:" + divHeight + "px;'> </svg>");
+                        $divForResults.find("#graphLoader").remove();
+                        $divForResults.append("<svg style='height:" + divHeight + "px;'> </svg>");
 
                         d3.select("#" + divIdForRenderingResults + " svg")
                             .datum(playerData)
@@ -365,6 +368,22 @@ Views.GamingGroup.GamingGroupView.prototype = {
 
                         nv.utils.windowResize(function () { chart.update() });
                     });
+
+                    parent._statsTabLoaded = true;
+                }
+            });
+
+            $.ajax({
+                url: parent._getGamingGroupStatsServiceAddress,
+                data: {
+                    "gamingGroupId": gamingGroupId/*,
+                    "Iso8601FromDate": fromDate,
+                    "Iso8601ToDate": toDate*/
+                },
+                cache: false,
+                type: "GET",
+                success: function (html) {
+                    $divForResults.find("#statsLoader").removeClass("loader").html(html);
 
                     parent._statsTabLoaded = true;
                 }
