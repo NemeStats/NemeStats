@@ -51,7 +51,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
         [Test]
         public void ItReturnsTheGamesOrderedByDatePlayedDescending()
         {
-            DateTime lastPlayedDateTime = new DateTime(2099, 1, 1);
+            DateTime lastPlayedDateTime = new DateTime(2900, 1, 1);
 
             foreach (PublicGameSummary summary in _publicGameSummaryResults)
             {
