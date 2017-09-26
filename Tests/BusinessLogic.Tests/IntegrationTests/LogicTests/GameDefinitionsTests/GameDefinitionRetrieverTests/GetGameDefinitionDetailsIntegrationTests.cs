@@ -62,7 +62,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
         [Test]
         public void ItRetrievesGamesOrderedByDateDescending()
         {
-            var lastDate = new DateTime(2100, 1, 1);
+            var lastDate = new DateTime(2600, 1, 1);
             foreach(var playedGame in _gameDefinitionSummary.PlayedGames)
             {
                 Assert.LessOrEqual(playedGame.DatePlayed, lastDate);

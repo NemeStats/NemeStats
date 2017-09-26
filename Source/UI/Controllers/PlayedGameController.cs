@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using System;
 using System.Globalization;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic;
@@ -235,7 +236,9 @@ namespace UI.Controllers
         {
             var recentlyPlayedGamesFilter = new RecentlyPlayedGamesFilter
             {
-                NumberOfGamesToRetrieve = NUMBER_OF_RECENT_GAMES_TO_DISPLAY
+                NumberOfGamesToRetrieve = NUMBER_OF_RECENT_GAMES_TO_DISPLAY,
+                //--only include games that are tomorrow or in the past to avoid issues with the Thai Buddhist calendar
+                MaxDate = DateTime.UtcNow.Date.AddDays(1)
             };
             var recentlyPlayedGames = _playedGameRetriever.GetRecentPublicGames(recentlyPlayedGamesFilter);
 

@@ -18,6 +18,7 @@
 
 #endregion LICENSE
 
+using System;
 using BusinessLogic.Models.Games;
 using System.Linq;
 using System.Web.Mvc;
@@ -93,7 +94,8 @@ namespace UI.Controllers
         {
             var recentlyPlayedGamesFilter = new RecentlyPlayedGamesFilter
             {
-                NumberOfGamesToRetrieve = NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW
+                NumberOfGamesToRetrieve = NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW,
+                MaxDate = DateTime.UtcNow.Date.AddDays(1)
             };
             var publicGameSummaries = _recentPublicGamesRetriever.GetResults(recentlyPlayedGamesFilter);
             return View(MVC.PlayedGame.Views._RecentlyPlayedGamesPartial, publicGameSummaries);

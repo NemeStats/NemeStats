@@ -1,4 +1,6 @@
-﻿namespace BusinessLogic.Models.PlayedGames
+﻿using System;
+
+namespace BusinessLogic.Models.PlayedGames
 {
     public class RecentlyPlayedGamesFilter
     {
@@ -10,10 +12,11 @@
 
         public int NumberOfGamesToRetrieve { get; set; }
         public int? BoardGameGeekGameDefinitionId { get; set; }
+        public DateTime MaxDate { get; set; } = DateTime.MaxValue;
 
         protected bool Equals(RecentlyPlayedGamesFilter other)
         {
-            return NumberOfGamesToRetrieve == other.NumberOfGamesToRetrieve && BoardGameGeekGameDefinitionId == other.BoardGameGeekGameDefinitionId;
+            return NumberOfGamesToRetrieve == other.NumberOfGamesToRetrieve && BoardGameGeekGameDefinitionId == other.BoardGameGeekGameDefinitionId && MaxDate.Equals(other.MaxDate);
         }
 
         public override bool Equals(object obj)
@@ -28,7 +31,10 @@
         {
             unchecked
             {
-                return (NumberOfGamesToRetrieve.GetHashCode() * 397) ^ BoardGameGeekGameDefinitionId.GetHashCode();
+                var hashCode = NumberOfGamesToRetrieve;
+                hashCode = (hashCode * 397) ^ BoardGameGeekGameDefinitionId.GetHashCode();
+                hashCode = (hashCode * 397) ^ MaxDate.GetHashCode();
+                return hashCode;
             }
         }
     }
