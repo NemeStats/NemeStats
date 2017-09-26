@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models.GamingGroups;
+using BusinessLogic.Models.Utility;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
@@ -25,7 +26,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             base.SetUp();
             var expectedStats = new GamingGroupStats();
 
-            autoMocker.Get<IGamingGroupRetriever>().Expect(mock => mock.GetGamingGroupStats(Arg<int>.Is.Anything)).Return(expectedStats);
+            autoMocker.Get<IGamingGroupRetriever>().Expect(mock => mock.GetGamingGroupStats(Arg<int>.Is.Anything, Arg<BasicDateRangeFilter>.Is.Anything)).Return(expectedStats);
 
             _expectedStatsViewModel = new GamingGroupStatsViewModel();
             autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<GamingGroupStatsViewModel>(expectedStats)).Return(_expectedStatsViewModel);
@@ -36,13 +37,14 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         {
             //--arrange
             var gamingGroupId = 1;
+            var dateFilter = new BasicDateRangeFilter();
 
             //--act
-            var viewResult = autoMocker.ClassUnderTest.GetGamingGroupStats(gamingGroupId) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.GetGamingGroupStats(gamingGroupId, dateFilter) as ViewResult;
 
             //--assert
             viewResult.ViewName.ShouldBe(MVC.GamingGroup.Views._GamingGroupStatsPartial);
-            autoMocker.Get<IGamingGroupRetriever>().AssertWasCalled(mock => mock.GetGamingGroupStats(gamingGroupId));
+            autoMocker.Get<IGamingGroupRetriever>().AssertWasCalled(mock => mock.GetGamingGroupStats(gamingGroupId, dateFilter));
             var viewModel = viewResult.Model as GamingGroupStatsViewModel;
             viewModel.ShouldNotBeNull();
             viewModel.ShouldBeSameAs(_expectedStatsViewModel);

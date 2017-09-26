@@ -22,6 +22,7 @@ using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
 using System.Collections.Generic;
+using BusinessLogic.Models.Utility;
 
 namespace BusinessLogic.Logic.GamingGroups
 {
@@ -35,6 +36,6 @@ namespace BusinessLogic.Logic.GamingGroups
 
 		List<TopGamingGroupSummary> GetTopGamingGroups(int numberOfTopGamingGroupsToShow);
 	    List<GamingGroupSitemapInfo> GetGamingGroupsSitemapInfo();
-	    GamingGroupStats GetGamingGroupStats(int gamingGroupId);
+	    GamingGroupStats GetGamingGroupStats(int gamingGroupId, BasicDateRangeFilter dateFilter);
 	}
 }

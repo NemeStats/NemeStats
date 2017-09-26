@@ -218,6 +218,7 @@ namespace UI.Controllers
         public class ActionParamsClass_GetGamingGroupStats
         {
             public readonly string gamingGroupId = "gamingGroupId";
+            public readonly string dateRangeFilter = "dateRangeFilter";
         }
         static readonly ActionParamsClass_GetCurrentUserGamingGroupGameDefinitions s_params_GetCurrentUserGamingGroupGameDefinitions = new ActionParamsClass_GetCurrentUserGamingGroupGameDefinitions();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -370,14 +371,15 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void GetGamingGroupStatsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int gamingGroupId);
+        partial void GetGamingGroupStatsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int gamingGroupId, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult GetGamingGroupStats(int gamingGroupId)
+        public override System.Web.Mvc.ActionResult GetGamingGroupStats(int gamingGroupId, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GetGamingGroupStats);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamingGroupId", gamingGroupId);
-            GetGamingGroupStatsOverride(callInfo, gamingGroupId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "dateRangeFilter", dateRangeFilter);
+            GetGamingGroupStatsOverride(callInfo, gamingGroupId, dateRangeFilter);
             return callInfo;
         }
 

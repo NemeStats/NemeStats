@@ -360,6 +360,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
 
                         //--clear loader and add svg
                         $divForResults.find("#graphLoader").remove();
+                        $divForResults.find("svg").remove();
                         $divForResults.append("<svg style='height:" + divHeight + "px;'> </svg>");
 
                         d3.select("#" + divIdForRenderingResults + " svg")
@@ -376,9 +377,9 @@ Views.GamingGroup.GamingGroupView.prototype = {
             $.ajax({
                 url: parent._getGamingGroupStatsServiceAddress,
                 data: {
-                    "gamingGroupId": gamingGroupId/*,
+                    "gamingGroupId": gamingGroupId,
                     "Iso8601FromDate": fromDate,
-                    "Iso8601ToDate": toDate*/
+                    "Iso8601ToDate": toDate
                 },
                 cache: false,
                 type: "GET",

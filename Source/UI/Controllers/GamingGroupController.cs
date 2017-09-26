@@ -194,9 +194,9 @@ namespace UI.Controllers
         }
 
         [HttpGet]
-        public virtual ActionResult GetGamingGroupStats(int gamingGroupId)
+        public virtual ActionResult GetGamingGroupStats(int gamingGroupId, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null)
         {
-            var gamingGroupStats = gamingGroupRetriever.GetGamingGroupStats(gamingGroupId);
+            var gamingGroupStats = gamingGroupRetriever.GetGamingGroupStats(gamingGroupId, dateRangeFilter);
             var viewModel = transformer.Transform<GamingGroupStatsViewModel>(gamingGroupStats);
 
             return View(MVC.GamingGroup.Views._GamingGroupStatsPartial, viewModel);

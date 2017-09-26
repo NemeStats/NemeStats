@@ -21,6 +21,7 @@ using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Models.Utility;
 
 namespace BusinessLogic.Logic.GamingGroups
 {
@@ -94,10 +95,12 @@ namespace BusinessLogic.Logic.GamingGroups
                 .ToList();
         }
 
-        public GamingGroupStats GetGamingGroupStats(int gamingGroupId)
+        public GamingGroupStats GetGamingGroupStats(int gamingGroupId, BasicDateRangeFilter dateRangeFilter)
         {
             var playedGameTotals = _dataContext.GetQueryable<PlayedGame>()
-                .Where(x => x.GamingGroupId == gamingGroupId)
+                .Where(x => x.GamingGroupId == gamingGroupId 
+                    && x.DatePlayed >= dateRangeFilter.FromDate
+                    && x.DatePlayed <= dateRangeFilter.ToDate)
                 .GroupBy(x => x.GameDefinitionId)
                 .Select(g => new
                 {
@@ -112,7 +115,8 @@ namespace BusinessLogic.Logic.GamingGroups
 
             var playerResults = _dataContext.GetQueryable<Player>()
                 .Where(x => x.GamingGroupId == gamingGroupId)
-                .GroupBy(x => x.PlayerGameResults.Any())
+                .GroupBy(x => x.PlayerGameResults.Any(y => y.PlayedGame.DatePlayed >= dateRangeFilter.FromDate
+                                              && y.PlayedGame.DatePlayed <= dateRangeFilter.ToDate))
                 .Select(x => new
                 {
                     HasPlays = x.Key,

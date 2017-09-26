@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Utility;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
@@ -15,6 +17,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         private int _gameDefinitionIdForOnePlayedGame = 20;
         private int _gameDefinitionIdForTwoPlayedGames = 21;
 
+        private readonly BasicDateRangeFilter _dateFilter = new BasicDateRangeFilter
+        {
+            FromDate = DateTime.UtcNow.Date.AddDays(-1),
+            ToDate = DateTime.UtcNow.Date
+        };
+
         [SetUp]
         public override void SetUp()
         {
@@ -25,20 +33,39 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
                 new PlayedGame
                 {
                     GameDefinitionId = _gameDefinitionIdForTwoPlayedGames,
-                    GamingGroupId = _gamingGroupId
+                    GamingGroupId = _gamingGroupId,
+                    DatePlayed = _dateFilter.FromDate
                 },
                 new PlayedGame
                 {
                     GameDefinitionId = _gameDefinitionIdForTwoPlayedGames,
-                    GamingGroupId = _gamingGroupId
+                    GamingGroupId = _gamingGroupId,
+                    DatePlayed = _dateFilter.ToDate
                 },
+                //--excluded because date played is too far in the future
+                new PlayedGame
+                {
+                    GameDefinitionId = _gameDefinitionIdForTwoPlayedGames,
+                    GamingGroupId = _gamingGroupId,
+                    DatePlayed = _dateFilter.ToDate.AddDays(1)
+                },
+                //--excluded because date played is too far in the past
+                new PlayedGame
+                {
+                    GameDefinitionId = _gameDefinitionIdForTwoPlayedGames,
+                    GamingGroupId = _gamingGroupId,
+                    DatePlayed = _dateFilter.FromDate.AddDays(-1)
+                },
+                //--excluded because the gaming group id is not valid
                 new PlayedGame{
                     GameDefinitionId = 1,
-                    GamingGroupId = -1
+                    GamingGroupId = -1,
+                    DatePlayed = _dateFilter.ToDate
                 },
                 new PlayedGame{
                     GameDefinitionId = _gameDefinitionIdForOnePlayedGame,
-                    GamingGroupId = _gamingGroupId
+                    GamingGroupId = _gamingGroupId,
+                    DatePlayed = _dateFilter.ToDate
                 }
             }.AsQueryable();
 
@@ -70,7 +97,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             AutoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>()).Return(new List<Player>().AsQueryable());
 
             //--act
-            var result = AutoMocker.ClassUnderTest.GetGamingGroupStats(_gamingGroupId);
+            var result = AutoMocker.ClassUnderTest.GetGamingGroupStats(_gamingGroupId, _dateFilter);
 
             //--assert
             result.TotalPlayedGames.ShouldBe(3);
@@ -89,7 +116,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
                     GamingGroupId = _gamingGroupId,
                     PlayerGameResults = new List<PlayerGameResult>
                     {
-                        new PlayerGameResult()
+                        new PlayerGameResult
+                        {
+                            PlayedGame = new PlayedGame
+                            {
+                                DatePlayed = _dateFilter.FromDate
+                            }
+                        }
                     }
                 },
                 new Player
@@ -98,15 +131,37 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
                     GamingGroupId = _gamingGroupId,
                     PlayerGameResults = new List<PlayerGameResult>
                     {
-                        new PlayerGameResult()
+                        new PlayerGameResult
+                        {
+                            PlayedGame = new PlayedGame
+                            {
+                                DatePlayed = _dateFilter.ToDate
+                            }
+                        }
                     }
                 },
-                //--player without played games
+                //--player without played games in the specified time range
                 new Player
                 {
                     Id = 3,
                     GamingGroupId = _gamingGroupId,
-                    PlayerGameResults = new List<PlayerGameResult>()
+                    PlayerGameResults = new List<PlayerGameResult>
+                    {
+                        new PlayerGameResult
+                        {
+                            PlayedGame = new PlayedGame
+                            {
+                                DatePlayed = _dateFilter.FromDate.AddDays(-1)
+                            }
+                        },
+                        new PlayerGameResult
+                        {
+                            PlayedGame = new PlayedGame
+                            {
+                                DatePlayed = _dateFilter.ToDate.AddDays(1)
+                            }
+                        }
+                    }
                 },
                 //--bad gaming group id to make sure filter works
                 new Player
@@ -119,7 +174,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             AutoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>()).Return(playersQueryable);
 
             //--act
-            var result = AutoMocker.ClassUnderTest.GetGamingGroupStats(_gamingGroupId);
+            var result = AutoMocker.ClassUnderTest.GetGamingGroupStats(_gamingGroupId, _dateFilter);
 
             //--assert
             result.TotalNumberOfPlayersWithPlays.ShouldBe(2);
@@ -133,7 +188,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             AutoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>()).Return(new List<Player>().AsQueryable());
 
             //--act
-            var result = AutoMocker.ClassUnderTest.GetGamingGroupStats(_gamingGroupId);
+            var result = AutoMocker.ClassUnderTest.GetGamingGroupStats(_gamingGroupId, _dateFilter);
 
             //--assert
             result.TotalGamesOwned.ShouldBe(2);
