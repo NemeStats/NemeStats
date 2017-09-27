@@ -167,15 +167,13 @@ namespace Links
             public static readonly string tab6_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/tab6.min.js") ? Url("tab6.min.js") : Url("tab6.js");
         }
     
-        public static readonly string jquery_1_10_2_intellisense_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-1.10.2.intellisense.min.js") ? Url("jquery-1.10.2.intellisense.min.js") : Url("jquery-1.10.2.intellisense.js");
-        public static readonly string jquery_1_10_2_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-1.10.2.min.js") ? Url("jquery-1.10.2.min.js") : Url("jquery-1.10.2.js");
-        public static readonly string jquery_1_10_2_min_js = Url("jquery-1.10.2.min.js");
-        public static readonly string jquery_2_1_4_intellisense_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-2.1.4.intellisense.min.js") ? Url("jquery-2.1.4.intellisense.min.js") : Url("jquery-2.1.4.intellisense.js");
-        public static readonly string jquery_2_1_4_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-2.1.4.min.js") ? Url("jquery-2.1.4.min.js") : Url("jquery-2.1.4.js");
-        public static readonly string jquery_2_1_4_min_js = Url("jquery-2.1.4.min.js");
-        public static readonly string jquery_2_1_4_min_map = Url("jquery-2.1.4.min.map");
-        public static readonly string jquery_ui_1_11_4_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-ui-1.11.4.min.js") ? Url("jquery-ui-1.11.4.min.js") : Url("jquery-ui-1.11.4.js");
-        public static readonly string jquery_ui_1_11_4_min_js = Url("jquery-ui-1.11.4.min.js");
+        public static readonly string jquery_2_2_4_intellisense_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-2.2.4.intellisense.min.js") ? Url("jquery-2.2.4.intellisense.min.js") : Url("jquery-2.2.4.intellisense.js");
+        public static readonly string jquery_2_2_4_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-2.2.4.min.js") ? Url("jquery-2.2.4.min.js") : Url("jquery-2.2.4.js");
+        public static readonly string jquery_2_2_4_min_js = Url("jquery-2.2.4.min.js");
+        public static readonly string jquery_2_2_4_min_map = Url("jquery-2.2.4.min.map");
+        public static readonly string jquery_ui_1_12_1_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-ui-1.12.1.min.js") ? Url("jquery-ui-1.12.1.min.js") : Url("jquery-ui-1.12.1.js");
+        public static readonly string jquery_ui_1_12_1_min_js = Url("jquery-ui-1.12.1.min.js");
+        public static readonly string jquery_cookie_1_4_1_min_js = Url("jquery.cookie-1.4.1.min.js");
         public static readonly string jquery_cookie_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.cookie.min.js") ? Url("jquery.cookie.min.js") : Url("jquery.cookie.js");
         public static readonly string jquery_signalR_2_2_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.signalR-2.2.0.min.js") ? Url("jquery.signalR-2.2.0.min.js") : Url("jquery.signalR-2.2.0.js");
         public static readonly string jquery_signalR_2_2_0_min_js = Url("jquery.signalR-2.2.0.min.js");
@@ -230,7 +228,6 @@ namespace Links
             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
             public static readonly string _Layout_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/_Layout.min.js") ? Url("_Layout.min.js") : Url("_Layout.js");
             public static readonly string GoogleAnalytics_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/GoogleAnalytics.min.js") ? Url("GoogleAnalytics.min.js") : Url("GoogleAnalytics.js");
-            public static readonly string UIUtils_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/UIUtils.min.js") ? Url("UIUtils.min.js") : Url("UIUtils.js");
         }
     
         public static readonly string typeahead_bundle_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/typeahead-bundle.min.js") ? Url("typeahead-bundle.min.js") : Url("typeahead-bundle.js");
@@ -302,9 +299,15 @@ namespace Links
                     public static readonly string ui_bg_highlight_soft_75_cccccc_1x100_png = Url("ui-bg_highlight-soft_75_cccccc_1x100.png");
                     public static readonly string ui_icons_222222_256x240_png = Url("ui-icons_222222_256x240.png");
                     public static readonly string ui_icons_2e83ff_256x240_png = Url("ui-icons_2e83ff_256x240.png");
+                    public static readonly string ui_icons_444444_256x240_png = Url("ui-icons_444444_256x240.png");
                     public static readonly string ui_icons_454545_256x240_png = Url("ui-icons_454545_256x240.png");
+                    public static readonly string ui_icons_555555_256x240_png = Url("ui-icons_555555_256x240.png");
+                    public static readonly string ui_icons_777620_256x240_png = Url("ui-icons_777620_256x240.png");
+                    public static readonly string ui_icons_777777_256x240_png = Url("ui-icons_777777_256x240.png");
                     public static readonly string ui_icons_888888_256x240_png = Url("ui-icons_888888_256x240.png");
+                    public static readonly string ui_icons_cc0000_256x240_png = Url("ui-icons_cc0000_256x240.png");
                     public static readonly string ui_icons_cd0a0a_256x240_png = Url("ui-icons_cd0a0a_256x240.png");
+                    public static readonly string ui_icons_ffffff_256x240_png = Url("ui-icons_ffffff_256x240.png");
                 }
             
                 public static readonly string jquery_ui_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-ui.min.css") ? Url("jquery-ui.min.css") : Url("jquery-ui.css");
@@ -425,7 +428,6 @@ namespace Links
                 {
                     public const string _Layout_js = "~/Scripts/Shared/_Layout.js"; 
                     public const string GoogleAnalytics_js = "~/Scripts/Shared/GoogleAnalytics.js"; 
-                    public const string UIUtils_js = "~/Scripts/Shared/UIUtils.js"; 
                 }
             }
             public static class Assets
@@ -440,14 +442,12 @@ namespace Links
                 public const string handlebars_runtime_amd_min_js = "~/Scripts/handlebars.runtime.amd.min.js"; 
                 public const string handlebars_runtime_js = "~/Scripts/handlebars.runtime.js"; 
                 public const string handlebars_runtime_min_js = "~/Scripts/handlebars.runtime.min.js"; 
-                public const string jquery_1_10_2_intellisense_js = "~/Scripts/jquery-1.10.2.intellisense.js"; 
-                public const string jquery_1_10_2_js = "~/Scripts/jquery-1.10.2.js"; 
-                public const string jquery_1_10_2_min_js = "~/Scripts/jquery-1.10.2.min.js"; 
-                public const string jquery_2_1_4_intellisense_js = "~/Scripts/jquery-2.1.4.intellisense.js"; 
-                public const string jquery_2_1_4_js = "~/Scripts/jquery-2.1.4.js"; 
-                public const string jquery_2_1_4_min_js = "~/Scripts/jquery-2.1.4.min.js"; 
-                public const string jquery_ui_1_11_4_js = "~/Scripts/jquery-ui-1.11.4.js"; 
-                public const string jquery_ui_1_11_4_min_js = "~/Scripts/jquery-ui-1.11.4.min.js"; 
+                public const string jquery_2_2_4_intellisense_js = "~/Scripts/jquery-2.2.4.intellisense.js"; 
+                public const string jquery_2_2_4_js = "~/Scripts/jquery-2.2.4.js"; 
+                public const string jquery_2_2_4_min_js = "~/Scripts/jquery-2.2.4.min.js"; 
+                public const string jquery_ui_1_12_1_js = "~/Scripts/jquery-ui-1.12.1.js"; 
+                public const string jquery_ui_1_12_1_min_js = "~/Scripts/jquery-ui-1.12.1.min.js"; 
+                public const string jquery_cookie_1_4_1_min_js = "~/Scripts/jquery.cookie-1.4.1.min.js"; 
                 public const string jquery_cookie_js = "~/Scripts/jquery.cookie.js"; 
                 public const string jquery_signalR_2_2_0_js = "~/Scripts/jquery.signalR-2.2.0.js"; 
                 public const string jquery_signalR_2_2_0_min_js = "~/Scripts/jquery.signalR-2.2.0.min.js"; 

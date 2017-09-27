@@ -80,7 +80,6 @@ namespace UI
                 .Include("~/Scripts/Plugins/toEditBoxPlugin.js")
                 .Include("~/Scripts/Plugins/rankPlugin.js")
                 .Include("~/Scripts/GamingGroup/gamingGroup.js")
-                .Include("~/Scripts/Home/home.js")
                 .Include("~/Scripts/CreatePlayedGame/createplayedgame.js")
                 .Include("~/Scripts/PlayedGame/search.js")
                 .Include("~/Scripts/PlayedGame/recordexceldownload.js")
@@ -95,7 +94,7 @@ namespace UI
                 .Include("~/Scripts/GameDefinition/GameDefinitionPlayersSummaryPartial.js")
                 .Include("~/Scripts/Shared/_Layout.js")
                 .Include("~/Scripts/Shared/_LoginPartial.js")
-                .Include("~/Scripts/Shared/UIUtils.js")
+                .Include("~/Scripts/Home/home.js")
                 .Include("~/Scripts/Shared/GoogleAnalytics.js"));
 
             bundles.Add(new StyleBundle("~/bundles/content/css")
