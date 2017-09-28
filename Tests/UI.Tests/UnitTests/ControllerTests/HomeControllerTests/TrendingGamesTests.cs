@@ -38,7 +38,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
                 mock => mock.GetResults(Arg<TrendingGamesRequest>.Matches(
                     x => x.NumberOfTrendingGamesToShow == HomeController.NUMBER_OF_TRENDING_GAMES_TO_SHOW 
                 && x.NumberOfDaysOfTrendingGames == HomeController.NUMBER_OF_DAYS_OF_TRENDING_GAMES)));
-            var viewResult = results as ViewResult;
+            var viewResult = results as PartialViewResult;
             viewResult.ShouldNotBeNull();
             var viewModel = viewResult.Model as List<TrendingGameViewModel>;
             viewModel.ShouldNotBeNull();

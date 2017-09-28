@@ -36,7 +36,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
             //--assert
             _autoMocker.Get<ITopGamingGroupsRetriever>().AssertWasCalled(
                 mock => mock.GetResults(Arg<int>.Is.Equal(HomeController.NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW)));
-            var viewResult = results as ViewResult;
+            var viewResult = results as PartialViewResult;
             viewResult.ShouldNotBeNull();
             var viewModel = viewResult.Model as List<TopGamingGroupSummaryViewModel>;
             viewModel.ShouldNotBeNull();

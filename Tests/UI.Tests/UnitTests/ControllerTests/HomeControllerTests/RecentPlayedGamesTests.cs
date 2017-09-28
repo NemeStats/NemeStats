@@ -34,7 +34,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
                 mock => mock.GetResults(Arg<RecentlyPlayedGamesFilter>.Matches(
                     x => x.NumberOfGamesToRetrieve == HomeController.NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW
                     && x.MaxDate == DateTime.UtcNow.Date.AddDays(1))));
-            var viewResult = results as ViewResult;
+            var viewResult = results as PartialViewResult;
             viewResult.ShouldNotBeNull();
             viewResult.ViewName.ShouldBe(MVC.PlayedGame.Views._RecentlyPlayedGamesPartial);
             var viewModel = viewResult.Model as List<PublicGameSummary>;
