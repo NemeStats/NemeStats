@@ -18,22 +18,27 @@ Views.GamingGroup.GamingGroupView = function () {
         gamesTabId: null,
         gamesDivId: null,
         playedGamesTabId: null,
-        playedGamesDivId: null
+        playedGamesDivId: null,
+        statsTabId: null,
+        statsDivId: null
     };
 //TODO NOT SURE THIS IS WORKING AT THE MOMENT
     this._updateGamingGroupNameServiceAddress = "/GamingGroup/UpdateGamingGroupName";
     this._getGamingGroupPlayersServiceAddress = "/GamingGroup/GetGamingGroupPlayers/";
     this._getGamingGroupGameDefinitionsServiceAddress = "/GamingGroup/GetGamingGroupGameDefinitions/";
     this._getGamingGroupPlayedGamesServiceAddress = "/GamingGroup/GetGamingGroupPlayedGames/";
+    this._getGamingGroupStatsServiceAddress = "/GamingGroup/GetGamingGroupStats/";
 
     this._googleAnalytics = null;
     this._playersTabLoaded = false;
     this._gamesTabLoaded = false;
     this._playedGamesTabLoaded = false;
+    this._statsTabLoaded = false;
     this._tabEnum = {
         PLAYERS : "players",
         GAMES : "games",
-        PLAYS : "plays"
+        PLAYS: "plays",
+        STATS : "stats"
     }
 };
 
@@ -84,6 +89,16 @@ Views.GamingGroup.GamingGroupView.prototype = {
             throw "playedGamesDivId is required.";
         }
         this._settings.playedGamesDivId = options.playedGamesDivId;
+
+        if (options.statsTabId == null) {
+            throw "statsTabId is required.";
+        }
+        this._settings.statsTabId = options.statsTabId;
+
+        if (options.statsDivId == null) {
+            throw "statsDivId is required.";
+        }
+        this._settings.statsDivId = options.statsDivId;
 
         this._settings.gamingGroupId = options.gamingGroupId;
 
@@ -150,12 +165,18 @@ Views.GamingGroup.GamingGroupView.prototype = {
             return owner.getPlayedGames(owner._settings.gamingGroupId, owner.$fromDatePicker, owner.$toDatePicker, owner._settings.playedGamesDivId, owner);
         }));
 
+        var $statsTab = $("#" + this._settings.statsTabId);
+        $statsTab.click((function (event) {
+            event.preventDefault();
+            return owner.getStats(owner._settings.gamingGroupId, owner.$fromDatePicker, owner.$toDatePicker, owner._settings.statsDivId, owner);
+        }));
+
         var $dateFilteredButton = $("#" + this._settings.dateFilterButtonId);
         $dateFilteredButton.click(function () {
-            owner.reloadCurrentTabAndResetOthers($playersTab, $gamesTab, $playedGamesTab, owner.$fromDatePicker, owner.$toDatePicker, owner._settings, owner);
+            owner.reloadCurrentTabAndResetOthers($playersTab, $gamesTab, $playedGamesTab, $statsTab, owner.$fromDatePicker, owner.$toDatePicker, owner._settings, owner);
         });
 
-        this.reloadCurrentTabAndResetOthers($playersTab, $gamesTab, $playedGamesTab, owner.$fromDatePicker, owner.$toDatePicker, owner._settings, owner);
+        this.reloadCurrentTabAndResetOthers($playersTab, $gamesTab, $playedGamesTab, $statsTab, owner.$fromDatePicker, owner.$toDatePicker, owner._settings, owner);
     },
     getPlayers: function (gamingGroupId, $fromDatePicker, toDatePicker, divIdForRenderingResults, parent) {
         var fromDate = $fromDatePicker.val();
@@ -194,9 +215,9 @@ Views.GamingGroup.GamingGroupView.prototype = {
             });
         }
     },
-    getGameDefinitions: function (gamingGroupId, $fromDatePicker, toDatePicker, divIdForRenderingResults, parent) {
+    getGameDefinitions: function (gamingGroupId, $fromDatePicker, $toDatePicker, divIdForRenderingResults, parent) {
         var fromDate = $fromDatePicker.val();
-        var toDate = toDatePicker.val();
+        var toDate = $toDatePicker.val();
         parent.updateUrl(parent._tabEnum.GAMES, fromDate, toDate);
 
         if (!parent._gamesTabLoaded) {
@@ -234,9 +255,9 @@ Views.GamingGroup.GamingGroupView.prototype = {
             });
         }
     },
-    getPlayedGames: function (gamingGroupId, $fromDatePicker, toDatePicker, divIdForRenderingResults, parent) {
+    getPlayedGames: function (gamingGroupId, $fromDatePicker, $toDatePicker, divIdForRenderingResults, parent) {
         var fromDate = $fromDatePicker.val();
-        var toDate = toDatePicker.val();
+        var toDate = $toDatePicker.val();
         parent.updateUrl(parent._tabEnum.PLAYS, fromDate, toDate);
 
         if (!parent._playedGamesTabLoaded) {
@@ -265,6 +286,111 @@ Views.GamingGroup.GamingGroupView.prototype = {
             });
         }
     },
+    getStats: function (gamingGroupId, $fromDatePicker, $toDatePicker, divIdForRenderingResults, parent) {
+        var fromDate = $fromDatePicker.val();
+        var toDate = $toDatePicker.val();
+        parent.updateUrl(parent._tabEnum.STATS, fromDate, toDate);
+
+        if (!parent._statsTabLoaded) {
+            var fromDateYYYYMMDD = $fromDatePicker.val();
+            var toDateYYYYMMDD = $toDatePicker.val();
+            var url = "/api/v2/PlayedGames/?gamingGroupId=" +
+                gamingGroupId +
+                "&datePlayedFrom=" +
+                fromDateYYYYMMDD +
+                "&datePlayedTo=" +
+                toDateYYYYMMDD;
+
+            var $divForResults = $("#" + divIdForRenderingResults);
+
+            $.ajax({
+                type: "GET",
+                url: url,
+                success: function (data) {
+                    var playerDataMap = {};
+                    var playerData = [];
+
+                    for (var i = data.playedGames.length - 1; i >= 0; i--) {
+                        for (var j = 0; j < data.playedGames[i].playerGameResults.length; j++) {
+                            var gameInfo = data.playedGames[i].playerGameResults[j];
+                            if (playerDataMap[gameInfo.playerId] == null) {
+                                playerDataMap[gameInfo.playerId] = {
+                                    values: [{ x: new Date(data.playedGames[i].datePlayed), y: 0 }]
+                                };
+                                playerData.push({ values: playerDataMap[gameInfo.playerId].values, key: gameInfo.playerName, disabled: !gameInfo.playerActive });
+                            }
+                            var lastIndex = playerDataMap[gameInfo.playerId].values.length - 1;
+                            var nextValue = playerDataMap[gameInfo.playerId].values[lastIndex].y + gameInfo.totalNemeStatsPointsAwarded;
+                            playerDataMap[gameInfo.playerId].values.push({ x: new Date(data.playedGames[i].datePlayed), y: nextValue });
+                        }
+                    }
+
+                    var numberOfPlayers = Object.keys(playerDataMap).length;
+                    //--subtract 90 for left margin
+                    var divWidth = $divForResults.width() - 90;
+                    var divHeight = $(window).height() - 125;
+                    var showLegend = true;
+
+                    if (numberOfPlayers > 0) {
+                        var averagePlayerNameWidth = 150;
+                        var numberOfPlayersPerRow = divWidth / averagePlayerNameWidth;
+                        var numberOfRows = numberOfPlayers / numberOfPlayersPerRow;
+
+                        if (numberOfRows > 10) {
+                            showLegend = false;
+                        }
+                    }
+
+                    nv.addGraph(function () {
+                        var chart = nv.models.lineChart()
+                            .useInteractiveGuideline(true)
+                            .showLegend(showLegend)
+                            .showYAxis(true)
+                            .showXAxis(true);
+
+                        chart.xAxis
+                            .axisLabel("Date")
+                            .tickFormat(function (d) {
+                                return d3.time.format("%x")(new Date(d));
+                            });
+
+                        chart.yAxis
+                            .axisLabel("NemePoints")
+                            .tickFormat(d3.format("d"));
+
+                        //--clear loader and add svg
+                        $divForResults.find("#graphLoader").remove();
+                        $divForResults.find("svg").remove();
+                        $divForResults.append("<svg style='height:" + divHeight + "px;'> </svg>");
+
+                        d3.select("#" + divIdForRenderingResults + " svg")
+                            .datum(playerData)
+                            .call(chart);
+
+                        nv.utils.windowResize(function () { chart.update() });
+                    });
+
+                    parent._statsTabLoaded = true;
+                }
+            });
+
+            $.ajax({
+                url: parent._getGamingGroupStatsServiceAddress,
+                data: {
+                    "gamingGroupId": gamingGroupId,
+                    "Iso8601FromDate": fromDate,
+                    "Iso8601ToDate": toDate
+                },
+                cache: false,
+                type: "GET",
+                success: function (html) {
+                    $divForResults.find("#statsLoader").removeClass("loader").html(html);
+
+                    parent._statsTabLoaded = true;
+                }
+            });
+        }
+    },
     renameGamingGroup: function (element) {
         var parent = this;
         $.ajax({
@@ -282,10 +408,11 @@ Views.GamingGroup.GamingGroupView.prototype = {
 
         this.trackGAEvent("GamingGroups", "GamingGroupRenamed", "GamingGroupRenamed");
     },
-    reloadCurrentTabAndResetOthers: function ($playersTab, $gamesTab, $playedGamesTab, $fromDatePicker, $toDatePicker, settings, parent) {
+    reloadCurrentTabAndResetOthers: function ($playersTab, $gamesTab, $playedGamesTab, $statsTab, $fromDatePicker, $toDatePicker, settings, parent) {
         parent._playersTabLoaded = false;
         parent._gamesTabLoaded = false;
         parent._playedGamesTabLoaded = false;
+        parent._statsTabLoaded = false;
 
         var tabEnum = parent.getCurrentTab(parent);
 
@@ -299,13 +426,13 @@ Views.GamingGroup.GamingGroupView.prototype = {
             case parent._tabEnum.PLAYS:
                 $playedGamesTab.trigger("click");
                 break;
+            case parent._tabEnum.STATS:
+                $statsTab.trigger("click");
+                break;
             default:
                 $playersTab.trigger("click");
                 break;
         }
-        var fromDateYYYYMMDD = $fromDatePicker.val();
-        var toDateYYYYMMDD = $toDatePicker.val();
-        parent.renderNemeStatsPointsLineGraph("/api/v2/PlayedGames/?gamingGroupId=" + settings.gamingGroupId + "&datePlayedFrom=" + fromDateYYYYMMDD + "&datePlayedTo=" + toDateYYYYMMDD);
     },
     getCurrentTab : function(parent) {
         var existingQueryString = window.location.search;
@@ -321,56 +448,11 @@ Views.GamingGroup.GamingGroupView.prototype = {
             return parent._tabEnum.PLAYS;
         }
 
+        if (existingQueryString.indexOf("tab=" + parent._tabEnum.STATS) !== -1) {
+            return parent._tabEnum.STATS;
+        }
+
         return parent._tabEnum.PLAYERS;
-    },
-    renderNemeStatsPointsLineGraph: function (url) {
-        $.ajax({
-            type: "GET",
-            url: url,
-            success: function (data) {
-                var playerDataMap = {};
-                var playerData = [];
-
-                for (var i = data.playedGames.length - 1; i >= 0; i--) {
-                    for (var j = 0; j < data.playedGames[i].playerGameResults.length; j++) {
-                        var gameInfo = data.playedGames[i].playerGameResults[j];
-                        if (playerDataMap[gameInfo.playerId] == null) {
-                            playerDataMap[gameInfo.playerId] = {
-                                values: [{ x: new Date(data.playedGames[i].datePlayed), y: 0 }]
-                            };
-                            playerData.push({ values: playerDataMap[gameInfo.playerId].values, key: gameInfo.playerName, disabled: !gameInfo.playerActive });
-                        }
-                        var lastIndex = playerDataMap[gameInfo.playerId].values.length - 1;
-                        var nextValue = playerDataMap[gameInfo.playerId].values[lastIndex].y + gameInfo.totalNemeStatsPointsAwarded;
-                        playerDataMap[gameInfo.playerId].values.push({ x: new Date(data.playedGames[i].datePlayed), y: nextValue });
-                    }
-                }
-
-                nv.addGraph(function () {
-                    var chart = nv.models.lineChart()
-                        .useInteractiveGuideline(true)
-                        .showLegend(true)
-                        .showYAxis(true)
-                        .showXAxis(true);
-
-                    chart.xAxis
-                        .axisLabel("Date")
-                        .tickFormat(function (d) {
-                            return d3.time.format("%x")(new Date(d))
-                        });
-
-                    chart.yAxis
-                        .axisLabel("NemePoints")
-                        .tickFormat(d3.format("d"));
-
-                    d3.select("#NemeStatsPointsLineGraph svg")
-                        .datum(playerData)
-                        .call(chart);
-
-                    nv.utils.windowResize(function () { chart.update() });
-                });
-            }
-        });
     },
     updateUrl: function (newTab, iso8601FromDate, iso8601ToDate) {
         if (history.pushState) {

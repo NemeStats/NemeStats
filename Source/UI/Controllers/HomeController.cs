@@ -18,6 +18,7 @@
 
 #endregion LICENSE
 
+using System;
 using BusinessLogic.Models.Games;
 using System.Linq;
 using System.Web.Mvc;
@@ -85,7 +86,7 @@ namespace UI.Controllers
             var trendingGameViewModels = trendingGames.Select(_transformer.Transform<TrendingGameViewModel>).ToList();
 
             ViewBag.NumTrendingGameDays = NUMBER_OF_DAYS_OF_TRENDING_GAMES;
-            return View(MVC.GameDefinition.Views._TrendingGamesPartial, trendingGameViewModels);
+            return PartialView(MVC.GameDefinition.Views._TrendingGamesPartial, trendingGameViewModels);
         }
 
         [HttpGet]
@@ -93,10 +94,11 @@ namespace UI.Controllers
         {
             var recentlyPlayedGamesFilter = new RecentlyPlayedGamesFilter
             {
-                NumberOfGamesToRetrieve = NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW
+                NumberOfGamesToRetrieve = NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW,
+                MaxDate = DateTime.UtcNow.Date.AddDays(1)
             };
             var publicGameSummaries = _recentPublicGamesRetriever.GetResults(recentlyPlayedGamesFilter);
-            return View(MVC.PlayedGame.Views._RecentlyPlayedGamesPartial, publicGameSummaries);
+            return PartialView(MVC.PlayedGame.Views._RecentlyPlayedGamesPartial, publicGameSummaries);
         }
 
         [HttpGet]
@@ -105,7 +107,7 @@ namespace UI.Controllers
             var recentPlayerAchievementWinners = _recentPlayerAchievementsUnlockedRetriever.GetResults(new GetRecentPlayerAchievementsUnlockedQuery { PageSize = NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW });
             var recentPlayerAchievementWinnerViewModel = recentPlayerAchievementWinners.ToTransformedPagedList<PlayerAchievementWinner, PlayerAchievementWinnerViewModel>(_transformer);
 
-            return View(MVC.Achievement.Views._RecentAchievementsUnlocked, recentPlayerAchievementWinnerViewModel);
+            return PartialView(MVC.Achievement.Views._RecentAchievementsUnlocked, recentPlayerAchievementWinnerViewModel);
         }
 
         [HttpGet]
@@ -114,7 +116,7 @@ namespace UI.Controllers
             var topGamingGroups = _topGamingGroupsRetriever.GetResults(NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW);
 
             var topGamingGroupViewModels = topGamingGroups.Select(_transformer.Transform<TopGamingGroupSummaryViewModel>).ToList();
-            return View(MVC.GamingGroup.Views._TopGamingGroupsPartial, topGamingGroupViewModels);
+            return PartialView(MVC.GamingGroup.Views._TopGamingGroupsPartial, topGamingGroupViewModels);
         }
 
         public virtual ActionResult About()

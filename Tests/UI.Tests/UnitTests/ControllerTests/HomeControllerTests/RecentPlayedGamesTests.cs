@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using BusinessLogic.Facades;
 using BusinessLogic.Models.Games;
@@ -13,7 +14,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
     public class RecentPlayedGamesTests : HomeControllerTestBase
     {
         [Test]
-        public void It_Returns_The_Last_Five_PublicGameSummaries()
+        public void It_Returns_The_Last_Five_PublicGameSummaries_With_A_Max_Date_Of_Tomorrow()
         {
             //--arrange
             var expectedResults = new List<PublicGameSummary>
@@ -31,8 +32,9 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
             //--assert
             _autoMocker.Get<IRecentPublicGamesRetriever>().AssertWasCalled(
                 mock => mock.GetResults(Arg<RecentlyPlayedGamesFilter>.Matches(
-                    x => x.NumberOfGamesToRetrieve == HomeController.NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW)));
-            var viewResult = results as ViewResult;
+                    x => x.NumberOfGamesToRetrieve == HomeController.NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW
+                    && x.MaxDate == DateTime.UtcNow.Date.AddDays(1))));
+            var viewResult = results as PartialViewResult;
             viewResult.ShouldNotBeNull();
             viewResult.ViewName.ShouldBe(MVC.PlayedGame.Views._RecentlyPlayedGamesPartial);
             var viewModel = viewResult.Model as List<PublicGameSummary>;

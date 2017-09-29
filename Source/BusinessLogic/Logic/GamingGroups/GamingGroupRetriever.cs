@@ -21,6 +21,7 @@ using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Models.Utility;
 
 namespace BusinessLogic.Logic.GamingGroups
 {
@@ -92,6 +93,52 @@ namespace BusinessLogic.Logic.GamingGroups
                 })
                 .OrderBy(x => x.GamingGroupId)
                 .ToList();
+        }
+
+        public GamingGroupStats GetGamingGroupStats(int gamingGroupId, BasicDateRangeFilter dateRangeFilter)
+        {
+            var playedGameTotals = _dataContext.GetQueryable<PlayedGame>()
+                .Where(x => x.GamingGroupId == gamingGroupId 
+                    && x.DatePlayed >= dateRangeFilter.FromDate
+                    && x.DatePlayed <= dateRangeFilter.ToDate)
+                .GroupBy(x => x.GameDefinitionId)
+                .Select(g => new
+                {
+                    Id = g.Key,
+                    NumberOfGamesPlayed = g.Count()
+                }).ToList();
+
+            var totalPlayedGames = playedGameTotals.Sum(x => x.NumberOfGamesPlayed);
+            var totalNumberOfGamesWithPlays = playedGameTotals.Distinct().Count();
+
+            var numberOfGamesOwned = _dataContext.GetQueryable<GameDefinition>().Count(x => x.GamingGroupId == gamingGroupId);
+
+            var playerResults = _dataContext.GetQueryable<Player>()
+                .Where(x => x.GamingGroupId == gamingGroupId)
+                .GroupBy(x => x.PlayerGameResults.Any(y => y.PlayedGame.DatePlayed >= dateRangeFilter.FromDate
+                                              && y.PlayedGame.DatePlayed <= dateRangeFilter.ToDate))
+                .Select(x => new
+                {
+                    HasPlays = x.Key,
+                    NumberOfRecords = x.Count()
+                }).ToList();
+            var totalNumberOfPlayersWithPlays = 0;
+            var resultForPlayersWithPlays = playerResults.SingleOrDefault(x => x.HasPlays);
+            if (resultForPlayersWithPlays != null)
+            {
+                totalNumberOfPlayersWithPlays = resultForPlayersWithPlays.NumberOfRecords;
+            }
+
+            var totalNumberOfPlayers = playerResults.Sum(x => x.NumberOfRecords);
+
+            return new GamingGroupStats
+            {
+                TotalPlayedGames = totalPlayedGames,
+                TotalNumberOfGamesWithPlays = totalNumberOfGamesWithPlays,
+                TotalGamesOwned = numberOfGamesOwned,
+                TotalNumberOfPlayersWithPlays = totalNumberOfPlayersWithPlays,
+                TotalNumberOfPlayers = totalNumberOfPlayers 
+            };
         }
     }
 }

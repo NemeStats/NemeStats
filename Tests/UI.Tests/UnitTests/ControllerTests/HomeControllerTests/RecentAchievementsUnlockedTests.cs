@@ -43,7 +43,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
             _autoMocker.Get<IRecentPlayerAchievementsUnlockedRetriever>().AssertWasCalled(
                 mock => mock.GetResults(Arg<GetRecentPlayerAchievementsUnlockedQuery>.Matches(
                     x => x.PageSize == HomeController.NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW)));
-            var viewResult = results as ViewResult;
+            var viewResult = results as PartialViewResult;
             viewResult.ShouldNotBeNull();
             var viewModel = viewResult.Model as IPagedList<PlayerAchievementWinnerViewModel>;
             viewModel.ShouldNotBeNull();

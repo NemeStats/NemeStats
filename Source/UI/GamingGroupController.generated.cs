@@ -88,6 +88,12 @@ namespace UI.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult GetGamingGroupStats()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GetGamingGroupStats);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult GetCurrentUserGamingGroupGameDefinitions()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GetCurrentUserGamingGroupGameDefinitions);
@@ -132,6 +138,7 @@ namespace UI.Controllers
             public readonly string GetGamingGroupGameDefinitions = "GetGamingGroupGameDefinitions";
             public readonly string GetGamingGroupPlayedGames = "GetGamingGroupPlayedGames";
             public readonly string GetTopGamingGroups = "GetTopGamingGroups";
+            public readonly string GetGamingGroupStats = "GetGamingGroupStats";
             public readonly string GetCurrentUserGamingGroupGameDefinitions = "GetCurrentUserGamingGroupGameDefinitions";
             public readonly string SwitchGamingGroups = "SwitchGamingGroups";
             public readonly string CreateNewGamingGroup = "CreateNewGamingGroup";
@@ -147,6 +154,7 @@ namespace UI.Controllers
             public const string GetGamingGroupGameDefinitions = "GetGamingGroupGameDefinitions";
             public const string GetGamingGroupPlayedGames = "GetGamingGroupPlayedGames";
             public const string GetTopGamingGroups = "GetTopGamingGroups";
+            public const string GetGamingGroupStats = "GetGamingGroupStats";
             public const string GetCurrentUserGamingGroupGameDefinitions = "GetCurrentUserGamingGroupGameDefinitions";
             public const string SwitchGamingGroups = "SwitchGamingGroups";
             public const string CreateNewGamingGroup = "CreateNewGamingGroup";
@@ -203,6 +211,15 @@ namespace UI.Controllers
             public readonly string dateRangeFilter = "dateRangeFilter";
             public readonly string numberOfItems = "numberOfItems";
         }
+        static readonly ActionParamsClass_GetGamingGroupStats s_params_GetGamingGroupStats = new ActionParamsClass_GetGamingGroupStats();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_GetGamingGroupStats GetGamingGroupStatsParams { get { return s_params_GetGamingGroupStats; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_GetGamingGroupStats
+        {
+            public readonly string gamingGroupId = "gamingGroupId";
+            public readonly string dateRangeFilter = "dateRangeFilter";
+        }
         static readonly ActionParamsClass_GetCurrentUserGamingGroupGameDefinitions s_params_GetCurrentUserGamingGroupGameDefinitions = new ActionParamsClass_GetCurrentUserGamingGroupGameDefinitions();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_GetCurrentUserGamingGroupGameDefinitions GetCurrentUserGamingGroupGameDefinitionsParams { get { return s_params_GetCurrentUserGamingGroupGameDefinitions; } }
@@ -251,18 +268,18 @@ namespace UI.Controllers
             public class _ViewNamesClass
             {
                 public readonly string _GamingGroupPublicDetailsPartial = "_GamingGroupPublicDetailsPartial";
+                public readonly string _GamingGroupStatsPartial = "_GamingGroupStatsPartial";
                 public readonly string _TopGamingGroupsPartial = "_TopGamingGroupsPartial";
                 public readonly string Details = "Details";
                 public readonly string Edit = "Edit";
-                public readonly string Index = "Index";
                 public readonly string TopGamingGroups = "TopGamingGroups";
                 public readonly string UpdateGamingGroupName = "UpdateGamingGroupName";
             }
             public readonly string _GamingGroupPublicDetailsPartial = "~/Views/GamingGroup/_GamingGroupPublicDetailsPartial.cshtml";
+            public readonly string _GamingGroupStatsPartial = "~/Views/GamingGroup/_GamingGroupStatsPartial.cshtml";
             public readonly string _TopGamingGroupsPartial = "~/Views/GamingGroup/_TopGamingGroupsPartial.cshtml";
             public readonly string Details = "~/Views/GamingGroup/Details.cshtml";
             public readonly string Edit = "~/Views/GamingGroup/Edit.cshtml";
-            public readonly string Index = "~/Views/GamingGroup/Index.cshtml";
             public readonly string TopGamingGroups = "~/Views/GamingGroup/TopGamingGroups.cshtml";
             public readonly string UpdateGamingGroupName = "~/Views/GamingGroup/UpdateGamingGroupName.cshtml";
         }
@@ -350,6 +367,19 @@ namespace UI.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GetTopGamingGroups);
             GetTopGamingGroupsOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void GetGamingGroupStatsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int gamingGroupId, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult GetGamingGroupStats(int gamingGroupId, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GetGamingGroupStats);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamingGroupId", gamingGroupId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "dateRangeFilter", dateRangeFilter);
+            GetGamingGroupStatsOverride(callInfo, gamingGroupId, dateRangeFilter);
             return callInfo;
         }
 

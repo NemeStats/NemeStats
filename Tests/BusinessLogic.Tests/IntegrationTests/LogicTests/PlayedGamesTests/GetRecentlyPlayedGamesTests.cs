@@ -21,6 +21,7 @@ using BusinessLogic.Models;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Models.Utility;
 
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
 {
@@ -91,10 +92,12 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
         {
             using (var dataContext = new NemeStatsDataContext())
             {
+                var dateRangeFilter = new BasicDateRangeFilter();
                 var five = 5;
-                List<PlayedGame> playedGames = _retriever.GetRecentGames(five, testUserWithDefaultGamingGroup.CurrentGamingGroupId);
+                List<PlayedGame> playedGames = _retriever.GetRecentGames(five, testUserWithDefaultGamingGroup.CurrentGamingGroupId, dateRangeFilter);
                 var allPlayedGames = dataContext.GetQueryable<PlayedGame>()
-                    .Where(game => game.GamingGroupId == testUserWithDefaultGamingGroup.CurrentGamingGroupId)
+                    .Where(game => game.GamingGroupId == testUserWithDefaultGamingGroup.CurrentGamingGroupId
+                        && game.DatePlayed <= dateRangeFilter.ToDate)
                     .ToList()
                     .OrderByDescending(playedGame => playedGame.DatePlayed)
                     .ToList();

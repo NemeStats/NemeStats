@@ -177,6 +177,8 @@ namespace UI.Transformations
             Mapper.CreateMap<AchievementRelatedPlayedGameSummary, PlayedGameQuickStatsViewModel>()
                 .ForMember(m => m.BoardGameGeekUri,
                     opt => opt.MapFrom(y => BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(y.BoardGameGeekGameDefinitionId)));
+
+            Mapper.CreateMap<GamingGroupStats, GamingGroupStatsViewModel>();
         }
     }
 }

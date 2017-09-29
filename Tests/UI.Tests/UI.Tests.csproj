@@ -278,6 +278,7 @@
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetGamingGroupPlayedGamesTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetGamingGroupGameDefinitionsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetGamingGroupPlayersTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetGamingGroupStatsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetGamingGroupSummaryTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetTopGamingGroupsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\UserGamingGroupsTests.cs" />

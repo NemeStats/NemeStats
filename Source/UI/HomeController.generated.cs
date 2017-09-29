@@ -74,6 +74,9 @@ namespace UI.Controllers
         {
             public readonly string Index = "Index";
             public readonly string TrendingGames = "TrendingGames";
+            public readonly string RecentPlayedGames = "RecentPlayedGames";
+            public readonly string RecentAchievementsUnlocked = "RecentAchievementsUnlocked";
+            public readonly string TopGamingGroups = "TopGamingGroups";
             public readonly string About = "About";
             public readonly string AboutNemePoints = "AboutNemePoints";
             public readonly string AboutBadgesAndAchievements = "AboutBadgesAndAchievements";
@@ -84,6 +87,9 @@ namespace UI.Controllers
         {
             public const string Index = "Index";
             public const string TrendingGames = "TrendingGames";
+            public const string RecentPlayedGames = "RecentPlayedGames";
+            public const string RecentAchievementsUnlocked = "RecentAchievementsUnlocked";
+            public const string TopGamingGroups = "TopGamingGroups";
             public const string About = "About";
             public const string AboutNemePoints = "AboutNemePoints";
             public const string AboutBadgesAndAchievements = "AboutBadgesAndAchievements";
@@ -138,6 +144,39 @@ namespace UI.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.TrendingGames);
             TrendingGamesOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void RecentPlayedGamesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult RecentPlayedGames()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RecentPlayedGames);
+            RecentPlayedGamesOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void RecentAchievementsUnlockedOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult RecentAchievementsUnlocked()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RecentAchievementsUnlocked);
+            RecentAchievementsUnlockedOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void TopGamingGroupsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult TopGamingGroups()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.TopGamingGroups);
+            TopGamingGroupsOverride(callInfo);
             return callInfo;
         }
 

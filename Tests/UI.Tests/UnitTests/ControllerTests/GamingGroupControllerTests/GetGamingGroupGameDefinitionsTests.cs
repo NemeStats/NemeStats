@@ -44,7 +44,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             var result = autoMocker.ClassUnderTest.GetGamingGroupGameDefinitions(gamingGroupId, currentUser, dateRangeFilter);
 
             //--assert
-            var viewResult = result as ViewResult;
+            var viewResult = result as PartialViewResult;
             viewResult.ShouldNotBeNull();
             viewResult.ViewName.ShouldBe(MVC.GameDefinition.Views._GameDefinitionsPartial);
             var model = viewResult.Model as List<GameDefinitionSummaryViewModel>;

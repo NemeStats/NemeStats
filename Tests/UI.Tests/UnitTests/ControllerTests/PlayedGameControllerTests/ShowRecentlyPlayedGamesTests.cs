@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using System;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models.Games;
 using NUnit.Framework;
@@ -23,6 +24,9 @@ using Rhino.Mocks;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using BusinessLogic.Models.PlayedGames;
+using NemeStats.TestingHelpers.NemeStatsTestingExtensions;
+using Shouldly;
+using UI.Controllers;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
@@ -35,26 +39,30 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 			base.TestSetUp();
 			ExpectedViewModel = new List<PublicGameSummary>();
             AutoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentPublicGames(Arg<RecentlyPlayedGamesFilter>.Is.Anything)).Return(new List<PublicGameSummary>());
-            AutoMocker.PartialMockTheClassUnderTest();
-			AutoMocker.ClassUnderTest.Expect(mock => mock.ShowRecentlyPlayedGames()).Return(new ViewResult { ViewName = MVC.PlayedGame.Views.RecentlyPlayedGames, ViewData = new ViewDataDictionary(base.ExpectedViewModel) });
-		}
+        }
 
 		[Test]
-		public void ItReturnsRecentlyPlayedGamesView()
+		public void It_Returns_The_RecentlyPlayedGames_View()
 		{
 			var viewResult = AutoMocker.ClassUnderTest.ShowRecentlyPlayedGames() as ViewResult;
 
-			Assert.AreEqual(MVC.PlayedGame.Views.RecentlyPlayedGames, viewResult.ViewName);
-		}
+			viewResult.ViewName.ShouldBe(MVC.PlayedGame.Views.RecentlyPlayedGames);
+            var actualViewModel = viewResult.ViewData.Model;
+            actualViewModel.ShouldBe(ExpectedViewModel);
+        }
 
 		[Test]
-		public void ItReturnsSpecifiedRecentlyPlayedGamesModelToView()
+		public void It_Returns_Recently_Played_Games_That_Have_Happened_Less_Than_Or_Equal_To_UTC_Today_To_Avoid_Thai_Buddhist_Future_Dated_Plays()
 		{
-			var viewResult = AutoMocker.ClassUnderTest.ShowRecentlyPlayedGames() as ViewResult;
+			AutoMocker.ClassUnderTest.ShowRecentlyPlayedGames();
 
-			var actualViewModel = viewResult.ViewData.Model;
+            var args =
+		        AutoMocker.Get<IPlayedGameRetriever>()
+		            .GetArgumentsForCallsMadeOn(mock => mock.GetRecentPublicGames(Arg<RecentlyPlayedGamesFilter>.Is.Anything));
+		    var firstCall = args.AssertFirstCallIsType<RecentlyPlayedGamesFilter>();
+		    firstCall.MaxDate.ShouldBe(DateTime.UtcNow.Date.AddDays(1));
+            firstCall.NumberOfGamesToRetrieve.ShouldBe(PlayedGameController.NUMBER_OF_RECENT_GAMES_TO_DISPLAY);
 
-			Assert.AreEqual(base.ExpectedViewModel, actualViewModel);
 		}
 	}
 }

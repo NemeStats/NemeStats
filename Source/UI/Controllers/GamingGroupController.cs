@@ -15,7 +15,6 @@
 
 #endregion LICENSE
 
-using System.Collections.Generic;
 using AutoMapper;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.GamingGroups;
@@ -32,7 +31,6 @@ using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Models.GamingGroup;
 using UI.Models.PlayedGame;
-using UI.Models.Players;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
 
@@ -55,6 +53,7 @@ namespace UI.Controllers
         internal IGameDefinitionRetriever gameDefinitionRetriever;
         internal IPlayedGameRetriever playedGameRetriever;
         internal IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
+        internal ITransformer transformer;
 
         public GamingGroupController(
             IGamingGroupSaver gamingGroupSaver,
@@ -65,7 +64,8 @@ namespace UI.Controllers
             IPlayerRetriever playerRetriever, 
             IGameDefinitionRetriever gameDefinitionRetriever, 
             IPlayedGameRetriever playedGameRetriever, 
-            IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder)
+            IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder,
+            ITransformer transformer)
         {
             this.gamingGroupSaver = gamingGroupSaver;
             this.gamingGroupRetriever = gamingGroupRetriever;
@@ -76,6 +76,7 @@ namespace UI.Controllers
             this.gameDefinitionRetriever = gameDefinitionRetriever;
             this.playedGameRetriever = playedGameRetriever;
             this.playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
+            this.transformer = transformer;
         }
 
         // GET: /GamingGroup
@@ -148,7 +149,7 @@ namespace UI.Controllers
 
             ViewBag.canEdit = currentUser.CurrentGamingGroupId == id;
 
-            return View(MVC.Player.Views._PlayersPartial, playersWithNemesis);
+            return PartialView(MVC.Player.Views._PlayersPartial, playersWithNemesis);
         }
 
         [HttpGet]
@@ -164,7 +165,7 @@ namespace UI.Controllers
 
             ViewBag.canEdit = currentUser.CurrentGamingGroupId == id;
 
-            return View(MVC.GameDefinition.Views._GameDefinitionsPartial, games);
+            return PartialView(MVC.GameDefinition.Views._GameDefinitionsPartial, games);
         }
 
         [HttpGet]
@@ -180,16 +181,25 @@ namespace UI.Controllers
                 UserCanEdit = currentUser.CurrentGamingGroupId == id
             };
 
-            return View(MVC.PlayedGame.Views._PlayedGamesPartial, viewModel);
+            return PartialView(MVC.PlayedGame.Views._PlayedGamesPartial, viewModel);
         }
 
         [HttpGet]
         public virtual ActionResult GetTopGamingGroups()
         {
             var topGamingGroups = gamingGroupRetriever.GetTopGamingGroups(NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW);
-            var topGamingGroupViewModels = topGamingGroups.Select(Mapper.Map<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>).ToList();
+            var topGamingGroupViewModels = topGamingGroups.Select(transformer.Transform<TopGamingGroupSummaryViewModel>).ToList();
 
-            return View(MVC.GamingGroup.Views.TopGamingGroups, topGamingGroupViewModels);
+            return PartialView(MVC.GamingGroup.Views.TopGamingGroups, topGamingGroupViewModels);
+        }
+
+        [HttpGet]
+        public virtual ActionResult GetGamingGroupStats(int gamingGroupId, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null)
+        {
+            var gamingGroupStats = gamingGroupRetriever.GetGamingGroupStats(gamingGroupId, dateRangeFilter);
+            var viewModel = transformer.Transform<GamingGroupStatsViewModel>(gamingGroupStats);
+
+            return PartialView(MVC.GamingGroup.Views._GamingGroupStatsPartial, viewModel);
         }
 
         [HttpGet]

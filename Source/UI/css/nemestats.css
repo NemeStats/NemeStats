@@ -1002,7 +1002,8 @@ button > i.fa {
       margin-top: 25px; }
 
 #neme-tab ul.nav.nav-pills a {
-  border-radius: 0; }
+  border-radius: 0;
+  padding: 10px 10px; }
 
 #neme-tab .tab-content .tab-pane .panel {
   border-radius: 0; }

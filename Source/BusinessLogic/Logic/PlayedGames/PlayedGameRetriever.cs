@@ -93,8 +93,8 @@ namespace BusinessLogic.Logic.PlayedGames
 
         public List<PublicGameSummary> GetRecentPublicGames(RecentlyPlayedGamesFilter filter)
         {
-            var query = dataContext.GetQueryable<PlayedGame>();
-
+            var query = dataContext.GetQueryable<PlayedGame>()
+                .Where(x => x.DatePlayed <= filter.MaxDate);
 
             if (filter.BoardGameGeekGameDefinitionId.HasValue)
             {
