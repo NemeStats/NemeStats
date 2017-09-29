@@ -40,7 +40,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             var dateFilter = new BasicDateRangeFilter();
 
             //--act
-            var viewResult = autoMocker.ClassUnderTest.GetGamingGroupStats(gamingGroupId, dateFilter) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.GetGamingGroupStats(gamingGroupId, dateFilter) as PartialViewResult;
 
             //--assert
             viewResult.ViewName.ShouldBe(MVC.GamingGroup.Views._GamingGroupStatsPartial);

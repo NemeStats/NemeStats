@@ -21,7 +21,9 @@ using BusinessLogic.Models.GamingGroups;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using BusinessLogic.Logic;
 using Rhino.Mocks;
+using Shouldly;
 using UI.Models.GamingGroup;
 
 namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
@@ -29,33 +31,31 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 	[TestFixture]
 	public class GetTopGamingGroupsTests : GamingGroupControllerTestBase
 	{
-		private readonly TopGamingGroupSummaryViewModel expectedViewModel = new TopGamingGroupSummaryViewModel();
-
-		[SetUp]
-		public override void SetUp()
-		{
-			base.SetUp();
-            autoMocker.PartialMockTheClassUnderTest();
-			autoMocker.Get<IGamingGroupRetriever>().Expect(mock => mock.GetTopGamingGroups(Arg<int>.Is.Anything)).Return(new List<TopGamingGroupSummary>());
-			autoMocker.ClassUnderTest.Expect(mock => mock.GetTopGamingGroups()).Return(new ViewResult() { ViewName = MVC.GamingGroup.Views.TopGamingGroups, ViewData = new ViewDataDictionary(expectedViewModel) });
-		}
-
 		[Test]
-		public void ItReturnsTopGamingGroupsView()
+		public void It_Returns_The_Specified_Number_Of_Top_Gaming_Groups()
 		{
-			var viewResult = autoMocker.ClassUnderTest.GetTopGamingGroups() as ViewResult;
+            //--arrange
+            var expectedTopGamingGroupSummary = new TopGamingGroupSummary();
+		    var gamingGroupList = new List<TopGamingGroupSummary>
+		    {
+                expectedTopGamingGroupSummary
+            };
+            autoMocker.Get<IGamingGroupRetriever>().Expect(mock => mock.GetTopGamingGroups(Arg<int>.Is.Anything)).Return(gamingGroupList);
 
-			Assert.AreEqual(MVC.GamingGroup.Views.TopGamingGroups, viewResult.ViewName);
-		}
+            var expectedViewModel = new TopGamingGroupSummaryViewModel();
+		    autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<TopGamingGroupSummaryViewModel>(expectedTopGamingGroupSummary))
+		        .Return(expectedViewModel);
 
-		[Test]
-		public void ItReturnsSpecifiedTopGamingGroupsModelToTheView()
-		{
-			var viewResult = autoMocker.ClassUnderTest.GetTopGamingGroups() as ViewResult;
+            //--act
+            var viewResult = autoMocker.ClassUnderTest.GetTopGamingGroups() as PartialViewResult;
 
-			var actualViewModel = viewResult.ViewData.Model;
-
-			Assert.AreEqual(expectedViewModel, actualViewModel);
-		}
+            //--assert
+            viewResult.ShouldNotBeNull();
+		    viewResult.ViewName.ShouldBe(MVC.GamingGroup.Views.TopGamingGroups);
+            var actualViewModel = viewResult.ViewData.Model as List<TopGamingGroupSummaryViewModel>;
+            actualViewModel.ShouldNotBeNull();
+            actualViewModel.Count.ShouldBe(1);
+            actualViewModel[0].ShouldBeSameAs(expectedViewModel);
+        }
 	}
 }

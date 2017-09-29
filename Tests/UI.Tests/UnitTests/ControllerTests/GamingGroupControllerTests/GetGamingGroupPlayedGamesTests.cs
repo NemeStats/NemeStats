@@ -46,7 +46,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             var result = autoMocker.ClassUnderTest.GetGamingGroupPlayedGames(gamingGroupId, currentUser, dateRangeFilter, numberOfItems);
 
             //--assert
-            var viewResult = result as ViewResult;
+            var viewResult = result as PartialViewResult;
             viewResult.ShouldNotBeNull();
             viewResult.ViewName.ShouldBe(MVC.PlayedGame.Views._PlayedGamesPartial);
             var model = viewResult.Model as PlayedGamesViewModel;
@@ -77,7 +77,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             var result = autoMocker.ClassUnderTest.GetGamingGroupPlayedGames(gamingGroupId, currentUser, dateRangeFilter, 0);
 
             //--assert
-            var viewResult = result as ViewResult;
+            var viewResult = result as PartialViewResult;
             viewResult.ShouldNotBeNull();
             var model = viewResult.Model as PlayedGamesViewModel;
             model.ShouldNotBeNull();
