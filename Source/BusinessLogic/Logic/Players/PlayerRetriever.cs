@@ -442,16 +442,15 @@ namespace BusinessLogic.Logic.Players
             return result;
         }
 
-        private IQueryable<Player> GetPlayersToCreateQueryable(Player currentUserPlayer, int gaminggruopid)
+        private IQueryable<Player> GetPlayersToCreateQueryable(Player currentUserPlayer, int gamingGroupId)
         {
             var query = _dataContext.GetQueryable<Player>()
-                .Where(player => player.GamingGroupId == gaminggruopid && player.Active)
+                .Where(player => player.GamingGroupId == gamingGroupId && player.Active)
                 ;
             if (currentUserPlayer != null)
             {
                 query = query.Where(player => player.Id != currentUserPlayer.Id);
             }
-
 
             return query;
         }
