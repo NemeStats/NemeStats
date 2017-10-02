@@ -453,7 +453,7 @@ namespace BusinessLogic.Logic.Players
             }
 
 
-            return query.Include(p => p.PlayerGameResults);
+            return query;
         }
 
         private static PlayerInfoForUser GetPlayerInfoForUser(Player p)
