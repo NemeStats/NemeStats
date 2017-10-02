@@ -240,6 +240,7 @@
     <Compile Include="IntegrationTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GetAllGameDefinitionsIntegrationTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GetGameDefinitionDetailsIntegrationTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\Players\GetPlayerStatisticsIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\LogicTests\Players\PlayerRetrieverTests\GetPlayersToCreateIntegrationTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\PointsTests\RecalculateAllPointsIntegrationTests.cs" />
     <Compile Include="IntegrationTests\StructureMapIntegrationTests.cs" />
     <Compile Include="LocalAddin.cs" />
