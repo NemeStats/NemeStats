@@ -42,6 +42,7 @@ namespace BusinessLogic.Logic.Players
         private readonly IPlayedGameRetriever _playedGameRetriever;
         private readonly IRecentPlayerAchievementsUnlockedRetriever _recentPlayerAchievementsUnlockedRetriever;
         public const string ExceptionMessagePlayerCouldNotBeFound = "Could not find player with Id: {0}";
+        public const int MAX_NUMBER_OF_RECENT_PLAYERS = 5;
 
         public PlayerRetriever(
             IDataContext dataContext, 
@@ -416,53 +417,59 @@ namespace BusinessLogic.Logic.Players
 
         public PlayersToCreateModel GetPlayersToCreate(string currentUserId, int currentGamingGroupId)
         {
-            var currentUserPlayer = _dataContext.GetQueryable<Player>().FirstOrDefault(p => p.ApplicationUserId == currentUserId && p.GamingGroupId == currentGamingGroupId);
+            var allPlayersOrderedByLastDatePlayedThenName = _dataContext.GetQueryable<Player>()
+                .Where(player => player.GamingGroupId == currentGamingGroupId && player.Active)
 
-            var recentPlayersQuery = GetPlayersToCreateQueryable(currentUserPlayer, currentGamingGroupId)
                 .OrderByDescending(
                     p => p.PlayerGameResults
                         .Select(pgr => pgr.PlayedGame.DatePlayed)
                         .OrderByDescending(d => d)
                         .FirstOrDefault())
                 .ThenBy(p => p.Name)
-                .Take(5);
+                .Select(x => new
+                {
+                    PlayerInfo = new PlayerInfoForUser
+                    {
+                        GamingGroupId = currentGamingGroupId,
+                        PlayerId = x.Id,
+                        PlayerName = x.Name
+                    },
+                    IsCurrentUserPlayer = x.ApplicationUserId == currentUserId
+                })
+                .ToList();
 
-            var otherPlayersQuery = GetPlayersToCreateQueryable(currentUserPlayer,currentGamingGroupId)
-                .Where(p => recentPlayersQuery.All(rp => rp.Id != p.Id))
-                .OrderBy(p => p.Name);
+            var currentUserPlayerResult = allPlayersOrderedByLastDatePlayedThenName.FirstOrDefault(x => x.IsCurrentUserPlayer);
+
+            var recentPlayers = new List<PlayerInfoForUser>();
+            var otherPlayers = new List<PlayerInfoForUser>();
+
+            int numberOfPlayers = 0;
+            foreach (var playerResult in allPlayersOrderedByLastDatePlayedThenName)
+            {
+                if (playerResult.IsCurrentUserPlayer)
+                {
+                    continue;
+                }
+
+                if (numberOfPlayers < MAX_NUMBER_OF_RECENT_PLAYERS)
+                {
+                    recentPlayers.Add(playerResult.PlayerInfo);
+                }
+                else
+                {
+                    otherPlayers.Add(playerResult.PlayerInfo);
+                }
+                numberOfPlayers++;
+            }
 
             var result = new PlayersToCreateModel
             {
-                UserPlayer = GetPlayerInfoForUser(currentUserPlayer),
-                OtherPlayers = otherPlayersQuery.Select(GetPlayerInfoForUser).ToList(),
-                RecentPlayers = recentPlayersQuery.Select(GetPlayerInfoForUser).ToList()
-
+                UserPlayer = currentUserPlayerResult?.PlayerInfo,
+                OtherPlayers = otherPlayers.OrderBy(x => x.PlayerName).ToList(),
+                RecentPlayers = recentPlayers
             };
 
             return result;
-        }
-
-        private IQueryable<Player> GetPlayersToCreateQueryable(Player currentUserPlayer, int gaminggruopid)
-        {
-            var query = _dataContext.GetQueryable<Player>()
-                .Where(player => player.GamingGroupId == gaminggruopid && player.Active)
-                ;
-            if (currentUserPlayer != null)
-            {
-                query = query.Where(player => player.Id != currentUserPlayer.Id);
-            }
-
-
-            return query.Include(p => p.PlayerGameResults);
-        }
-
-        private static PlayerInfoForUser GetPlayerInfoForUser(Player p)
-        {
-            if (p == null)
-            {
-                return null;
-            }
-            return new PlayerInfoForUser { PlayerId = p.Id, GamingGroupId = p.GamingGroupId, PlayerName = p.Name };
         }
     }
 }
