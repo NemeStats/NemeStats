@@ -319,6 +319,10 @@
     <Compile Include="Logic\Email\EmailService.cs" />
     <Compile Include="Logic\GameDefinitions\CreateGameDefinitionComponent.cs" />
     <Compile Include="Logic\GameDefinitions\ICreateGameDefinitionComponent.cs" />
+    <Compile Include="Migrations\201710040027508_GamingGroup_Active_Flag.cs" />
+    <Compile Include="Migrations\201710040027508_GamingGroup_Active_Flag.Designer.cs">
+      <DependentUpon>201710040027508_GamingGroup_Active_Flag.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\GamingGroups\GamingGroupStats.cs" />
     <Compile Include="Logic\ITransformer.cs" />
     <Compile Include="Logic\OneTimeJobs\BoardGameGeekThumbnailAttacher.cs" />
@@ -1131,6 +1135,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709081638275_GamingGroupChampion.resx">
       <DependentUpon>201709081638275_GamingGroupChampion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710040027508_GamingGroup_Active_Flag.resx">
+      <DependentUpon>201710040027508_GamingGroup_Active_Flag.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

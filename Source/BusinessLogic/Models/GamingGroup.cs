@@ -41,6 +41,7 @@ namespace BusinessLogic.Models
 		public string OwningUserId { get; set; }
         public int? GamingGroupChampionPlayerId { get; set; }
 		public DateTime DateCreated { get; set; }
+	    public bool Active { get; set; } = true;
 
 		[ForeignKey("OwningUserId")]
 		public virtual ApplicationUser OwningUser { get; set; }

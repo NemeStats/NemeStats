@@ -32,12 +32,12 @@ namespace BusinessLogic.Logic.GamingGroups
         public GamingGroupRetriever(
             IDataContext dataContext)
         {
-            this._dataContext = dataContext;
+            _dataContext = dataContext;
         }
 
-        public GamingGroup GetGamingGroupById(int gamingGroupID)
+        public GamingGroup GetGamingGroupById(int gamingGroupId)
         {
-            var gamingGroup = _dataContext.FindById<GamingGroup>(gamingGroupID);
+            var gamingGroup = _dataContext.FindById<GamingGroup>(gamingGroupId);
 
             return gamingGroup;
         }
@@ -60,7 +60,8 @@ namespace BusinessLogic.Logic.GamingGroups
         public IList<GamingGroupListItemModel> GetGamingGroupsForUser(ApplicationUser applicationUser)
         {
             return _dataContext.GetQueryable<GamingGroup>()
-                              .Where(gamingGroup => gamingGroup.UserGamingGroups.Any(ugg => ugg.ApplicationUserId == applicationUser.Id))
+                              .Where(gamingGroup => gamingGroup.Active 
+                                && gamingGroup.UserGamingGroups.Any(ugg => ugg.ApplicationUserId == applicationUser.Id))
                               .Select(gg => new GamingGroupListItemModel { Id = gg.Id, Name = gg.Name })
                               .ToList();
         }
@@ -68,6 +69,7 @@ namespace BusinessLogic.Logic.GamingGroups
         public List<TopGamingGroupSummary> GetTopGamingGroups(int numberOfTopGamingGroupsToShow)
         {
             return (from gamingGroup in _dataContext.GetQueryable<GamingGroup>()
+                    where gamingGroup.Active
                     select new TopGamingGroupSummary
                     {
                         GamingGroupId = gamingGroup.Id,
@@ -84,6 +86,7 @@ namespace BusinessLogic.Logic.GamingGroups
         public List<GamingGroupSitemapInfo> GetGamingGroupsSitemapInfo()
         {
             return _dataContext.GetQueryable<GamingGroup>()
+                .Where(x => x.Active)
                 .Select(x => new GamingGroupSitemapInfo
                 {
                     GamingGroupId = x.Id,
