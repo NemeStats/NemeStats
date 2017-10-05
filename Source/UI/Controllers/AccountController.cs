@@ -307,7 +307,7 @@ namespace UI.Controllers
             ViewBag.ReturnUrl = Url.Action("Manage");
         }
 
-        private ManageAccountViewModel GetBaseManageAccountViewModel()
+        internal virtual ManageAccountViewModel GetBaseManageAccountViewModel()
         {
             ManageAccountViewModel viewModel = new ManageAccountViewModel();
             string currentUserId = User.Identity.GetUserId();

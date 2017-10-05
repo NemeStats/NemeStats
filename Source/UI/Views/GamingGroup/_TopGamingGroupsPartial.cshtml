@@ -25,7 +25,7 @@
 			    <td>
 			        @if (gamingGroup.GamingGroupChampion != null)
 			        {
-			            @Html.ActionLink(gamingGroup.GamingGroupChampion.Name, "Details", "Player", new { id = gamingGroup.GamingGroupChampion.Id }, new { })
+			            @Html.ActionLink(gamingGroup.GamingGroupChampion.PlayerName, "Details", "Player", new { id = gamingGroup.GamingGroupChampion.PlayerId }, new { })
 			        }
 			    </td>
                 @if (Model.ShowForEdit)

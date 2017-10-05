@@ -68,6 +68,9 @@ namespace UI.Transformations
                   .ForMember(x => x.TotalNemeStatsPointsAwarded, opt => opt.MapFrom(src => src.TotalPoints));
             Mapper.CreateMap<PlayerGameSummary, PlayerGameSummaryViewModel>(MemberList.Source);
             Mapper.CreateMap<PlayerInfoForUser, PlayerInfoForUserMessage>(MemberList.Destination);
+            Mapper.CreateMap<Player, PlayerInfoForUser>(MemberList.Destination)
+                .ForMember(x => x.PlayerId, opt => opt.MapFrom(y => y.Id))
+                .ForMember(x => x.PlayerName, opt => opt.MapFrom(y => y.Name));
             Mapper.CreateMap<GamingGroupInfoForUser, GamingGroupInfoForUserMessage>(MemberList.Destination);
             Mapper.CreateMap<UserInformation, UserInformationMessage>(MemberList.Destination);
             Mapper.CreateMap<PlayerWinRecord, PlayerSummaryViewModel>(MemberList.Destination)

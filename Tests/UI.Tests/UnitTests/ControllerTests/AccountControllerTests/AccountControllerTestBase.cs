@@ -26,7 +26,6 @@ using Microsoft.Owin.Security.DataProtection;
 using NUnit.Framework;
 using Rhino.Mocks;
 using UI.Controllers;
-using UI.Controllers.Helpers;
 using UI.Models;
 
 namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
@@ -54,8 +53,8 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
             userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
             gamingGroupInviteConsumerMock = MockRepository.GenerateMock<IGamingGroupInviteConsumer>();
             userRegistererMock = MockRepository.GenerateMock<IUserRegisterer>();
-            this.firstTimeAuthenticatorMock = MockRepository.GenerateMock<IFirstTimeAuthenticator>();
-            this.authenticationManagerMock = MockRepository.GenerateMock<IAuthenticationManager>();
+            firstTimeAuthenticatorMock = MockRepository.GenerateMock<IFirstTimeAuthenticator>();
+            authenticationManagerMock = MockRepository.GenerateMock<IAuthenticationManager>();
             var dataProtector = MockRepository.GenerateMock<IDataProtector>();
             dataProtectionProviderMock = MockRepository.GenerateMock<IDataProtectionProvider>();
             gamingGroupRetrieverMock = MockRepository.GenerateMock<IGamingGroupRetriever>();
@@ -70,8 +69,8 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
             accountControllerPartialMock = MockRepository.GeneratePartialMock<AccountController>(
                 userManager,
                 userRegistererMock,
-                this.firstTimeAuthenticatorMock,
-                this.authenticationManagerMock,
+                firstTimeAuthenticatorMock,
+                authenticationManagerMock,
                 gamingGroupInviteConsumerMock, 
                 gamingGroupRetrieverMock,
                 boardGameGeekUserSaver,

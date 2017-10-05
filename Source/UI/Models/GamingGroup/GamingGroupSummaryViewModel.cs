@@ -17,6 +17,7 @@
 #endregion
 
 using BusinessLogic.Models;
+using BusinessLogic.Models.Players;
 
 namespace UI.Models.GamingGroup
 {
@@ -26,7 +27,7 @@ namespace UI.Models.GamingGroup
         public int GamingGroupId { get; set; }
         public int NumberOfPlayers { get; set; }
         public int NumberOfGamesPlayed { get; set; }
-        public Player GamingGroupChampion { get; set; }
+        public PlayerInfoForUser GamingGroupChampion { get; set; }
         public bool Active { get; set; }
     }
 }
