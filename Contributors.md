@@ -90,7 +90,8 @@ We're using Node Package Manager (npm) for the CSS frameworks. In the repo exist
 Following both steps you have already installed all the dependecies in "node_components" folder (ignored in .gitignore) and executing the watch and compile sass grunt task.
 Now, when you change any .scss file, the grunt task will detect it and compile the sass files to the /css destination folder.
 
-
+## T4MVC
+NemeStats uses [T4MVC](https://github.com/T4MVC/T4MVC/wiki/Documentation) to provide strong types and names for controllers, actions, and views. If you create new controllers or views, or modify the signature of controller actions then you'll need to go to the root of the UI folder, right click on "T4MVC.tt" => Run Custom Tool for the appropriate generated classes to update.
 
 
 #### What's next?
