@@ -26,10 +26,10 @@ using UI.Models.GamingGroup;
 namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 {
     [TestFixture]
-    public class GetTopGamingGroupsTests : GamingGroupControllerTestBase
+    public class GetTopGamingGroupsPartialTests : GamingGroupControllerTestBase
     {
         [Test]
-        public void It_Returns_The_TopGamingGroups_View_With_The_Default_Number_Of_Gaming_Groups()
+        public void It_Returns_The_TopGamingGroups_Partial_View_With_The_Default_Number_Of_Gaming_Groups()
         {
             //--arrange
             var expectedViewModel = new GamingGroupsSummaryViewModel();
@@ -37,15 +37,31 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
                 .Return(expectedViewModel);
 
             //--act
-            var results = autoMocker.ClassUnderTest.GetTopGamingGroups();
+            var results = autoMocker.ClassUnderTest.GetTopGamingGroupsPartial();
 
             //--assert
-            autoMocker.ClassUnderTest.AssertWasCalled(partialMock => partialMock.GetGamingGroupsSummaryViewModel(Arg<int>.Is.Equal(GamingGroupController.NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW)));
-            var viewResult = results as ViewResult;
+            autoMocker.ClassUnderTest.AssertWasCalled(partialMock => partialMock.GetGamingGroupsSummaryViewModel(Arg<int>.Is.Equal(GamingGroupController.NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW_ON_HOME_PAGE)));
+            var viewResult = results as PartialViewResult;
             viewResult.ShouldNotBeNull();
-            viewResult.ViewName.ShouldBe(MVC.GamingGroup.Views.TopGamingGroups);
+            viewResult.ViewName.ShouldBe(MVC.GamingGroup.Views._TopGamingGroupsPartial);
             var viewModel = viewResult.Model as GamingGroupsSummaryViewModel;
             viewModel.ShouldBeSameAs(expectedViewModel);
+        }
+
+        [Test]
+        public void It_Returns_The_Specified_Number_Of_Gaming_Groups()
+        {
+            //--arrange
+            var expectedViewModel = new GamingGroupsSummaryViewModel();
+            autoMocker.ClassUnderTest.Expect(partialMock => partialMock.GetGamingGroupsSummaryViewModel(Arg<int>.Is.Anything))
+                .Return(expectedViewModel);
+            int numberOfGamingGroups = 135;
+
+            //--act
+            autoMocker.ClassUnderTest.GetTopGamingGroupsPartial(numberOfGamingGroups);
+
+            //--assert
+            autoMocker.ClassUnderTest.AssertWasCalled(partialMock => partialMock.GetGamingGroupsSummaryViewModel(Arg<int>.Is.Equal(numberOfGamingGroups)));
         }
     }
 }

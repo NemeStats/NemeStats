@@ -24,6 +24,7 @@ using BusinessLogic.Models.User;
 using BusinessLogic.Models.Utility;
 using System.Linq;
 using System.Web.Mvc;
+using BusinessLogic.Facades;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
@@ -40,6 +41,7 @@ namespace UI.Controllers
     {
         public const int MAX_NUMBER_OF_RECENT_GAMES = 10;
         public const int NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW = 25;
+        public const int NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW_ON_HOME_PAGE = 15;
         public const string SECTION_ANCHOR_PLAYERS = "playersListDivId";
         public const string SECTION_ANCHOR_GAMEDEFINITIONS = "gamesListDivId";
         public const string SECTION_ANCHOR_RECENT_GAMES = "playedGamesListDivId";
@@ -54,6 +56,7 @@ namespace UI.Controllers
         internal IPlayedGameRetriever playedGameRetriever;
         internal IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
         internal ITransformer transformer;
+        internal ITopGamingGroupsRetriever topGamingGroupsRetriever;
 
         public GamingGroupController(
             IGamingGroupSaver gamingGroupSaver,
@@ -65,7 +68,8 @@ namespace UI.Controllers
             IGameDefinitionRetriever gameDefinitionRetriever, 
             IPlayedGameRetriever playedGameRetriever, 
             IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder,
-            ITransformer transformer)
+            ITransformer transformer, 
+            ITopGamingGroupsRetriever topGamingGroupsRetriever)
         {
             this.gamingGroupSaver = gamingGroupSaver;
             this.gamingGroupRetriever = gamingGroupRetriever;
@@ -77,6 +81,7 @@ namespace UI.Controllers
             this.playedGameRetriever = playedGameRetriever;
             this.playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
             this.transformer = transformer;
+            this.topGamingGroupsRetriever = topGamingGroupsRetriever;
         }
 
         // GET: /GamingGroup
@@ -187,10 +192,29 @@ namespace UI.Controllers
         [HttpGet]
         public virtual ActionResult GetTopGamingGroups()
         {
-            var topGamingGroups = gamingGroupRetriever.GetTopGamingGroups(NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW);
-            var topGamingGroupViewModels = topGamingGroups.Select(transformer.Transform<TopGamingGroupSummaryViewModel>).ToList();
+            var viewModel = GetGamingGroupsSummaryViewModel(NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW);
+            return View(MVC.GamingGroup.Views.TopGamingGroups, viewModel);
+        }
 
-            return PartialView(MVC.GamingGroup.Views.TopGamingGroups, topGamingGroupViewModels);
+        [HttpGet]
+        public virtual ActionResult GetTopGamingGroupsPartial(int numberOfGamingGroups = NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW_ON_HOME_PAGE)
+        {
+            var viewModel = GetGamingGroupsSummaryViewModel(numberOfGamingGroups);
+            return PartialView(MVC.GamingGroup.Views._TopGamingGroupsPartial, viewModel);
+        }
+
+        internal virtual GamingGroupsSummaryViewModel GetGamingGroupsSummaryViewModel(int numberOfGamingGroups)
+        {
+            var topGamingGroups = topGamingGroupsRetriever.GetResults(numberOfGamingGroups);
+
+            var topGamingGroupViewModels = topGamingGroups.Select(transformer.Transform<GamingGroupSummaryViewModel>).ToList();
+
+            var viewModel = new GamingGroupsSummaryViewModel
+            {
+                GamingGroups = topGamingGroupViewModels,
+                ShowForEdit = false
+            };
+            return viewModel;
         }
 
         [HttpGet]

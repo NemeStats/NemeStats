@@ -110,15 +110,6 @@ namespace UI.Controllers
             return PartialView(MVC.Achievement.Views._RecentAchievementsUnlocked, recentPlayerAchievementWinnerViewModel);
         }
 
-        [HttpGet]
-        public virtual ActionResult TopGamingGroups()
-        {
-            var topGamingGroups = _topGamingGroupsRetriever.GetResults(NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW);
-
-            var topGamingGroupViewModels = topGamingGroups.Select(_transformer.Transform<TopGamingGroupSummaryViewModel>).ToList();
-            return PartialView(MVC.GamingGroup.Views._TopGamingGroupsPartial, topGamingGroupViewModels);
-        }
-
         public virtual ActionResult About()
         {            
             return View();

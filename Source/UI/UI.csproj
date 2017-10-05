@@ -416,6 +416,7 @@
     <Compile Include="Models\Badges\PreviousNemesisBadgeViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionDetailsViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GamingGroupGameDefinitionStatsViewModel.cs" />
+    <Compile Include="Models\GamingGroup\GamingGroupsSummaryViewModel.cs" />
     <Compile Include="Models\GamingGroup\GamingGroupStatsViewModel.cs" />
     <Compile Include="Models\UniversalGameModels\BoardGameGeekInfoViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\BoardGameGeekGameDefinitionViewModel.cs" />
@@ -461,6 +462,7 @@
     <Compile Include="Models\Points\NemePointsSummaryViewModel.cs" />
     <Compile Include="Models\UniversalGameModels\UniversalGameDetailsViewModel.cs" />
     <Compile Include="Models\UniversalGameModels\UniversalGameStatsViewModel.cs" />
+    <Compile Include="Models\GamingGroup\UserGamingGroupsViewModel.cs" />
     <Compile Include="Models\User\BoardGameGeekIntegrationModel.cs" />
     <Compile Include="Models\User\UserGamingGroupsModel.cs" />
     <Compile Include="Models\User\UserViewModel.cs" />
@@ -507,7 +509,7 @@
     <Compile Include="Transformations\PlayerTransformations\PlayerWithNemesisViewModelBuilder.cs" />
     <Compile Include="Transformations\PlayerTransformations\TopPlayerViewModelBuilder.cs" />
     <Compile Include="Models\Players\PlayerWithNemesisViewModel.cs" />
-    <Compile Include="Models\GamingGroup\TopGamingGroupSummaryViewModel.cs" />
+    <Compile Include="Models\GamingGroup\GamingGroupSummaryViewModel.cs" />
     <Compile Include="Models\Players\GameDefinitionPlayerSummaryViewModel.cs" />
     <Compile Include="UniversalGameController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>

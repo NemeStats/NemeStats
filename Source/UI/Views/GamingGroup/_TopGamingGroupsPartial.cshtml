@@ -1,4 +1,4 @@
-﻿@model List<UI.Models.GamingGroup.TopGamingGroupSummaryViewModel>
+﻿@model UI.Models.GamingGroup.GamingGroupsSummaryViewModel
 
 <div class="flip-scroll">
 	<table class="table table-hover table-striped" id="topGamingGroupsTable">
@@ -7,23 +7,31 @@
 				<th>Gaming Group</th>
 				<th>Played Games</th>
 				<th>Players</th>
-				<th>Group Champion</th>
+			    <th>Group Champion</th>
+                @if (Model.ShowForEdit)
+                {
+                <th>Active</th>
+                }
 			</tr>
 		</thead>
         @{ var position = 1; }
-		@foreach (var topGamingGroup in @Model)
+		@foreach (var gamingGroup in Model.GamingGroups)
 		{
 			<tr data-position="@position">
                 @{ position++; }
-				<td>@Html.ActionLink(topGamingGroup.GamingGroupName, "Details", "GamingGroup", new { id = topGamingGroup.GamingGroupId }, new { })</td>
-				<td>@topGamingGroup.NumberOfGamesPlayed</td>
-				<td>@topGamingGroup.NumberOfPlayers</td>
+				<td>@Html.ActionLink(gamingGroup.GamingGroupName, "Details", "GamingGroup", new { id = gamingGroup.GamingGroupId }, new { })</td>
+				<td>@gamingGroup.NumberOfGamesPlayed</td>
+				<td>@gamingGroup.NumberOfPlayers</td>
 			    <td>
-			        @if (topGamingGroup.GamingGroupChampion != null)
+			        @if (gamingGroup.GamingGroupChampion != null)
 			        {
-			            @Html.ActionLink(topGamingGroup.GamingGroupChampion.Name, "Details", "Player", new { id = topGamingGroup.GamingGroupChampion.Id }, new { })
-                    }
+			            @Html.ActionLink(gamingGroup.GamingGroupChampion.Name, "Details", "Player", new { id = gamingGroup.GamingGroupChampion.Id }, new { })
+			        }
 			    </td>
+                @if (Model.ShowForEdit)
+                {
+                    <th>@Html.CheckBoxFor(m => gamingGroup.Active, new { disabled = "disabled" })</th>
+                }
 			</tr>
 		}
 	</table>
