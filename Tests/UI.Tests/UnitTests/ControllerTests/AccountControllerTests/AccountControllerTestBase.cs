@@ -17,6 +17,7 @@
 #endregion
 
 using BoardGameGeekApiClient.Interfaces;
+using BusinessLogic.Logic;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
@@ -41,6 +42,7 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
         protected AccountController accountControllerPartialMock;
         protected IDataProtectionProvider dataProtectionProviderMock;
         protected IGamingGroupRetriever gamingGroupRetrieverMock;
+        protected ITransformer transformerMock;
         protected RegisterViewModel registerViewModel;
         protected ApplicationUser currentUser;
         IBoardGameGeekApiClient boardGameGeekApiClient;
@@ -62,6 +64,7 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
             boardGameGeekUserSaver = MockRepository.GenerateMock<IBoardGameGeekUserSaver>();
             boardGameGeekApiClient = MockRepository.GenerateMock<IBoardGameGeekApiClient>();
             userRetriever = MockRepository.GenerateMock<IUserRetriever>();
+            transformerMock = MockRepository.GenerateMock<ITransformer>();
 
             dataProtectionProviderMock.Expect(mock => mock.Create(Arg<string>.Is.Anything)).Return(dataProtector);
 
@@ -75,7 +78,8 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
                 gamingGroupRetrieverMock,
                 boardGameGeekUserSaver,
                 boardGameGeekApiClient,
-                userRetriever);
+                userRetriever,
+                transformerMock);
             currentUser = new ApplicationUser()
             {
                 Id = "new application user",

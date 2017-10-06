@@ -32,6 +32,7 @@ using BusinessLogic.Logic.GamingGroups;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Models;
+using UI.Models.GamingGroup;
 using UI.Models.User;
 
 namespace UI.Controllers
@@ -39,15 +40,16 @@ namespace UI.Controllers
     [Authorize]
     public partial class AccountController : BaseController
     {
-        private readonly ApplicationUserManager userManager;
-        private readonly IUserRegisterer userRegisterer;
-        private readonly IFirstTimeAuthenticator firstTimeAuthenticator;
-        private readonly IAuthenticationManager authenticationManager;
-        private readonly IGamingGroupInviteConsumer gamingGroupInvitationConsumer;
+        private readonly ApplicationUserManager _userManager;
+        private readonly IUserRegisterer _userRegisterer;
+        private readonly IFirstTimeAuthenticator _firstTimeAuthenticator;
+        private readonly IAuthenticationManager _authenticationManager;
+        private readonly IGamingGroupInviteConsumer _gamingGroupInvitationConsumer;
         private readonly IGamingGroupRetriever _gamingGroupRetriever;
         private readonly IBoardGameGeekUserSaver _boardGameGeekUserSaver;
         private readonly IBoardGameGeekApiClient _boardGameGeekApiClient;
         private readonly IUserRetriever _userRetriever;
+        private ITransformer _transformer;
 
         public AccountController(
             ApplicationUserManager userManager,
@@ -58,17 +60,19 @@ namespace UI.Controllers
             IGamingGroupRetriever gamingGroupRetriever,
             IBoardGameGeekUserSaver boardGameGeekUserSaver,
             IBoardGameGeekApiClient boardGameGeekApiClient,
-            IUserRetriever userRetriever)
+            IUserRetriever userRetriever, 
+            ITransformer transformer)
         {
-            this.userManager = userManager;
-            this.userRegisterer = userRegisterer;
-            this.firstTimeAuthenticator = firstTimeAuthenticator;
-            this.authenticationManager = authenticationManager;
-            this.gamingGroupInvitationConsumer = gamingGroupInvitationConsumer;
+            this._userManager = userManager;
+            this._userRegisterer = userRegisterer;
+            this._firstTimeAuthenticator = firstTimeAuthenticator;
+            this._authenticationManager = authenticationManager;
+            this._gamingGroupInvitationConsumer = gamingGroupInvitationConsumer;
             _gamingGroupRetriever = gamingGroupRetriever;
             _boardGameGeekUserSaver = boardGameGeekUserSaver;
             _boardGameGeekApiClient = boardGameGeekApiClient;
             _userRetriever = userRetriever;
+            _transformer = transformer;
         }
 
 
@@ -96,7 +100,7 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await userManager.FindAsync(model.UserName, model.Password);
+                var user = await _userManager.FindAsync(model.UserName, model.Password);
                 if (user != null)
                 {
                     await SignInAsync(user, model.RememberMe);
@@ -144,7 +148,7 @@ namespace UI.Controllers
                     GamingGroupInvitationId = gamingGroupInvitation
                 };
 
-                RegisterNewUserResult registerNewUserResult = await this.userRegisterer.RegisterUser(newUser);
+                RegisterNewUserResult registerNewUserResult = await this._userRegisterer.RegisterUser(newUser);
 
                 if (registerNewUserResult.Result.Succeeded)
                 {
@@ -161,7 +165,7 @@ namespace UI.Controllers
         [AllowAnonymous]
         public virtual ActionResult ConsumeInvitation(string id, ApplicationUser currentUser)
         {
-            AddUserToGamingGroupResult result = gamingGroupInvitationConsumer.AddExistingUserToGamingGroup(id);
+            AddUserToGamingGroupResult result = _gamingGroupInvitationConsumer.AddExistingUserToGamingGroup(id);
 
             if (result.UserAddedToExistingGamingGroup)
             {
@@ -184,7 +188,7 @@ namespace UI.Controllers
         public virtual async Task<ActionResult> Disassociate(string loginProvider, string providerKey)
         {
             ManageMessageId? message = null;
-            IdentityResult result = await userManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
+            IdentityResult result = await _userManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
             if (result.Succeeded)
             {
                 message = ManageMessageId.RemoveLoginSuccess;
@@ -247,7 +251,7 @@ namespace UI.Controllers
             parentViewModel.PasswordViewModel = model;
             if (ModelState.IsValid)
             {
-                var result = await userManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
+                var result = await _userManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
@@ -271,7 +275,7 @@ namespace UI.Controllers
             {
                 return RedirectToAction("Manage", new { Message = ManageMessageId.ErrorEnterEmail });
             }
-            var result = await userManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+            var result = await _userManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
             if (result.Succeeded)
             {
                 return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
@@ -292,7 +296,7 @@ namespace UI.Controllers
             {
                 return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
             }
-            var result = await userManager.SetEmailAsync(User.Identity.GetUserId(), model.EmailAddress.Trim());
+            var result = await _userManager.SetEmailAsync(User.Identity.GetUserId(), model.EmailAddress.Trim());
             if (result.Succeeded)
             {
                 return RedirectToAction("Manage", new { Message = ManageMessageId.ChangeEmailSuccess });
@@ -311,13 +315,14 @@ namespace UI.Controllers
         {
             ManageAccountViewModel viewModel = new ManageAccountViewModel();
             string currentUserId = User.Identity.GetUserId();
-            ApplicationUser user = userManager.FindById(currentUserId);
+            ApplicationUser user = _userManager.FindById(currentUserId);
             viewModel.PasswordViewModel = HasPassword() ? (PasswordViewModel)new ChangePasswordViewModel() : new SetPasswordViewModel();
             ChangeEmailViewModel emailViewModel = new ChangeEmailViewModel();
             emailViewModel.EmailAddress = user.Email;
             viewModel.ChangeEmailViewModel = emailViewModel;
 
-            var bggUser = _userRetriever.RetrieveUserInformation(user).BoardGameGeekUser;
+            var userInformation = _userRetriever.RetrieveUserInformation(user);
+            var bggUser = userInformation.BoardGameGeekUser;
             if (bggUser != null)
             {
                 viewModel.BoardGameGeekIntegrationModel = new BoardGameGeekIntegrationModel
@@ -329,7 +334,11 @@ namespace UI.Controllers
                 };
             }
 
-
+            viewModel.GamingGroupsSummary = new GamingGroupsSummaryViewModel
+            {
+                ShowForEdit = true,
+                GamingGroups = userInformation.GamingGroups.Select(x => _transformer.Transform<GamingGroupSummaryViewModel>(x)).ToList()
+            };
 
             return viewModel;
         }
@@ -350,14 +359,14 @@ namespace UI.Controllers
         [AllowAnonymous]
         public virtual async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
-            var loginInfo = await authenticationManager.GetExternalLoginInfoAsync();
+            var loginInfo = await _authenticationManager.GetExternalLoginInfoAsync();
             if (loginInfo == null)
             {
                 return RedirectToAction("Login");
             }
 
             // Sign in the user with this external login provider if the user already has a login
-            var user = await userManager.FindAsync(loginInfo.Login);
+            var user = await _userManager.FindAsync(loginInfo.Login);
             if (user != null)
             {
                 await SignInAsync(user, true);
@@ -392,12 +401,12 @@ namespace UI.Controllers
         // GET: /Account/LinkLoginCallback
         public virtual async Task<ActionResult> LinkLoginCallback()
         {
-            var loginInfo = await authenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
+            var loginInfo = await _authenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
             if (loginInfo == null)
             {
                 return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
             }
-            var result = await userManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
+            var result = await _userManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
             if (result.Succeeded)
             {
                 return RedirectToAction("Manage");
@@ -420,7 +429,7 @@ namespace UI.Controllers
             if (ModelState.IsValid)
             {
                 // Get the information about the user from the external login provider
-                var info = await authenticationManager.GetExternalLoginInfoAsync();
+                var info = await _authenticationManager.GetExternalLoginInfoAsync();
                 if (info == null)
                 {
                     return View("ExternalLoginFailure");
@@ -430,13 +439,13 @@ namespace UI.Controllers
                     UserName = model.UserName.Trim(),
                     Email = info.Email.Trim()
                 };
-                var result = await userManager.CreateAsync(user);
+                var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
-                    result = await userManager.AddLoginAsync(user.Id, info.Login);
+                    result = await _userManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
-                        await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(user, TransactionSource.WebApplication);
+                        await _firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(user, TransactionSource.WebApplication);
 
                         return RedirectToAction(MVC.GamingGroup.ActionNames.Index, "GamingGroup");
                     }
@@ -454,7 +463,7 @@ namespace UI.Controllers
         [ValidateAntiForgeryToken]
         public virtual ActionResult LogOff()
         {
-            authenticationManager.SignOut();
+            _authenticationManager.SignOut();
             return RedirectToAction("Index", "Home");
         }
 
@@ -469,7 +478,7 @@ namespace UI.Controllers
         [ChildActionOnly]
         public virtual ActionResult RemoveAccountList()
         {
-            var linkedAccounts = userManager.GetLogins(User.Identity.GetUserId());
+            var linkedAccounts = _userManager.GetLogins(User.Identity.GetUserId());
             ViewBag.ShowRemoveButton = HasPassword() || linkedAccounts.Count > 1;
             return (ActionResult)PartialView("_RemoveAccountPartial", linkedAccounts);
         }
@@ -525,9 +534,9 @@ namespace UI.Controllers
 
         private async Task SignInAsync(ApplicationUser user, bool isPersistent)
         {
-            authenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-            var identity = await userManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
-            authenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
+            _authenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
+            var identity = await _userManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+            _authenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
         }
 
         private void AddErrors(IdentityResult result, string validationKey = "")
@@ -540,7 +549,7 @@ namespace UI.Controllers
 
         private bool HasPassword()
         {
-            var user = userManager.FindById(User.Identity.GetUserId());
+            var user = _userManager.FindById(User.Identity.GetUserId());
             return user?.PasswordHash != null;
         }
 
@@ -614,16 +623,16 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await userManager.FindByEmailAsync(model.Email);
-                if (user == null || !(await userManager.IsEmailConfirmedAsync(user.Id)))
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user.Id)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");
                 }
 
-                var passwordResetToken = await userManager.GeneratePasswordResetTokenAsync(user.Id);
+                var passwordResetToken = await _userManager.GeneratePasswordResetTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = passwordResetToken }, protocol: Request.Url.Scheme);
-                await userManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
+                await _userManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
                 ViewBag.Link = callbackUrl;
                 return View("ForgotPasswordConfirmation");
             }
@@ -648,7 +657,7 @@ namespace UI.Controllers
             {
                 return View("Error");
             }
-            var result = await userManager.ConfirmEmailAsync(userId, code);
+            var result = await _userManager.ConfirmEmailAsync(userId, code);
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
@@ -671,13 +680,13 @@ namespace UI.Controllers
             {
                 return View(model);
             }
-            var user = await userManager.FindByEmailAsync(model.Email);
+            var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
                 // Don't reveal that the user does not exist
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
-            var result = await userManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+            var result = await _userManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
             if (result.Succeeded)
             {
                 return RedirectToAction("ResetPasswordConfirmation", "Account");

@@ -30,8 +30,12 @@ namespace BusinessLogic.Logic.Users
                         GamingGroupId = userGamingGroup.GamingGroup.Id,
                         GamingGroupName = userGamingGroup.GamingGroup.Name,
                         GamingGroupPublicDescription = userGamingGroup.GamingGroup.PublicDescription,
-                        GamingGroupPublicUrl = userGamingGroup.GamingGroup.PublicGamingGroupWebsite
-                    }).ToList(),
+                        GamingGroupPublicUrl = userGamingGroup.GamingGroup.PublicGamingGroupWebsite,
+                        Active = userGamingGroup.GamingGroup.Active,
+                        NumberOfGamesPlayed = userGamingGroup.GamingGroup.PlayedGames.Count,
+                        NumberOfPlayers = userGamingGroup.GamingGroup.Players.Count,
+                        GamingGroupChampion = userGamingGroup.GamingGroup.GamingGroupChampion
+                    }).OrderBy(x => x.GamingGroupName).ToList(),
                     Players = user.Players.Select(player => new PlayerInfoForUser
                     {
                         PlayerId = player.Id,

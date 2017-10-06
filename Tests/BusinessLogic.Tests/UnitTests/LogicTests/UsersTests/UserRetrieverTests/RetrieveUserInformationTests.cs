@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.DataAccess;
-using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Shouldly;
 using StructureMap.AutoMocking;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRetrieverTests
@@ -14,19 +14,18 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRetrieverTests
     [TestFixture]
     public class RetrieveUserInformationTests
     {
-        private RhinoAutoMocker<UserRetriever> autoMocker;
-        private ApplicationUser expectedApplicationUser;
+        private RhinoAutoMocker<UserRetriever> _autoMocker;
         
         [SetUp]
         public void SetUp()
         {
-            autoMocker = new RhinoAutoMocker<UserRetriever>();
+            _autoMocker = new RhinoAutoMocker<UserRetriever>();
         }
 
         [Test]
         public void It_Sets_The_Basic_User_Information_For_The_Requested_User()
         {
-            expectedApplicationUser = new ApplicationUser
+            var expectedApplicationUser = new ApplicationUser
             {
                 Id = "some application user id",
                 UserName = "some user name",
@@ -35,7 +34,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRetrieverTests
                 {
                     new UserGamingGroup
                     {
-                        GamingGroup = new GamingGroup()
+                        GamingGroup = new GamingGroup
+                        {
+                            PlayedGames = new List<PlayedGame>(),
+                            Players = new List<Player>()
+                        }
                     }
                 },
                 Players = new List<Player>(),
@@ -50,14 +53,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRetrieverTests
                 expectedApplicationUser,
                 new ApplicationUser()
             }.AsQueryable();
-            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<ApplicationUser>()).Return(userQueryable);
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<ApplicationUser>()).Return(userQueryable);
 
-            var actualResult = autoMocker.ClassUnderTest.RetrieveUserInformation(expectedApplicationUser);
+            var actualResult = _autoMocker.ClassUnderTest.RetrieveUserInformation(expectedApplicationUser);
 
-            Assert.That(actualResult.UserId, Is.EqualTo(expectedApplicationUser.Id));
-            Assert.That(actualResult.UserName, Is.EqualTo(expectedApplicationUser.UserName));
-            Assert.That(actualResult.Email, Is.EqualTo(expectedApplicationUser.Email));
-            Assert.That(actualResult.BoardGameGeekUser.Name, Is.EqualTo(expectedApplicationUser.BoardGameGeekUser.Name));
+            actualResult.UserId.ShouldBe(expectedApplicationUser.Id);
+            actualResult.UserName.ShouldBe(expectedApplicationUser.UserName);
+            actualResult.Email.ShouldBe(expectedApplicationUser.Email);
+            actualResult.BoardGameGeekUser.Name.ShouldBe(expectedApplicationUser.BoardGameGeekUser.Name);
         }
 
         [Test]
@@ -68,24 +71,41 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRetrieverTests
             const string EXPECTED_URL = "gaming group name 1";
             const string EXPECTED_DESCRIPTION = "gaming group name 1";
 
-            expectedApplicationUser = new ApplicationUser
+            var expectedChampion = new Player();
+            var expectedGamingGroup1 = new GamingGroup
+            {
+                Id = EXPECTED_GAMING_GROUP_ID_1,
+                Name = EXPECTED_GAMING_GROUP_NAME_1,
+                PublicGamingGroupWebsite = EXPECTED_URL,
+                PublicDescription = EXPECTED_DESCRIPTION,
+                Active = !default(bool),
+                PlayedGames = new List<PlayedGame>
+                {
+                    new PlayedGame()
+                },
+                Players = new List<Player>
+                {
+                    new Player(),
+                    new Player()
+                },
+                GamingGroupChampion = expectedChampion
+            };
+            var expectedApplicationUser = new ApplicationUser
             {
                 Id = "some application user id",
                 UserGamingGroups = new List<UserGamingGroup>
                 {
                     new UserGamingGroup
                     {
-                        GamingGroup = new GamingGroup
-                        {
-                            Id = EXPECTED_GAMING_GROUP_ID_1,
-                            Name = EXPECTED_GAMING_GROUP_NAME_1,
-                            PublicGamingGroupWebsite = EXPECTED_URL,
-                            PublicDescription = EXPECTED_DESCRIPTION
-                        }
+                        GamingGroup = expectedGamingGroup1
                     },
                     new UserGamingGroup
                     {
-                        GamingGroup = new GamingGroup()
+                        GamingGroup = new GamingGroup
+                        {
+                            PlayedGames = new List<PlayedGame>(),
+                            Players = new List<Player>()
+                        }
                     }
                 },
                 Players = new List<Player>(),
@@ -95,17 +115,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRetrieverTests
             {
                 expectedApplicationUser
             }.AsQueryable();
-            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<ApplicationUser>()).Return(userQueryable);
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<ApplicationUser>()).Return(userQueryable);
 
-            var actualResult = autoMocker.ClassUnderTest.RetrieveUserInformation(expectedApplicationUser);
+            var actualResult = _autoMocker.ClassUnderTest.RetrieveUserInformation(expectedApplicationUser);
 
-            Assert.That(actualResult.GamingGroups.Count, Is.EqualTo(2));
+            actualResult.GamingGroups.Count.ShouldBe(2);
             var actualGamingGroupInfo = actualResult.GamingGroups[0];
-            Assert.That(actualGamingGroupInfo.GamingGroupId, Is.EqualTo(EXPECTED_GAMING_GROUP_ID_1));
-            Assert.That(actualGamingGroupInfo.GamingGroupName, Is.EqualTo(EXPECTED_GAMING_GROUP_NAME_1));
-            Assert.That(actualGamingGroupInfo.GamingGroupPublicUrl, Is.EqualTo(EXPECTED_URL));
-            Assert.That(actualGamingGroupInfo.GamingGroupPublicDescription, Is.EqualTo(EXPECTED_DESCRIPTION));
-            Assert.That(actualResult.UserId, Is.EqualTo(expectedApplicationUser.Id));
+            actualGamingGroupInfo.GamingGroupId.ShouldBe(EXPECTED_GAMING_GROUP_ID_1);
+            actualGamingGroupInfo.GamingGroupName.ShouldBe(EXPECTED_GAMING_GROUP_NAME_1);
+            actualGamingGroupInfo.GamingGroupPublicUrl.ShouldBe(EXPECTED_URL);
+            actualGamingGroupInfo.GamingGroupPublicDescription.ShouldBe(EXPECTED_DESCRIPTION);
+            actualGamingGroupInfo.Active.ShouldBe(expectedGamingGroup1.Active);
+            actualGamingGroupInfo.NumberOfGamesPlayed.ShouldBe(expectedGamingGroup1.PlayedGames.Count);
+            actualGamingGroupInfo.NumberOfPlayers.ShouldBe(expectedGamingGroup1.Players.Count);
+            actualGamingGroupInfo.GamingGroupChampion.ShouldBeSameAs(expectedChampion);
         }
 
         [Test]
@@ -115,14 +138,18 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRetrieverTests
             const string EXPECTED_PLAYER_NAME_1 = "player name 1";
             const int EXPECTED_GAMING_GROUP_ID_1 = 2;
 
-            expectedApplicationUser = new ApplicationUser
+            var expectedApplicationUser = new ApplicationUser
             {
                 Id = "some application user id",
                 UserGamingGroups = new List<UserGamingGroup>
                 {
                     new UserGamingGroup
                     {
-                        GamingGroup = new GamingGroup()
+                        GamingGroup = new GamingGroup
+                        {
+                            PlayedGames = new List<PlayedGame>(),
+                            Players = new List<Player>()
+                        }
                     }
                 },
                 Players = new List<Player>
@@ -145,16 +172,15 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRetrieverTests
             {
                 expectedApplicationUser
             }.AsQueryable();
-            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<ApplicationUser>()).Return(userQueryable);
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<ApplicationUser>()).Return(userQueryable);
 
-            var actualResult = autoMocker.ClassUnderTest.RetrieveUserInformation(expectedApplicationUser);
+            var actualResult = _autoMocker.ClassUnderTest.RetrieveUserInformation(expectedApplicationUser);
 
-            Assert.That(actualResult.Players.Count, Is.EqualTo(2));
+            actualResult.Players.Count.ShouldBe(2);
             var actualPlayer = actualResult.Players[0];
-            Assert.That(actualPlayer.PlayerId, Is.EqualTo(EXPECTED_PLAYER_ID_1));
-            Assert.That(actualPlayer.PlayerName, Is.EqualTo(EXPECTED_PLAYER_NAME_1));
-            Assert.That(actualPlayer.GamingGroupId, Is.EqualTo(EXPECTED_GAMING_GROUP_ID_1));
-
+            actualPlayer.PlayerId.ShouldBe(EXPECTED_PLAYER_ID_1);
+            actualPlayer.PlayerName.ShouldBe(EXPECTED_PLAYER_NAME_1);
+            actualPlayer.GamingGroupId.ShouldBe(EXPECTED_GAMING_GROUP_ID_1);
         }
     }
 }

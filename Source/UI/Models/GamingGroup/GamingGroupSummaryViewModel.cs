@@ -16,7 +16,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 
 namespace UI.Models.GamingGroup

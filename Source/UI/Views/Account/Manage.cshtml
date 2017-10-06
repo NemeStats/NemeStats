@@ -31,7 +31,17 @@
                 @Html.Partial(MVC.Account.Views._CreateGamingGroupPartial)
             </div>
         </div>
+        
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4>Your Gaming Groups</h4>
+            </div>
+            <div class="panel-body">
+                @Html.Partial(MVC.GamingGroup.Views._TopGamingGroupsPartial, Model.GamingGroupsSummary)
+            </div>
+        </div>
     </div>
+
     <div class="col-md-4">
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -40,14 +50,14 @@
             <div class="panel-body">
                 <section id="externalLogins">
                     @Html.Action("RemoveAccountList")
-                    <br /><br />
-                    @Html.Partial(MVC.Account.Views._ExternalLoginsListPartial, new { Action = "LinkLogin", ReturnUrl = ViewBag.ReturnUrl })
+                    <br/><br/>
+                    @Html.Partial(MVC.Account.Views._ExternalLoginsListPartial, new {Action = "LinkLogin", ReturnUrl = ViewBag.ReturnUrl})
                 </section>
             </div>
         </div>
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h4><a href="http://www.boardgamegeek.com" target="_blank;"><img src="~/Content/Images/bgg_small.png" alt="BoardGameGeek.com" title="BoardGameGeek.com" /></a> BoardGameGeek Integration</h4>
+                <h4><a href="http://www.boardgamegeek.com" target="_blank;"><img src="~/Content/Images/bgg_small.png" alt="BoardGameGeek.com" title="BoardGameGeek.com"/></a> BoardGameGeek Integration</h4>
             </div>
             <div class="panel-body">
                 @Html.Partial(MVC.Account.Views.BoardGameGeekIntegration, Model.BoardGameGeekIntegrationModel)
@@ -55,6 +65,6 @@
         </div>
     </div>
 </div>
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
