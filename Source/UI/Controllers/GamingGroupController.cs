@@ -15,7 +15,6 @@
 
 #endregion LICENSE
 
-using AutoMapper;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Users;
@@ -24,10 +23,12 @@ using BusinessLogic.Models.User;
 using BusinessLogic.Models.Utility;
 using System.Linq;
 using System.Web.Mvc;
+using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Facades;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
+using BusinessLogic.Models;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Models.GamingGroup;
@@ -57,6 +58,7 @@ namespace UI.Controllers
         internal IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
         internal ITransformer transformer;
         internal ITopGamingGroupsRetriever topGamingGroupsRetriever;
+        internal ISecuredEntityValidator securedEntityValidator;
 
         public GamingGroupController(
             IGamingGroupSaver gamingGroupSaver,
@@ -69,7 +71,8 @@ namespace UI.Controllers
             IPlayedGameRetriever playedGameRetriever, 
             IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder,
             ITransformer transformer, 
-            ITopGamingGroupsRetriever topGamingGroupsRetriever)
+            ITopGamingGroupsRetriever topGamingGroupsRetriever, 
+            ISecuredEntityValidator securedEntityValidator)
         {
             this.gamingGroupSaver = gamingGroupSaver;
             this.gamingGroupRetriever = gamingGroupRetriever;
@@ -82,6 +85,7 @@ namespace UI.Controllers
             this.playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
             this.transformer = transformer;
             this.topGamingGroupsRetriever = topGamingGroupsRetriever;
+            this.securedEntityValidator = securedEntityValidator;
         }
 
         // GET: /GamingGroup
@@ -113,11 +117,12 @@ namespace UI.Controllers
                     GamingGroupId = gamingGroupSummary.Id,
                     GamingGroupName = gamingGroupSummary.Name,
                     PublicDescription = gamingGroupSummary.PublicDescription,
-                    Website = gamingGroupSummary.PublicGamingGroupWebsite
-                }
+                    Website = gamingGroupSummary.PublicGamingGroupWebsite,
+                    Active = gamingGroupSummary.Active
+                },
+                DateRangeFilter = dateRangeFilter,
+                UserCanEdit = currentUser.CurrentGamingGroupId == id
             };
-            viewModel.DateRangeFilter = dateRangeFilter;
-            viewModel.UserCanEdit = currentUser.CurrentGamingGroupId == id;
 
             return View(MVC.GamingGroup.Views.Details, viewModel);
         }
@@ -267,19 +272,21 @@ namespace UI.Controllers
 
         [HttpGet]
         [Authorize]
-        public virtual ActionResult Edit(int id)
+        [UserContext]
+        public virtual ActionResult Edit(int id, ApplicationUser currentUser)
         {
-            var gamingGroup = gamingGroupRetriever.GetGamingGroupById(id);
+            var gamingGroup = securedEntityValidator.RetrieveAndValidateAccess<GamingGroup>(id, currentUser);
 
             var model = new GamingGroupPublicDetailsViewModel
             {
                 GamingGroupName = gamingGroup.Name,
                 GamingGroupId = id,
                 PublicDescription = gamingGroup.PublicDescription,
-                Website = gamingGroup.PublicGamingGroupWebsite
+                Website = gamingGroup.PublicGamingGroupWebsite,
+                Active = gamingGroup.Active
             };
 
-            return View(model);
+            return View(MVC.GamingGroup.Views.Edit, model);
         }
 
         [HttpPost]
@@ -289,12 +296,12 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                this.gamingGroupSaver.UpdatePublicGamingGroupDetails(request, currentUser);
+                gamingGroupSaver.UpdatePublicGamingGroupDetails(request, currentUser);
 
                 return RedirectToAction(MVC.GamingGroup.Details(currentUser.CurrentGamingGroupId, currentUser));
             }
 
-            return (this.Edit(request.GamingGroupId));
+            return Edit(request.GamingGroupId, currentUser);
         }
     }
 }

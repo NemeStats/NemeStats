@@ -46,6 +46,17 @@
                     @Html.ValidationMessageFor(model => model.Website)
                 </div>
             </div>
+
+            <div class="row form-group">
+                <div class="col-xs-2">
+                    @Html.LabelFor(x => x.Active)
+                </div>
+
+                <div class="col-xs-6">
+                    @Html.CheckBoxFor(x => x.Active)
+                </div>
+            </div>
+
             <div>
                 <button class="btn btn-primary" type="submit">Update</button>
             </div>

@@ -16,8 +16,7 @@ namespace BusinessLogic.Logic.Users
         }
 
         public UserInformation RetrieveUserInformation(ApplicationUser applicationUser)
-        {
-           
+        { 
             var userInformation = _dataContext.GetQueryable<ApplicationUser>()
                 .Where(user => user.Id == applicationUser.Id)
                 .Select(user => new UserInformation

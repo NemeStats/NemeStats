@@ -43,7 +43,8 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
                 Name = "some gaming group name",
                 DateCreated = DateTime.MaxValue,
                 PublicDescription = "some public description",
-                PublicGamingGroupWebsite = "https://website.com"
+                PublicGamingGroupWebsite = "https://website.com",
+                Active = true
             };
             _dateRangeFilter = new BasicDateRangeFilter();
 
@@ -73,6 +74,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             viewModel.PublicDetailsView.GamingGroupName.ShouldBe(_gamingGroupSummary.Name);
             viewModel.PublicDetailsView.PublicDescription.ShouldBe(_gamingGroupSummary.PublicDescription);
             viewModel.PublicDetailsView.Website.ShouldBe(_gamingGroupSummary.PublicGamingGroupWebsite);
+            viewModel.PublicDetailsView.Active.ShouldBe(_gamingGroupSummary.Active);
         }
 
         [Test]

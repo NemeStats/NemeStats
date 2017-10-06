@@ -1,6 +1,10 @@
 ﻿using NUnit.Framework;
 using Rhino.Mocks;
 using System.Web.Mvc;
+using BusinessLogic.DataAccess.Security;
+using BusinessLogic.Models;
+using BusinessLogic.Models.User;
+using Shouldly;
 using UI.Models.GamingGroup;
 
 namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
@@ -10,43 +14,32 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         private const int GAMING_GROUP_ID = 1;
 
         [Test]
-        public void ItReturnsGamingGroupEditView()
+        public void It_Returns_The_Specified_Gaming_Group_As_The_Model_For_The_Edit_View()
         {
             //--Arrange
-            autoMocker.PartialMockTheClassUnderTest();
-            autoMocker.ClassUnderTest.Expect(x => x.Edit(Arg<int>.Is.Anything)).Return(new ViewResult
+            var gamingGroup = new GamingGroup
             {
-                ViewName = MVC.GamingGroup.Views.Edit
-            });
-
-            //--Act
-            var viewResult = autoMocker.ClassUnderTest.Edit(GAMING_GROUP_ID) as ViewResult;
-
-            //--Assert
-            Assert.AreEqual(MVC.GamingGroup.Views.Edit, viewResult.ViewName);
-        }
-
-        [Test]
-        public void ItSendsCorrectModelToView()
-        {
-            //--Arrange
-            var model = new GamingGroupPublicDetailsViewModel
-            {
-                PublicDescription = "Description",
-                Website = "Website"
+                Active = !default(bool),
+                Name = "some gaming group name",
+                PublicDescription = "some public description",
+                PublicGamingGroupWebsite = "some website url"
             };
-
-            autoMocker.PartialMockTheClassUnderTest();
-            autoMocker.ClassUnderTest.Expect(x => x.Edit(Arg<int>.Is.Anything)).Return(new ViewResult
-            {
-                ViewData = new ViewDataDictionary(model)
-            });
+            autoMocker.Get<ISecuredEntityValidator>().Expect(mock => mock.RetrieveAndValidateAccess<GamingGroup>(GAMING_GROUP_ID, currentUser))
+                .Return(gamingGroup);
 
             //--Act
-            var viewResult = autoMocker.ClassUnderTest.Edit(GAMING_GROUP_ID) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Edit(GAMING_GROUP_ID, currentUser) as ViewResult;
 
             //--Assert
-            Assert.AreEqual(model, viewResult.Model);
+            viewResult.ShouldNotBeNull();
+            viewResult.ViewName.ShouldBe(MVC.GamingGroup.Views.Edit);
+            var viewModel = viewResult.Model as GamingGroupPublicDetailsViewModel;
+            viewModel.ShouldNotBeNull();
+            viewModel.Active.ShouldBe(gamingGroup.Active);
+            viewModel.GamingGroupName.ShouldBe(gamingGroup.Name);
+            viewModel.PublicDescription.ShouldBe(gamingGroup.PublicDescription);
+            viewModel.Website.ShouldBe(gamingGroup.PublicGamingGroupWebsite);
+
         }
     }
 }

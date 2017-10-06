@@ -104,7 +104,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRetrieverTests
                         GamingGroup = new GamingGroup
                         {
                             PlayedGames = new List<PlayedGame>(),
-                            Players = new List<Player>()
+                            Players = new List<Player>(),
+                            Name = "zzz - this game will get sorted 2nd because of the name"
                         }
                     }
                 },

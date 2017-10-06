@@ -11,7 +11,7 @@
     @Model.PublicDetailsView.GamingGroupName
     @if (Model.UserCanEdit)
     {
-        <a href="@Url.Action(MVC.GamingGroup.Edit(Model.PublicDetailsView.GamingGroupId))" class="btn btn-xs btn-default">
+        <a href="@Url.Action(MVC.GamingGroup.Edit().AddRouteValue("id", Model.PublicDetailsView.GamingGroupId))" class="btn btn-xs btn-default">
             <span class="fa fa-pencil"></span>&nbsp;Edit
         </a>
     }
