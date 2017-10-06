@@ -298,7 +298,7 @@ namespace UI.Controllers
             {
                 gamingGroupSaver.UpdatePublicGamingGroupDetails(request, currentUser);
 
-                return RedirectToAction(MVC.GamingGroup.Details(currentUser.CurrentGamingGroupId, currentUser));
+                return RedirectToAction(MVC.Account.Manage());
             }
 
             return Edit(request.GamingGroupId, currentUser);

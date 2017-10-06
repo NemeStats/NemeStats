@@ -8,8 +8,6 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 {
     public class EditPostTests : GamingGroupControllerTestBase
     {
-        private const int GAMING_GROUP_ID = 1;
-
         [Test]
         public void ItUpdatesGamingGroupPublicDetails()
         {
@@ -18,7 +16,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
                 PublicDescription = "Description",
                 Website = "http://Website.com"
             };
-            var httpStatusCodeResult = autoMocker.ClassUnderTest.Edit(request, currentUser) as HttpStatusCodeResult;
+            autoMocker.ClassUnderTest.Edit(request, currentUser);
 
             autoMocker.Get<IGamingGroupSaver>().AssertWasCalled(x => x.UpdatePublicGamingGroupDetails(request, currentUser));
         }
