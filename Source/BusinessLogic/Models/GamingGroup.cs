@@ -26,7 +26,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessLogic.Models
 {
-	public class GamingGroup : EntityWithTechnicalKey<int>
+	public class GamingGroup : SecuredEntityWithTechnicalKey<int>
 	{
 		public GamingGroup()
 		{
@@ -38,7 +38,15 @@ namespace BusinessLogic.Models
 		public string PublicDescription { get; set; }
 		public string PublicGamingGroupWebsite { get; set; }
 
-		public string OwningUserId { get; set; }
+        //--This is necessary so that the GamingGroup itself can be a secured entity
+        [NotMapped]
+	    public override int GamingGroupId
+	    {
+	        get { return Id; }
+	        set { Id = value; }
+	    }
+
+	    public string OwningUserId { get; set; }
         public int? GamingGroupChampionPlayerId { get; set; }
 		public DateTime DateCreated { get; set; }
 	    public bool Active { get; set; } = true;

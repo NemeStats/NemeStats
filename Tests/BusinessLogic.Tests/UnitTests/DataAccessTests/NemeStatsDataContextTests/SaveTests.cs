@@ -109,5 +109,27 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
             dataContext.AssertWasCalled(mock => mock.AddOrInsertOverride(
                 Arg<GameDefinition>.Matches(entity => entity.GamingGroupId == currentUser.CurrentGamingGroupId)));
         }
+
+        [Test]
+        public void ItDoesntSetTheGamingGroupIdIfTheEntityIsAGamingGroupItself()
+        {
+            var gamingGroup = new GamingGroup();
+
+            var securedEntityValidator = MockRepository.GenerateMock<ISecuredEntityValidator>();
+            securedEntityValidatorFactory.Expect(mock => mock.MakeSecuredEntityValidator<GamingGroup>(dataContext))
+                .IgnoreArguments()
+                .Return(securedEntityValidator);
+            securedEntityValidator.Expect(mock => mock.ValidateAccess<GameDefinition>(null, null)).IgnoreArguments();
+
+            dataContext.Expect(mock => mock.AddOrInsertOverride(gamingGroup))
+                .Repeat.Once()
+                .Return(gamingGroup);
+
+            dataContext.Save(gamingGroup, currentUser);
+
+            //--GamingGroup.GamingGroupId is just an alias for GamingGroup.Id, so this should remain the same
+            dataContext.AssertWasNotCalled(mock => mock.AddOrInsertOverride(
+                Arg<GamingGroup>.Matches(entity => entity.GamingGroupId == currentUser.CurrentGamingGroupId)));
+        }
     }
 }

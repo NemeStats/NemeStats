@@ -24,6 +24,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using BusinessLogic.Models;
 
 namespace BusinessLogic.DataAccess
 {
@@ -83,7 +84,7 @@ namespace BusinessLogic.DataAccess
             var validator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>(this);
             validator.ValidateAccess<TEntity>(entity, currentUser);
 
-            if (!entity.AlreadyInDatabase())
+            if (!entity.AlreadyInDatabase() && typeof(TEntity) != typeof(GamingGroup))
             {
                 SetGamingGroupIdIfEntityIsSecured(entity, currentUser);
             }
