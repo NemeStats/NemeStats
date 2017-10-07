@@ -49,7 +49,7 @@ namespace UI.Controllers
         private readonly IBoardGameGeekUserSaver _boardGameGeekUserSaver;
         private readonly IBoardGameGeekApiClient _boardGameGeekApiClient;
         private readonly IUserRetriever _userRetriever;
-        private ITransformer _transformer;
+        private readonly ITransformer _transformer;
 
         public AccountController(
             ApplicationUserManager userManager,
@@ -63,11 +63,11 @@ namespace UI.Controllers
             IUserRetriever userRetriever, 
             ITransformer transformer)
         {
-            this._userManager = userManager;
-            this._userRegisterer = userRegisterer;
-            this._firstTimeAuthenticator = firstTimeAuthenticator;
-            this._authenticationManager = authenticationManager;
-            this._gamingGroupInvitationConsumer = gamingGroupInvitationConsumer;
+            _userManager = userManager;
+            _userRegisterer = userRegisterer;
+            _firstTimeAuthenticator = firstTimeAuthenticator;
+            _authenticationManager = authenticationManager;
+            _gamingGroupInvitationConsumer = gamingGroupInvitationConsumer;
             _gamingGroupRetriever = gamingGroupRetriever;
             _boardGameGeekUserSaver = boardGameGeekUserSaver;
             _boardGameGeekApiClient = boardGameGeekApiClient;
@@ -140,7 +140,7 @@ namespace UI.Controllers
                     gamingGroupInvitation = new Guid(model.GamingGroupInvitationId);
                 }
 
-                NewUser newUser = new NewUser
+                var newUser = new NewUser
                 {
                     EmailAddress = model.EmailAddress.Trim(),
                     UserName = model.UserName.Trim(),
@@ -148,13 +148,13 @@ namespace UI.Controllers
                     GamingGroupInvitationId = gamingGroupInvitation
                 };
 
-                RegisterNewUserResult registerNewUserResult = await this._userRegisterer.RegisterUser(newUser);
+                var registerNewUserResult = await _userRegisterer.RegisterUser(newUser);
 
                 if (registerNewUserResult.Result.Succeeded)
                 {
                     return RedirectToAction(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name);
                 }
-                this.AddErrors(registerNewUserResult.Result);
+                AddErrors(registerNewUserResult.Result);
             }
 
             // If we got this far, something failed, redisplay form
@@ -165,20 +165,20 @@ namespace UI.Controllers
         [AllowAnonymous]
         public virtual ActionResult ConsumeInvitation(string id, ApplicationUser currentUser)
         {
-            AddUserToGamingGroupResult result = _gamingGroupInvitationConsumer.AddExistingUserToGamingGroup(id);
+            var result = _gamingGroupInvitationConsumer.AddExistingUserToGamingGroup(id);
 
             if (result.UserAddedToExistingGamingGroup)
             {
                 return RedirectToAction(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name);
             }
 
-            RegisterViewModel registerViewModel = new RegisterViewModel
+            var registerViewModel = new RegisterViewModel
             {
                 EmailAddress = result.EmailAddress,
                 GamingGroupInvitationId = id
             };
 
-            return this.View(MVC.Account.Views.RegisterAgainstExistingGamingGroup, registerViewModel);
+            return View(MVC.Account.Views.RegisterAgainstExistingGamingGroup, registerViewModel);
         }
 
         //
@@ -188,7 +188,7 @@ namespace UI.Controllers
         public virtual async Task<ActionResult> Disassociate(string loginProvider, string providerKey)
         {
             ManageMessageId? message = null;
-            IdentityResult result = await _userManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
+            var result = await _userManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
             if (result.Succeeded)
             {
                 message = ManageMessageId.RemoveLoginSuccess;
@@ -214,10 +214,10 @@ namespace UI.Controllers
                 : message == ManageMessageId.Error ? "An error occurred."
                 : "";
 
-            this.SetToastMessage(TempMessageKeys.MANAGE_ACCOUNT_RESULT_TEMPMESSAGE, tempMessage, message.HasValue && message == ManageMessageId.Error ? "error" : "success");
+            SetToastMessage(TempMessageKeys.MANAGE_ACCOUNT_RESULT_TEMPMESSAGE, tempMessage, message.HasValue && message == ManageMessageId.Error ? "error" : "success");
 
             SetViewBag();
-            ManageAccountViewModel viewModel = GetBaseManageAccountViewModel();
+            var viewModel = GetBaseManageAccountViewModel();
 
             return View(MVC.Account.Views.Manage, viewModel);
         }
@@ -316,11 +316,11 @@ namespace UI.Controllers
 
         internal virtual ManageAccountViewModel GetBaseManageAccountViewModel()
         {
-            ManageAccountViewModel viewModel = new ManageAccountViewModel();
-            string currentUserId = User.Identity.GetUserId();
-            ApplicationUser user = _userManager.FindById(currentUserId);
+            var viewModel = new ManageAccountViewModel();
+            var currentUserId = User.Identity.GetUserId();
+            var user = _userManager.FindById(currentUserId);
             viewModel.PasswordViewModel = HasPassword() ? (PasswordViewModel)new ChangePasswordViewModel() : new SetPasswordViewModel();
-            ChangeEmailViewModel emailViewModel = new ChangeEmailViewModel();
+            var emailViewModel = new ChangeEmailViewModel();
             emailViewModel.EmailAddress = user.Email;
             viewModel.ChangeEmailViewModel = emailViewModel;
 
