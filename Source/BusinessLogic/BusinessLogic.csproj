@@ -324,6 +324,7 @@
     <Compile Include="Migrations\201710040027508_GamingGroup_Active_Flag.Designer.cs">
       <DependentUpon>201710040027508_GamingGroup_Active_Flag.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\User\BasicUserInfo.cs" />
     <Compile Include="Models\GamingGroups\GamingGroupStats.cs" />
     <Compile Include="Logic\ITransformer.cs" />
     <Compile Include="Logic\OneTimeJobs\BoardGameGeekThumbnailAttacher.cs" />
@@ -482,6 +483,7 @@
     <Compile Include="Models\Games\UniversalGameStats.cs" />
     <Compile Include="Models\Games\UpdatedGame.cs" />
     <Compile Include="Models\GamingGroups\GamingGroupSitemapInfo.cs" />
+    <Compile Include="Models\GamingGroups\GamingGroupWithUsers.cs" />
     <Compile Include="Models\PlayedGameApplicationLinkage.cs" />
     <Compile Include="Models\Games\SavePlayedGameRequest.cs" />
     <Compile Include="Models\Games\TrendingGame.cs" />

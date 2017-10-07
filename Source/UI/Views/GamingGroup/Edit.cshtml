@@ -46,6 +46,43 @@
                     @Html.ValidationMessageFor(model => model.Website)
                 </div>
             </div>
+            
+            @if (Model.OtherUsers.Count > 0)
+            {
+                <div class="flip-scroll">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="name-head">
+                                    Username
+                                </th>
+                                <th>
+                                    Email
+                                </th>
+                                <th>
+                                    Player Name
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model.OtherUsers)
+                            {
+                                <tr>
+                                    <td>
+                                        @user.UserName
+                                    </td>
+                                    <td>
+                                        @user.Email
+                                    </td>
+                                    <td>
+                                        @user.PlayerName
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
 
             <div class="row form-group">
                 <div class="col-xs-2">

@@ -37,5 +37,6 @@ namespace BusinessLogic.Logic.GamingGroups
 		List<TopGamingGroupSummary> GetTopGamingGroups(int numberOfTopGamingGroupsToShow);
 	    List<GamingGroupSitemapInfo> GetGamingGroupsSitemapInfo();
 	    GamingGroupStats GetGamingGroupStats(int gamingGroupId, BasicDateRangeFilter dateFilter);
+	    GamingGroupWithUsers GetGamingGroupWithUsers(int gamingGroupId, ApplicationUser currentUser);
 	}
 }

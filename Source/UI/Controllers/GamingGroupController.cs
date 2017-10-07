@@ -33,6 +33,7 @@ using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Models.GamingGroup;
 using UI.Models.PlayedGame;
+using UI.Models.User;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
 
@@ -275,15 +276,16 @@ namespace UI.Controllers
         [UserContext]
         public virtual ActionResult Edit(int id, ApplicationUser currentUser)
         {
-            var gamingGroup = securedEntityValidator.RetrieveAndValidateAccess<GamingGroup>(id, currentUser);
+            var gamingGroup = gamingGroupRetriever.GetGamingGroupWithUsers(id, currentUser);
 
             var model = new GamingGroupPublicDetailsViewModel
             {
-                GamingGroupName = gamingGroup.Name,
+                GamingGroupName = gamingGroup.GamingGroupName,
                 GamingGroupId = id,
                 PublicDescription = gamingGroup.PublicDescription,
                 Website = gamingGroup.PublicGamingGroupWebsite,
-                Active = gamingGroup.Active
+                Active = gamingGroup.Active,
+                OtherUsers = gamingGroup.OtherUsers.Select(x => transformer.Transform<BasicUserInfoViewModel>(x)).ToList()
             };
 
             return View(MVC.GamingGroup.Views.Edit, model);

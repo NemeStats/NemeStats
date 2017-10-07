@@ -143,5 +143,10 @@ namespace BusinessLogic.Logic.GamingGroups
                 TotalNumberOfPlayers = totalNumberOfPlayers 
             };
         }
+
+        public GamingGroupWithUsers GetGamingGroupWithUsers(int gamingGroupId, ApplicationUser currentUser)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

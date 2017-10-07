@@ -44,6 +44,7 @@ using UI.Models.PlayedGame;
 using UI.Models.Players;
 using UI.Models.Points;
 using UI.Models.UniversalGameModels;
+using UI.Models.User;
 
 namespace UI.Transformations
 {
@@ -184,6 +185,8 @@ namespace UI.Transformations
                     opt => opt.MapFrom(y => BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(y.BoardGameGeekGameDefinitionId)));
 
             Mapper.CreateMap<GamingGroupStats, GamingGroupStatsViewModel>();
+
+            Mapper.CreateMap<BasicUserInfo, BasicUserInfoViewModel>();
         }
     }
 }
