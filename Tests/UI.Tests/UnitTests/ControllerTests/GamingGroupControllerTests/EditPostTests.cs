@@ -11,11 +11,8 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItUpdatesGamingGroupPublicDetails()
         {
-            var request = new GamingGroupEditRequest
-            {
-                PublicDescription = "Description",
-                Website = "http://Website.com"
-            };
+            var request = new GamingGroupEditRequest();
+
             autoMocker.ClassUnderTest.Edit(request, currentUser);
 
             autoMocker.Get<IGamingGroupSaver>().AssertWasCalled(x => x.UpdatePublicGamingGroupDetails(request, currentUser));

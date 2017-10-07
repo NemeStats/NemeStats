@@ -881,7 +881,7 @@
     <Content Include="Views\Player\_PlayersSummaryPartial.cshtml" />
     <Content Include="Views\GameDefinition\_GameDefinitionsTablePartial.cshtml" />
     <Content Include="Views\Account\CreateGamingGroup.cshtml" />
-    <Content Include="Views\Account\UserGamingGroups.cshtml" />
+    <Content Include="Views\Account\_UserGamingGroupsPartial.cshtml" />
     <Content Include="Views\Account\LoginForm.cshtml" />
     <Content Include="Views\Shared\Footer.cshtml" />
     <Content Include="Views\Player\CurrentPlayerQuickStats.cshtml" />

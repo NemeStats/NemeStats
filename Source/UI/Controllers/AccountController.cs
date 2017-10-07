@@ -232,14 +232,17 @@ namespace UI.Controllers
         public virtual ActionResult UserGamingGroups(ApplicationUser currentUser)
         {
             var gamingGroups = _gamingGroupRetriever.GetGamingGroupsForUser(currentUser);
+
             var model = new UserGamingGroupsModel
             {
                 GamingGroups = gamingGroups,
-                CurrentGamingGroup = gamingGroups.First(gg => gg.Id == currentUser.CurrentGamingGroupId),
+                CurrentGamingGroup = gamingGroups.FirstOrDefault(gg => gg.Id == currentUser.CurrentGamingGroupId),
                 CurrentUser = currentUser
             };
-            return View(MVC.Account.Views.UserGamingGroups, model);
+            return PartialView(MVC.Account.Views._UserGamingGroupsPartial, model);
         }
+
+ //TODO WHAT TO DO IF THE USERS GG IS NOT ACTIVE? THIS IS CALLED VIA Html.RenderAction(MVC.Account.UserGamingGroups()) -- need to use javascript?
 
         //TODO how to test async methods?
         // POST: /Account/SetPassword

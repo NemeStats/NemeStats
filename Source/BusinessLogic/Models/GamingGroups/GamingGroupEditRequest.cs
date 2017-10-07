@@ -10,5 +10,6 @@ namespace BusinessLogic.Models.GamingGroups
         [Url]
         public string Website { get; set; }
         public string PublicDescription { get; set; }
+        public bool Active { get; set; }
     }
 }

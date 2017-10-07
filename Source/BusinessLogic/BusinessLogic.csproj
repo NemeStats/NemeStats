@@ -228,6 +228,7 @@
     <Compile Include="Exceptions\ApiFriendlyException.cs" />
     <Compile Include="Exceptions\InvalidDateFormatException.cs" />
     <Compile Include="Exceptions\InvalidSourceException.cs" />
+    <Compile Include="Exceptions\LastValidGamingGroupException.cs" />
     <Compile Include="Exceptions\PlayerAlreadyExistsException.cs" />
     <Compile Include="Exceptions\PlayerNotInGamingGroupException.cs" />
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
