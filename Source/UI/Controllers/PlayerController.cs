@@ -292,7 +292,7 @@ namespace UI.Controllers
             var playerQuickStats = playerRetriever.GetPlayerQuickStatsForUser(currentUser.Id, currentUser.CurrentGamingGroupId);
             var playerQuickStatsViewModel = Mapper.Map<PlayerQuickStatsViewModel>(playerQuickStats);
 
-            return View(MVC.Player.Views.CurrentPlayerQuickStats, playerQuickStatsViewModel);
+            return PartialView(MVC.Player.Views._CurrentPlayerQuickStatsPartial, playerQuickStatsViewModel);
         }
     }
 }

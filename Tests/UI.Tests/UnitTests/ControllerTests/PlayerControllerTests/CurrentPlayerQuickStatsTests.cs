@@ -41,7 +41,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 .Expect(mock => mock.GetPlayerQuickStatsForUser(currentUser.Id, currentUser.CurrentGamingGroupId))
                 .Return(expectedPlayerQuickSummary);
 
-            var result = autoMocker.ClassUnderTest.CurrentPlayerQuickStats(currentUser) as ViewResult;
+            var result = autoMocker.ClassUnderTest.CurrentPlayerQuickStats(currentUser) as PartialViewResult;
 
             Assert.That(result, Is.Not.Null);
             var actualModel = result.Model as PlayerQuickStatsViewModel;
