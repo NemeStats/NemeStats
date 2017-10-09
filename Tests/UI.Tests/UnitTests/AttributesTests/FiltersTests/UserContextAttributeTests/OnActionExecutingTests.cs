@@ -61,7 +61,7 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
             this.userManager = new ApplicationUserManager(this.userStoreMock, this.dataProtectionProviderMock);
             clientIdCalculatorMock = MockRepository.GenerateMock<ClientIdCalculator>();
             //need to simulate like the parameter exists on the method
-            this.actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY] = null;
+            this.actionExecutingContext.ActionParameters[UserContextAttribute.UserContextKey] = null;
 
             HttpContextBase httpContextBase = MockRepository.GenerateMock<HttpContextBase>();
             this.actionExecutingContext.HttpContext = httpContextBase;
@@ -108,7 +108,7 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
                 .Return(false);
 
             this.userContextActionFilter.OnActionExecuting(this.actionExecutingContext, this.userManager, this.clientIdCalculatorMock);
-            Assert.IsInstanceOf<AnonymousApplicationUser>(this.actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY]);
+            Assert.IsInstanceOf<AnonymousApplicationUser>(this.actionExecutingContext.ActionParameters[UserContextAttribute.UserContextKey]);
         }
 
         [Test]
@@ -116,7 +116,7 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
         {
             this.userContextActionFilter.OnActionExecuting(this.actionExecutingContext, this.userManager, this.clientIdCalculatorMock);
 
-            Assert.AreEqual(this.applicationUser, this.actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY]);
+            Assert.AreEqual(this.applicationUser, this.actionExecutingContext.ActionParameters[UserContextAttribute.UserContextKey]);
         }
 
         [Test]
@@ -171,7 +171,7 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
 
             this.userContextActionFilter.OnActionExecuting(this.actionExecutingContext, this.userManager, this.clientIdCalculatorMock);
 
-            ApplicationUser actualApplicationUser = (ApplicationUser)this.actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY];
+            ApplicationUser actualApplicationUser = (ApplicationUser)this.actionExecutingContext.ActionParameters[UserContextAttribute.UserContextKey];
             Assert.That(actualApplicationUser.AnonymousClientId, Is.EqualTo(EXPECTED_CLIENT_ID));
         }
     }
