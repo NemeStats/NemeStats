@@ -23,64 +23,63 @@ using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
+using StructureMap.AutoMocking;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupContextSwitcherTests
 {
     public class SwitchGamingGroupContextTests
     {
-        protected IDataContext dataContextMock;
-        protected GamingGroupContextSwitcher contextSwitcher;
-        protected ApplicationUser currentUser;
-        protected ApplicationUser retrievedUser;
-        protected List<UserGamingGroup> userGamingGroups;
-        protected int gamingGroupIdUserCanSee = 1;
-        protected int gamingGroupidUserCannotSee = 2;
+        protected RhinoAutoMocker<GamingGroupContextSwitcher> AutoMocker;
+        protected ApplicationUser CurrentUser;
+        protected ApplicationUser RetrievedUser;
+        protected List<UserGamingGroup> UserGamingGroups;
+        protected int GamingGroupIdUserCanSee = 1;
+        protected int GamingGroupidUserCannotSee = 2;
             
         [SetUp]
         public void SetUp()
         {
-            dataContextMock = MockRepository.GenerateMock<IDataContext>();
-            contextSwitcher = new GamingGroupContextSwitcher(dataContextMock);
+            AutoMocker = new RhinoAutoMocker<GamingGroupContextSwitcher>();
 
-            currentUser = new ApplicationUser
+            CurrentUser = new ApplicationUser
             {
                 Id = "user id",
                 CurrentGamingGroupId = 777
             };
-            retrievedUser = new ApplicationUser
+            RetrievedUser = new ApplicationUser
             {
                 Id = "user id"
             };
 
-            userGamingGroups = new List<UserGamingGroup>
+            UserGamingGroups = new List<UserGamingGroup>
             {
                 new UserGamingGroup
                 {
                     Id = 1,
-                    ApplicationUserId = currentUser.Id,
-                    GamingGroupId = gamingGroupIdUserCanSee
+                    ApplicationUserId = CurrentUser.Id,
+                    GamingGroupId = GamingGroupIdUserCanSee
                 },
                 new UserGamingGroup
                 {
                     Id = 2,
                     ApplicationUserId = "some other id the user cant see",
-                    GamingGroupId = gamingGroupIdUserCanSee
+                    GamingGroupId = GamingGroupIdUserCanSee
                 }
             };
 
-            dataContextMock.Expect(mock => mock.GetQueryable<UserGamingGroup>())
-                           .Return(userGamingGroups.AsQueryable());
-            dataContextMock.Expect(mock => mock.FindById<ApplicationUser>(currentUser.Id))
-                           .Return(retrievedUser);
+            AutoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<UserGamingGroup>())
+                           .Return(UserGamingGroups.AsQueryable());
+            AutoMocker.Get<IDataContext>().Expect(mock => mock.FindById<ApplicationUser>(CurrentUser.Id))
+                           .Return(RetrievedUser);
         }
 
         [Test]
         public void ItValidatesThatTheUserHasAccessToThisGamingGroup()
         {
             int gamingGroupTheUserCantSee = -999;
-            string expectedMessage = string.Format(GamingGroupContextSwitcher.EXCEPTION_MESSAGE_NO_ACCESS, currentUser.Id, gamingGroupTheUserCantSee);
+            string expectedMessage = string.Format(GamingGroupContextSwitcher.EXCEPTION_MESSAGE_NO_ACCESS, CurrentUser.Id, gamingGroupTheUserCantSee);
 
-            var exception = Assert.Throws<UnauthorizedAccessException>(() => contextSwitcher.SwitchGamingGroupContext(gamingGroupTheUserCantSee, currentUser));
+            var exception = Assert.Throws<UnauthorizedAccessException>(() => AutoMocker.ClassUnderTest.SwitchGamingGroupContext(gamingGroupTheUserCantSee, CurrentUser));
 
             Assert.That(exception.Message, Is.EqualTo(expectedMessage));
         }
@@ -88,19 +87,19 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupContext
         [Test]
         public void ItDoesNotSaveIfTheUserIsAlreadySetToThatGamingGroup()
         {
-            contextSwitcher.SwitchGamingGroupContext(currentUser.CurrentGamingGroupId, currentUser);
+            AutoMocker.ClassUnderTest.SwitchGamingGroupContext(CurrentUser.CurrentGamingGroupId, CurrentUser);
 
-            dataContextMock.AssertWasNotCalled(mock => mock.Save(Arg<ApplicationUser>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
+            AutoMocker.Get<IDataContext>().AssertWasNotCalled(mock => mock.Save(Arg<ApplicationUser>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
         }
 
         [Test]
         public void ItUpdatesTheUsersGamingGroup()
         {
-            contextSwitcher.SwitchGamingGroupContext(gamingGroupIdUserCanSee, currentUser);
+            AutoMocker.ClassUnderTest.SwitchGamingGroupContext(GamingGroupIdUserCanSee, CurrentUser);
 
-            dataContextMock.AssertWasCalled(mock => mock.Save(
-                Arg<ApplicationUser>.Matches(user => user.CurrentGamingGroupId == gamingGroupIdUserCanSee && user.Id == currentUser.Id), 
-                Arg<ApplicationUser>.Is.Same(currentUser)));
+            AutoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
+                Arg<ApplicationUser>.Matches(user => user.CurrentGamingGroupId == GamingGroupIdUserCanSee && user.Id == CurrentUser.Id), 
+                Arg<ApplicationUser>.Is.Same(CurrentUser)));
         }
     }
 }
