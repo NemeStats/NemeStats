@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NemeStatsTestingExtensions\NemeStatsTestingExtensionMethods.cs" />
+    <Compile Include="NemeStatsTestingExtensions\NemeStatsTestingExtensionsTests\AssertCallIsTypeTests.cs" />
     <Compile Include="NemeStatsTestingExtensions\NemeStatsTestingExtensionsTests\AssertFirstCallIsTypeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
