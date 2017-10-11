@@ -16,7 +16,7 @@ Feel free to email us at nemestats@gmail.com if you have questions or issues.
 ###Version Information
 This document represents Version 2 of the API, which has the following changes from the previous version:
 * /GamingGroups/{gamingGroupId}/ is removed from many of the service URIs in favor of the query string parameter for
-GET requests and a body parameter for POST requests. Creating a Player, Game Definition, or Played Game now allow you to
+GET requests and a body parameter for POST requests. Creating a Player, Game Definition, or Played Game now allows you to
 optionally specify the gamingGroupId of the Gaming Group where the entity should be created. This is handy for
 situations when a User is in multiple Gaming Groups.
 For Example, /api/v1/GamingGroups/{gamingGroupid}/GameDefinitions is now /api/v2/GameDefinitions/?gamingGroupId=1
