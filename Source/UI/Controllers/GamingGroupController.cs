@@ -28,7 +28,6 @@ using BusinessLogic.Facades;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
-using BusinessLogic.Models;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Models.GamingGroup;
@@ -263,10 +262,11 @@ namespace UI.Controllers
         {
             if (string.IsNullOrWhiteSpace(gamingGroupName))
             {
-                this.ModelState.AddModelError(string.Empty, "You must enter a Gaming Group name.");
-                return this.Details(currentUser.CurrentGamingGroupId, currentUser);
+                //TODO this error message probably does not persist after the redirect. Need to make sure the validation message shows correctly.
+                ModelState.AddModelError(string.Empty, "You must enter a Gaming Group name.");
+                return RedirectToAction(MVC.Account.Manage());
             }
-            this.gamingGroupSaver.CreateNewGamingGroup(gamingGroupName.Trim(), TransactionSource.WebApplication, currentUser);
+            gamingGroupSaver.CreateNewGamingGroup(gamingGroupName.Trim(), TransactionSource.WebApplication, currentUser);
 
             return RedirectToAction(MVC.GamingGroup.ActionNames.Details, new {id = currentUser.CurrentGamingGroupId } );
         }
