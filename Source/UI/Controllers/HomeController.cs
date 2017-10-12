@@ -28,7 +28,9 @@ using BusinessLogic.Logic;
 using BusinessLogic.Logic.PlayerAchievements;
 using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.PlayedGames;
+using BusinessLogic.Models.User;
 using BusinessLogic.Paging;
+using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Mappers.Extensions;
 using UI.Mappers.Interfaces;
@@ -69,11 +71,12 @@ namespace UI.Controllers
         }
 
         [HttpGet]
-        public virtual ActionResult Index()
+        [UserContext(RequiresGamingGroup = false)]
+        public virtual ActionResult Index(ApplicationUser currentUser)
         {
-
             var homeIndexViewModel = new HomeIndexViewModel
             {
+                ShowQuickStats = currentUser.CurrentGamingGroupId.HasValue
             };
             return View(MVC.Home.Views.Index, homeIndexViewModel);
         }
