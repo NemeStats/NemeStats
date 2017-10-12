@@ -49,7 +49,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayersControl
         }
 
         [Test]
-        public void ItSavesTheNewPlayerUsingTheGamingGroupIdOnTheRequestInsteadOfFromTheUriIfOneIsSpecified ()
+        public void ItSavesTheNewPlayerUsingTheGamingGroupIdOnTheRequestInsteadOfFromTheUri ()
         {
             var newPlayerMessage = new NewPlayerMessage
             {
