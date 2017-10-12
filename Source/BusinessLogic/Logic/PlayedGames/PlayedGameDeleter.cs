@@ -27,9 +27,9 @@ namespace BusinessLogic.Logic.PlayedGames
 {
     public class PlayedGameDeleter : IPlayedGameDeleter
     {
-        private IDataContext dataContext;
-        private INemesisRecalculator nemesisRecalculator;
-        private IChampionRecalculator championRecalculator;
+        private readonly IDataContext dataContext;
+        private readonly INemesisRecalculator nemesisRecalculator;
+        private readonly IChampionRecalculator championRecalculator;
 
         public PlayedGameDeleter(IDataContext dataContext, INemesisRecalculator nemesisRecalculatorMock, IChampionRecalculator championRecalculator)
         {
