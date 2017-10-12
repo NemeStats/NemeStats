@@ -27,36 +27,36 @@ namespace BusinessLogic.Logic.PlayedGames
 {
     public class PlayedGameDeleter : IPlayedGameDeleter
     {
-        private readonly IDataContext dataContext;
-        private readonly INemesisRecalculator nemesisRecalculator;
-        private readonly IChampionRecalculator championRecalculator;
+        private readonly IDataContext _dataContext;
+        private readonly INemesisRecalculator _nemesisRecalculator;
+        private readonly IChampionRecalculator _championRecalculator;
 
         public PlayedGameDeleter(IDataContext dataContext, INemesisRecalculator nemesisRecalculatorMock, IChampionRecalculator championRecalculator)
         {
-            this.dataContext = dataContext;
-            this.nemesisRecalculator = nemesisRecalculatorMock;
-            this.championRecalculator = championRecalculator;
+            this._dataContext = dataContext;
+            this._nemesisRecalculator = nemesisRecalculatorMock;
+            this._championRecalculator = championRecalculator;
         }
 
         public void DeletePlayedGame(int playedGameId, ApplicationUser currentUser)
         {
-            List<int> playerIds = (from playerResult in dataContext.GetQueryable<PlayerGameResult>()
+            List<int> playerIds = (from playerResult in _dataContext.GetQueryable<PlayerGameResult>()
                                    where playerResult.PlayedGameId == playedGameId
                                    select playerResult.PlayerId).ToList();
-            var gameDefId = dataContext.GetQueryable<PlayerGameResult>()
+            var gameDefId = _dataContext.GetQueryable<PlayerGameResult>()
                              .Where(p => p.PlayedGameId == playedGameId)
                              .Select(p => p.PlayedGame.GameDefinitionId)
                              .FirstOrDefault();
 
-            dataContext.DeleteById<PlayedGame>(playedGameId, currentUser);
-            dataContext.CommitAllChanges();
+            _dataContext.DeleteById<PlayedGame>(playedGameId, currentUser);
+            _dataContext.CommitAllChanges();
 
             foreach (int playerId in playerIds)
             {
-                nemesisRecalculator.RecalculateNemesis(playerId, currentUser, dataContext);
+                _nemesisRecalculator.RecalculateNemesis(playerId, currentUser, _dataContext);
             }
 
-            championRecalculator.RecalculateChampion(gameDefId, currentUser, dataContext);
+            _championRecalculator.RecalculateChampion(gameDefId, currentUser, _dataContext);
         }
     }
 }
