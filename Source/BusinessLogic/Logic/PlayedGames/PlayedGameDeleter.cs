@@ -33,9 +33,9 @@ namespace BusinessLogic.Logic.PlayedGames
 
         public PlayedGameDeleter(IDataContext dataContext, INemesisRecalculator nemesisRecalculatorMock, IChampionRecalculator championRecalculator)
         {
-            this._dataContext = dataContext;
-            this._nemesisRecalculator = nemesisRecalculatorMock;
-            this._championRecalculator = championRecalculator;
+            _dataContext = dataContext;
+            _nemesisRecalculator = nemesisRecalculatorMock;
+            _championRecalculator = championRecalculator;
         }
 
         public void DeletePlayedGame(int playedGameId, ApplicationUser currentUser)
