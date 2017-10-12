@@ -47,8 +47,7 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
         private ApplicationUser _applicationUser;
         private NameValueCollection _requestParameters;
 
-        [SetUp]
-        public void SetUp()
+        private void SetupExpectations(bool isAuthenticated = true, bool userHasGamingGroup = true)
         {
             _actionExecutingContext = new ActionExecutingContext
             {
@@ -76,7 +75,7 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
                 .Return(_identity);
             _identity.Expect(mock => mock.IsAuthenticated)
                 .Repeat.Once()
-                .Return(true);
+                .Return(isAuthenticated);
 
             HttpRequestBase requestBaseMock = MockRepository.GenerateMock<HttpRequestBase>();
 
@@ -90,7 +89,7 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
             _applicationUser = new ApplicationUser()
             {
                 Id = "user id",
-                CurrentGamingGroupId = 315
+                CurrentGamingGroupId = userHasGamingGroup ? (int?)315 : null
             };
             Task<ApplicationUser> task = Task.FromResult(_applicationUser);
             //TODO can't figure out how to mock the GetUserId() extension method, so have to be less strict here
@@ -102,10 +101,7 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
         [Test]
         public void ItUsesTheAnonymousUserIfTheUserIsNotAuthenticated()
         {
-            _identity.BackToRecord(BackToRecordOptions.All);
-            _identity.Expect(mock => mock.IsAuthenticated)
-                .Repeat.Once()
-                .Return(false);
+            SetupExpectations(isAuthenticated: false);
 
             _userContextActionFilter.OnActionExecuting(_actionExecutingContext, _userManager, _clientIdCalculatorMock);
             Assert.IsInstanceOf<AnonymousApplicationUser>(_actionExecutingContext.ActionParameters[UserContextAttribute.UserContextKey]);
@@ -114,6 +110,8 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
         [Test]
         public void ItSetsTheUserConextActionParameterIfItIsntAlreadySet()
         {
+            SetupExpectations();
+
             _userContextActionFilter.OnActionExecuting(_actionExecutingContext, _userManager, _clientIdCalculatorMock);
 
             Assert.AreEqual(_applicationUser, _actionExecutingContext.ActionParameters[UserContextAttribute.UserContextKey]);
@@ -122,11 +120,8 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
         [Test]
         public void IfAGamingGroupIsRequiredAndUserIsAnonymousItRedirectsUserToTheLoginAction()
         {
+            SetupExpectations(isAuthenticated: false);
             _userContextActionFilter.RequiresGamingGroup = true;
-            _identity.BackToRecord(BackToRecordOptions.All);
-            _identity.Expect(mock => mock.IsAuthenticated)
-                .Repeat.Once()
-                .Return(false);
 
             _userContextActionFilter.OnActionExecuting(_actionExecutingContext, _userManager, _clientIdCalculatorMock);
 
@@ -139,8 +134,25 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
         }
 
         [Test]
+        public void IfAGamingGroupIsRequiredAndUserIsAuthenticatedWithNoCurrentGamingGroupItRedirectsUserToTheManageAccountAction()
+        {
+            SetupExpectations(userHasGamingGroup: false);
+            _userContextActionFilter.RequiresGamingGroup = true;
+
+            _userContextActionFilter.OnActionExecuting(_actionExecutingContext, _userManager, _clientIdCalculatorMock);
+
+            RouteValueDictionary dictionary = new RouteValueDictionary();
+            dictionary.Add("Area", "");
+            dictionary.Add("Controller", "Account");
+            dictionary.Add("Action", "Manage");
+            RedirectToRouteResult actualResult = (RedirectToRouteResult)_actionExecutingContext.Result;
+            Assert.AreEqual(dictionary, actualResult.RouteValues);
+        }
+
+        [Test]
         public void ItDoesntRedirectIfTheUserHasAGamingGroup()
         {
+            SetupExpectations();
             _userContextActionFilter.RequiresGamingGroup = true;
             _applicationUser.CurrentGamingGroupId = 1;
 
@@ -152,12 +164,9 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
         [Test]
         public void ItDoesntRedirectIfGamingGroupIsNotRequired()
         {
-            _userContextActionFilter.RequiresGamingGroup = false;
-            _identity.BackToRecord(BackToRecordOptions.All);
-            _identity.Expect(mock => mock.IsAuthenticated)
-                .Repeat.Once()
-                .Return(false);
+            SetupExpectations(isAuthenticated: false);
 
+            _userContextActionFilter.RequiresGamingGroup = false;
             _userContextActionFilter.OnActionExecuting(_actionExecutingContext, _userManager, _clientIdCalculatorMock);
 
             Assert.Null(_actionExecutingContext.Result);
@@ -166,6 +175,7 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
         [Test]
         public void ItAddsTheAnonymousClientIdToTheUserIfItExists()
         {
+            SetupExpectations();
             const string expectedClientId = "some client id";
             _clientIdCalculatorMock.Expect(mock => mock.GetClientId(_actionExecutingContext.HttpContext.Request, _applicationUser)).Return(expectedClientId);
 
