@@ -43,7 +43,12 @@ namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
             var topChampions = _universalTopChampionsRetreiver.GetFromSource(boardGameGeekGameDefinitionId);
             var boardGameGeekInfo = _boardGameGeekGameDefinitionInfoRetriever.GetResults(boardGameGeekGameDefinitionId);
             var universalStats = _universalStatsRetriever.GetResults(boardGameGeekGameDefinitionId);
-            var gamingGroupGameDefinitionSummary = GetGamingGroupGameDefinitionSummary(boardGameGeekGameDefinitionId, currentUser.CurrentGamingGroupId, numberOfRecentlyPlayedGamesToRetrieve);
+            GameDefinitionSummary gamingGroupGameDefinitionSummary = null;
+            if (currentUser.CurrentGamingGroupId.HasValue)
+            {
+                gamingGroupGameDefinitionSummary = GetGamingGroupGameDefinitionSummary(boardGameGeekGameDefinitionId,
+                    currentUser.CurrentGamingGroupId.Value, numberOfRecentlyPlayedGamesToRetrieve);
+            }
 
             var filter = new RecentlyPlayedGamesFilter
             {
