@@ -77,7 +77,8 @@ namespace UI.Areas.Api.Controllers
         [HttpPost]
         public virtual HttpResponseMessage SaveNewGameDefinition([FromBody]NewGameDefinitionMessage newGameDefinitionMessage)
         {
-            return SaveNewGameDefinition(newGameDefinitionMessage, CurrentUser.CurrentGamingGroupId);
+            //--gamingGroupId is obsolete here and will be on the request or else used from the current user context -- so just pass "0"
+            return SaveNewGameDefinition(newGameDefinitionMessage, 0);
         }
 
         [ApiAuthentication]
@@ -90,7 +91,7 @@ namespace UI.Areas.Api.Controllers
             {
                 BoardGameGeekGameDefinitionId = newGameDefinitionMessage.BoardGameGeekObjectId,
                 Name = newGameDefinitionMessage.GameDefinitionName,
-                GamingGroupId = newGameDefinitionMessage.GamingGroupId ?? gamingGroupId
+                GamingGroupId = newGameDefinitionMessage.GamingGroupId
             };
 
             var newGameDefinition = _createGameDefinitionComponent.Execute(createGameDefinitionRequest, CurrentUser);
@@ -110,7 +111,8 @@ namespace UI.Areas.Api.Controllers
         [HttpPut]
         public HttpResponseMessage UpdateGameDefinition(UpdateGameDefinitionMessage updateGameDefinitionMessage, int gameDefinitionId)
         {
-            return UpdateGameDefinition(updateGameDefinitionMessage, gameDefinitionId, CurrentUser.CurrentGamingGroupId);
+            //--gamingGroupId is obsolete here and will be on the request or else used from the current user context -- so just pass "0"
+            return UpdateGameDefinition(updateGameDefinitionMessage, gameDefinitionId, 0);
         }
 
         [ApiAuthentication]
