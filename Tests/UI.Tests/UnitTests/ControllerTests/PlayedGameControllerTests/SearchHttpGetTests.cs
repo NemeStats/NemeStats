@@ -2,13 +2,11 @@
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
-using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.GameDefinitions;
 using NUnit.Framework;
 using Rhino.Mocks;
 using UI.Models.PlayedGame;
 using BusinessLogic.Models.Games;
-using Shouldly;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
