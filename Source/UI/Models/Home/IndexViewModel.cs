@@ -20,5 +20,6 @@ namespace UI.Models.Home
 {
     public class HomeIndexViewModel
     {
+        public bool ShowQuickStats { get; set; }
     }
 }
