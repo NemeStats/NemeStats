@@ -242,8 +242,6 @@ namespace UI.Controllers
             return PartialView(MVC.Account.Views._UserGamingGroupsPartial, model);
         }
 
- //TODO WHAT TO DO IF THE USERS GG IS NOT ACTIVE? THIS IS CALLED VIA Html.RenderAction(MVC.Account.UserGamingGroups()) -- need to use javascript?
-
         //TODO how to test async methods?
         // POST: /Account/SetPassword
         [HttpPost]
