@@ -22,6 +22,7 @@ using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Events;
 using BusinessLogic.Events.Interfaces;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Points;
 using BusinessLogic.Logic.Security;
@@ -83,6 +84,23 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
                 .Expect(s => s.Save(Arg<PlayedGame>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                 .Return(_expectedPlayedGame);
         }
+
+        [Test]
+        public void It_Throws_A_UserHasNoGamingGroupException_If_The_Current_User_Doesnt_Have_An_Active_Gaming_Group()
+        {
+            //--arrange
+            var expectedException = new UserHasNoGamingGroupException(_currentUser.Id);
+            _currentUser.CurrentGamingGroupId = null;
+
+            //--act
+            var actualException =
+                Assert.Throws<UserHasNoGamingGroupException>(
+                    () => _autoMocker.ClassUnderTest.Execute(CreateValidNewlyCompletedGame(), _currentUser, _dataContext));
+
+            //--assert
+            actualException.Message.ShouldBe(expectedException.Message);
+        }
+
 
         [Test]
         public void It_Validates_The_User_Has_Access_To_The_Specified_Gaming_Group_Id()

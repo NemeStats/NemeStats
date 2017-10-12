@@ -2,11 +2,13 @@
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.GameDefinitions;
 using NUnit.Framework;
 using Rhino.Mocks;
 using UI.Models.PlayedGame;
 using BusinessLogic.Models.Games;
+using Shouldly;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
@@ -34,7 +36,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                     Id = GAME_DEFINITION_A_ID
                 }
             };
-            AutoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitionNames(this.CurrentUser.CurrentGamingGroupId)).Return(gameDefinitionNames);
+            AutoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitionNames(CurrentUser.CurrentGamingGroupId.Value)).Return(gameDefinitionNames);
 
             AutoMocker.ClassUnderTest.Expect(mock => mock.AddPlayersToViewModel(Arg<int>.Is.Anything, Arg<SearchViewModel>.Is.Anything, Arg<int?>.Is.Anything));
         }

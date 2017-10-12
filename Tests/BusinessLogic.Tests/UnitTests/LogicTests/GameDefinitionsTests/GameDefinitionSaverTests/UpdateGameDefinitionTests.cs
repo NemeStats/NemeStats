@@ -81,7 +81,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                 Id = gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId.Value
             };
             autoMocker.Get<IBoardGameGeekGameDefinitionCreator>().Expect(
-                mock => mock.CreateBoardGameGeekGameDefinition(gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId.Value, currentUser))
+                mock => mock.CreateBoardGameGeekGameDefinition(gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId.Value))
                 .Return(boardGameGeekGameDefinition);
 
             autoMocker.ClassUnderTest.UpdateGameDefinition(gameDefinitionUpdateRequest, currentUser);
@@ -99,7 +99,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                 BoardGameGeekGameDefinitionId = 200
             };
             autoMocker.Get<IBoardGameGeekGameDefinitionCreator>().Expect(
-                mock => mock.CreateBoardGameGeekGameDefinition(gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId.Value, currentUser))
+                mock => mock.CreateBoardGameGeekGameDefinition(gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId.Value))
                 .Return(null);
 
             autoMocker.ClassUnderTest.UpdateGameDefinition(gameDefinitionUpdateRequest, currentUser);
@@ -122,7 +122,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             };
 
             autoMocker.Get<IBoardGameGeekGameDefinitionCreator>().Expect(
-              mock => mock.CreateBoardGameGeekGameDefinition(gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId.Value, currentUser))
+              mock => mock.CreateBoardGameGeekGameDefinition(gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId.Value))
               .Return(boardGameGeekGameDefinition);
 
             autoMocker.ClassUnderTest.UpdateGameDefinition(gameDefinitionUpdateRequest, currentUser);

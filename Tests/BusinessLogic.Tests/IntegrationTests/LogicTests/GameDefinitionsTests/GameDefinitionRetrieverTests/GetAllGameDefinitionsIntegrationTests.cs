@@ -16,17 +16,12 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using BusinessLogic.DataAccess;
-using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
-using BusinessLogic.Caching;
-using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
-using BusinessLogic.Logic.Utilities;
 using Is = NUnit.Framework.Is;
 
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.GameDefinitionRetrieverTests
@@ -41,7 +36,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
         public void SetUp()
         {
             _retriever = GetInstance<GameDefinitionRetriever>();
-            _actualGameDefinitionSummaries = _retriever.GetAllGameDefinitions(testUserWithDefaultGamingGroup.CurrentGamingGroupId);
+            _actualGameDefinitionSummaries = _retriever.GetAllGameDefinitions(testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
         }
 
         [Test]

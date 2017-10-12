@@ -23,6 +23,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Linq;
+using BusinessLogic.Exceptions;
 
 namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTests
 {
@@ -45,6 +46,20 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
             Exception expectedException = new ArgumentNullException("currentUser");
 
             Exception actualException = Assert.Throws<ArgumentNullException>(() => dataContext.Save(new GamingGroup(), null));
+
+            Assert.AreEqual(expectedException.Message, actualException.Message);
+        }
+
+        [Test]
+        public void ItThrowsAUserHasNoGamingGroupExceptionIfTheCurrentUserHasNoGamingGroup()
+        {
+            var user = new ApplicationUser
+            {
+                Id = "some user id"
+            };
+            var expectedException = new UserHasNoGamingGroupException(user.Id);
+
+            var actualException = Assert.Throws<UserHasNoGamingGroupException>(() => dataContext.Save(new GamingGroup(), user));
 
             Assert.AreEqual(expectedException.Message, actualException.Message);
         }

@@ -41,10 +41,10 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         {
             base.SetUp();
 
-            gameDefinitionSummary = new GameDefinitionSummary()
+            gameDefinitionSummary = new GameDefinitionSummary
             {
                 PlayedGames = new List<PlayedGame>(),
-                GamingGroupId = currentUser.CurrentGamingGroupId
+                GamingGroupId = currentUser.CurrentGamingGroupId.Value
             };
 
             autoMocker.Get<IGameDefinitionRetriever>().Expect(repo => repo.GetGameDefinitionDetails(

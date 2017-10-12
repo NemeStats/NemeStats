@@ -15,7 +15,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
     public class CurrentPlayerQuickStatsTests : PlayerControllerTestBase
     {
         [Test]
-        public void ItReturnsTheCurrentUsersPlayerQuickStatsViewModel()
+        public void It_Returns_The_Current_Users_PlayerQuickStatsViewModel()
         {
             var expectedPlayerQuickSummary = new PlayerQuickStats
             {
@@ -38,7 +38,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             };
 
             autoMocker.Get<IPlayerRetriever>()
-                .Expect(mock => mock.GetPlayerQuickStatsForUser(currentUser.Id, currentUser.CurrentGamingGroupId))
+                .Expect(mock => mock.GetPlayerQuickStatsForUser(currentUser.Id, currentUser.CurrentGamingGroupId.Value))
                 .Return(expectedPlayerQuickSummary);
 
             var result = autoMocker.ClassUnderTest.CurrentPlayerQuickStats(currentUser) as PartialViewResult;
@@ -68,10 +68,10 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         }
 
         [Test]
-        public void ItLeavesTheLastGamingGroupGameNullIfThereAreNoGames()
+        public void It_Leaves_The_Last_Gaming_Group_Game_Null_If_There_Are_NoGames()
         {
             autoMocker.Get<IPlayerRetriever>()
-               .Expect(mock => mock.GetPlayerQuickStatsForUser(currentUser.Id, currentUser.CurrentGamingGroupId))
+               .Expect(mock => mock.GetPlayerQuickStatsForUser(currentUser.Id, currentUser.CurrentGamingGroupId.Value))
                .Return(new PlayerQuickStats());
 
             var result = autoMocker.ClassUnderTest.CurrentPlayerQuickStats(currentUser) as PartialViewResult;

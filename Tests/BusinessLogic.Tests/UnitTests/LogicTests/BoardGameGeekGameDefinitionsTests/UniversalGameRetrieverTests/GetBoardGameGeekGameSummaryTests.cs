@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Facades;
-using BusinessLogic.Logic;
 using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Models;
@@ -38,20 +36,21 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
             _autoMocker = new RhinoAutoMocker<UniversalGameRetriever>();
             _currentUser = new ApplicationUser
             {
-                Id = "some user id"
+                Id = "some user id",
+                CurrentGamingGroupId = 1
             };
-
 
             _expectedGameDefinition = new GameDefinition
             {
                 Id = 20,
                 BoardGameGeekGameDefinitionId = _boardGameGeekGameDefinitionId,
+                GamingGroupId = _currentUser.CurrentGamingGroupId.Value
             };
 
             var otherGameDefinition = new GameDefinition
             {
                 Id = 21,
-                BoardGameGeekGameDefinitionId = _boardGameGeekGameDefinitionId,
+                BoardGameGeekGameDefinitionId = _boardGameGeekGameDefinitionId
             };
 
 
@@ -137,6 +136,22 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
                 .AssertWasCalled(
                     mock => mock.GetGameDefinitionDetails(Arg<int>.Is.Equal(_expectedGameDefinition.Id), Arg<int>.Is.Equal(numberOfGames)));
             result.GamingGroupGameDefinitionSummary.ShouldBe(_expectedGameDefinitionSummary);
+        }
+
+        [Test]
+        public void It_Doesnt_Return_A_GameDefinitionSummary_If_The_Current_User_Is_Without_An_Active_Gaming_Group()
+        {
+            //--arrange
+            _currentUser.CurrentGamingGroupId = null;
+
+            //--act
+            var result = _autoMocker.ClassUnderTest.GetBoardGameGeekGameSummary(_boardGameGeekGameDefinitionId, _currentUser, 1);
+
+            //--assert
+            _autoMocker.Get<IGameDefinitionRetriever>()
+                .AssertWasNotCalled(
+                    mock => mock.GetGameDefinitionDetails(Arg<int>.Is.Anything, Arg<int>.Is.Anything));
+            result.GamingGroupGameDefinitionSummary.ShouldBeNull();
         }
 
         [Test]

@@ -44,7 +44,7 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
                 new GamingGroupListItemModel
                 {
                     Name = "gaming group 1",
-                    Id = currentUser.CurrentGamingGroupId
+                    Id = currentUser.CurrentGamingGroupId.Value
                 }
             };
 
@@ -65,7 +65,7 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
             var model = result.Model as UserGamingGroupsModel;
             model.ShouldNotBeNull();
             model.GamingGroups.Count.ShouldBe(_expectedGamingGroups.Count);
-            model.CurrentGamingGroup.Id.ShouldBe(currentUser.CurrentGamingGroupId);
+            model.CurrentGamingGroup.Id.ShouldBe(currentUser.CurrentGamingGroupId.Value);
             model.CurrentUser.ShouldBe(currentUser);
         }
 
