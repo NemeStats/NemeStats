@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using BusinessLogic.Components;
 using BusinessLogic.DataAccess;
@@ -27,18 +25,17 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         public override GameDefinition Execute(CreateGameDefinitionRequest createGameDefinitionRequest, ApplicationUser currentUser, IDataContext dataContextWithTransaction)
         {
+            ValidateUserHasGamingGroup(currentUser);
             ValidateNotNull(createGameDefinitionRequest);
-
             ValidateGameDefinitionNameIsNotNullOrWhitespace(createGameDefinitionRequest.Name);
 
-            int gamingGroupId = createGameDefinitionRequest.GamingGroupId ?? currentUser.CurrentGamingGroupId;
+            var gamingGroupId = createGameDefinitionRequest.GamingGroupId ?? currentUser.CurrentGamingGroupId.Value;
 
             BoardGameGeekGameDefinition boardGameGeekGameDefinition = null;
             if (createGameDefinitionRequest.BoardGameGeekGameDefinitionId.HasValue)
             {
                 boardGameGeekGameDefinition = _boardGameGeekGameDefinitionCreator.CreateBoardGameGeekGameDefinition(
-                    createGameDefinitionRequest.BoardGameGeekGameDefinitionId.Value,
-                    currentUser);
+                    createGameDefinitionRequest.BoardGameGeekGameDefinitionId.Value);
             }
 
             var existingGameDefinition = dataContextWithTransaction.GetQueryable<GameDefinition>()
@@ -69,6 +66,14 @@ namespace BusinessLogic.Logic.GameDefinitions
                 existingGameDefinition.Description = createGameDefinitionRequest.Description;
             }
             return dataContextWithTransaction.Save(existingGameDefinition, currentUser);
+        }
+
+        private static void ValidateUserHasGamingGroup(ApplicationUser currentUser)
+        {
+            if (!currentUser.CurrentGamingGroupId.HasValue)
+            {
+                throw new UserHasNoGamingGroupException(currentUser.Id);
+            }
         }
 
         private static void ValidateNotNull(CreateGameDefinitionRequest createGameDefinitionRequest)

@@ -19,6 +19,7 @@ using System;
 using System.Configuration.Abstractions;
 using System.Linq;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
@@ -46,6 +47,10 @@ namespace BusinessLogic.Logic.Players
 
         public void InvitePlayer(PlayerInvitation playerInvitation, ApplicationUser currentUser)
         {
+            if (!currentUser.CurrentGamingGroupId.HasValue)
+            {
+                throw new UserHasNoGamingGroupException(currentUser.Id);
+            }
             GamingGroup gamingGroup = dataContext.FindById<GamingGroup>(currentUser.CurrentGamingGroupId);
 
             string existingUserId = (from ApplicationUser user in dataContext.GetQueryable<ApplicationUser>()
@@ -55,7 +60,7 @@ namespace BusinessLogic.Logic.Players
             GamingGroupInvitation gamingGroupInvitation = new GamingGroupInvitation
             {
                 DateSent = DateTime.UtcNow,
-                GamingGroupId = currentUser.CurrentGamingGroupId,
+                GamingGroupId = currentUser.CurrentGamingGroupId.Value,
                 InviteeEmail = playerInvitation.InvitedPlayerEmail,
                 InvitingUserId = currentUser.Id,
                 PlayerId = playerInvitation.InvitedPlayerId,

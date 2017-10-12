@@ -48,7 +48,11 @@ namespace BusinessLogic.Logic.Players
                 throw new ArgumentNullException(nameof(createPlayerRequest));
             }
             ValidatePlayerNameIsNotNullOrWhiteSpace(createPlayerRequest.Name);
-            int gamingGroupId = createPlayerRequest.GamingGroupId ?? applicationUser.CurrentGamingGroupId;
+            if (!applicationUser.CurrentGamingGroupId.HasValue)
+            {
+                throw new UserHasNoGamingGroupException(applicationUser.Id);
+            }
+            int gamingGroupId = createPlayerRequest.GamingGroupId ?? applicationUser.CurrentGamingGroupId.Value;
             ThrowPlayerAlreadyExistsExceptionIfPlayerExistsWithThisName(createPlayerRequest.Name, gamingGroupId);
 
             var newPlayer = new Player
@@ -109,7 +113,8 @@ namespace BusinessLogic.Logic.Players
         {
             ValidatePlayerIsNotNull(player);
             ValidatePlayerNameIsNotNullOrWhiteSpace(player.Name);
-            ValidatePlayerWithThisNameDoesntAlreadyExist(player, applicationUser);
+            ValidateUserHasGamingGroup(applicationUser);
+            ValidatePlayerWithThisNameDoesntAlreadyExist(player, applicationUser.CurrentGamingGroupId.Value);
             var alreadyInDatabase = player.AlreadyInDatabase();
 
             var newPlayer = _dataContext.Save(player, applicationUser);
@@ -130,7 +135,6 @@ namespace BusinessLogic.Logic.Players
             return newPlayer;
         }
 
-
         private static void ValidatePlayerIsNotNull(Player player)
         {
             if (player == null)
@@ -147,13 +151,21 @@ namespace BusinessLogic.Logic.Players
             }
         }
 
-        private void ValidatePlayerWithThisNameDoesntAlreadyExist(Player player, ApplicationUser currentUser)
+        private static void ValidateUserHasGamingGroup(ApplicationUser applicationUser)
+        {
+            if (!applicationUser.CurrentGamingGroupId.HasValue)
+            {
+                throw new UserHasNoGamingGroupException(applicationUser.Id);
+            }
+        }
+
+        private void ValidatePlayerWithThisNameDoesntAlreadyExist(Player player, int gamingGroupId)
         {
             if (player.AlreadyInDatabase())
             {
                 return;
             }
-            ThrowPlayerAlreadyExistsExceptionIfPlayerExistsWithThisName(player.Name, currentUser.CurrentGamingGroupId);
+            ThrowPlayerAlreadyExistsExceptionIfPlayerExistsWithThisName(player.Name, gamingGroupId);
         }
 
         private void RecalculateNemeses(Player player, ApplicationUser currentUser)
