@@ -22,7 +22,7 @@ namespace BusinessLogic.DataAccess.Security
     public interface ISecuredEntityValidator
     {
         TEntity RetrieveAndValidateAccess<TEntity>(object primaryKeyValue, ApplicationUser currentUser) where TEntity : class, IEntityWithTechnicalKey;
-        TEntity ValidateAccess<TEntity>(TEntity entityWithTechnicalKey, ApplicationUser currentUser) where TEntity : class, IEntityWithTechnicalKey;
+        void ValidateAccess<TEntity>(TEntity entityWithTechnicalKey, ApplicationUser currentUser) where TEntity : class, IEntityWithTechnicalKey;
 
     }
 }
