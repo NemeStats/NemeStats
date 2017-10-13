@@ -86,7 +86,7 @@ namespace BusinessLogic.DataAccess
 
             if (!entity.AlreadyInDatabase() && typeof(TEntity) != typeof(GamingGroup))
             {
-                SetGamingGroupIdIfEntityIsSecured(entity, currentUser.CurrentGamingGroupId.Value);
+                SetGamingGroupIdIfEntityIsSecured(entity, currentUser);
             }
 
             var savedEntity = AddOrInsertOverride(entity);
@@ -106,22 +106,21 @@ namespace BusinessLogic.DataAccess
             {
                 throw new ArgumentNullException(nameof(currentUser));
             }
-
-            if (!currentUser.CurrentGamingGroupId.HasValue)
-            {
-                throw new UserHasNoGamingGroupException(currentUser.Id);
-            }
         }
 
-        internal virtual void SetGamingGroupIdIfEntityIsSecured<TEntity>(TEntity entity, int gamingGroupId) 
+        internal virtual void SetGamingGroupIdIfEntityIsSecured<TEntity>(TEntity entity, ApplicationUser currentUser) 
             where TEntity : class, IEntityWithTechnicalKey
         {
             if (typeof(SecuredEntityWithTechnicalKey).IsAssignableFrom(typeof(TEntity)))
             {
+                if (!currentUser.CurrentGamingGroupId.HasValue)
+                {
+                    throw new UserHasNoGamingGroupException(currentUser.Id);
+                }
                 var securedEntity = entity as SecuredEntityWithTechnicalKey;
                 if (securedEntity != null && securedEntity.GamingGroupId == default(int))
                 {
-                    securedEntity.GamingGroupId = gamingGroupId;
+                    securedEntity.GamingGroupId = currentUser.CurrentGamingGroupId.Value;
                 }
             }
         }
