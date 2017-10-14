@@ -32,7 +32,7 @@ namespace BusinessLogic.Logic.GamingGroups
 
         GamingGroup GetGamingGroupById(int gamingGroupId);
 
-		IList<GamingGroupListItemModel> GetGamingGroupsForUser(ApplicationUser applicationUser);
+		IList<GamingGroupListItemModel> GetGamingGroupsForUser(string applicationUserId);
 
 		List<TopGamingGroupSummary> GetTopGamingGroups(int numberOfTopGamingGroupsToShow);
 	    List<GamingGroupSitemapInfo> GetGamingGroupsSitemapInfo();

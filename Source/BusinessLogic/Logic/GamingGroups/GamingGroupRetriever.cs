@@ -57,11 +57,11 @@ namespace BusinessLogic.Logic.GamingGroups
             return summary;
         }
 
-        public IList<GamingGroupListItemModel> GetGamingGroupsForUser(ApplicationUser applicationUser)
+        public IList<GamingGroupListItemModel> GetGamingGroupsForUser(string applicationUserId)
         {
             return _dataContext.GetQueryable<GamingGroup>()
                               .Where(gamingGroup => gamingGroup.Active 
-                                && gamingGroup.UserGamingGroups.Any(ugg => ugg.ApplicationUserId == applicationUser.Id))
+                                && gamingGroup.UserGamingGroups.Any(ugg => ugg.ApplicationUserId == applicationUserId))
                               .Select(gg => new GamingGroupListItemModel { Id = gg.Id, Name = gg.Name })
                               .ToList();
         }
