@@ -231,7 +231,7 @@ namespace UI.Controllers
         [UserContext]
         public virtual ActionResult UserGamingGroups(ApplicationUser currentUser)
         {
-            var gamingGroups = _gamingGroupRetriever.GetGamingGroupsForUser(currentUser);
+            var gamingGroups = _gamingGroupRetriever.GetGamingGroupsForUser(currentUser.Id);
 
             var model = new UserGamingGroupsModel
             {
