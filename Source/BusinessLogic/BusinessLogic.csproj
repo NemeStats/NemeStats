@@ -228,10 +228,10 @@
     <Compile Include="Exceptions\ApiFriendlyException.cs" />
     <Compile Include="Exceptions\InvalidDateFormatException.cs" />
     <Compile Include="Exceptions\InvalidSourceException.cs" />
-    <Compile Include="Exceptions\LastValidGamingGroupException.cs" />
     <Compile Include="Exceptions\PlayerAlreadyExistsException.cs" />
     <Compile Include="Exceptions\PlayerNotInGamingGroupException.cs" />
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
+    <Compile Include="Exceptions\UserHasNoGamingGroupException.cs" />
     <Compile Include="Export\ExcelGenerator.cs" />
     <Compile Include="Export\IExcelGenerator.cs" />
     <Compile Include="Facades\IRecentPublicGamesRetriever.cs" />
@@ -323,6 +323,10 @@
     <Compile Include="Migrations\201710040027508_GamingGroup_Active_Flag.cs" />
     <Compile Include="Migrations\201710040027508_GamingGroup_Active_Flag.Designer.cs">
       <DependentUpon>201710040027508_GamingGroup_Active_Flag.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710121937189_MakeCurrentGamingGroupIdNullable.cs" />
+    <Compile Include="Migrations\201710121937189_MakeCurrentGamingGroupIdNullable.Designer.cs">
+      <DependentUpon>201710121937189_MakeCurrentGamingGroupIdNullable.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\User\BasicUserInfo.cs" />
     <Compile Include="Models\GamingGroups\GamingGroupStats.cs" />
@@ -1141,6 +1145,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710040027508_GamingGroup_Active_Flag.resx">
       <DependentUpon>201710040027508_GamingGroup_Active_Flag.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710121937189_MakeCurrentGamingGroupIdNullable.resx">
+      <DependentUpon>201710121937189_MakeCurrentGamingGroupIdNullable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

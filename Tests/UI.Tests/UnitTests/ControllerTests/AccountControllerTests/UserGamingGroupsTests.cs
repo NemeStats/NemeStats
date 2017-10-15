@@ -48,7 +48,7 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
                 }
             };
 
-            gamingGroupRetrieverMock.Stub(s => s.GetGamingGroupsForUser(Arg<ApplicationUser>.Is.Anything))
+            gamingGroupRetrieverMock.Stub(s => s.GetGamingGroupsForUser(Arg<string>.Is.Anything))
                 .Return(_expectedGamingGroups);
         }
 
@@ -61,7 +61,7 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
 
             result.ShouldNotBeNull();
             result.ViewName.ShouldBe(MVC.Account.Views._UserGamingGroupsPartial);
-            gamingGroupRetrieverMock.AssertWasCalled(s => s.GetGamingGroupsForUser(currentUser));
+            gamingGroupRetrieverMock.AssertWasCalled(s => s.GetGamingGroupsForUser(currentUser.Id));
             var model = result.Model as UserGamingGroupsModel;
             model.ShouldNotBeNull();
             model.GamingGroups.Count.ShouldBe(_expectedGamingGroups.Count);

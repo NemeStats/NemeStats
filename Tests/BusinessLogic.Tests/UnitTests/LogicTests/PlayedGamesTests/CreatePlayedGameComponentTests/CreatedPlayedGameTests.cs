@@ -17,11 +17,8 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
-using BusinessLogic.Events;
-using BusinessLogic.Events.Interfaces;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Points;
@@ -30,7 +27,6 @@ using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.User;
-using NemeStats.TestingHelpers.NemeStatsTestingExtensions;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
@@ -52,7 +48,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
         [SetUp]
         public void SetUp()
         {
-            _currentUser = new ApplicationUser();
+            _currentUser = new ApplicationUser
+            {
+                CurrentGamingGroupId = GAMING_GROUP_ID
+            };
 
             _expectedGameDefinition = new GameDefinition
             {
@@ -65,7 +64,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
             {
                 Id = 2,
                 GameDefinitionId = _expectedGameDefinition.Id,
-                NumberOfPlayers = 3
+                NumberOfPlayers = 3,
+                GamingGroupId = GAMING_GROUP_ID
             };
 
             _autoMocker = new RhinoAutoMocker<CreatePlayedGameComponent>();
@@ -200,7 +200,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
             _autoMocker.ClassUnderTest.Execute(newlyCompletedPlayedGame, _currentUser, _dataContext);
 
             _dataContext.AssertWasCalled(mock => mock.Save(
-                Arg<PlayedGame>.Matches(game => game.GamingGroupId == _currentUser.CurrentGamingGroupId),
+                Arg<PlayedGame>.Matches(game => game.GamingGroupId == _currentUser.CurrentGamingGroupId.Value),
                 Arg<ApplicationUser>.Is.Same(_currentUser)));
         }
 

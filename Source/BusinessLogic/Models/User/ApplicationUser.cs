@@ -52,7 +52,7 @@ namespace BusinessLogic.Models.User
             DateCreated = DateTime.UtcNow;
         }
 
-        public virtual int CurrentGamingGroupId { get; set; }
+        public virtual int? CurrentGamingGroupId { get; set; }
 
         private string _anonymousClientId;
 

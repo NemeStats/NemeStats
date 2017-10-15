@@ -41,6 +41,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekTests.BoardGameG
         [Test]
         public void It_Throws_A_UserHasNoGamingGroupException_If_ApplicationUser_Current_Gaming_Group_Is_Null()
         {
+            _currentUser.CurrentGamingGroupId = null;
             _currentUser.Id = "some user id";
             var expectedException = new UserHasNoGamingGroupException(_currentUser.Id);
 
