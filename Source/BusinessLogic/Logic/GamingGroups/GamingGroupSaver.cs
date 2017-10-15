@@ -24,7 +24,6 @@ using BusinessLogic.Models.User;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.Players;
 
@@ -128,22 +127,8 @@ namespace BusinessLogic.Logic.GamingGroups
 
         public GamingGroup UpdatePublicGamingGroupDetails(GamingGroupEditRequest request, ApplicationUser currentUser)
         {
-            if (!request.Active)
-            {
-                var newGamingGroupId = _dataContext.GetQueryable<UserGamingGroup>()
-                    .Where(x => x.ApplicationUserId == currentUser.Id && x.GamingGroup.Active && x.GamingGroupId != request.GamingGroupId)
-                    .Select(x => x.GamingGroupId)
-                    .FirstOrDefault();
+            SwitchUsersCurrentGamingGroupIfNecessary(request);
 
-                if (newGamingGroupId != default(int))
-                {
-                    _gamingGroupContextSwitcher.SwitchGamingGroupContext(newGamingGroupId, currentUser);
-                }
-                else
-                {
-                    throw new LastValidGamingGroupException(request.GamingGroupId);
-                }
-            }
             var gamingGroup = _dataContext.FindById<GamingGroup>(request.GamingGroupId);
 
             gamingGroup.PublicGamingGroupWebsite = request.Website;
@@ -157,6 +142,21 @@ namespace BusinessLogic.Logic.GamingGroups
             _eventTracker.TrackGamingGroupUpdate(currentUser);
 
             return gamingGroup;
+        }
+
+        private void SwitchUsersCurrentGamingGroupIfNecessary(GamingGroupEditRequest request)
+        {
+            if (request.Active)
+            {
+                return;
+            }
+            var users = _dataContext.GetQueryable<ApplicationUser>()
+                .Where(x => x.CurrentGamingGroupId == request.GamingGroupId)
+                .ToList();
+            foreach (var user in users)
+            {
+                _gamingGroupContextSwitcher.EnsureContextIsValid(user);
+            }
         }
     }
 }

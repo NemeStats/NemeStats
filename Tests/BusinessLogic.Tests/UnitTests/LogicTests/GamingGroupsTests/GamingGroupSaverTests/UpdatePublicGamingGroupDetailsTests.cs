@@ -2,14 +2,12 @@
 using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.EventTracking;
-using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Shouldly;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroupSaverTests
 {
@@ -57,7 +55,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
                 new UserGamingGroup
                 {
                     ApplicationUserId = currentUser.Id,
-                    GamingGroupId = currentUser.CurrentGamingGroupId,
+                    GamingGroupId = _expectedGamingGroupId,
                     GamingGroup = new GamingGroup
                     {
                         Active = true
@@ -87,8 +85,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
                 PublicDescription = "Description",
                 Website = "Website",
                 GamingGroupName = "some gaming group name",
-                GamingGroupId = currentUser.CurrentGamingGroupId,
-                Active = false
+                GamingGroupId = _expectedGamingGroupId,
+                Active = true
             };
 
             //--Act
@@ -100,56 +98,40 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
                 gamingGroup => gamingGroup.Name == request.GamingGroupName
                   && gamingGroup.PublicDescription == request.PublicDescription
                   && gamingGroup.PublicGamingGroupWebsite == request.Website.ToString()
-                  && gamingGroup.Active == false),
+                  && gamingGroup.Active == request.Active),
                 Arg<ApplicationUser>.Is.Same(currentUser)));
         }
 
         [Test]
-        public void It_Throws_A_Last_Valid_Gaming_Group_Exception_If_The_User_Tries_To_Deactivate_Their_Only_Remaining_Gaming_Group()
+        public void It_Switches_The_Gaming_Group_Of_Each_User_Who_Had_Their_Current_Gaming_Group_Set_To_This_One()
         {
             //--arrange
-            SetupSingleUserGamingGroup(active: false);
-
-            var request = new GamingGroupEditRequest
+            var expectedUser1 = new ApplicationUser
             {
-                GamingGroupId = currentUser.CurrentGamingGroupId,
-                Active = false
+                Id = "user id 1",
+                CurrentGamingGroupId = _expectedGamingGroupId
             };
-            var expectedException = new LastValidGamingGroupException(currentUser.CurrentGamingGroupId);
-
-            //--act
-            var exception = Assert.Throws<LastValidGamingGroupException>(() => autoMocker.ClassUnderTest.UpdatePublicGamingGroupDetails(request, currentUser));
-
-            //--assert
-            exception.Message.ShouldBe(expectedException.Message);
-        }
-
-        private void SetupSingleUserGamingGroup(bool active = true)
-        {
-            var userGamingGroups = new List<UserGamingGroup>
+            var expectedUser2 = new ApplicationUser
             {
-                //--non-matching user id
-                new UserGamingGroup
-                {
-                    ApplicationUserId = currentUser.Id,
-                    GamingGroupId = currentUser.CurrentGamingGroupId,
-                    GamingGroup = new GamingGroup
-                    {
-                        Active = active
-                    }
-                }
-            }.AsQueryable();
-            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<UserGamingGroup>()).Return(userGamingGroups);
-        }
+                Id = "user id 2",
+                CurrentGamingGroupId = _expectedGamingGroupId
+            };
 
-        [Test]
-        public void It_Changes_The_Users_Current_Gaming_Group_If_They_Deactivated_Their_Current_Gaming_Group_And_There_Is_Another_Active()
-        {
-            //--arrange
-            SetupUserGamingGroups();
+            var usersWithThisAsCurrentGamingGroup = new List<ApplicationUser>
+            {
+               expectedUser1,
+               expectedUser2,
+               //--record that doesn't match the gaming group
+               new ApplicationUser
+               {
+                   CurrentGamingGroupId = -1
+               }
+            }.AsQueryable();
+            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<ApplicationUser>()).Return(usersWithThisAsCurrentGamingGroup);
+
             var request = new GamingGroupEditRequest
             {
-                GamingGroupId = currentUser.CurrentGamingGroupId,
+                GamingGroupId = _expectedGamingGroupId,
                 Active = false
             };
 
@@ -157,16 +139,15 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             autoMocker.ClassUnderTest.UpdatePublicGamingGroupDetails(request, currentUser);
 
             //--assert
-            autoMocker.Get<IGamingGroupContextSwitcher>().AssertWasCalled(mock => mock.SwitchGamingGroupContext(_expectedGamingGroupId, currentUser));
+            autoMocker.Get<IGamingGroupContextSwitcher>().AssertWasCalled(mock => mock.EnsureContextIsValid(expectedUser1));
+            autoMocker.Get<IGamingGroupContextSwitcher>().AssertWasCalled(mock => mock.EnsureContextIsValid(expectedUser2));
         }
-
-//WHAT ABOUT CASE WHEN DEACTIVATING THE ONLY GAMING GROUP FOR A DIFFERENT USER?
 
         [Test]
         public void ItReturnsTheGamingGroupThatWasSaved()
         {
             //--arrange
-            SetupSingleUserGamingGroup();
+            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<ApplicationUser>()).Return(new List<ApplicationUser>().AsQueryable());
 
             //--Act
             var gamingGroup = autoMocker.ClassUnderTest.UpdatePublicGamingGroupDetails(new GamingGroupEditRequest(), currentUser);
@@ -179,7 +160,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         public void ItTracksThatAGamingGroupWasUpdated()
         {
             //--arrange
-            SetupSingleUserGamingGroup();
+            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<ApplicationUser>()).Return(new List<ApplicationUser>().AsQueryable());
 
             //--act
             autoMocker.ClassUnderTest.UpdatePublicGamingGroupDetails(new GamingGroupEditRequest(), currentUser);
