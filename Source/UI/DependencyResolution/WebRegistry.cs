@@ -54,8 +54,6 @@ namespace UI.DependencyResolution
 
         private void SetupSingletonMappings()
         {
-            For<System.Web.Mvc.IFilterProvider>().Singleton().Use<GlobalFilterProvider>();
-
             For<IGameResultViewModelBuilder>().Singleton().Use<GameResultViewModelBuilder>();
 
             For<IPlayerDetailsViewModelBuilder>().Singleton().Use<PlayerDetailsViewModelBuilder>();

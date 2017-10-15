@@ -353,9 +353,7 @@
     <Compile Include="Attributes\ApiExceptionFilter.cs" />
     <Compile Include="Attributes\ApiModelValidationAttribute.cs" />
     <Compile Include="Attributes\ClientIdCalculator.cs" />
-    <Compile Include="Attributes\Filters\EnsureValidGamingGroupContextAttribute.cs" />
     <Compile Include="Attributes\Filters\ErrorPageExceptionFilter.cs" />
-    <Compile Include="Attributes\GlobalFilterProvider.cs" />
     <Compile Include="BaseController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
