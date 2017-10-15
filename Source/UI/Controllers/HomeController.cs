@@ -35,7 +35,6 @@ using UI.Controllers.Helpers;
 using UI.Mappers.Extensions;
 using UI.Mappers.Interfaces;
 using UI.Models.GameDefinitionModels;
-using UI.Models.GamingGroup;
 using UI.Models.Home;
 using UI.Models.Players;
 

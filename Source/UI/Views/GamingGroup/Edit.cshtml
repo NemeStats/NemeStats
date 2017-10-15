@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="col-xs-6">
-                    @Html.TextBoxFor(model => model.GamingGroupName, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.GamingGroupName, new {@class = "form-control"})
                     @Html.ValidationMessageFor(model => model.GamingGroupName)
                 </div>
             </div>
@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="col-xs-6">
-                    @Html.TextAreaFor(x => x.PublicDescription, new { @class = "form-control", @rows = "8" })
+                    @Html.TextAreaFor(x => x.PublicDescription, new {@class = "form-control", @rows = "8"})
                 </div>
             </div>
 
@@ -42,47 +42,10 @@
                 </div>
 
                 <div class="col-xs-6">
-                    @Html.TextBoxFor(x => x.Website, new { @class = "form-control" })
+                    @Html.TextBoxFor(x => x.Website, new {@class = "form-control"})
                     @Html.ValidationMessageFor(model => model.Website)
                 </div>
             </div>
-            
-            @if (Model.OtherUsers.Count > 0)
-            {
-                <div class="flip-scroll">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th class="name-head">
-                                    Username
-                                </th>
-                                <th>
-                                    Email
-                                </th>
-                                <th>
-                                    Player Name
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var user in Model.OtherUsers)
-                            {
-                                <tr>
-                                    <td>
-                                        @user.UserName
-                                    </td>
-                                    <td>
-                                        @user.Email
-                                    </td>
-                                    <td>
-                                        @user.PlayerName
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            }
 
             <div class="row form-group">
                 <div class="col-xs-2">
@@ -97,6 +60,58 @@
             <div>
                 <button class="btn btn-primary" type="submit">Update</button>
             </div>
+        </div>
+    }
+
+</div>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4 class="fl-left">
+            Users in Group
+        </h4>
+        <div class="fl-clear"></div>
+    </div>
+    @if (Model.OtherUsers.Count > 0)
+    {
+        <div class="flip-scroll">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th class="name-head">
+                        Username
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Player Name
+                    </th>
+                    <th>
+                        Active
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var user in Model.OtherUsers)
+                {
+                    <tr>
+                        <td>
+                            @user.UserName
+                        </td>
+                        <td>
+                            @user.Email
+                        </td>
+                        <td>
+                            @user.PlayerName
+                        </td>
+                        <td>
+                            @Html.CheckBoxFor(x => user.Active, new { disabled = "disabled"})
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
         </div>
     }
 </div>

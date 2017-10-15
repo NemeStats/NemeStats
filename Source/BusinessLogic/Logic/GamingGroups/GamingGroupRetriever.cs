@@ -21,6 +21,7 @@ using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Models.Utility;
 
 namespace BusinessLogic.Logic.GamingGroups
@@ -28,11 +29,14 @@ namespace BusinessLogic.Logic.GamingGroups
     public class GamingGroupRetriever : IGamingGroupRetriever
     {
         private readonly IDataContext _dataContext;
+        private readonly ISecuredEntityValidator _securedEntityValidator;
 
         public GamingGroupRetriever(
-            IDataContext dataContext)
+            IDataContext dataContext,
+            ISecuredEntityValidator securedEntityValidator)
         {
             _dataContext = dataContext;
+            _securedEntityValidator = securedEntityValidator;
         }
 
         public GamingGroup GetGamingGroupById(int gamingGroupId)
@@ -60,10 +64,10 @@ namespace BusinessLogic.Logic.GamingGroups
         public IList<GamingGroupListItemModel> GetGamingGroupsForUser(string applicationUserId)
         {
             return _dataContext.GetQueryable<GamingGroup>()
-                              .Where(gamingGroup => gamingGroup.Active 
-                                && gamingGroup.UserGamingGroups.Any(ugg => ugg.ApplicationUserId == applicationUserId))
-                              .Select(gg => new GamingGroupListItemModel { Id = gg.Id, Name = gg.Name })
-                              .ToList();
+                .Where(gamingGroup => gamingGroup.Active
+                                      && gamingGroup.UserGamingGroups.Any(ugg => ugg.ApplicationUserId == applicationUserId))
+                .Select(gg => new GamingGroupListItemModel {Id = gg.Id, Name = gg.Name,})
+                .ToList();
         }
 
         public List<TopGamingGroupSummary> GetTopGamingGroups(int numberOfTopGamingGroupsToShow)
@@ -78,9 +82,9 @@ namespace BusinessLogic.Logic.GamingGroups
                         NumberOfPlayers = gamingGroup.Players.Count,
                         GamingGroupChampion = gamingGroup.GamingGroupChampion,
                     }).OrderByDescending(gg => gg.NumberOfGamesPlayed)
-                      .ThenByDescending(gg => gg.NumberOfPlayers)
-                      .Take(numberOfTopGamingGroupsToShow)
-                      .ToList();
+                .ThenByDescending(gg => gg.NumberOfPlayers)
+                .Take(numberOfTopGamingGroupsToShow)
+                .ToList();
         }
 
         public List<GamingGroupSitemapInfo> GetGamingGroupsSitemapInfo()
@@ -92,7 +96,9 @@ namespace BusinessLogic.Logic.GamingGroups
                     GamingGroupId = x.Id,
                     DateCreated = x.DateCreated,
                     DateLastGamePlayed =
-                        x.PlayedGames.OrderByDescending(playedGame => playedGame.DatePlayed).Select(playedGame => playedGame.DatePlayed).FirstOrDefault() 
+                        x.PlayedGames.OrderByDescending(playedGame => playedGame.DatePlayed)
+                            .Select(playedGame => playedGame.DatePlayed)
+                            .FirstOrDefault()
                 })
                 .OrderBy(x => x.GamingGroupId)
                 .ToList();
@@ -101,9 +107,9 @@ namespace BusinessLogic.Logic.GamingGroups
         public GamingGroupStats GetGamingGroupStats(int gamingGroupId, BasicDateRangeFilter dateRangeFilter)
         {
             var playedGameTotals = _dataContext.GetQueryable<PlayedGame>()
-                .Where(x => x.GamingGroupId == gamingGroupId 
-                    && x.DatePlayed >= dateRangeFilter.FromDate
-                    && x.DatePlayed <= dateRangeFilter.ToDate)
+                .Where(x => x.GamingGroupId == gamingGroupId
+                            && x.DatePlayed >= dateRangeFilter.FromDate
+                            && x.DatePlayed <= dateRangeFilter.ToDate)
                 .GroupBy(x => x.GameDefinitionId)
                 .Select(g => new
                 {
@@ -119,7 +125,7 @@ namespace BusinessLogic.Logic.GamingGroups
             var playerResults = _dataContext.GetQueryable<Player>()
                 .Where(x => x.GamingGroupId == gamingGroupId)
                 .GroupBy(x => x.PlayerGameResults.Any(y => y.PlayedGame.DatePlayed >= dateRangeFilter.FromDate
-                                              && y.PlayedGame.DatePlayed <= dateRangeFilter.ToDate))
+                                                           && y.PlayedGame.DatePlayed <= dateRangeFilter.ToDate))
                 .Select(x => new
                 {
                     HasPlays = x.Key,
@@ -140,13 +146,36 @@ namespace BusinessLogic.Logic.GamingGroups
                 TotalNumberOfGamesWithPlays = totalNumberOfGamesWithPlays,
                 TotalGamesOwned = numberOfGamesOwned,
                 TotalNumberOfPlayersWithPlays = totalNumberOfPlayersWithPlays,
-                TotalNumberOfPlayers = totalNumberOfPlayers 
+                TotalNumberOfPlayers = totalNumberOfPlayers
             };
         }
 
         public GamingGroupWithUsers GetGamingGroupWithUsers(int gamingGroupId, ApplicationUser currentUser)
         {
-            throw new System.NotImplementedException();
+            var gamingGroup = _securedEntityValidator.RetrieveAndValidateAccess<GamingGroup>(gamingGroupId, currentUser);
+
+            var users = _dataContext.GetQueryable<Player>()
+                .Where(x => x.GamingGroupId == gamingGroupId && x.ApplicationUserId != null)
+                .Select(x => new BasicUserInfo
+                {
+                    UserName = x.User.UserName,
+                    PlayerName = x.Name,
+                    Email = x.User.Email,
+                    Active = x.Active
+                })
+                .OrderByDescending(x => x.Active)
+                .ThenBy(x => x.UserName)
+                .ToList();
+
+            return new GamingGroupWithUsers
+            {
+                GamingGroupId = gamingGroup.Id,
+                GamingGroupName = gamingGroup.Name,
+                Active = gamingGroup.Active,
+                PublicDescription = gamingGroup.PublicDescription,
+                PublicGamingGroupWebsite = gamingGroup.PublicGamingGroupWebsite,
+                OtherUsers = users
+            };
         }
     }
 }

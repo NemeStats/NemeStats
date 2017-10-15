@@ -239,6 +239,7 @@ namespace UI.Controllers
                 CurrentGamingGroup = gamingGroups.FirstOrDefault(gg => gg.Id == currentUser.CurrentGamingGroupId),
                 CurrentUser = currentUser
             };
+            
             return PartialView(MVC.Account.Views._UserGamingGroupsPartial, model);
         }
 
