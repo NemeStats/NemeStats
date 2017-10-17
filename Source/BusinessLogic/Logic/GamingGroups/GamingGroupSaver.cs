@@ -127,8 +127,6 @@ namespace BusinessLogic.Logic.GamingGroups
 
         public GamingGroup UpdatePublicGamingGroupDetails(GamingGroupEditRequest request, ApplicationUser currentUser)
         {
-            SwitchUsersCurrentGamingGroupIfNecessary(request);
-
             var gamingGroup = _dataContext.FindById<GamingGroup>(request.GamingGroupId);
 
             gamingGroup.PublicGamingGroupWebsite = request.Website;
@@ -138,6 +136,8 @@ namespace BusinessLogic.Logic.GamingGroups
 
             gamingGroup = _dataContext.Save(gamingGroup, currentUser);
             _dataContext.CommitAllChanges();
+
+            SwitchUsersCurrentGamingGroupIfNecessary(request);
 
             _eventTracker.TrackGamingGroupUpdate(currentUser);
 
