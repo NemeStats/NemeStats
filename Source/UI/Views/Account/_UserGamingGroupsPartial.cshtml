@@ -15,9 +15,9 @@
             <li><a class="ga-topgaminggroupswitcher-switchlink" href="@Url.Action(MVC.GamingGroup.SwitchGamingGroups().AddRouteValue("gamingGroupId", gamingGroup.Id))">@gamingGroup.Name</a></li>
         }
         <li role="separator" class="divider"></li>
-        <li><a href="@Url.Action(MVC.Account.Manage())#gaming-groups">View all Gaming Groups</a></li>
+        <li><a class="ga-topgaminggroupswitcher-viewall" href="@Url.Action(MVC.Account.Manage())#gaming-groups">View all Gaming Groups</a></li>
         <li role="separator" class="divider"></li>
-        <li><a href="@Url.Action(MVC.Account.Manage())#gaming-groups">Create new Gaming Group</a></li>
+        <li><a class="ga-topgaminggroupswitcher-createnew" href="@Url.Action(MVC.Account.Manage())#gaming-groups">Create new Gaming Group</a></li>
     </ul>
 </li>
 
