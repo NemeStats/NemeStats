@@ -7,6 +7,7 @@ using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Shouldly;
 using StructureMap.AutoMocking;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupContextSwitcherTests
@@ -58,16 +59,29 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupContext
             //--arrange
             var applicationUser = new ApplicationUser
             {
-                Id = "some user id"
+                Id = "some user id",
+                CurrentGamingGroupId = 1
             };
             var userGamingGroups = new List<UserGamingGroup>
             {
+                //--record where gaming group is not active
                 new UserGamingGroup
                 {
                     ApplicationUserId = applicationUser.Id,
+                    GamingGroupId = applicationUser.CurrentGamingGroupId.Value,
                     GamingGroup = new GamingGroup
                     {
                         Active = false
+                    }
+                },
+                new UserGamingGroup
+                {
+                    //--record for a different user
+                    ApplicationUserId = "some other application user id",
+                    GamingGroupId = applicationUser.CurrentGamingGroupId.Value,
+                    GamingGroup = new GamingGroup
+                    {
+                        Active = true
                     }
                 }
             }.AsQueryable();
@@ -77,6 +91,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupContext
             _autoMocker.ClassUnderTest.EnsureContextIsValid(applicationUser);
 
             //--assert
+            applicationUser.CurrentGamingGroupId.ShouldBeNull();
             _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.AdminSave(Arg<ApplicationUser>
                 .Matches(user => user.Id == applicationUser.Id
                     && user.CurrentGamingGroupId == null)));
@@ -89,7 +104,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupContext
             int expectedGamingGroupId = 1;
             var applicationUser = new ApplicationUser
             {
-                Id = "some user id"
+                Id = "some user id",
+                CurrentGamingGroupId = -200
             };
 
             var userGamingGroups = new List<UserGamingGroup>
@@ -131,6 +147,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupContext
             _autoMocker.ClassUnderTest.EnsureContextIsValid(applicationUser);
 
             //--assert
+            applicationUser.CurrentGamingGroupId.ShouldBe(expectedGamingGroupId);
             _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.AdminSave(Arg<ApplicationUser>
                 .Matches(user => user.Id == applicationUser.Id
                     && user.CurrentGamingGroupId == expectedGamingGroupId)));

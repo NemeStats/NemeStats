@@ -60,7 +60,9 @@ namespace BusinessLogic.Logic.Users
             {
                 var currentGamingGroupIsValid = _dataContext
                     .GetQueryable<UserGamingGroup>()
-                    .Any(x => x.GamingGroupId == user.CurrentGamingGroupId.Value && x.GamingGroup.Active);
+                    .Any(x => x.GamingGroupId == user.CurrentGamingGroupId.Value
+                        && x.ApplicationUserId == user.Id
+                        && x.GamingGroup.Active);
                 if (currentGamingGroupIsValid)
                 {
                     return;
