@@ -10,61 +10,89 @@
 
 @Html.RenderTempDataMessage(TempMessageKeys.MANAGE_ACCOUNT_RESULT_TEMPMESSAGE)
 
-<div class="row">
-    <div class="col-md-8">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h4>Manage Your Account</h4>
-            </div>
-            <div class="panel-body">
-                @if (ViewBag.HasLocalPassword)
-                {
-                    @Html.Partial(MVC.Account.Views._ChangePasswordPartial, Model.PasswordViewModel)
-                }
-                else
-                {
-                    @Html.Partial(MVC.Account.Views._SetPasswordPartial, Model.PasswordViewModel)
-                }
-                <br /><br />
-                @Html.Partial(MVC.Account.Views._ChangeEmailPartial, Model.ChangeEmailViewModel)
-                <br /><br />
-                @Html.Partial(MVC.Account.Views._CreateGamingGroupPartial)
-            </div>
-        </div>
-        
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h4>Your Gaming Groups</h4>
-            </div>
-            <div class="panel-body">
-                @Html.Partial(MVC.GamingGroup.Views._TopGamingGroupsPartial, Model.GamingGroupsSummary)
-            </div>
-        </div>
-    </div>
+<div id="neme-tab" class="container">
+    <ul class="nav nav-pills">
+        <li class="active"><a href="#accountDivId" data-toggle="tab" id="accountTab">Account</a></li>
+        <li><a href="#gamingGroupsDivId" data-toggle="tab" id="gamingGroupsTab">Gaming Groups</a></li>
+    </ul>
 
-    <div class="col-md-4">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h4>Manage External Logins</h4>
-            </div>
-            <div class="panel-body">
-                <section id="externalLogins">
-                    @Html.Action("RemoveAccountList")
-                    <br/><br/>
-                    @Html.Partial(MVC.Account.Views._ExternalLoginsListPartial, new {Action = "LinkLogin", ReturnUrl = ViewBag.ReturnUrl})
-                </section>
+    <div class="tab-content clearfix">
+        <div class="tab-pane active" id="accountDivId">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4>Manage Your Account</h4>
+                        </div>
+                        <div class="panel-body">
+                            @if (ViewBag.HasLocalPassword)
+                            {
+                                @Html.Partial(MVC.Account.Views._ChangePasswordPartial, Model.PasswordViewModel)
+                            }
+                            else
+                            {
+                                @Html.Partial(MVC.Account.Views._SetPasswordPartial, Model.PasswordViewModel)
+                            }
+                            <br /><br />
+                            @Html.Partial(MVC.Account.Views._ChangeEmailPartial, Model.ChangeEmailViewModel)
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4>Manage External Logins</h4>
+                        </div>
+                        <div class="panel-body">
+                            <section id="externalLogins">
+                                @Html.Action("RemoveAccountList")
+                                <br /><br />
+                                @Html.Partial(MVC.Account.Views._ExternalLoginsListPartial, new { Action = "LinkLogin", ReturnUrl = ViewBag.ReturnUrl })
+                            </section>
+                        </div>
+                    </div>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4><a href="http://www.boardgamegeek.com" target="_blank;"><img src="~/Content/Images/bgg_small.png" alt="BoardGameGeek.com" title="BoardGameGeek.com" /></a> BoardGameGeek Integration</h4>
+                        </div>
+                        <div class="panel-body">
+                            @Html.Partial(MVC.Account.Views.BoardGameGeekIntegration, Model.BoardGameGeekIntegrationModel)
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h4><a href="http://www.boardgamegeek.com" target="_blank;"><img src="~/Content/Images/bgg_small.png" alt="BoardGameGeek.com" title="BoardGameGeek.com"/></a> BoardGameGeek Integration</h4>
-            </div>
-            <div class="panel-body">
-                @Html.Partial(MVC.Account.Views.BoardGameGeekIntegration, Model.BoardGameGeekIntegrationModel)
+        <div class="tab-pane" id="gamingGroupsDivId">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4>Your Gaming Groups</h4>
+                </div>
+                <div class="panel-body">
+                    @Html.Partial(MVC.Account.Views._CreateGamingGroupPartial)
+                    @Html.Partial(MVC.GamingGroup.Views._TopGamingGroupsPartial, Model.GamingGroupsSummary)
+                </div>
             </div>
         </div>
     </div>
 </div>
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-    }
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // show active tab on reload
+            if (location.hash !== '') $('a[href="' + location.hash + '"]').tab('show');
+
+            // remember the hash in the URL without jumping
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                if (history.pushState) {
+                    history.pushState(null, null, '#' + $(e.target).attr('href').substr(1));
+                } else {
+                    location.hash = '#' + $(e.target).attr('href').substr(1);
+                }
+            });
+        });
+    </script>
+}
