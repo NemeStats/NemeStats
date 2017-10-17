@@ -50,6 +50,7 @@ namespace UI.Controllers
         private readonly IBoardGameGeekApiClient _boardGameGeekApiClient;
         private readonly IUserRetriever _userRetriever;
         private readonly ITransformer _transformer;
+        private readonly IGamingGroupContextSwitcher _gamingGroupContextSwitcher;
 
         public AccountController(
             ApplicationUserManager userManager,
@@ -61,7 +62,8 @@ namespace UI.Controllers
             IBoardGameGeekUserSaver boardGameGeekUserSaver,
             IBoardGameGeekApiClient boardGameGeekApiClient,
             IUserRetriever userRetriever, 
-            ITransformer transformer)
+            ITransformer transformer, 
+            IGamingGroupContextSwitcher gamingGroupContextSwitcher)
         {
             _userManager = userManager;
             _userRegisterer = userRegisterer;
@@ -73,6 +75,7 @@ namespace UI.Controllers
             _boardGameGeekApiClient = boardGameGeekApiClient;
             _userRetriever = userRetriever;
             _transformer = transformer;
+            _gamingGroupContextSwitcher = gamingGroupContextSwitcher;
         }
 
 
@@ -232,14 +235,20 @@ namespace UI.Controllers
         public virtual ActionResult UserGamingGroups(ApplicationUser currentUser)
         {
             var gamingGroups = _gamingGroupRetriever.GetGamingGroupsForUser(currentUser.Id);
+            var currentGamingGroup = gamingGroups.FirstOrDefault(gg => gg.Id == currentUser.CurrentGamingGroupId);
+            if (currentUser.CurrentGamingGroupId.HasValue && currentGamingGroup == null)
+            {
+                _gamingGroupContextSwitcher.EnsureContextIsValid(currentUser);
+                currentGamingGroup = gamingGroups.FirstOrDefault(gg => gg.Id == currentUser.CurrentGamingGroupId);
+            }
 
             var model = new UserGamingGroupsModel
             {
                 GamingGroups = gamingGroups,
-                CurrentGamingGroup = gamingGroups.FirstOrDefault(gg => gg.Id == currentUser.CurrentGamingGroupId),
+                CurrentGamingGroup = currentGamingGroup,
                 CurrentUser = currentUser
             };
-            
+
             return PartialView(MVC.Account.Views._UserGamingGroupsPartial, model);
         }
 

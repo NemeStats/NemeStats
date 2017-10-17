@@ -19,7 +19,6 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using BusinessLogic.Models.GamingGroups;
-using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
@@ -69,5 +68,31 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
             model.CurrentUser.ShouldBe(currentUser);
         }
 
+        [Test]
+        public void It_Fixes_The_Current_Gaming_Group_Id_For_The_User_If_They_Have_One_Set_But_The_Group_Is_No_Longer_Valid()
+        {
+            //--arrange
+            gamingGroupRetrieverMock.Stub(s => s.GetGamingGroupsForUser(Arg<string>.Is.Anything))
+                .Return(new List<GamingGroupListItemModel>());
+
+            //--act
+            accountControllerPartialMock.UserGamingGroups(currentUser);
+
+            //--assert
+            gamingGroupContextSwitcher.AssertWasCalled(mock => mock.EnsureContextIsValid(currentUser));
+        }
+
+        [Test]
+        public void It_Doesnt_Bother_Switching_The_Current_User_Context_If_It_Has_A_Valid_Current_Gaming_Group()
+        {
+            //--arrange
+            SetupTwoActiveGamingGroups();
+
+            //--act
+            accountControllerPartialMock.UserGamingGroups(currentUser);
+
+            //--assert
+            gamingGroupContextSwitcher.AssertWasNotCalled(mock => mock.EnsureContextIsValid(currentUser));
+        }
     }
 }

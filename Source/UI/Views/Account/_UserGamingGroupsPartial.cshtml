@@ -1,7 +1,14 @@
 ﻿@model UI.Models.User.UserGamingGroupsModel
 
 <li class="dropdown">
-    <a href="#" class="dropdown-toggle ga-topgaminggroupswitcher-drowpdown" data-toggle="dropdown" role="button" aria-expanded="false">@Model.CurrentGamingGroup.Name<span class="caret"></span></a>
+    @{
+        string gamingGroupName = "Create Gaming Group";
+    }
+    @if (Model.CurrentGamingGroup != null)
+    {
+        gamingGroupName = Model.CurrentGamingGroup.Name;
+    }
+    <a href="#" class="dropdown-toggle ga-topgaminggroupswitcher-drowpdown" data-toggle="dropdown" role="button" aria-expanded="false">@gamingGroupName<span class="caret"></span></a>
     <ul class="dropdown-menu" role="menu">
         @foreach (var gamingGroup in Model.GamingGroups)
         {

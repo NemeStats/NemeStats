@@ -43,6 +43,7 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
         protected IDataProtectionProvider dataProtectionProviderMock;
         protected IGamingGroupRetriever gamingGroupRetrieverMock;
         protected ITransformer transformerMock;
+        protected IGamingGroupContextSwitcher gamingGroupContextSwitcher;
         protected RegisterViewModel registerViewModel;
         protected ApplicationUser currentUser;
         IBoardGameGeekApiClient boardGameGeekApiClient;
@@ -65,6 +66,7 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
             boardGameGeekApiClient = MockRepository.GenerateMock<IBoardGameGeekApiClient>();
             userRetriever = MockRepository.GenerateMock<IUserRetriever>();
             transformerMock = MockRepository.GenerateMock<ITransformer>();
+            gamingGroupContextSwitcher = MockRepository.GenerateMock<IGamingGroupContextSwitcher>();
 
             dataProtectionProviderMock.Expect(mock => mock.Create(Arg<string>.Is.Anything)).Return(dataProtector);
 
@@ -79,7 +81,8 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
                 boardGameGeekUserSaver,
                 boardGameGeekApiClient,
                 userRetriever,
-                transformerMock);
+                transformerMock,
+                gamingGroupContextSwitcher);
             currentUser = new ApplicationUser()
             {
                 Id = "new application user",
