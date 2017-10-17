@@ -67,7 +67,9 @@ namespace UI.Attributes.Filters
                     //--TODO perhaps check if the user has a CurrentGamingGroup == null on non-child/AJAX actions and send a redirect to the create account page?
                     var userId = filterContext.HttpContext.User.Identity.GetUserId();
                     applicationUser = userManager.FindByIdAsync(userId).Result;
-                    if (RequiresGamingGroup && !applicationUser.CurrentGamingGroupId.HasValue)
+                    if (RequiresGamingGroup 
+                        && !applicationUser.CurrentGamingGroupId.HasValue
+                        && !filterContext.IsChildAction)
                     {
                         filterContext.Result = new RedirectToRouteResult(MVC.Account.Manage().GetRouteValueDictionary());
                     }

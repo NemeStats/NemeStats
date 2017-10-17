@@ -150,6 +150,12 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
         }
 
         [Test]
+        public void ItDoesntRedirectIfItsAChildAction()
+        {
+            //--couldn't figure out how to mock IsChildAction = true
+        }
+
+        [Test]
         public void ItDoesntRedirectIfTheUserHasAGamingGroup()
         {
             SetupExpectations();
