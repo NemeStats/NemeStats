@@ -34,7 +34,7 @@ namespace BusinessLogic.Logic.Users
                         NumberOfGamesPlayed = userGamingGroup.GamingGroup.PlayedGames.Count,
                         NumberOfPlayers = userGamingGroup.GamingGroup.Players.Count,
                         GamingGroupChampion = userGamingGroup.GamingGroup.GamingGroupChampion
-                    }).OrderBy(x => x.GamingGroupName).ToList(),
+                    }).OrderByDescending(x => x.Active).ThenBy(x => x.GamingGroupName).ToList(),
                     Players = user.Players.Select(player => new PlayerInfoForUser
                     {
                         PlayerId = player.Id,
