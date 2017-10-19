@@ -40,6 +40,8 @@ namespace UI.Controllers
     [Authorize]
     public partial class AccountController : BaseController
     {
+        public const string GAMING_GROUPS_TAB_HASH_SUFFIX = "gaming-groups";
+
         private readonly ApplicationUserManager _userManager;
         private readonly IUserRegisterer _userRegisterer;
         private readonly IFirstTimeAuthenticator _firstTimeAuthenticator;
@@ -110,10 +112,7 @@ namespace UI.Controllers
 
                     return RedirectToLocal(returnUrl);
                 }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid username or password.");
-                }
+                ModelState.AddModelError(string.Empty, "Invalid username or password.");
             }
 
             // If we got this far, something failed, redisplay form

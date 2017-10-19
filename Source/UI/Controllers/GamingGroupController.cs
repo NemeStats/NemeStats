@@ -257,7 +257,7 @@ namespace UI.Controllers
 
         [HttpPost]
         [Authorize]
-        [UserContext]
+        [UserContext(RequiresGamingGroup = false)]
         public virtual ActionResult CreateNewGamingGroup(string gamingGroupName, ApplicationUser currentUser)
         {
             if (string.IsNullOrWhiteSpace(gamingGroupName))
@@ -300,7 +300,7 @@ namespace UI.Controllers
             {
                 gamingGroupSaver.UpdatePublicGamingGroupDetails(request, currentUser);
 
-                return RedirectToAction(MVC.Account.Manage());
+                return RedirectToAction(MVC.Account.Manage() + "#" + AccountController.GAMING_GROUPS_TAB_HASH_SUFFIX);
             }
 
             return Edit(request.GamingGroupId, currentUser);
