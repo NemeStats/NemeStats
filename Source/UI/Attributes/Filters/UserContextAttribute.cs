@@ -20,6 +20,8 @@ using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using System.Web.Mvc;
+using System.Web.Routing;
+using UI.Controllers;
 
 namespace UI.Attributes.Filters
 {
@@ -71,7 +73,18 @@ namespace UI.Attributes.Filters
                         && !applicationUser.CurrentGamingGroupId.HasValue
                         && !filterContext.IsChildAction)
                     {
-                        filterContext.Result = new RedirectToRouteResult(MVC.Account.Manage().GetRouteValueDictionary());
+                        filterContext.Result = new RedirectResult(
+                            UrlHelper.GenerateUrl(
+                                routeName: null,
+                                actionName: MVC.Account.ActionNames.Manage,
+                                controllerName: MVC.Account.Name,
+                                protocol: null,
+                                hostName: null,
+                                fragment: AccountController.GAMING_GROUPS_TAB_HASH_SUFFIX,
+                                routeValues: null,
+                                routeCollection: RouteTable.Routes,
+                                requestContext: filterContext.RequestContext,
+                                includeImplicitMvcValues: false));
                     }
                 }
                 else

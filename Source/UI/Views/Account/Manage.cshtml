@@ -1,4 +1,5 @@
-﻿@using UI.Controllers.Helpers
+﻿@using UI.Controllers
+@using UI.Controllers.Helpers
 @using UI.HtmlHelpers
 @model UI.Models.ManageAccountViewModel
 @{
@@ -13,7 +14,7 @@
 <div id="neme-tab" class="container">
     <ul class="nav nav-pills">
         <li class="active"><a href="#account" data-toggle="tab" id="accountTab">Account</a></li>
-        <li><a href="#gaming-groups" data-toggle="tab" id="gamingGroupsTab">Gaming Groups</a></li>
+        <li><a href="#@AccountController.GAMING_GROUPS_TAB_HASH_SUFFIX" data-toggle="tab" id="gamingGroupsTab">Gaming Groups</a></li>
     </ul>
 
     <div class="tab-content clearfix">

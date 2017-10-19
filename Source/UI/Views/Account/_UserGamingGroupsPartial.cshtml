@@ -1,4 +1,5 @@
-﻿@model UI.Models.User.UserGamingGroupsModel
+﻿@using UI.Controllers
+@model UI.Models.User.UserGamingGroupsModel
 
 <li class="dropdown">
     @{
@@ -15,9 +16,9 @@
             <li><a class="ga-topgaminggroupswitcher-switchlink" href="@Url.Action(MVC.GamingGroup.SwitchGamingGroups().AddRouteValue("gamingGroupId", gamingGroup.Id))">@gamingGroup.Name</a></li>
         }
         <li role="separator" class="divider"></li>
-        <li><a class="ga-topgaminggroupswitcher-viewall" href="@Url.Action(MVC.Account.Manage())#gaming-groups">View all Gaming Groups</a></li>
+        <li><a class="ga-topgaminggroupswitcher-viewall" href="@Url.Action(MVC.Account.Manage())#@AccountController.GAMING_GROUPS_TAB_HASH_SUFFIX">View all Gaming Groups</a></li>
         <li role="separator" class="divider"></li>
-        <li><a class="ga-topgaminggroupswitcher-createnew" href="@Url.Action(MVC.Account.Manage())#gaming-groups">Create new Gaming Group</a></li>
+        <li><a class="ga-topgaminggroupswitcher-createnew" href="@Url.Action(MVC.Account.Manage())#@AccountController.GAMING_GROUPS_TAB_HASH_SUFFIX">Create new Gaming Group</a></li>
     </ul>
 </li>
 
