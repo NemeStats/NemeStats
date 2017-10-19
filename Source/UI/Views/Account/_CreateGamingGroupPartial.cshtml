@@ -1,15 +1,11 @@
-﻿<h4>Create a New Gaming Group</h4>
-@using (Html.BeginForm(MVC.GamingGroup.ActionNames.CreateNewGamingGroup, MVC.GamingGroup.Name, FormMethod.Post, new { id = "createGamingGroupForm", @class = "form-horizontal", role = "form" }))
+﻿@using (Html.BeginForm(MVC.GamingGroup.ActionNames.CreateNewGamingGroup, MVC.GamingGroup.Name, FormMethod.Post, new { id = "createGamingGroupForm", @class = "form-horizontal", role = "form" }))
 {
 
     @Html.AntiForgeryToken()
-    <div class="form-group">
+    <div class="form-group form-inline well">
         <div class="col-md-9">
-            <input type="text" class = "form-control" name="gamingGroupName" />
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-9">
+            Create a New Gaming Group
+            <input type="text" class="form-control" name="gamingGroupName" placeholder="New Gaming Group name" />
             <button id="btnSubmitCreateGamingGroup" type="submit" class="btn btn-primary" form="createGamingGroupForm"><span class="fa fa-plus-circle"></span> Create Gaming Group</button>
         </div>
     </div>
