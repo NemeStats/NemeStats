@@ -2,7 +2,6 @@
 using BusinessLogic.Models.GamingGroups;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System.Web.Mvc;
 
 namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 {
