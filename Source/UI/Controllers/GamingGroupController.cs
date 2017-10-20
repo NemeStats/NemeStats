@@ -273,7 +273,7 @@ namespace UI.Controllers
 
         [HttpGet]
         [Authorize]
-        [UserContext]
+        [UserContext(RequiresGamingGroup = false)] //--a user with only inactive gaming groups should be able to reactivate one
         public virtual ActionResult Edit(int id, ApplicationUser currentUser)
         {
             var gamingGroup = gamingGroupRetriever.GetGamingGroupWithUsers(id, currentUser);
@@ -293,14 +293,14 @@ namespace UI.Controllers
 
         [HttpPost]
         [Authorize]
-        [UserContext]
+        [UserContext(RequiresGamingGroup = false)] //--a user with only inactive gaming groups should be able to reactivate one
         public virtual ActionResult Edit(GamingGroupEditRequest request, ApplicationUser currentUser)
         {
             if (ModelState.IsValid)
             {
                 gamingGroupSaver.UpdatePublicGamingGroupDetails(request, currentUser);
-
-                return RedirectToAction(MVC.Account.Manage() + "#" + AccountController.GAMING_GROUPS_TAB_HASH_SUFFIX);
+                
+                return Redirect(Url.Action(MVC.Account.Manage()) + "#" + AccountController.GAMING_GROUPS_TAB_HASH_SUFFIX);
             }
 
             return Edit(request.GamingGroupId, currentUser);
