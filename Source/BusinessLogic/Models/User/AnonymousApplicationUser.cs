@@ -28,5 +28,10 @@ namespace BusinessLogic.Models.User
         public override string AnonymousClientId => UniversalAnalyticsNemeStatsEventTracker.DEFAULT_ANONYMOUS_CLIENT_ID;
 
         public override string UserName => USER_NAME_ANONYMOUS;
+
+        public override bool IsAnonymousUser()
+        {
+            return true;
+        }
     }
 }

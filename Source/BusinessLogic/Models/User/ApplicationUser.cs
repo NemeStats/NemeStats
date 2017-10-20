@@ -91,6 +91,11 @@ namespace BusinessLogic.Models.User
             return Id;
         }
 
+        public virtual bool IsAnonymousUser()
+        {
+            return false;
+        }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(ApplicationUserManager manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
