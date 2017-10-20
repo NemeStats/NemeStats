@@ -21,7 +21,7 @@
                         @{ Html.RenderAction(MVC.Player.CurrentPlayerQuickStats()); }
                     </div>
                 }
-                else
+                else if(Model.ShowLoginPartial)
                 {
                     <div class="panel panel-default">
                         <div class="panel-body social-login">

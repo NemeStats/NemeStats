@@ -75,7 +75,8 @@ namespace UI.Controllers
         {
             var homeIndexViewModel = new HomeIndexViewModel
             {
-                ShowQuickStats = currentUser.CurrentGamingGroupId.HasValue
+                ShowQuickStats = currentUser.CurrentGamingGroupId.HasValue,
+                ShowLoginPartial = currentUser.IsAnonymousUser()
             };
             return View(MVC.Home.Views.Index, homeIndexViewModel);
         }

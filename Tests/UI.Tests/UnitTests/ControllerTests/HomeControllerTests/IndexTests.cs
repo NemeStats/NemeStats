@@ -39,7 +39,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
         }
 
         [Test]
-        public void It_Shows_The_The_Player_Quick_Stats_If_The_User_Has_A_Current_Gaming_Group()
+        public void It_Shows_The_Player_Quick_Stats_If_The_User_Has_A_Current_Gaming_Group()
         {
             var user = new ApplicationUser
             {
@@ -49,6 +49,41 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
 
             var model = viewResult.Model as HomeIndexViewModel;
             model.ShowQuickStats.ShouldBe(true);
+        }
+
+        [Test]
+        public void It_Doesnt_Show_The_Player_Quick_Stats_If_The_User_Doesnt_Have_A_Current_Gaming_Group()
+        {
+            var user = new ApplicationUser
+            {
+                CurrentGamingGroupId = null
+            };
+            var viewResult = _autoMocker.ClassUnderTest.Index(user) as ViewResult;
+
+            var model = viewResult.Model as HomeIndexViewModel;
+            model.ShowQuickStats.ShouldBe(false);
+        }
+
+        [Test]
+        public void It_Shows_The_Login_Widget_If_The_User_Is_Unauthenticated()
+        {
+            var user = new AnonymousApplicationUser();
+
+            var viewResult = _autoMocker.ClassUnderTest.Index(user) as ViewResult;
+
+            var model = viewResult.Model as HomeIndexViewModel;
+            model.ShowLoginPartial.ShouldBe(true);
+        }
+
+        [Test]
+        public void It_Doesnt_Show_The_Login_Widget_If_The_User_Is_Authenticated()
+        {
+            var user = new ApplicationUser();
+
+            var viewResult = _autoMocker.ClassUnderTest.Index(user) as ViewResult;
+
+            var model = viewResult.Model as HomeIndexViewModel;
+            model.ShowLoginPartial.ShouldBe(false);
         }
     }
 }
