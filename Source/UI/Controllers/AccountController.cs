@@ -235,7 +235,8 @@ namespace UI.Controllers
         {
             var gamingGroups = _gamingGroupRetriever.GetGamingGroupsForUser(currentUser.Id);
             var currentGamingGroup = gamingGroups.FirstOrDefault(gg => gg.Id == currentUser.CurrentGamingGroupId);
-            if (currentUser.CurrentGamingGroupId.HasValue && currentGamingGroup == null)
+            if ((currentUser.CurrentGamingGroupId.HasValue && currentGamingGroup == null)
+                || (currentUser.CurrentGamingGroupId == null && gamingGroups.Count > 0))
             {
                 _gamingGroupContextSwitcher.EnsureContextIsValid(currentUser);
                 currentGamingGroup = gamingGroups.FirstOrDefault(gg => gg.Id == currentUser.CurrentGamingGroupId);

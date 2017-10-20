@@ -83,6 +83,20 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
         }
 
         [Test]
+        public void It_Fixes_The_Current_Gaming_Group_Id_For_The_User_If_They_Dont_Have_One_Set_But_They_Have_Active_Gaming_Groups()
+        {
+            //--arrange
+            SetupTwoActiveGamingGroups();
+            currentUser.CurrentGamingGroupId = null;
+
+            //--act
+            accountControllerPartialMock.UserGamingGroups(currentUser);
+
+            //--assert
+            gamingGroupContextSwitcher.AssertWasCalled(mock => mock.EnsureContextIsValid(currentUser));
+        }
+
+        [Test]
         public void It_Doesnt_Bother_Switching_The_Current_User_Context_If_It_Has_A_Valid_Current_Gaming_Group()
         {
             //--arrange
