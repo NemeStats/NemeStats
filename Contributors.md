@@ -8,8 +8,7 @@ If you would like contribute to the NemeStats code base please follow the steps 
 #### Instructions
 
 * Pull down source code
-* Make sure you have an instance of SQL Server or SQL Express running locally, then go to package manager console and run "update-database -ProjectName BusinessLogic". This should create your database and apply all of the migrations to get it current. If it doesn't create the database then just create a local database called "Nerdscorekeeper" and then try running the command again.
-* You'll have to create a file in the root of your UI project called PrivateAppSettings.config that has settings for keys that we don't want checked into source control. If you are serious about contributing something, we can send you this file to include locally. If you are just playing around then below is a version that should let you at least run the project.
+* You'll have to create a file in the root of your UI project called PrivateAppSettings.config (e.g. ```/NemeStats/Source/UI/PrivateAppSettings.config```) that has settings for keys that we don't want checked into source control. If you are serious about contributing something, we can send you this file to include locally. If you are just playing around then below is a version that should let you at least run the project.
 PrivateAppSettings.config example settings
 
 ```xml
@@ -27,6 +26,8 @@ PrivateAppSettings.config example settings
   <add key="authTokenSalt" value="A3BCDF34-BA8C-4A02-92CA-AAACDF7993F3"/>
 </appSettings>
 ```
+* Make sure you have an instance of SQL Server or SQL Express running locally, then go to package manager console and run "update-database -ProjectName BusinessLogic". This should create your database and apply all of the migrations to get it current. If it doesn't create the database then just create a local database called "Nerdscorekeeper" and then try running the command again.
+
 #### JavaScript guidelines
 
 We are trying to keep things simple with our JavaScript. The idea is to use the "Namespace" pattern when writing new javascript files because of the clean syntax.
