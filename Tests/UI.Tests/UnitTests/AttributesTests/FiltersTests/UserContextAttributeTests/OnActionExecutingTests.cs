@@ -29,6 +29,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security.DataProtection;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Shouldly;
 using UI.Attributes;
 using UI.Attributes.Filters;
 
@@ -62,10 +63,10 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
             //need to simulate like the parameter exists on the method
             _actionExecutingContext.ActionParameters[UserContextAttribute.UserContextKey] = null;
 
-            HttpContextBase httpContextBase = MockRepository.GenerateMock<HttpContextBase>();
+            var httpContextBase = MockRepository.GenerateMock<HttpContextBase>();
             _actionExecutingContext.HttpContext = httpContextBase;
 
-            IPrincipal principal = MockRepository.GenerateMock<IPrincipal>();
+            var principal = MockRepository.GenerateMock<IPrincipal>();
             httpContextBase.Expect(contextBase => contextBase.User)
                 .Repeat.Any()
                 .Return(principal);
@@ -77,7 +78,7 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
                 .Repeat.Once()
                 .Return(isAuthenticated);
 
-            HttpRequestBase requestBaseMock = MockRepository.GenerateMock<HttpRequestBase>();
+            var requestBaseMock = MockRepository.GenerateMock<HttpRequestBase>();
 
             httpContextBase.Expect(mock => mock.Request)
                 .Return(requestBaseMock);
@@ -85,13 +86,13 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
             requestBaseMock.Expect(mock => mock.Params)
                 .Return(_requestParameters);
 
-            _userContextActionFilter = new UserContextAttribute();
+            _userContextActionFilter = MockRepository.GeneratePartialMock<UserContextAttribute>();
             _applicationUser = new ApplicationUser()
             {
                 Id = "user id",
                 CurrentGamingGroupId = userHasGamingGroup ? (int?)315 : null
             };
-            Task<ApplicationUser> task = Task.FromResult(_applicationUser);
+            var task = Task.FromResult(_applicationUser);
             //TODO can't figure out how to mock the GetUserId() extension method, so have to be less strict here
             _userStoreMock.Expect(mock => mock.FindByIdAsync(Arg<string>.Is.Anything))
                 .Repeat.Once()
@@ -125,11 +126,11 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
 
             _userContextActionFilter.OnActionExecuting(_actionExecutingContext, _userManager, _clientIdCalculatorMock);
 
-            RouteValueDictionary dictionary = new RouteValueDictionary();
+            var dictionary = new RouteValueDictionary();
             dictionary.Add("Area", "");
             dictionary.Add("Controller", "Account");
             dictionary.Add("Action", "Login");
-            RedirectToRouteResult actualResult = (RedirectToRouteResult)_actionExecutingContext.Result;
+            var actualResult = (RedirectToRouteResult)_actionExecutingContext.Result;
             Assert.AreEqual(dictionary, actualResult.RouteValues);
         }
 
@@ -138,15 +139,15 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
         {
             SetupExpectations(userHasGamingGroup: false);
             _userContextActionFilter.RequiresGamingGroup = true;
+            var expectedUrl = "some url";
+            _userContextActionFilter.Expect(mock => mock.CreateManageAccountUrl(_actionExecutingContext.RequestContext))
+                .Return(expectedUrl);
 
             _userContextActionFilter.OnActionExecuting(_actionExecutingContext, _userManager, _clientIdCalculatorMock);
 
-            RouteValueDictionary dictionary = new RouteValueDictionary();
-            dictionary.Add("Area", "");
-            dictionary.Add("Controller", "Account");
-            dictionary.Add("Action", "Manage");
-            RedirectToRouteResult actualResult = (RedirectToRouteResult)_actionExecutingContext.Result;
-            Assert.AreEqual(dictionary, actualResult.RouteValues);
+            var actualResult = _actionExecutingContext.Result as RedirectResult;
+            actualResult.ShouldNotBeNull();
+            actualResult.Url.ShouldBe(expectedUrl);
         }
 
         [Test]
@@ -187,7 +188,7 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
 
             _userContextActionFilter.OnActionExecuting(_actionExecutingContext, _userManager, _clientIdCalculatorMock);
 
-            ApplicationUser actualApplicationUser = (ApplicationUser)_actionExecutingContext.ActionParameters[UserContextAttribute.UserContextKey];
+            var actualApplicationUser = (ApplicationUser)_actionExecutingContext.ActionParameters[UserContextAttribute.UserContextKey];
             Assert.That(actualApplicationUser.AnonymousClientId, Is.EqualTo(expectedClientId));
         }
     }

@@ -66,25 +66,15 @@ namespace UI.Attributes.Filters
 
                 if (filterContext.HttpContext.User.Identity.IsAuthenticated)
                 {
-                    //--TODO perhaps check if the user has a CurrentGamingGroup == null on non-child/AJAX actions and send a redirect to the create account page?
                     var userId = filterContext.HttpContext.User.Identity.GetUserId();
                     applicationUser = userManager.FindByIdAsync(userId).Result;
                     if (RequiresGamingGroup 
                         && !applicationUser.CurrentGamingGroupId.HasValue
                         && !filterContext.IsChildAction)
                     {
-                        filterContext.Result = new RedirectResult(
-                            UrlHelper.GenerateUrl(
-                                routeName: null,
-                                actionName: MVC.Account.ActionNames.Manage,
-                                controllerName: MVC.Account.Name,
-                                protocol: null,
-                                hostName: null,
-                                fragment: AccountController.GAMING_GROUPS_TAB_HASH_SUFFIX,
-                                routeValues: null,
-                                routeCollection: RouteTable.Routes,
-                                requestContext: filterContext.RequestContext,
-                                includeImplicitMvcValues: false));
+                        var url = CreateManageAccountUrl(filterContext.RequestContext);
+
+                        filterContext.Result = new RedirectResult(url);
                     }
                 }
                 else
@@ -102,6 +92,22 @@ namespace UI.Attributes.Filters
             }
 
             base.OnActionExecuting(filterContext);
+        }
+
+        internal virtual string CreateManageAccountUrl(RequestContext requestContext)
+        {
+            var url = UrlHelper.GenerateUrl(
+                routeName: null,
+                actionName: MVC.Account.ActionNames.Manage,
+                controllerName: MVC.Account.Name,
+                protocol: null,
+                hostName: null,
+                fragment: AccountController.GAMING_GROUPS_TAB_HASH_SUFFIX,
+                routeValues: new RouteValueDictionary(new {message = AccountController.ManageMessageId.NoGamingGroup}),
+                routeCollection: RouteTable.Routes,
+                requestContext: requestContext,
+                includeImplicitMvcValues: false);
+            return url;
         }
     }
 }

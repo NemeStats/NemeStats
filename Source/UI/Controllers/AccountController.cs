@@ -80,7 +80,6 @@ namespace UI.Controllers
             _gamingGroupContextSwitcher = gamingGroupContextSwitcher;
         }
 
-
         [AllowAnonymous]
         public virtual ActionResult LoginForm()
         {
@@ -202,11 +201,9 @@ namespace UI.Controllers
             return RedirectToAction("Manage", new { Message = message });
         }
 
-        //
         // GET: /Account/Manage
         public virtual ActionResult Manage(ManageMessageId? message)
         {
-
             var tempMessage =
                 message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
                 : message == ManageMessageId.SetBoardGameGeekUserSuccess ? "Your BGG account has been linked with NemeStats successfully. Now you can import your games on the Gaming Group page."
@@ -214,6 +211,7 @@ namespace UI.Controllers
                 : message == ManageMessageId.ChangeEmailSuccess ? "Your email has been changed."
                 : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
                 : message == ManageMessageId.Error ? "An error occurred."
+                : message == ManageMessageId.NoGamingGroup ? "You have no more active Gaming Groups. Please create one or re-activate one that is not currently Active."
                 : "";
 
             SetToastMessage(TempMessageKeys.MANAGE_ACCOUNT_RESULT_TEMPMESSAGE, tempMessage, message.HasValue && message == ManageMessageId.Error ? "error" : "success");
@@ -572,7 +570,8 @@ namespace UI.Controllers
             ChangeEmailSuccess,
             RemoveLoginSuccess,
             ErrorEnterEmail,
-            Error
+            Error,
+            NoGamingGroup
         }
 
         private ActionResult RedirectToLocal(string returnUrl)
