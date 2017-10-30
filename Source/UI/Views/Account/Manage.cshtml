@@ -1,6 +1,7 @@
 ﻿@using UI.Controllers
 @using UI.Controllers.Helpers
 @using UI.HtmlHelpers
+@using UI.Models.GamingGroup
 @model UI.Models.ManageAccountViewModel
 @{
     ViewBag.Title = "Manage Account";
@@ -70,7 +71,7 @@
                     <h4>Your Gaming Groups</h4>
                 </div>
                 <div class="panel-body">
-                    @Html.Partial(MVC.Account.Views._CreateGamingGroupPartial)
+                    @Html.Partial(MVC.Account.Views._CreateGamingGroupPartial, new CreateGamingGroupViewModel())
                     @Html.Partial(MVC.GamingGroup.Views._TopGamingGroupsPartial, Model.GamingGroupsSummary)
                 </div>
             </div>
