@@ -212,6 +212,7 @@ namespace UI.Controllers
                 : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
                 : message == ManageMessageId.Error ? "An error occurred."
                 : message == ManageMessageId.NoGamingGroup ? "You have no more active Gaming Groups. Please create one or re-activate one that is not currently Active."
+                : message == ManageMessageId.EmptyGamingGroupName ? "You must enter a name for your Gaming Group."
                 : "";
 
             SetToastMessage(TempMessageKeys.MANAGE_ACCOUNT_RESULT_TEMPMESSAGE, tempMessage, message.HasValue && message == ManageMessageId.Error ? "error" : "success");
@@ -571,7 +572,8 @@ namespace UI.Controllers
             RemoveLoginSuccess,
             ErrorEnterEmail,
             Error,
-            NoGamingGroup
+            NoGamingGroup,
+            EmptyGamingGroupName
         }
 
         private ActionResult RedirectToLocal(string returnUrl)

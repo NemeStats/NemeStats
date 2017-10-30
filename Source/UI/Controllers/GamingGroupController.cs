@@ -262,13 +262,17 @@ namespace UI.Controllers
         {
             if (string.IsNullOrWhiteSpace(gamingGroupName))
             {
-                //TODO this error message probably does not persist after the redirect. Need to make sure the validation message shows correctly.
-                ModelState.AddModelError(string.Empty, "You must enter a Gaming Group name.");
-                return RedirectToAction(MVC.Account.Manage());
+                return MakeRedirectResultToManageAccountPageWithMessage();
             }
             gamingGroupSaver.CreateNewGamingGroup(gamingGroupName.Trim(), TransactionSource.WebApplication, currentUser);
 
             return RedirectToAction(MVC.GamingGroup.ActionNames.Details, new {id = currentUser.CurrentGamingGroupId } );
+        }
+
+        internal virtual RedirectResult MakeRedirectResultToManageAccountPageWithMessage()
+        {
+            return new RedirectResult(Url.Action(MVC.Account.ActionNames.Manage, MVC.Account.Name,
+                                          new {message = AccountController.ManageMessageId.EmptyGamingGroupName} ) + "#" + AccountController.GAMING_GROUPS_TAB_HASH_SUFFIX);
         }
 
         [HttpGet]
@@ -300,10 +304,15 @@ namespace UI.Controllers
             {
                 gamingGroupSaver.UpdatePublicGamingGroupDetails(request, currentUser);
                 
-                return Redirect(Url.Action(MVC.Account.Manage()) + "#" + AccountController.GAMING_GROUPS_TAB_HASH_SUFFIX);
+                return MakeRedirectResultToManageAccountPageGamingGroupTab();
             }
 
             return Edit(request.GamingGroupId, currentUser);
+        }
+
+        internal virtual RedirectResult MakeRedirectResultToManageAccountPageGamingGroupTab()
+        {
+            return Redirect(Url.Action(MVC.Account.Manage()) + "#" + AccountController.GAMING_GROUPS_TAB_HASH_SUFFIX);
         }
     }
 }
