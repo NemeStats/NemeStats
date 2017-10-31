@@ -90,7 +90,9 @@
                         Player Name
                     </th>
                     <th>
-                        Active
+                        Player Active
+                        <i class="fa fa-question-circle-o" data-toggle="popover" data-placement="left"
+                           data-content="Indicates whether the Player is active. If the User is listed here then they still have access to manage the Gaming Group -- regardless of whether their Player is active."></i>
                     </th>
                 </tr>
                 </thead>
@@ -109,6 +111,7 @@
                         </td>
                         <td>
                             @Html.CheckBoxFor(x => user.Active, new { disabled = "disabled"})
+ 
                         </td>
                     </tr>
                 }
