@@ -16,6 +16,8 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
+using UI.Models.GamingGroup;
 using UI.Models.User;
 
 namespace UI.Models
@@ -49,7 +51,7 @@ namespace UI.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm new password")]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }  
     }
 
@@ -73,6 +75,7 @@ namespace UI.Models
         public ChangeEmailViewModel ChangeEmailViewModel { get; set; }
 
         public BoardGameGeekIntegrationModel BoardGameGeekIntegrationModel { get; set; }
+        public GamingGroupsSummaryViewModel GamingGroupsSummary { get; set; }
     }
 
     public class LoginViewModel
@@ -104,7 +107,7 @@ namespace UI.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         [Required]
@@ -131,7 +134,7 @@ namespace UI.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }

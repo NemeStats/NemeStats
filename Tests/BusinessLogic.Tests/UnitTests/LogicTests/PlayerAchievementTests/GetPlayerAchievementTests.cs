@@ -175,11 +175,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerAchievementTests
                 Name = "player name"
             };
             _autoMocker.Get<IPlayerRetriever>()
-                .Expect(mock => mock.GetPlayerForCurrentUser(currentUser.Id, currentUser.CurrentGamingGroupId))
+                .Expect(mock => mock.GetPlayerForCurrentUser(currentUser.Id, currentUser.CurrentGamingGroupId.Value))
                 .Return(expectedPlayer);
 
             //--act
-            var query = new PlayerAchievementQuery(_achievementId, currentUser.Id, currentUser.CurrentGamingGroupId);
+            var query = new PlayerAchievementQuery(_achievementId, currentUser.Id, currentUser.CurrentGamingGroupId.Value);
             var result = _autoMocker.ClassUnderTest.GetPlayerAchievement(query);
 
             //--assert

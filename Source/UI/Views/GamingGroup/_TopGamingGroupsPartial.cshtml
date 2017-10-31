@@ -1,4 +1,4 @@
-﻿@model List<UI.Models.GamingGroup.TopGamingGroupSummaryViewModel>
+﻿@model UI.Models.GamingGroup.GamingGroupsSummaryViewModel
 
 <div class="flip-scroll">
 	<table class="table table-hover table-striped" id="topGamingGroupsTable">
@@ -7,23 +7,37 @@
 				<th>Gaming Group</th>
 				<th>Played Games</th>
 				<th>Players</th>
-				<th>Group Champion</th>
+			    <th>Group Champion</th>
+                @if (Model.ShowForEdit)
+                {
+                    <th>Active
+                        <i class="fa fa-question-circle-o" data-toggle="popover" data-placement="left"
+                           data-content="Indicates whether the Gaming Group will show up in normal views. The group can be re-activated on the Edit page."></i></th>
+                    <th></th>
+                }
 			</tr>
 		</thead>
         @{ var position = 1; }
-		@foreach (var topGamingGroup in @Model)
+		@foreach (var gamingGroup in Model.GamingGroups)
 		{
 			<tr data-position="@position">
                 @{ position++; }
-				<td>@Html.ActionLink(topGamingGroup.GamingGroupName, "Details", "GamingGroup", new { id = topGamingGroup.GamingGroupId }, new { })</td>
-				<td>@topGamingGroup.NumberOfGamesPlayed</td>
-				<td>@topGamingGroup.NumberOfPlayers</td>
+				<td>@Html.ActionLink(gamingGroup.GamingGroupName, "Details", "GamingGroup", new { id = gamingGroup.GamingGroupId }, new { })</td>
+				<td>@gamingGroup.NumberOfGamesPlayed</td>
+				<td>@gamingGroup.NumberOfPlayers</td>
 			    <td>
-			        @if (topGamingGroup.GamingGroupChampion != null)
+			        @if (gamingGroup.GamingGroupChampion != null)
 			        {
-			            @Html.ActionLink(topGamingGroup.GamingGroupChampion.Name, "Details", "Player", new { id = topGamingGroup.GamingGroupChampion.Id }, new { })
-                    }
+			            @Html.ActionLink(gamingGroup.GamingGroupChampion.PlayerName, "Details", "Player", new { id = gamingGroup.GamingGroupChampion.PlayerId }, new { })
+			        }
 			    </td>
+                @if (Model.ShowForEdit)
+                {
+                    <td>@Html.CheckBoxFor(m => gamingGroup.Active, new { disabled = "disabled" })</td>
+                    <td><a href="@Url.Action("Edit", "GamingGroup", new {id = gamingGroup.GamingGroupId})" title="Edit">
+                        <i class="fa fa-pencil fa-2x"></i></a>
+                    </td>
+                }
 			</tr>
 		}
 	</table>

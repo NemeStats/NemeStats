@@ -39,7 +39,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
         [Test]
         public void ItFetchesGameDefinitions()
         {
-            var playedGames = _retriever.GetRecentGames(1, testUserWithDefaultGamingGroup.CurrentGamingGroupId);
+            var playedGames = _retriever.GetRecentGames(1, testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
             var gameDefinition = playedGames[0].GameDefinition;
 
             Assert.NotNull(gameDefinition);
@@ -48,7 +48,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
         [Test]
         public void ItEagerlyFetchesPlayerGameResults()
         {
-            var playedGames = _retriever.GetRecentGames(1, testUserWithDefaultGamingGroup.CurrentGamingGroupId);
+            var playedGames = _retriever.GetRecentGames(1, testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
             ICollection<PlayerGameResult> playerGameResults = playedGames[0].PlayerGameResults;
 
             Assert.NotNull(playerGameResults);
@@ -57,7 +57,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
         [Test]
         public void ItEagerlyFetchesPlayers()
         {
-            var playedGames = _retriever.GetRecentGames(1, testUserWithDefaultGamingGroup.CurrentGamingGroupId);
+            var playedGames = _retriever.GetRecentGames(1, testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
             var players = playedGames[0].PlayerGameResults.Select(
                 playerGameResult => new Player()
                                         {
@@ -73,7 +73,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
         public void ItReturnsOnlyOneGameIfOneGameIsSpecified()
         {
             var one = 1;
-            var playedGames = _retriever.GetRecentGames(one, testUserWithDefaultGamingGroup.CurrentGamingGroupId);
+            var playedGames = _retriever.GetRecentGames(one, testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
 
             Assert.AreEqual(one, playedGames.Count());
         }
@@ -82,7 +82,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
         public void ItReturnsOnlyTwoGamesIfTwoGamesAreSpecified()
         {
             var two = 2;
-            var playedGames = _retriever.GetRecentGames(two, testUserWithDefaultGamingGroup.CurrentGamingGroupId);
+            var playedGames = _retriever.GetRecentGames(two, testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
 
             Assert.AreEqual(two, playedGames.Count());
         }
@@ -94,7 +94,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
             {
                 var dateRangeFilter = new BasicDateRangeFilter();
                 var five = 5;
-                List<PlayedGame> playedGames = _retriever.GetRecentGames(five, testUserWithDefaultGamingGroup.CurrentGamingGroupId, dateRangeFilter);
+                List<PlayedGame> playedGames = _retriever.GetRecentGames(five, testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value, dateRangeFilter);
                 var allPlayedGames = dataContext.GetQueryable<PlayedGame>()
                     .Where(game => game.GamingGroupId == testUserWithDefaultGamingGroup.CurrentGamingGroupId
                         && game.DatePlayed <= dateRangeFilter.ToDate)
@@ -112,7 +112,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
         public void ItReturnsOrderedPlayerRankDescendingWithinAGivenGame()
         {
             var five = 5;
-            var playedGames = _retriever.GetRecentGames(five, testUserWithDefaultGamingGroup.CurrentGamingGroupId);
+            var playedGames = _retriever.GetRecentGames(five, testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
 
             var lastRank = -1;
 
@@ -131,7 +131,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
         [Test]
         public void ItOnlyReturnsGamesForTheCurrentUsersGamingGroup()
         {
-            var playedGames = _retriever.GetRecentGames(20, testUserWithOtherGamingGroup.CurrentGamingGroupId);
+            var playedGames = _retriever.GetRecentGames(20, testUserWithOtherGamingGroup.CurrentGamingGroupId.Value);
 
             Assert.True(playedGames.All(game => game.GamingGroupId == testUserWithOtherGamingGroup.CurrentGamingGroupId));
         }

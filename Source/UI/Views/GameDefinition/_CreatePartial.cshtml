@@ -8,14 +8,13 @@
 <div class="createGameDefinitionPartial" id="createGameDefinitionPartial" data-gaminggroupid="@Model.GamingGroupId">
     <div class="row">
         <div class="col-md-6">
-
             <form id="js-createGameForm">
                 <div class="form-inline">
                     @Html.HiddenFor(m => m.BoardGameGeekGameDefinitionId)
                     <div class="form-group">
+                        Add Game
                         <div class="input-group">
-                            <div class="input-group-addon"><span class="fa fa-plus-circle"></span></div>
-                            @Html.TextBoxFor(model => model.Name, new {@class = "form-control", id = "gameNameInput", placeholder="Game name to create"})
+                            @Html.TextBoxFor(model => model.Name, new {@class = "form-control", id = "gameNameInput", placeholder = "Game name"})
                         </div>
                         <div class="col-md-offset-3">
                             @Html.ValidationMessageFor(model => model.Name)

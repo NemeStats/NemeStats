@@ -17,7 +17,6 @@
 #endregion
 using System;
 using System.ComponentModel;
-using System.Linq;
 
 namespace UI.Models.GamingGroup
 {

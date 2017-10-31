@@ -257,6 +257,7 @@
     <Compile Include="UnitTests\AttributesTests\ApiExceptionFilterAttributeTests.cs" />
     <Compile Include="UnitTests\AttributesTests\ApiModelValidationAttributeTests.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\AccountControllerTestBase.cs" />
+    <Compile Include="UnitTests\ControllerTests\AccountControllerTests\GetBaseManageAccountViewModelTests.cs" />
     <Compile Include="UnitTests\ControllerTests\AchievementControllerTests\AchievementControllerTestBase.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\AddExistingUserToGamingGroup.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\RegisterHttpPostTests.cs" />
@@ -280,9 +281,11 @@
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetGamingGroupPlayersTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetGamingGroupStatsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetGamingGroupSummaryTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetTopGamingGroupsPartialTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetTopGamingGroupsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\UserGamingGroupsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\DetailsTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetTopGamingGroupsViewModelsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\HelperTests\ShowingXResultsMessageBuilderTests\BuildMessageTests.cs" />
     <Compile Include="UnitTests\ControllerTests\HomeControllerTests\HomeControllerTestBase.cs" />
     <Compile Include="UnitTests\ControllerTests\HomeControllerTests\IndexTests.cs" />

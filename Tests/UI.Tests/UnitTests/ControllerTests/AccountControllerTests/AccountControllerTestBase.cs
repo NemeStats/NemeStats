@@ -17,6 +17,7 @@
 #endregion
 
 using BoardGameGeekApiClient.Interfaces;
+using BusinessLogic.Logic;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
@@ -26,7 +27,6 @@ using Microsoft.Owin.Security.DataProtection;
 using NUnit.Framework;
 using Rhino.Mocks;
 using UI.Controllers;
-using UI.Controllers.Helpers;
 using UI.Models;
 
 namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
@@ -42,6 +42,8 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
         protected AccountController accountControllerPartialMock;
         protected IDataProtectionProvider dataProtectionProviderMock;
         protected IGamingGroupRetriever gamingGroupRetrieverMock;
+        protected ITransformer transformerMock;
+        protected IGamingGroupContextSwitcher gamingGroupContextSwitcher;
         protected RegisterViewModel registerViewModel;
         protected ApplicationUser currentUser;
         IBoardGameGeekApiClient boardGameGeekApiClient;
@@ -54,8 +56,8 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
             userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
             gamingGroupInviteConsumerMock = MockRepository.GenerateMock<IGamingGroupInviteConsumer>();
             userRegistererMock = MockRepository.GenerateMock<IUserRegisterer>();
-            this.firstTimeAuthenticatorMock = MockRepository.GenerateMock<IFirstTimeAuthenticator>();
-            this.authenticationManagerMock = MockRepository.GenerateMock<IAuthenticationManager>();
+            firstTimeAuthenticatorMock = MockRepository.GenerateMock<IFirstTimeAuthenticator>();
+            authenticationManagerMock = MockRepository.GenerateMock<IAuthenticationManager>();
             var dataProtector = MockRepository.GenerateMock<IDataProtector>();
             dataProtectionProviderMock = MockRepository.GenerateMock<IDataProtectionProvider>();
             gamingGroupRetrieverMock = MockRepository.GenerateMock<IGamingGroupRetriever>();
@@ -63,6 +65,8 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
             boardGameGeekUserSaver = MockRepository.GenerateMock<IBoardGameGeekUserSaver>();
             boardGameGeekApiClient = MockRepository.GenerateMock<IBoardGameGeekApiClient>();
             userRetriever = MockRepository.GenerateMock<IUserRetriever>();
+            transformerMock = MockRepository.GenerateMock<ITransformer>();
+            gamingGroupContextSwitcher = MockRepository.GenerateMock<IGamingGroupContextSwitcher>();
 
             dataProtectionProviderMock.Expect(mock => mock.Create(Arg<string>.Is.Anything)).Return(dataProtector);
 
@@ -70,13 +74,15 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
             accountControllerPartialMock = MockRepository.GeneratePartialMock<AccountController>(
                 userManager,
                 userRegistererMock,
-                this.firstTimeAuthenticatorMock,
-                this.authenticationManagerMock,
+                firstTimeAuthenticatorMock,
+                authenticationManagerMock,
                 gamingGroupInviteConsumerMock, 
                 gamingGroupRetrieverMock,
                 boardGameGeekUserSaver,
                 boardGameGeekApiClient,
-                userRetriever);
+                userRetriever,
+                transformerMock,
+                gamingGroupContextSwitcher);
             currentUser = new ApplicationUser()
             {
                 Id = "new application user",

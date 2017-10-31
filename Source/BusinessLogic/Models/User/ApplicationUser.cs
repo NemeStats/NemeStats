@@ -52,7 +52,7 @@ namespace BusinessLogic.Models.User
             DateCreated = DateTime.UtcNow;
         }
 
-        public virtual int CurrentGamingGroupId { get; set; }
+        public virtual int? CurrentGamingGroupId { get; set; }
 
         private string _anonymousClientId;
 
@@ -89,6 +89,11 @@ namespace BusinessLogic.Models.User
         public object GetIdAsObject()
         {
             return Id;
+        }
+
+        public virtual bool IsAnonymousUser()
+        {
+            return false;
         }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(ApplicationUserManager manager)

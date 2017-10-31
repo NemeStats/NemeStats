@@ -16,46 +16,36 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using BusinessLogic.Logic.GamingGroups;
-using BusinessLogic.Models.GamingGroups;
 using NUnit.Framework;
-using System.Collections.Generic;
 using System.Web.Mvc;
-using BusinessLogic.Logic;
 using Rhino.Mocks;
 using Shouldly;
+using UI.Controllers;
 using UI.Models.GamingGroup;
 
 namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 {
-	[TestFixture]
-	public class GetTopGamingGroupsTests : GamingGroupControllerTestBase
-	{
-		[Test]
-		public void It_Returns_The_Specified_Number_Of_Top_Gaming_Groups()
-		{
+    [TestFixture]
+    public class GetTopGamingGroupsTests : GamingGroupControllerTestBase
+    {
+        [Test]
+        public void It_Returns_The_TopGamingGroups_View_With_The_Default_Number_Of_Gaming_Groups()
+        {
             //--arrange
-            var expectedTopGamingGroupSummary = new TopGamingGroupSummary();
-		    var gamingGroupList = new List<TopGamingGroupSummary>
-		    {
-                expectedTopGamingGroupSummary
-            };
-            autoMocker.Get<IGamingGroupRetriever>().Expect(mock => mock.GetTopGamingGroups(Arg<int>.Is.Anything)).Return(gamingGroupList);
-
-            var expectedViewModel = new TopGamingGroupSummaryViewModel();
-		    autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<TopGamingGroupSummaryViewModel>(expectedTopGamingGroupSummary))
-		        .Return(expectedViewModel);
+            var expectedViewModel = new GamingGroupsSummaryViewModel();
+            autoMocker.ClassUnderTest.Expect(partialMock => partialMock.GetGamingGroupsSummaryViewModel(Arg<int>.Is.Anything))
+                .Return(expectedViewModel);
 
             //--act
-            var viewResult = autoMocker.ClassUnderTest.GetTopGamingGroups() as PartialViewResult;
+            var results = autoMocker.ClassUnderTest.GetTopGamingGroups();
 
             //--assert
+            autoMocker.ClassUnderTest.AssertWasCalled(partialMock => partialMock.GetGamingGroupsSummaryViewModel(Arg<int>.Is.Equal(GamingGroupController.NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW)));
+            var viewResult = results as ViewResult;
             viewResult.ShouldNotBeNull();
-		    viewResult.ViewName.ShouldBe(MVC.GamingGroup.Views.TopGamingGroups);
-            var actualViewModel = viewResult.ViewData.Model as List<TopGamingGroupSummaryViewModel>;
-            actualViewModel.ShouldNotBeNull();
-            actualViewModel.Count.ShouldBe(1);
-            actualViewModel[0].ShouldBeSameAs(expectedViewModel);
+            viewResult.ViewName.ShouldBe(MVC.GamingGroup.Views.TopGamingGroups);
+            var viewModel = viewResult.Model as GamingGroupsSummaryViewModel;
+            viewModel.ShouldBeSameAs(expectedViewModel);
         }
-	}
+    }
 }

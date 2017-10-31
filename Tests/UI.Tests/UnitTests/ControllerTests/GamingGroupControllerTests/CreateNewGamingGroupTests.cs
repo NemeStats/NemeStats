@@ -21,33 +21,22 @@ using BusinessLogic.Logic;
 using BusinessLogic.Logic.GamingGroups;
 using NUnit.Framework;
 using Rhino.Mocks;
-using BusinessLogic.Models.User;
-using BusinessLogic.Models.Utility;
+using Shouldly;
 
 namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 {
     public class CreateNewGamingGroupTests : GamingGroupControllerTestBase
     {
-        private readonly ViewResult viewResult = new ViewResult();
-
-        [SetUp]
-        public override void SetUp()
-        {
- 	        base.SetUp();
-            autoMocker.PartialMockTheClassUnderTest();
-            autoMocker.ClassUnderTest.Expect(mock => mock.Details(
-                Arg<int>.Is.Anything,
-                Arg<ApplicationUser>.Is.Same(currentUser),
-                Arg<BasicDateRangeFilter>.Is.Anything ))
-                                .Return(viewResult);
-        }
-
         [Test]
-        public void ItRemainsOnTheIndexPageIfTheGamingGroupNameIsntSet()
+        public void It_Redirects_Back_To_The_Manage_Account_Page_If_The_Gaming_Group_Name_Isnt_Set()
         {
-            var result = autoMocker.ClassUnderTest.CreateNewGamingGroup(string.Empty, currentUser) as ViewResult;
+            var expectedResult = new RedirectResult("some url");
+            autoMocker.ClassUnderTest.Expect(mock => mock.MakeRedirectResultToManageAccountPageWithMessage()).Return(expectedResult);
 
-            Assert.That(result, Is.SameAs(viewResult));
+            var result = autoMocker.ClassUnderTest.CreateNewGamingGroup(string.Empty, currentUser) as RedirectResult;
+
+            result.ShouldNotBeNull();
+            result.ShouldBe(expectedResult);
         }
 
         [Test]
@@ -69,8 +58,6 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 
             Assert.That(result.RouteValues["action"], Is.EqualTo(MVC.GamingGroup.ActionNames.Details));
             Assert.IsNotNull(result.RouteValues["id"]);
-
         }
-
     }
 }

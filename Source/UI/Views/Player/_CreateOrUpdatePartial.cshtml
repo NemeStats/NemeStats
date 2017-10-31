@@ -11,12 +11,12 @@
             <div class = "form-inline">
                 @Html.HiddenFor(model => model.Id)
                 <div class="form-group">
+                    Create New Player
                     <div class="input-group">
-                        <div class="input-group-addon"><span class="fa fa-plus-circle"></span></div>
-                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control", placeholder = "Player name to create" })
+                        @Html.TextBoxFor(model => model.Name, new {@class = "form-control", placeholder = "New Player name" })
                     </div>
                     <div class="col-md-offset-3">
-                        @Html.ValidationMessageFor(model => model.Name)    
+                        @Html.ValidationMessageFor(model => model.Name)
                     </div>
                 </div>
 

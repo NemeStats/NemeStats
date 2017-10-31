@@ -17,7 +17,8 @@ namespace UI.Tests.UnitTests.ControllerTests.AchievementControllerTests
             AutoMocker = new RhinoAutoMocker<AchievementController>();
             CurrentUser = new ApplicationUser
             {
-                Id = "some id"
+                Id = "some id",
+                CurrentGamingGroupId = 1
             };
         }
     }

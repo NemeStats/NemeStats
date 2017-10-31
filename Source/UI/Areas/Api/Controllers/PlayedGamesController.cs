@@ -138,7 +138,7 @@ namespace UI.Areas.Api.Controllers
         [ApiModelValidation]
         public HttpResponseMessage RecordPlayedGameVersion2([FromBody] PlayedGameMessage playedGameMessage)
         {
-            return RecordPlayedGame(playedGameMessage, CurrentUser.CurrentGamingGroupId);
+            return RecordPlayedGame(playedGameMessage, 0);
         }
 
         [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames/", AcceptedVersions = new[] { 1 })]
@@ -179,7 +179,7 @@ namespace UI.Areas.Api.Controllers
         [ApiModelValidation]
         public HttpResponseMessage DeletePlayedGame(int playedGameId)
         {
-            return DeletePlayedGame(playedGameId, CurrentUser.CurrentGamingGroupId);
+            return DeletePlayedGame(playedGameId, 0);
         }
 
         [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames/{playedGameID}", AcceptedVersions = new[] { 1 })]

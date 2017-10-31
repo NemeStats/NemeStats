@@ -174,8 +174,7 @@ namespace BusinessLogic.Tests.IntegrationTests
         private BoardGameGeekGameDefinition SaveBoardGameGeekGameDefinition()
         {
             var boardGameGeekDefinitionCreator = new BoardGameGeekGameDefinitionCreator(_dataContext, new BoardGameGeekClient(new ApiDownloaderService(), MockRepository.GenerateMock<IRollbarClient>()));
-            return boardGameGeekDefinitionCreator.CreateBoardGameGeekGameDefinition(BOARD_GAME_GEEK_ID_FOR_RACE_FOR_THE_GALAXY,
-                testUserWithDefaultGamingGroup);
+            return boardGameGeekDefinitionCreator.CreateBoardGameGeekGameDefinition(BOARD_GAME_GEEK_ID_FOR_RACE_FOR_THE_GALAXY);
         }
 
         private void CreatePlayedGames()

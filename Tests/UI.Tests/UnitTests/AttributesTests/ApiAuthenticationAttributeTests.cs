@@ -100,10 +100,6 @@ namespace UI.Tests.UnitTests.AttributesTests
                 Id = "some id",
                 CurrentGamingGroupId = 1
             };
-            var expectedUserDeviceAuthToken = new UserDeviceAuthToken
-            {
-                ApplicationUser = expectedUser
-            };
             authTokenValidatorMock.Expect(mock => mock.ValidateAuthToken(EXPECTED_TOKEN)).Return(expectedUser);
             const string EXPECTED_CLIENT_ID = "some client id";
             clientIdCalculatorMock.Expect(mock => mock.GetClientId(request, expectedUser)).Return(EXPECTED_CLIENT_ID);

@@ -64,7 +64,7 @@ namespace UI.Controllers
         [UserContext]
         public virtual ActionResult DetailsForCurrentUser(AchievementId achievementId, ApplicationUser currentUser)
         {
-            var achievementQuery = new PlayerAchievementQuery(achievementId, currentUser.Id, currentUser.CurrentGamingGroupId);
+            var achievementQuery = new PlayerAchievementQuery(achievementId, currentUser.Id, currentUser.CurrentGamingGroupId.Value);
             var playerAchievementDetails = _playerAchievementRetriever.GetPlayerAchievement(achievementQuery);
             var playerAchievementViewModel =
                 _transformer.Transform<PlayerAchievementViewModel>(playerAchievementDetails);

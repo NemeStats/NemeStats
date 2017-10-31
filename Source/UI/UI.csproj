@@ -416,6 +416,9 @@
     <Compile Include="Models\Badges\PreviousNemesisBadgeViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionDetailsViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GamingGroupGameDefinitionStatsViewModel.cs" />
+    <Compile Include="Models\GamingGroup\CreateGamingGroupViewModel.cs" />
+    <Compile Include="Models\User\BasicUserInfoViewModel.cs" />
+    <Compile Include="Models\GamingGroup\GamingGroupsSummaryViewModel.cs" />
     <Compile Include="Models\GamingGroup\GamingGroupStatsViewModel.cs" />
     <Compile Include="Models\UniversalGameModels\BoardGameGeekInfoViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\BoardGameGeekGameDefinitionViewModel.cs" />
@@ -461,6 +464,7 @@
     <Compile Include="Models\Points\NemePointsSummaryViewModel.cs" />
     <Compile Include="Models\UniversalGameModels\UniversalGameDetailsViewModel.cs" />
     <Compile Include="Models\UniversalGameModels\UniversalGameStatsViewModel.cs" />
+    <Compile Include="Models\GamingGroup\UserGamingGroupsViewModel.cs" />
     <Compile Include="Models\User\BoardGameGeekIntegrationModel.cs" />
     <Compile Include="Models\User\UserGamingGroupsModel.cs" />
     <Compile Include="Models\User\UserViewModel.cs" />
@@ -507,7 +511,7 @@
     <Compile Include="Transformations\PlayerTransformations\PlayerWithNemesisViewModelBuilder.cs" />
     <Compile Include="Transformations\PlayerTransformations\TopPlayerViewModelBuilder.cs" />
     <Compile Include="Models\Players\PlayerWithNemesisViewModel.cs" />
-    <Compile Include="Models\GamingGroup\TopGamingGroupSummaryViewModel.cs" />
+    <Compile Include="Models\GamingGroup\GamingGroupSummaryViewModel.cs" />
     <Compile Include="Models\Players\GameDefinitionPlayerSummaryViewModel.cs" />
     <Compile Include="UniversalGameController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
@@ -879,10 +883,10 @@
     <Content Include="Views\Player\_PlayersSummaryPartial.cshtml" />
     <Content Include="Views\GameDefinition\_GameDefinitionsTablePartial.cshtml" />
     <Content Include="Views\Account\CreateGamingGroup.cshtml" />
-    <Content Include="Views\Account\UserGamingGroups.cshtml" />
+    <Content Include="Views\Account\_UserGamingGroupsPartial.cshtml" />
     <Content Include="Views\Account\LoginForm.cshtml" />
     <Content Include="Views\Shared\Footer.cshtml" />
-    <Content Include="Views\Player\CurrentPlayerQuickStats.cshtml" />
+    <Content Include="Views\Player\_CurrentPlayerQuickStatsPartial.cshtml" />
     <Content Include="Views\Account\BoardGameGeekIntegration.cshtml" />
     <Content Include="Views\GameDefinition\_TrendingGamesPartial.cshtml" />
     <Content Include="Views\Player\_GameDefinitionPlayersSummaryPartial.cshtml" />

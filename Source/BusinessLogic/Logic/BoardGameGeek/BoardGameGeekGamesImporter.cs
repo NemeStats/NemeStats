@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BoardGameGeekApiClient.Interfaces;
 using BoardGameGeekApiClient.Models;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.Games;
@@ -37,6 +38,12 @@ namespace BusinessLogic.Logic.BoardGameGeek
             {
                 throw new ArgumentNullException();
             }
+
+            if (!applicationUser.CurrentGamingGroupId.HasValue)
+            {
+                throw new UserHasNoGamingGroupException(applicationUser.Id);
+            }
+
             var bggUser = _userRetriever.RetrieveUserInformation(applicationUser)?.BoardGameGeekUser;
             if (bggUser != null)
             {
@@ -45,7 +52,7 @@ namespace BusinessLogic.Logic.BoardGameGeek
                 {
                     return null;
                 }
-                var currentGames = GetCurrentGames(applicationUser);
+                var currentGames = GetCurrentGames(applicationUser.CurrentGamingGroupId.Value);
                 var pendingGames = GetPendingGames(userGames, currentGames);
                 if (!pendingGames.Any())
                 {
@@ -92,10 +99,10 @@ namespace BusinessLogic.Logic.BoardGameGeek
             return pendingGames;
         }
 
-        private IEnumerable<int?> GetCurrentGames(ApplicationUser applicationUser)
+        private IEnumerable<int?> GetCurrentGames(int gamingGroupId)
         {
             var currentGames =
-                _gameDefinitionRetriever.GetAllGameDefinitionNames(applicationUser.CurrentGamingGroupId)
+                _gameDefinitionRetriever.GetAllGameDefinitionNames(gamingGroupId)
                     .Select(cg => cg.BoardGameGeekGameDefinitionId);
             return currentGames;
         }

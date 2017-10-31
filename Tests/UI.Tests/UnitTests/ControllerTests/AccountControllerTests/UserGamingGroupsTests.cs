@@ -19,9 +19,9 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using BusinessLogic.Models.GamingGroups;
-using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Shouldly;
 using UI.Models.User;
 
 namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
@@ -30,13 +30,9 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
     public class UserGamingGroupsTests : AccountControllerTestBase
     {
         private List<GamingGroupListItemModel> _expectedGamingGroups;
-        ViewResult _getResult;
 
-        [SetUp]
-        public override void SetUp()
+        private void SetupTwoActiveGamingGroups()
         {
-            base.SetUp();
-
             _expectedGamingGroups = new List<GamingGroupListItemModel>
             {
                 new GamingGroupListItemModel
@@ -44,41 +40,73 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
                     Name = "gaming group 1",
                     Id = 1351
                 },
-                            new GamingGroupListItemModel
+                new GamingGroupListItemModel
                 {
                     Name = "gaming group 1",
-                    Id = currentUser.CurrentGamingGroupId
+                    Id = currentUser.CurrentGamingGroupId.Value
                 }
             };
 
-            gamingGroupRetrieverMock.Stub(s => s.GetGamingGroupsForUser(Arg<ApplicationUser>.Is.Anything))
+            gamingGroupRetrieverMock.Stub(s => s.GetGamingGroupsForUser(Arg<string>.Is.Anything))
                 .Return(_expectedGamingGroups);
-
-
-            _getResult = accountControllerPartialMock.UserGamingGroups(currentUser) as ViewResult;
         }
 
         [Test]
-        public void ItReturns_UserGamingGroupView()
+        public void It_Returns_UserGamingGroups_View()
         {
-            Assert.That(_getResult.ViewName, Is.EqualTo(MVC.Account.Views.UserGamingGroups));
+            SetupTwoActiveGamingGroups();
+
+            var result = accountControllerPartialMock.UserGamingGroups(currentUser) as PartialViewResult;
+
+            result.ShouldNotBeNull();
+            result.ViewName.ShouldBe(MVC.Account.Views._UserGamingGroupsPartial);
+            gamingGroupRetrieverMock.AssertWasCalled(s => s.GetGamingGroupsForUser(currentUser.Id));
+            var model = result.Model as UserGamingGroupsModel;
+            model.ShouldNotBeNull();
+            model.GamingGroups.Count.ShouldBe(_expectedGamingGroups.Count);
+            model.CurrentGamingGroup.Id.ShouldBe(currentUser.CurrentGamingGroupId.Value);
+            model.CurrentUser.ShouldBe(currentUser);
         }
 
         [Test]
-        public void It_Calls_GamingGroupRetriever_GetGamingGroupsForUser()
+        public void It_Fixes_The_Current_Gaming_Group_Id_For_The_User_If_They_Have_One_Set_But_The_Group_Is_No_Longer_Valid()
         {
-            gamingGroupRetrieverMock.AssertWasCalled(s=>s.GetGamingGroupsForUser(currentUser));
+            //--arrange
+            gamingGroupRetrieverMock.Stub(s => s.GetGamingGroupsForUser(Arg<string>.Is.Anything))
+                .Return(new List<GamingGroupListItemModel>());
+
+            //--act
+            accountControllerPartialMock.UserGamingGroups(currentUser);
+
+            //--assert
+            gamingGroupContextSwitcher.AssertWasCalled(mock => mock.EnsureContextIsValid(currentUser));
         }
 
         [Test]
-        public void ItReturns_UserGamingGroupsModel_Filled()
+        public void It_Fixes_The_Current_Gaming_Group_Id_For_The_User_If_They_Dont_Have_One_Set_But_They_Have_Active_Gaming_Groups()
         {
-            var model = _getResult.Model as UserGamingGroupsModel;
-            Assert.IsNotNull(model);
+            //--arrange
+            SetupTwoActiveGamingGroups();
+            currentUser.CurrentGamingGroupId = null;
 
-            Assert.AreEqual(_expectedGamingGroups.Count, model.GamingGroups.Count);
-            Assert.AreEqual(currentUser.Id, model.CurrentUser.Id);
-            Assert.AreEqual(currentUser.CurrentGamingGroupId, model.CurrentGamingGroup.Id);
+            //--act
+            accountControllerPartialMock.UserGamingGroups(currentUser);
+
+            //--assert
+            gamingGroupContextSwitcher.AssertWasCalled(mock => mock.EnsureContextIsValid(currentUser));
+        }
+
+        [Test]
+        public void It_Doesnt_Bother_Switching_The_Current_User_Context_If_It_Has_A_Valid_Current_Gaming_Group()
+        {
+            //--arrange
+            SetupTwoActiveGamingGroups();
+
+            //--act
+            accountControllerPartialMock.UserGamingGroups(currentUser);
+
+            //--assert
+            gamingGroupContextSwitcher.AssertWasNotCalled(mock => mock.EnsureContextIsValid(currentUser));
         }
     }
 }

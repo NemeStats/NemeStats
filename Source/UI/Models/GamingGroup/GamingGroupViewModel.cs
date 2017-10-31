@@ -15,12 +15,11 @@
 
 #endregion LICENSE
 
-using System.ComponentModel;
 using BusinessLogic.Models.Utility;
 
 namespace UI.Models.GamingGroup
 {
-    public class GamingGroupViewModel :IEditableViewModel
+    public class GamingGroupViewModel : IEditableViewModel
     {
         public GamingGroupViewModel()
         {
