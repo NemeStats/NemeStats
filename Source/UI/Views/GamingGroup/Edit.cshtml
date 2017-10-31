@@ -17,42 +17,44 @@
         @Html.HiddenFor(model => model.GamingGroupId)
         <div class="panel-body">
             <div class="row form-group">
-                <div class="col-xs-2">
+                <div class="col-md-3">
                     @Html.LabelFor(model => model.GamingGroupName)
                 </div>
 
-                <div class="col-xs-6">
+                <div class="col-md-9">
                     @Html.TextBoxFor(model => model.GamingGroupName, new {@class = "form-control"})
                     @Html.ValidationMessageFor(model => model.GamingGroupName)
                 </div>
             </div>
             <div class="row form-group">
-                <div class="col-xs-2">
+                <div class="col-md-3">
                     @Html.LabelFor(model => model.PublicDescription)
                 </div>
 
-                <div class="col-xs-6">
+                <div class="col-md-9">
                     @Html.TextAreaFor(x => x.PublicDescription, new {@class = "form-control", @rows = "8"})
                 </div>
             </div>
 
             <div class="row form-group">
-                <div class="col-xs-2">
+                <div class="col-md-3">
                     @Html.LabelFor(x => x.Website)
                 </div>
 
-                <div class="col-xs-6">
+                <div class="col-md-9">
                     @Html.TextBoxFor(x => x.Website, new {@class = "form-control"})
                     @Html.ValidationMessageFor(model => model.Website)
                 </div>
             </div>
 
             <div class="row form-group">
-                <div class="col-xs-2">
+                <div class="col-md-3">
                     @Html.LabelFor(x => x.Active)
+                    <i class="fa fa-question-circle-o" data-toggle="popover" data-placement="right"
+                       data-content="This will prevent the Gaming Group from showing up in normal views. You can re-activate it in the future if need be."></i>
                 </div>
 
-                <div class="col-xs-6">
+                <div class="col-md-9">
                     @Html.CheckBoxFor(x => x.Active)
                 </div>
             </div>
