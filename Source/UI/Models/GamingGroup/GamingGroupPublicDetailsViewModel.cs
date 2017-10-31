@@ -10,6 +10,7 @@ namespace UI.Models.GamingGroup
         public string Website { get; set; }
         [Display(Name = "Public Description")]
         public string PublicDescription { get; set; }
+        [Required]
         [Display(Name = "Gaming Group Name")]
         public string GamingGroupName { get; set; }
         public bool Active { get; set; }
