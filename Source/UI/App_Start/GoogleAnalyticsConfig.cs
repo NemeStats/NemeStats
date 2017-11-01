@@ -22,30 +22,12 @@ namespace UI.App_Start
 {
     public class GoogleAnalyticsConfig
     {
-        public const string UNIVERSAL_ANALYTICS_TRACKING_ID_APP_KEY = "UniversalAnalytics.TrackingId";
         public const string GOOGLE_TAG_MANAGER_TRACKING_ID_APP_KEY = "GoogleTagManager.TrackingId";
 
-        private static readonly object analyticsSyncRoot = new Object();
         private static string googleAnalyticsTrackingCode;
 
         private static readonly object gtmSyncRoot = new Object();
         private static string googleTagManagerTrackingCode;
-
-        public static string GetGoogleAnalyticsTrackingId()
-        {
-            if (googleAnalyticsTrackingCode == null)
-            {
-                lock (analyticsSyncRoot)
-                {
-                    if (googleAnalyticsTrackingCode == null)
-                    {
-                        googleAnalyticsTrackingCode = ConfigurationManager.AppSettings[UNIVERSAL_ANALYTICS_TRACKING_ID_APP_KEY];
-                    }
-                }
-            }
-
-            return googleAnalyticsTrackingCode;
-        }
 
         public static string GetGoogleTagManagerTrackingId()
         {
