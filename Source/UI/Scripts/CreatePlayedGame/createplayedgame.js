@@ -202,7 +202,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
             }
 
             if (editMode) {
-                this._viewModel.Date = moment(model.DatePlayed);
+                this._viewModel.Date = moment(model.DatePlayed).format("YYYY-MM-DD");
                 this._viewModel.Game = {
                     Id: model.GameDefinitionId,
                     BoardGameGeekGameDefinitionId: model.BoardGameGeekGameDefinitionId,
@@ -250,17 +250,17 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         this.alertVisible = false;
                     },
                     setDateYesterday: function () {
-                        this.viewModel.Date = moment().add(-1,"days").startOf("day");
+                        this.viewModel.Date = moment().add(-1,"days").startOf("day").format("YYYY-MM-DD");
                         this.gotoSelectGame();
                     },
                     setDateToday: function () {
-                        this.viewModel.Date = moment().startOf("day");
+                        this.viewModel.Date = moment().startOf("day").format("YYYY-MM-DD");
                         this.gotoSelectGame();
                     },
                     gotoSelectGame: function () {
                         if (this.viewModel.Date) {
                             this.alertVisible = false;
-                            this.viewModel.Date = moment(this.viewModel.Date).startOf("day");
+                            this.viewModel.Date = moment(this.viewModel.Date).startOf("day").format("YYYY-MM-DD");
                             this.changeStep(parent._steps.SelectGame);
                         } else {
                             this.alertText = "You must set the played game or use the yesterday/today buttons.";
@@ -277,7 +277,6 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                     },
                     backToSelectDate: function () {
                         if (this.viewModel.Date) {
-                            this.viewModel.Date = this.viewModel.Date.format("YYYY-MM-DD");
                             parent.gaObject.trackGAEvent("PlayedGames", "Back", "BackToSelectDate", this.currentStep);
                             this.changeStep(parent._steps.SelectDate);
                         }
