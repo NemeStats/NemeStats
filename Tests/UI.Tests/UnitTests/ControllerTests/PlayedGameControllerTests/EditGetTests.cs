@@ -32,7 +32,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		    _expectedEditPlayedGameViewModel = new EditPlayedGameViewModel();
 
             AutoMocker.ClassUnderTest.Expect(mock =>
-		            mock.MakeBaseCreatePlayedGameViewModel<EditPlayedGameViewModel>(Arg<ApplicationUser>.Is.Anything))
+		            mock.MakeBaseCreatePlayedGameViewModel<EditPlayedGameViewModel>(Arg<int>.Is.Anything))
 		        .Return(_expectedEditPlayedGameViewModel);
 
 		    _expectedEditPlayedGameInfo = new EditPlayedGameInfo

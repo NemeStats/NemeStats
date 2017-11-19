@@ -109,9 +109,9 @@ namespace UI.Controllers
         [System.Web.Mvc.HttpGet]
         public virtual ActionResult Create(ApplicationUser currentUser)
         {
-            var viewModel = MakeBaseCreatePlayedGameViewModel<CreatePlayedGameViewModel>(currentUser);
+            var viewModel = MakeBaseCreatePlayedGameViewModel<CreatePlayedGameViewModel>(currentUser.CurrentGamingGroupId.Value);
 
-            var players = _playerRetriever.GetPlayersToCreate(currentUser.Id, currentUser.CurrentGamingGroupId);
+            var players = _playerRetriever.GetPlayersToCreate(currentUser.Id, currentUser.CurrentGamingGroupId.Value);
             viewModel.UserPlayer = players.UserPlayer;
             viewModel.OtherPlayers = players.OtherPlayers;
             viewModel.RecentPlayers = players.RecentPlayers;
@@ -119,19 +119,19 @@ namespace UI.Controllers
             return View(MVC.PlayedGame.Views.CreateOrEdit, viewModel);
         }
 
-        public virtual T MakeBaseCreatePlayedGameViewModel<T>(ApplicationUser currentUser) where T : CreatePlayedGameViewModel, new()
+        public virtual T MakeBaseCreatePlayedGameViewModel<T>(int currentGamingGroupId) where T : CreatePlayedGameViewModel, new()
         {
             var mostPlayedGames =
                 _gameDefinitionRetriever.GetMostPlayedGames(new GetMostPlayedGamesQuery
                 {
-                    GamingGroupId = currentUser.CurrentGamingGroupId,
+                    GamingGroupId = currentGamingGroupId,
                     Page = 1,
                     PageSize = 5
                 });
             var recentPlayedGames =
                 _gameDefinitionRetriever.GetRecentGames(new GetRecentPlayedGamesQuery
                 {
-                    GamingGroupId = currentUser.CurrentGamingGroupId,
+                    GamingGroupId = currentGamingGroupId,
                     Page = 1,
                     PageSize = 5
                 });
@@ -167,7 +167,7 @@ namespace UI.Controllers
                 });
 
 //XXXX should we pass a parameter or just make a new method to pull back players differently when in edit mode?
-            var players = _playerRetriever.GetPlayersToCreate(currentUser.Id, currentUser.CurrentGamingGroupId);
+            var players = _playerRetriever.GetPlayersToCreate(currentUser.Id, currentUser.CurrentGamingGroupId.Value);
 
             viewModel.UserPlayer = players.UserPlayer;
             viewModel.OtherPlayers = players.OtherPlayers;
@@ -246,7 +246,7 @@ namespace UI.Controllers
         [HttpGet]
         public virtual ActionResult Edit(int id, ApplicationUser currentUser)
         {
-            var viewModel = MakeBaseCreatePlayedGameViewModel<EditPlayedGameViewModel>(currentUser);
+            var viewModel = MakeBaseCreatePlayedGameViewModel<EditPlayedGameViewModel>(currentUser.CurrentGamingGroupId.Value);
 
             viewModel.EditMode = true;
             viewModel.PlayedGameId = id;
