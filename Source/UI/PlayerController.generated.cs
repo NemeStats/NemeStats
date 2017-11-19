@@ -202,6 +202,7 @@ namespace UI.Controllers
             public class _ViewNamesClass
             {
                 public readonly string _CreateOrUpdatePartial = "_CreateOrUpdatePartial";
+                public readonly string _CurrentPlayerQuickStatsPartial = "_CurrentPlayerQuickStatsPartial";
                 public readonly string _GameDefinitionPlayersSummaryPartial = "_GameDefinitionPlayersSummaryPartial";
                 public readonly string _PlayersPartial = "_PlayersPartial";
                 public readonly string _PlayersSummaryPartial = "_PlayersSummaryPartial";
@@ -209,7 +210,6 @@ namespace UI.Controllers
                 public readonly string _TopChampions = "_TopChampions";
                 public readonly string _TopPlayersPartial = "_TopPlayersPartial";
                 public readonly string Create = "Create";
-                public readonly string CurrentPlayerQuickStats = "CurrentPlayerQuickStats";
                 public readonly string Details = "Details";
                 public readonly string Edit = "Edit";
                 public readonly string InvitePlayer = "InvitePlayer";
@@ -217,6 +217,7 @@ namespace UI.Controllers
                 public readonly string TopPlayers = "TopPlayers";
             }
             public readonly string _CreateOrUpdatePartial = "~/Views/Player/_CreateOrUpdatePartial.cshtml";
+            public readonly string _CurrentPlayerQuickStatsPartial = "~/Views/Player/_CurrentPlayerQuickStatsPartial.cshtml";
             public readonly string _GameDefinitionPlayersSummaryPartial = "~/Views/Player/_GameDefinitionPlayersSummaryPartial.cshtml";
             public readonly string _PlayersPartial = "~/Views/Player/_PlayersPartial.cshtml";
             public readonly string _PlayersSummaryPartial = "~/Views/Player/_PlayersSummaryPartial.cshtml";
@@ -224,7 +225,6 @@ namespace UI.Controllers
             public readonly string _TopChampions = "~/Views/Player/_TopChampions.cshtml";
             public readonly string _TopPlayersPartial = "~/Views/Player/_TopPlayersPartial.cshtml";
             public readonly string Create = "~/Views/Player/Create.cshtml";
-            public readonly string CurrentPlayerQuickStats = "~/Views/Player/CurrentPlayerQuickStats.cshtml";
             public readonly string Details = "~/Views/Player/Details.cshtml";
             public readonly string Edit = "~/Views/Player/Edit.cshtml";
             public readonly string InvitePlayer = "~/Views/Player/InvitePlayer.cshtml";

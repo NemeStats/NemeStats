@@ -6,12 +6,10 @@ using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Net.Http;
-using BusinessLogic.Models.PlayedGames;
 using NemeStats.TestingHelpers.NemeStatsTestingExtensions;
 using Shouldly;
 using UI.Areas.Api.Controllers;
 using UI.Areas.Api.Models;
-using UI.Transformations;
 
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesControllerTests
 {
@@ -48,7 +46,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
         [Test]
         public void ItRecordsThePlayedGameWithTheTransactionSourceSetToRestApi()
         {
-            _autoMocker.ClassUnderTest.RecordPlayedGame(_playedGameMessage, _applicationUser.CurrentGamingGroupId);
+            _autoMocker.ClassUnderTest.RecordPlayedGame(_playedGameMessage, EXPECTED_GAMING_GROUP_ID);
 
             var arguments = _autoMocker.Get<ICreatePlayedGameComponent>().GetArgumentsForCallsMadeOn(mock => mock.Execute(
                 Arg<NewlyCompletedGame>.Is.Anything,
@@ -62,7 +60,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
         [Test]
         public void ItReturnsThePlayedGameIdAndGamingGroupIdOfTheNewlyCreatedPlayedGame()
         {
-            var actualResponse = _autoMocker.ClassUnderTest.RecordPlayedGame(_playedGameMessage, _applicationUser.CurrentGamingGroupId);
+            var actualResponse = _autoMocker.ClassUnderTest.RecordPlayedGame(_playedGameMessage, EXPECTED_GAMING_GROUP_ID);
 
             Assert.That(actualResponse.Content, Is.TypeOf(typeof(ObjectContent<NewlyRecordedPlayedGameMessage>)));
             var content = actualResponse.Content as ObjectContent<NewlyRecordedPlayedGameMessage>;

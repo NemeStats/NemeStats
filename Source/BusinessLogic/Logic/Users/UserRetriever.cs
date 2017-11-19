@@ -16,8 +16,7 @@ namespace BusinessLogic.Logic.Users
         }
 
         public UserInformation RetrieveUserInformation(ApplicationUser applicationUser)
-        {
-           
+        { 
             var userInformation = _dataContext.GetQueryable<ApplicationUser>()
                 .Where(user => user.Id == applicationUser.Id)
                 .Select(user => new UserInformation
@@ -30,8 +29,12 @@ namespace BusinessLogic.Logic.Users
                         GamingGroupId = userGamingGroup.GamingGroup.Id,
                         GamingGroupName = userGamingGroup.GamingGroup.Name,
                         GamingGroupPublicDescription = userGamingGroup.GamingGroup.PublicDescription,
-                        GamingGroupPublicUrl = userGamingGroup.GamingGroup.PublicGamingGroupWebsite
-                    }).ToList(),
+                        GamingGroupPublicUrl = userGamingGroup.GamingGroup.PublicGamingGroupWebsite,
+                        Active = userGamingGroup.GamingGroup.Active,
+                        NumberOfGamesPlayed = userGamingGroup.GamingGroup.PlayedGames.Count,
+                        NumberOfPlayers = userGamingGroup.GamingGroup.Players.Count,
+                        GamingGroupChampion = userGamingGroup.GamingGroup.GamingGroupChampion
+                    }).OrderByDescending(x => x.Active).ThenBy(x => x.GamingGroupName).ToList(),
                     Players = user.Players.Select(player => new PlayerInfoForUser
                     {
                         PlayerId = player.Id,

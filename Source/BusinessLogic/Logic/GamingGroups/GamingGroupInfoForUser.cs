@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using BusinessLogic.Models;
 
 namespace BusinessLogic.Logic.GamingGroups
 {
@@ -8,5 +9,9 @@ namespace BusinessLogic.Logic.GamingGroups
         public string GamingGroupName { get; set; }
         public string GamingGroupPublicUrl { get; set; }
         public string GamingGroupPublicDescription { get; set; }
+        public int NumberOfGamesPlayed { get; set; }
+        public int NumberOfPlayers { get; set; }
+        public bool Active { get; set; }
+        public Player GamingGroupChampion { get; set; }
     }
 }

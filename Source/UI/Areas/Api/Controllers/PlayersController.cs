@@ -58,7 +58,8 @@ namespace UI.Areas.Api.Controllers
         [HttpPost]
         public virtual HttpResponseMessage SaveNewPlayer([FromBody] NewPlayerMessage newPlayerMessage)
         {
-            return SaveNewPlayer(newPlayerMessage, CurrentUser.CurrentGamingGroupId);
+            //--gamingGroupId is obsolete here and will be on the request or else used from the current user context -- so just pass "0"
+            return SaveNewPlayer(newPlayerMessage, 0);
         }
 
         [ApiAuthentication]
@@ -90,7 +91,8 @@ namespace UI.Areas.Api.Controllers
         [HttpPut]
         public virtual HttpResponseMessage UpdatePlayerVersion2([FromBody] UpdatePlayerMessage updatePlayerMessage, [FromUri] int playerId)
         {
-            return UpdatePlayer(updatePlayerMessage, playerId, CurrentUser.CurrentGamingGroupId);
+            //--gamingGroupId is obsolete here and will be on the request or else used from the current user context -- so just pass "0"
+            return UpdatePlayer(updatePlayerMessage, playerId, 0);
         }
 
         [ApiAuthentication]

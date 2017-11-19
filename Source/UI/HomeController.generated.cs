@@ -56,6 +56,12 @@ namespace UI.Controllers
             return RedirectToActionPermanent(taskResult.Result);
         }
 
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Index()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public HomeController Actions { get { return MVC.Home; } }
@@ -76,7 +82,6 @@ namespace UI.Controllers
             public readonly string TrendingGames = "TrendingGames";
             public readonly string RecentPlayedGames = "RecentPlayedGames";
             public readonly string RecentAchievementsUnlocked = "RecentAchievementsUnlocked";
-            public readonly string TopGamingGroups = "TopGamingGroups";
             public readonly string About = "About";
             public readonly string AboutNemePoints = "AboutNemePoints";
             public readonly string AboutBadgesAndAchievements = "AboutBadgesAndAchievements";
@@ -89,13 +94,20 @@ namespace UI.Controllers
             public const string TrendingGames = "TrendingGames";
             public const string RecentPlayedGames = "RecentPlayedGames";
             public const string RecentAchievementsUnlocked = "RecentAchievementsUnlocked";
-            public const string TopGamingGroups = "TopGamingGroups";
             public const string About = "About";
             public const string AboutNemePoints = "AboutNemePoints";
             public const string AboutBadgesAndAchievements = "AboutBadgesAndAchievements";
         }
 
 
+        static readonly ActionParamsClass_Index s_params_Index = new ActionParamsClass_Index();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Index IndexParams { get { return s_params_Index; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Index
+        {
+            public readonly string currentUser = "currentUser";
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -126,13 +138,14 @@ namespace UI.Controllers
         public T4MVC_HomeController() : base(Dummy.Instance) { }
 
         [NonAction]
-        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Index()
+        public override System.Web.Mvc.ActionResult Index(BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
-            IndexOverride(callInfo);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            IndexOverride(callInfo, currentUser);
             return callInfo;
         }
 
@@ -166,17 +179,6 @@ namespace UI.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RecentAchievementsUnlocked);
             RecentAchievementsUnlockedOverride(callInfo);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void TopGamingGroupsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult TopGamingGroups()
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.TopGamingGroups);
-            TopGamingGroupsOverride(callInfo);
             return callInfo;
         }
 

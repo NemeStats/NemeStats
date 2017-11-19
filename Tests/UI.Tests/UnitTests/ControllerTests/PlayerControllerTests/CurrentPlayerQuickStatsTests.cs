@@ -15,7 +15,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
     public class CurrentPlayerQuickStatsTests : PlayerControllerTestBase
     {
         [Test]
-        public void ItReturnsTheCurrentUsersPlayerQuickStatsViewModel()
+        public void It_Returns_The_Current_Users_PlayerQuickStatsViewModel()
         {
             var expectedPlayerQuickSummary = new PlayerQuickStats
             {
@@ -38,10 +38,10 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             };
 
             autoMocker.Get<IPlayerRetriever>()
-                .Expect(mock => mock.GetPlayerQuickStatsForUser(currentUser.Id, currentUser.CurrentGamingGroupId))
+                .Expect(mock => mock.GetPlayerQuickStatsForUser(currentUser.Id, currentUser.CurrentGamingGroupId.Value))
                 .Return(expectedPlayerQuickSummary);
 
-            var result = autoMocker.ClassUnderTest.CurrentPlayerQuickStats(currentUser) as ViewResult;
+            var result = autoMocker.ClassUnderTest.CurrentPlayerQuickStats(currentUser) as PartialViewResult;
 
             Assert.That(result, Is.Not.Null);
             var actualModel = result.Model as PlayerQuickStatsViewModel;
@@ -68,13 +68,13 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         }
 
         [Test]
-        public void ItLeavesTheLastGamingGroupGameNullIfThereAreNoGames()
+        public void It_Leaves_The_Last_Gaming_Group_Game_Null_If_There_Are_NoGames()
         {
             autoMocker.Get<IPlayerRetriever>()
-               .Expect(mock => mock.GetPlayerQuickStatsForUser(currentUser.Id, currentUser.CurrentGamingGroupId))
+               .Expect(mock => mock.GetPlayerQuickStatsForUser(currentUser.Id, currentUser.CurrentGamingGroupId.Value))
                .Return(new PlayerQuickStats());
 
-            var result = autoMocker.ClassUnderTest.CurrentPlayerQuickStats(currentUser) as ViewResult;
+            var result = autoMocker.ClassUnderTest.CurrentPlayerQuickStats(currentUser) as PartialViewResult;
 
             var actualModel = result.Model as PlayerQuickStatsViewModel;
             Assert.That(actualModel.LastGamingGroupGame, Is.Null);

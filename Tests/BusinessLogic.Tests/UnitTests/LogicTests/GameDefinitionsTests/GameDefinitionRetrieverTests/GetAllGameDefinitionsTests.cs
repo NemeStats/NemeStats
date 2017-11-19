@@ -38,7 +38,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                 .Return(gameDefinitionQueryable);
 
 
-            IList<GameDefinitionSummary> gameDefinitions = autoMocker.ClassUnderTest.GetAllGameDefinitions(currentUser.CurrentGamingGroupId);
+            IList<GameDefinitionSummary> gameDefinitions = autoMocker.ClassUnderTest.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value);
 
             Assert.True(gameDefinitions.All(gameDefinition => gameDefinition.Active));
         }
@@ -50,7 +50,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                 .Repeat.Once()
                 .Return(gameDefinitionQueryable);
 
-            IList<GameDefinitionSummary> gameDefinitions = autoMocker.ClassUnderTest.GetAllGameDefinitions(currentUser.CurrentGamingGroupId);
+            IList<GameDefinitionSummary> gameDefinitions = autoMocker.ClassUnderTest.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value);
 
             Assert.True(gameDefinitions.All(gameDefinition => gameDefinition.GamingGroupId == currentUser.CurrentGamingGroupId));
         }
@@ -102,7 +102,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                 .Repeat.Once()
                 .Return(queryable);
 
-            var result = autoMocker.ClassUnderTest.GetAllGameDefinitions(currentUser.CurrentGamingGroupId, actualFilterPassed)[0];
+            var result = autoMocker.ClassUnderTest.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value, actualFilterPassed)[0];
 
             Assert.True(result.PlayedGames.All(playedGame => playedGame.Id == expectedPlayedGameId));
         }

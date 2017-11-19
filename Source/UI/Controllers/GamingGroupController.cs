@@ -15,7 +15,6 @@
 
 #endregion LICENSE
 
-using AutoMapper;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Users;
@@ -24,6 +23,8 @@ using BusinessLogic.Models.User;
 using BusinessLogic.Models.Utility;
 using System.Linq;
 using System.Web.Mvc;
+using BusinessLogic.DataAccess.Security;
+using BusinessLogic.Facades;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
@@ -31,6 +32,7 @@ using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Models.GamingGroup;
 using UI.Models.PlayedGame;
+using UI.Models.User;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
 
@@ -40,6 +42,7 @@ namespace UI.Controllers
     {
         public const int MAX_NUMBER_OF_RECENT_GAMES = 10;
         public const int NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW = 25;
+        public const int NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW_ON_HOME_PAGE = 15;
         public const string SECTION_ANCHOR_PLAYERS = "playersListDivId";
         public const string SECTION_ANCHOR_GAMEDEFINITIONS = "gamesListDivId";
         public const string SECTION_ANCHOR_RECENT_GAMES = "playedGamesListDivId";
@@ -54,6 +57,8 @@ namespace UI.Controllers
         internal IPlayedGameRetriever playedGameRetriever;
         internal IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
         internal ITransformer transformer;
+        internal ITopGamingGroupsRetriever topGamingGroupsRetriever;
+        internal ISecuredEntityValidator securedEntityValidator;
 
         public GamingGroupController(
             IGamingGroupSaver gamingGroupSaver,
@@ -65,7 +70,9 @@ namespace UI.Controllers
             IGameDefinitionRetriever gameDefinitionRetriever, 
             IPlayedGameRetriever playedGameRetriever, 
             IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder,
-            ITransformer transformer)
+            ITransformer transformer, 
+            ITopGamingGroupsRetriever topGamingGroupsRetriever, 
+            ISecuredEntityValidator securedEntityValidator)
         {
             this.gamingGroupSaver = gamingGroupSaver;
             this.gamingGroupRetriever = gamingGroupRetriever;
@@ -77,6 +84,8 @@ namespace UI.Controllers
             this.playedGameRetriever = playedGameRetriever;
             this.playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
             this.transformer = transformer;
+            this.topGamingGroupsRetriever = topGamingGroupsRetriever;
+            this.securedEntityValidator = securedEntityValidator;
         }
 
         // GET: /GamingGroup
@@ -108,11 +117,12 @@ namespace UI.Controllers
                     GamingGroupId = gamingGroupSummary.Id,
                     GamingGroupName = gamingGroupSummary.Name,
                     PublicDescription = gamingGroupSummary.PublicDescription,
-                    Website = gamingGroupSummary.PublicGamingGroupWebsite
-                }
+                    Website = gamingGroupSummary.PublicGamingGroupWebsite,
+                    Active = gamingGroupSummary.Active
+                },
+                DateRangeFilter = dateRangeFilter,
+                UserCanEdit = currentUser.CurrentGamingGroupId == id
             };
-            viewModel.DateRangeFilter = dateRangeFilter;
-            viewModel.UserCanEdit = currentUser.CurrentGamingGroupId == id;
 
             return View(MVC.GamingGroup.Views.Details, viewModel);
         }
@@ -187,10 +197,29 @@ namespace UI.Controllers
         [HttpGet]
         public virtual ActionResult GetTopGamingGroups()
         {
-            var topGamingGroups = gamingGroupRetriever.GetTopGamingGroups(NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW);
-            var topGamingGroupViewModels = topGamingGroups.Select(transformer.Transform<TopGamingGroupSummaryViewModel>).ToList();
+            var viewModel = GetGamingGroupsSummaryViewModel(NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW);
+            return View(MVC.GamingGroup.Views.TopGamingGroups, viewModel);
+        }
 
-            return PartialView(MVC.GamingGroup.Views.TopGamingGroups, topGamingGroupViewModels);
+        [HttpGet]
+        public virtual ActionResult GetTopGamingGroupsPartial(int numberOfGamingGroups = NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW_ON_HOME_PAGE)
+        {
+            var viewModel = GetGamingGroupsSummaryViewModel(numberOfGamingGroups);
+            return PartialView(MVC.GamingGroup.Views._TopGamingGroupsPartial, viewModel);
+        }
+
+        internal virtual GamingGroupsSummaryViewModel GetGamingGroupsSummaryViewModel(int numberOfGamingGroups)
+        {
+            var topGamingGroups = topGamingGroupsRetriever.GetResults(numberOfGamingGroups);
+
+            var topGamingGroupViewModels = topGamingGroups.Select(transformer.Transform<GamingGroupSummaryViewModel>).ToList();
+
+            var viewModel = new GamingGroupsSummaryViewModel
+            {
+                GamingGroups = topGamingGroupViewModels,
+                ShowForEdit = false
+            };
+            return viewModel;
         }
 
         [HttpGet]
@@ -228,49 +257,62 @@ namespace UI.Controllers
 
         [HttpPost]
         [Authorize]
-        [UserContext]
+        [UserContext(RequiresGamingGroup = false)]
         public virtual ActionResult CreateNewGamingGroup(string gamingGroupName, ApplicationUser currentUser)
         {
             if (string.IsNullOrWhiteSpace(gamingGroupName))
             {
-                this.ModelState.AddModelError(string.Empty, "You must enter a Gaming Group name.");
-                return this.Details(currentUser.CurrentGamingGroupId, currentUser);
+                return MakeRedirectResultToManageAccountPageWithMessage();
             }
-            this.gamingGroupSaver.CreateNewGamingGroup(gamingGroupName.Trim(), TransactionSource.WebApplication, currentUser);
+            gamingGroupSaver.CreateNewGamingGroup(gamingGroupName.Trim(), TransactionSource.WebApplication, currentUser);
 
             return RedirectToAction(MVC.GamingGroup.ActionNames.Details, new {id = currentUser.CurrentGamingGroupId } );
         }
 
+        internal virtual RedirectResult MakeRedirectResultToManageAccountPageWithMessage()
+        {
+            return new RedirectResult(Url.Action(MVC.Account.ActionNames.Manage, MVC.Account.Name,
+                                          new {message = AccountController.ManageMessageId.EmptyGamingGroupName} ) + "#" + AccountController.GAMING_GROUPS_TAB_HASH_SUFFIX);
+        }
+
         [HttpGet]
         [Authorize]
-        public virtual ActionResult Edit(int id)
+        [UserContext(RequiresGamingGroup = false)] //--a user with only inactive gaming groups should be able to reactivate one
+        public virtual ActionResult Edit(int id, ApplicationUser currentUser)
         {
-            var gamingGroup = gamingGroupRetriever.GetGamingGroupById(id);
+            var gamingGroup = gamingGroupRetriever.GetGamingGroupWithUsers(id, currentUser);
 
             var model = new GamingGroupPublicDetailsViewModel
             {
-                GamingGroupName = gamingGroup.Name,
+                GamingGroupName = gamingGroup.GamingGroupName,
                 GamingGroupId = id,
                 PublicDescription = gamingGroup.PublicDescription,
-                Website = gamingGroup.PublicGamingGroupWebsite
+                Website = gamingGroup.PublicGamingGroupWebsite,
+                Active = gamingGroup.Active,
+                OtherUsers = gamingGroup.OtherUsers.Select(x => transformer.Transform<BasicUserInfoViewModel>(x)).ToList()
             };
 
-            return View(model);
+            return View(MVC.GamingGroup.Views.Edit, model);
         }
 
         [HttpPost]
         [Authorize]
-        [UserContext]
+        [UserContext(RequiresGamingGroup = false)] //--a user with only inactive gaming groups should be able to reactivate one
         public virtual ActionResult Edit(GamingGroupEditRequest request, ApplicationUser currentUser)
         {
             if (ModelState.IsValid)
             {
-                this.gamingGroupSaver.UpdatePublicGamingGroupDetails(request, currentUser);
-
-                return RedirectToAction(MVC.GamingGroup.Details(currentUser.CurrentGamingGroupId, currentUser));
+                gamingGroupSaver.UpdatePublicGamingGroupDetails(request, currentUser);
+                
+                return MakeRedirectResultToManageAccountPageGamingGroupTab();
             }
 
-            return (this.Edit(request.GamingGroupId));
+            return Edit(request.GamingGroupId, currentUser);
+        }
+
+        internal virtual RedirectResult MakeRedirectResultToManageAccountPageGamingGroupTab()
+        {
+            return Redirect(Url.Action(MVC.Account.Manage()) + "#" + AccountController.GAMING_GROUPS_TAB_HASH_SUFFIX);
         }
     }
 }

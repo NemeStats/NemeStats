@@ -263,7 +263,7 @@ namespace UI.Controllers
         {
             var bggUser = _userRetriever.RetrieveUserInformation(currentUser).BoardGameGeekUser;
 
-            return View(MVC.GameDefinition.Views._CreatePartial, new CreateGameDefinitionViewModel() { BGGUserName = bggUser?.Name, GamingGroupId = currentUser.CurrentGamingGroupId });
+            return View(MVC.GameDefinition.Views._CreatePartial, new CreateGameDefinitionViewModel() { BGGUserName = bggUser?.Name, GamingGroupId = currentUser.CurrentGamingGroupId.Value });
         }
 
         [Authorize]
@@ -295,8 +295,16 @@ namespace UI.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+            IList<GameDefinitionName> searchResults;
+            if (currentUser.CurrentGamingGroupId.HasValue)
+            {
+                searchResults = _gameDefinitionRetriever.GetAllGameDefinitionNames(currentUser.CurrentGamingGroupId.Value, q);
+            }
+            else
+            {
+                searchResults = new List<GameDefinitionName>();
+            }
 
-            var searchResults = _gameDefinitionRetriever.GetAllGameDefinitionNames(currentUser.CurrentGamingGroupId, q);
             return Json(searchResults, JsonRequestBehavior.AllowGet);
 
         }

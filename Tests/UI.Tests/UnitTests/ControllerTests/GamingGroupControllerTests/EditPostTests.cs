@@ -1,26 +1,26 @@
-﻿using BusinessLogic.Logic.GamingGroups;
+﻿using System.Web.Mvc;
+using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models.GamingGroups;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System.Web.Mvc;
+using Shouldly;
 
 namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 {
     public class EditPostTests : GamingGroupControllerTestBase
     {
-        private const int GAMING_GROUP_ID = 1;
-
         [Test]
-        public void ItUpdatesGamingGroupPublicDetails()
+        public void It_Updates_Gaming_Group_Public_Details_And_Redirects_Back_To_Gaming_Group_Listing()
         {
-            var request = new GamingGroupEditRequest
-            {
-                PublicDescription = "Description",
-                Website = "http://Website.com"
-            };
-            var httpStatusCodeResult = autoMocker.ClassUnderTest.Edit(request, currentUser) as HttpStatusCodeResult;
+            var expectedResult = new RedirectResult("some url");
+            autoMocker.ClassUnderTest.Expect(mock => mock.MakeRedirectResultToManageAccountPageGamingGroupTab())
+                .Return(expectedResult);
+            var request = new GamingGroupEditRequest();
+
+            var actualResult = autoMocker.ClassUnderTest.Edit(request, currentUser);
 
             autoMocker.Get<IGamingGroupSaver>().AssertWasCalled(x => x.UpdatePublicGamingGroupDetails(request, currentUser));
+            actualResult.ShouldBe(expectedResult);
         }
     }
 }

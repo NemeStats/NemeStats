@@ -69,7 +69,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public void ItRetrievesOnlyGamingGroupsThatTheUserHasAccessTo()
         {
-            var actualGamingGroups = AutoMocker.ClassUnderTest.GetGamingGroupsForUser(CurrentUser);
+            var actualGamingGroups = AutoMocker.ClassUnderTest.GetGamingGroupsForUser(CurrentUser.Id);
 
             Assert.That(actualGamingGroups.Count, Is.EqualTo(1));
             Assert.That(actualGamingGroups[0].Id, Is.EqualTo(gamingGroupId1));

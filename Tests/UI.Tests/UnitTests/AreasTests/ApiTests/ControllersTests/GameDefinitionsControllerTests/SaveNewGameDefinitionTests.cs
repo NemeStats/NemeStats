@@ -30,25 +30,6 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.GameDefinition
         }
 
         [Test]
-        public void ItSavesTheNewGameDefinition()
-        {
-            var newGameDefinitionMessage = new NewGameDefinitionMessage
-            {
-                GameDefinitionName = "some gameDefinitionName",
-                BoardGameGeekObjectId = 1,
-            };
-
-            _autoMocker.ClassUnderTest.SaveNewGameDefinition(newGameDefinitionMessage, _expectedGamingGroupId);
-
-            _autoMocker.Get<ICreateGameDefinitionComponent>().AssertWasCalled(
-                mock => mock.Execute(Arg<CreateGameDefinitionRequest>.Matches(
-                    gameDefinition => gameDefinition.Name == newGameDefinitionMessage.GameDefinitionName
-                    && gameDefinition.BoardGameGeekGameDefinitionId == newGameDefinitionMessage.BoardGameGeekObjectId
-                    && gameDefinition.GamingGroupId == _expectedGamingGroupId),
-                    Arg<ApplicationUser>.Is.Same(_applicationUser)));
-        }
-
-        [Test]
         public void ItReturnsANewlyCreatedGameDefinitionMessage()
         {
             var actualResults = _autoMocker.ClassUnderTest.SaveNewGameDefinition(new NewGameDefinitionMessage(), _expectedGamingGroupId);
@@ -59,7 +40,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.GameDefinition
         }
 
         [Test]
-        public void ItSavesTheNewGameDefinitionUsingTheGamingGroupIdOnTheRequestIfOneIsSpecified()
+        public void ItSavesTheNewGameDefinitionAndIgnoresTheGamingGroupIdInTheSecondParameter()
         {
             var newGameDefinitionMessage = new NewGameDefinitionMessage
             {

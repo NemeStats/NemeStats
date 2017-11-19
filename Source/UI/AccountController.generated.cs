@@ -387,6 +387,7 @@ namespace UI.Controllers
                 public readonly string _ExternalLoginsListPartial = "_ExternalLoginsListPartial";
                 public readonly string _RemoveAccountPartial = "_RemoveAccountPartial";
                 public readonly string _SetPasswordPartial = "_SetPasswordPartial";
+                public readonly string _UserGamingGroupsPartial = "_UserGamingGroupsPartial";
                 public readonly string BoardGameGeekIntegration = "BoardGameGeekIntegration";
                 public readonly string ConfirmEmail = "ConfirmEmail";
                 public readonly string CreateGamingGroup = "CreateGamingGroup";
@@ -401,7 +402,6 @@ namespace UI.Controllers
                 public readonly string RegisterAgainstExistingGamingGroup = "RegisterAgainstExistingGamingGroup";
                 public readonly string ResetPassword = "ResetPassword";
                 public readonly string ResetPasswordConfirmation = "ResetPasswordConfirmation";
-                public readonly string UserGamingGroups = "UserGamingGroups";
             }
             public readonly string _ChangeEmailPartial = "~/Views/Account/_ChangeEmailPartial.cshtml";
             public readonly string _ChangePasswordPartial = "~/Views/Account/_ChangePasswordPartial.cshtml";
@@ -409,6 +409,7 @@ namespace UI.Controllers
             public readonly string _ExternalLoginsListPartial = "~/Views/Account/_ExternalLoginsListPartial.cshtml";
             public readonly string _RemoveAccountPartial = "~/Views/Account/_RemoveAccountPartial.cshtml";
             public readonly string _SetPasswordPartial = "~/Views/Account/_SetPasswordPartial.cshtml";
+            public readonly string _UserGamingGroupsPartial = "~/Views/Account/_UserGamingGroupsPartial.cshtml";
             public readonly string BoardGameGeekIntegration = "~/Views/Account/BoardGameGeekIntegration.cshtml";
             public readonly string ConfirmEmail = "~/Views/Account/ConfirmEmail.cshtml";
             public readonly string CreateGamingGroup = "~/Views/Account/CreateGamingGroup.cshtml";
@@ -423,7 +424,6 @@ namespace UI.Controllers
             public readonly string RegisterAgainstExistingGamingGroup = "~/Views/Account/RegisterAgainstExistingGamingGroup.cshtml";
             public readonly string ResetPassword = "~/Views/Account/ResetPassword.cshtml";
             public readonly string ResetPasswordConfirmation = "~/Views/Account/ResetPasswordConfirmation.cshtml";
-            public readonly string UserGamingGroups = "~/Views/Account/UserGamingGroups.cshtml";
         }
     }
 

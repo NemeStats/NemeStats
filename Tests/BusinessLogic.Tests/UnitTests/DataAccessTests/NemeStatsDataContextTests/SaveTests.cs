@@ -23,6 +23,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Linq;
+using BusinessLogic.Exceptions;
 
 namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTests
 {
@@ -47,6 +48,35 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
             Exception actualException = Assert.Throws<ArgumentNullException>(() => dataContext.Save(new GamingGroup(), null));
 
             Assert.AreEqual(expectedException.Message, actualException.Message);
+        }
+
+        [Test]
+        public void ItThrowsAUserHasNoGamingGroupExceptionIfTheCurrentUserHasNoGamingGroupAndSavingASecuredEntityThatIsntAGamingGroup()
+        {
+            var user = new ApplicationUser
+            {
+                Id = "some user id"
+            };
+            var expectedException = new UserHasNoGamingGroupException(user.Id);
+
+            var actualException = Assert.Throws<UserHasNoGamingGroupException>(() => dataContext.Save(new GameDefinition(), user));
+
+            Assert.AreEqual(expectedException.Message, actualException.Message);
+        }
+
+        [Test]
+        public void ItDoesntThrowAUserHasNoGamingGroupExceptionIfTheCurrentUserHasNoGamingGroupAndSavingANewGamingGroup()
+        {
+            var user = new ApplicationUser
+            {
+                Id = "some user id"
+            };
+
+            dataContext.Expect(mock => mock.AddOrInsertOverride(Arg<GamingGroup>.Is.Anything))
+                .Repeat.Once()
+                .Return(new GamingGroup());
+
+            dataContext.Save(new GamingGroup(), user);
         }
 
         [Test]
@@ -99,7 +129,6 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
                 .IgnoreArguments()
                 .Return(securedEntityValidator);
             securedEntityValidator.Expect(mock => mock.ValidateAccess<GameDefinition>(null, null)).IgnoreArguments();
-
             dataContext.Expect(mock => mock.AddOrInsertOverride(gameDefinition))
                 .Repeat.Once()
                 .Return(gameDefinition);
@@ -108,6 +137,28 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
 
             dataContext.AssertWasCalled(mock => mock.AddOrInsertOverride(
                 Arg<GameDefinition>.Matches(entity => entity.GamingGroupId == currentUser.CurrentGamingGroupId)));
+        }
+
+        [Test]
+        public void ItDoesntSetTheGamingGroupIdIfTheEntityIsAGamingGroupItself()
+        {
+            var gamingGroup = new GamingGroup();
+
+            var securedEntityValidator = MockRepository.GenerateMock<ISecuredEntityValidator>();
+            securedEntityValidatorFactory.Expect(mock => mock.MakeSecuredEntityValidator<GamingGroup>(dataContext))
+                .IgnoreArguments()
+                .Return(securedEntityValidator);
+            securedEntityValidator.Expect(mock => mock.ValidateAccess<GameDefinition>(null, null)).IgnoreArguments();
+
+            dataContext.Expect(mock => mock.AddOrInsertOverride(gamingGroup))
+                .Repeat.Once()
+                .Return(gamingGroup);
+
+            dataContext.Save(gamingGroup, currentUser);
+
+            //--GamingGroup.GamingGroupId is just an alias for GamingGroup.Id, so this should remain the same
+            dataContext.AssertWasNotCalled(mock => mock.AddOrInsertOverride(
+                Arg<GamingGroup>.Matches(entity => entity.GamingGroupId == currentUser.CurrentGamingGroupId)));
         }
     }
 }

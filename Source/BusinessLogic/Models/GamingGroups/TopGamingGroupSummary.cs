@@ -16,8 +16,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using System.Linq;
-
 namespace BusinessLogic.Models.GamingGroups
 {
     public class TopGamingGroupSummary
@@ -27,5 +25,6 @@ namespace BusinessLogic.Models.GamingGroups
         public int NumberOfPlayers { get; set; }
         public int NumberOfGamesPlayed { get; set; }
         public Player GamingGroupChampion { get; set; }
+        public bool Active { get; set; }
     }
 }

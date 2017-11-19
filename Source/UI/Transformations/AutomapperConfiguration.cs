@@ -44,6 +44,7 @@ using UI.Models.PlayedGame;
 using UI.Models.Players;
 using UI.Models.Points;
 using UI.Models.UniversalGameModels;
+using UI.Models.User;
 
 namespace UI.Transformations
 {
@@ -53,7 +54,12 @@ namespace UI.Transformations
         {
             Mapper.CreateMap<ApplicationLinkageMessage, ApplicationLinkage>(MemberList.Destination);
             Mapper.CreateMap<ApplicationLinkage, ApplicationLinkageMessage>(MemberList.Destination);
-            Mapper.CreateMap<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>(MemberList.Source);
+            Mapper.CreateMap<TopGamingGroupSummary, GamingGroupSummaryViewModel>(MemberList.Source);
+            Mapper.CreateMap<Player, PlayerInfoForUser>(MemberList.Destination)
+                .ForMember(x => x.PlayerId, opt => opt.MapFrom(y => y.Id))
+                .ForMember(x => x.PlayerName, opt => opt.MapFrom(y => y.Name));
+            Mapper.CreateMap<GamingGroupInfoForUser, GamingGroupSummaryViewModel>(MemberList.Destination)
+                .ForMember(x => x.GamingGroupChampion, opt => opt.MapFrom(y => y.GamingGroupChampion));
             Mapper.CreateMap<VotableFeature, VotableFeatureViewModel>(MemberList.Destination);
             Mapper.CreateMap<NewUserMessage, NewUser>(MemberList.Destination)
                 .ForMember(x => x.GamingGroupInvitationId, opt => opt.Ignore())
@@ -179,6 +185,8 @@ namespace UI.Transformations
                     opt => opt.MapFrom(y => BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(y.BoardGameGeekGameDefinitionId)));
 
             Mapper.CreateMap<GamingGroupStats, GamingGroupStatsViewModel>();
+
+            Mapper.CreateMap<BasicUserInfo, BasicUserInfoViewModel>();
         }
     }
 }

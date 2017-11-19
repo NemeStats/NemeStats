@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using BoardGameGeekApiClient.Interfaces;
 using BoardGameGeekApiClient.Models;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.Users;
@@ -10,6 +11,7 @@ using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Shouldly;
 using StructureMap.AutoMocking;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekTests.BoardGameGeekGamesImporterTests
@@ -24,13 +26,27 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekTests.BoardGameG
         public void SetUp()
         {
             _autoMocker = new RhinoAutoMocker<BoardGameGeekGamesImporter>();
-            _currentUser = new ApplicationUser();
+            _currentUser = new ApplicationUser
+            {
+                CurrentGamingGroupId = 1
+            };
         }
 
         [Test]
-        public void ThrowException_If_ApplicationUser_Is_Null()
+        public void It_Throws_An_ArgumentNullException_If_ApplicationUser_Is_Null()
         {
             Assert.Throws<ArgumentNullException>(() => _autoMocker.ClassUnderTest.ImportBoardGameGeekGames(null));
+        }
+
+        [Test]
+        public void It_Throws_A_UserHasNoGamingGroupException_If_ApplicationUser_Current_Gaming_Group_Is_Null()
+        {
+            _currentUser.CurrentGamingGroupId = null;
+            _currentUser.Id = "some user id";
+            var expectedException = new UserHasNoGamingGroupException(_currentUser.Id);
+
+            var actualException = Assert.Throws<UserHasNoGamingGroupException>(() => _autoMocker.ClassUnderTest.ImportBoardGameGeekGames(_currentUser));
+            actualException.Message.ShouldBe(expectedException.Message);
         }
 
         [Test]

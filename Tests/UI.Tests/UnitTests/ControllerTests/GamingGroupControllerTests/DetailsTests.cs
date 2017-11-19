@@ -43,7 +43,8 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
                 Name = "some gaming group name",
                 DateCreated = DateTime.MaxValue,
                 PublicDescription = "some public description",
-                PublicGamingGroupWebsite = "https://website.com"
+                PublicGamingGroupWebsite = "https://website.com",
+                Active = true
             };
             _dateRangeFilter = new BasicDateRangeFilter();
 
@@ -57,7 +58,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItReturnsTheDetailsView()
         {
-            var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId , currentUser, _dateRangeFilter) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId.Value, currentUser, _dateRangeFilter) as ViewResult;
 
             Assert.AreEqual(MVC.GamingGroup.Views.Details, viewResult.ViewName);
         }
@@ -65,7 +66,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItAddsAGamingGroupViewModelToTheView()
         {
-            var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, _dateRangeFilter) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId.Value, currentUser, _dateRangeFilter) as ViewResult;
 
             var viewModel = viewResult.Model as GamingGroupViewModel;
             viewModel.ShouldNotBeNull();
@@ -73,12 +74,13 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             viewModel.PublicDetailsView.GamingGroupName.ShouldBe(_gamingGroupSummary.Name);
             viewModel.PublicDetailsView.PublicDescription.ShouldBe(_gamingGroupSummary.PublicDescription);
             viewModel.PublicDetailsView.Website.ShouldBe(_gamingGroupSummary.PublicGamingGroupWebsite);
+            viewModel.PublicDetailsView.Active.ShouldBe(_gamingGroupSummary.Active);
         }
 
         [Test]
         public void ItPreservesTheDateRangeFilter()
         {
-            var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, _dateRangeFilter) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId.Value, currentUser, _dateRangeFilter) as ViewResult;
 
             var model = viewResult.Model as GamingGroupViewModel;
             Assert.AreSame(_dateRangeFilter, model.DateRangeFilter);
@@ -90,7 +92,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             var basicDateRangeFilterMock = MockRepository.GenerateMock<BasicDateRangeFilter>();
             var expectedErrorMessage = "some error message";
             basicDateRangeFilterMock.Expect(mock => mock.IsValid(out Arg<string>.Out(expectedErrorMessage).Dummy)).Return(false);
-            var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, basicDateRangeFilterMock) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId.Value, currentUser, basicDateRangeFilterMock) as ViewResult;
 
             Assert.True(viewResult.ViewData.ModelState.ContainsKey("dateRangeFilter"));
             var modelErrorsForKey = viewResult.ViewData.ModelState["dateRangeFilter"].Errors;

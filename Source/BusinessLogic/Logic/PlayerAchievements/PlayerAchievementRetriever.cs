@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.Achievements;
@@ -7,7 +6,6 @@ using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
-using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Logic.PlayerAchievements
 {
@@ -27,57 +25,6 @@ namespace BusinessLogic.Logic.PlayerAchievements
             _achievementRetriever = achievementRetriever;
             _boardGameGeekGameDefinitionInfoRetriever = boardGameGeekGameDefinitionInfoRetriever;
             _playerRetriever = playerRetriever;
-        }
-
-        [Obsolete("will replace all calls with a call to GetPlayerAchievement()")]
-        public virtual PlayerAchievementDetails GetCurrentPlayerAchievementDetails(AchievementId achievementId, ApplicationUser currentUser)
-        {
-            var achievement = _achievementRetriever.GetAchievement(achievementId);
-
-            var result = new PlayerAchievementDetails
-            {
-                AchievementId = achievementId,
-                Description = achievement.Description,
-                IconClass = achievement.IconClass,
-                AchievementName = achievement.Name,
-                LevelThresholds = achievement.LevelThresholds
-            };
-
-            result.NumberOfPlayersWithThisAchievement = _dataContext.GetQueryable<PlayerAchievement>().Count(y => y.AchievementId == achievementId);
-
-            if (currentUser.UserName == AnonymousApplicationUser.USER_NAME_ANONYMOUS)
-            {
-                return result;
-            }
-
-            var playerForCurrentUser = _playerRetriever.GetPlayerForCurrentUser(currentUser.Id, currentUser.CurrentGamingGroupId);
-
-            if (playerForCurrentUser != null)
-            {
-                result.PlayerId = playerForCurrentUser.Id;
-                result.PlayerName = playerForCurrentUser.Name;
-
-                var achievementAwarded = achievement.IsAwardedForThisPlayer(playerForCurrentUser.Id);
-
-                result.AchievementLevel = achievementAwarded.LevelAwarded;
-                result.PlayerProgress = achievementAwarded.PlayerProgress;
-
-                SetRelatedEntities(achievement.Group, result, achievementAwarded.RelatedEntities);
-            }
-
-            var playerAchievement = _dataContext
-                .GetQueryable<PlayerAchievement>()
-                .FirstOrDefault(x => x.AchievementId == achievementId && x.Player.ApplicationUserId == currentUser.Id);
-
-            if (playerAchievement == null)
-            {
-                return result;
-            }
-
-            result.DateCreated = playerAchievement.DateCreated;
-            result.LastUpdatedDate = playerAchievement.LastUpdatedDate;
-            
-            return result;
         }
 
         internal virtual void SetRelatedEntities(AchievementGroup achievementGroup, PlayerAchievementDetails result, List<int> relatedEntityIds)

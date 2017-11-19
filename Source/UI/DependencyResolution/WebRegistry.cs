@@ -1,4 +1,5 @@
 using System.Web;
+using System.Web.Http.Filters;
 using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
@@ -7,6 +8,7 @@ using BusinessLogic.Providers;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataProtection;
 using StructureMap;
+using UI.Attributes;
 using UI.Mappers.CustomMappers;
 using UI.Mappers.Interfaces;
 using UI.Models.GameDefinitionModels;

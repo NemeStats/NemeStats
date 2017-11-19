@@ -32,7 +32,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.BoardGam
             autoMocker.Get<IDataContext>().Expect(mock => mock.FindById<BoardGameGeekGameDefinition>(boardGameGeekGameDefinitionId))
                 .Return(new BoardGameGeekGameDefinition());
 
-            autoMocker.ClassUnderTest.CreateBoardGameGeekGameDefinition(boardGameGeekGameDefinitionId, currentUser);
+            autoMocker.ClassUnderTest.CreateBoardGameGeekGameDefinition(boardGameGeekGameDefinitionId);
 
             autoMocker.Get<IDataContext>().AssertWasNotCalled(mock => mock.Save(
                 Arg<BoardGameGeekGameDefinition>.Is.Anything, 
@@ -47,7 +47,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.BoardGam
             autoMocker.Get<IBoardGameGeekApiClient>().Expect(mock => mock.GetGameDetails(boardGameGeekGameDefinitionId))
                 .Return(null);
 
-            autoMocker.ClassUnderTest.CreateBoardGameGeekGameDefinition(boardGameGeekGameDefinitionId, currentUser);
+            autoMocker.ClassUnderTest.CreateBoardGameGeekGameDefinition(boardGameGeekGameDefinitionId);
 
             autoMocker.Get<IDataContext>().AssertWasNotCalled(mock => mock.Save(
                 Arg<BoardGameGeekGameDefinition>.Is.Anything,
@@ -68,11 +68,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.BoardGam
             autoMocker.Get<IBoardGameGeekApiClient>().Expect(mock => mock.GetGameDetails(boardGameGeekGameDefinitionId))
                 .Return(expectedGameDetails);
 
-            autoMocker.ClassUnderTest.CreateBoardGameGeekGameDefinition(boardGameGeekGameDefinitionId, currentUser);
+            autoMocker.ClassUnderTest.CreateBoardGameGeekGameDefinition(boardGameGeekGameDefinitionId);
 
-            var args = autoMocker.Get<IDataContext>().GetArgumentsForCallsMadeOn(mock => mock.Save(
-                Arg<BoardGameGeekGameDefinition>.Is.Anything,
-                Arg<ApplicationUser>.Is.Anything));
+            var args = autoMocker.Get<IDataContext>().GetArgumentsForCallsMadeOn(mock => mock.AdminSave(
+                Arg<BoardGameGeekGameDefinition>.Is.Anything));
 
             Assert.That(args.Count, Is.GreaterThan(0));
             var actualBoardGameGeekGameDefinition = args[0][0] as BoardGameGeekGameDefinition;

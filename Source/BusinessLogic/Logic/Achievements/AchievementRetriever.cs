@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Events.HandlerFactory;
@@ -29,7 +28,7 @@ namespace BusinessLogic.Logic.Achievements
                 }).ToDictionary(x => x.Id, x => x);
 
             var allAchievementsThisPlayerHasEarned = new List<AchievementId>();
-            if (currentUser.UserName != AnonymousApplicationUser.USER_NAME_ANONYMOUS)
+            if (!currentUser.IsAnonymousUser())
             {
                 allAchievementsThisPlayerHasEarned = _dataContext.GetQueryable<PlayerAchievement>()
                 .Where(x => x.Player.ApplicationUserId == currentUser.Id)

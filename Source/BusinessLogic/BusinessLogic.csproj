@@ -231,6 +231,7 @@
     <Compile Include="Exceptions\PlayerAlreadyExistsException.cs" />
     <Compile Include="Exceptions\PlayerNotInGamingGroupException.cs" />
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
+    <Compile Include="Exceptions\UserHasNoGamingGroupException.cs" />
     <Compile Include="Export\ExcelGenerator.cs" />
     <Compile Include="Export\IExcelGenerator.cs" />
     <Compile Include="Facades\IRecentPublicGamesRetriever.cs" />
@@ -319,6 +320,15 @@
     <Compile Include="Logic\Email\EmailService.cs" />
     <Compile Include="Logic\GameDefinitions\CreateGameDefinitionComponent.cs" />
     <Compile Include="Logic\GameDefinitions\ICreateGameDefinitionComponent.cs" />
+    <Compile Include="Migrations\201710040027508_GamingGroup_Active_Flag.cs" />
+    <Compile Include="Migrations\201710040027508_GamingGroup_Active_Flag.Designer.cs">
+      <DependentUpon>201710040027508_GamingGroup_Active_Flag.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710121937189_MakeCurrentGamingGroupIdNullable.cs" />
+    <Compile Include="Migrations\201710121937189_MakeCurrentGamingGroupIdNullable.Designer.cs">
+      <DependentUpon>201710121937189_MakeCurrentGamingGroupIdNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\User\BasicUserInfo.cs" />
     <Compile Include="Models\GamingGroups\GamingGroupStats.cs" />
     <Compile Include="Logic\ITransformer.cs" />
     <Compile Include="Logic\OneTimeJobs\BoardGameGeekThumbnailAttacher.cs" />
@@ -477,6 +487,7 @@
     <Compile Include="Models\Games\UniversalGameStats.cs" />
     <Compile Include="Models\Games\UpdatedGame.cs" />
     <Compile Include="Models\GamingGroups\GamingGroupSitemapInfo.cs" />
+    <Compile Include="Models\GamingGroups\GamingGroupWithUsers.cs" />
     <Compile Include="Models\PlayedGameApplicationLinkage.cs" />
     <Compile Include="Models\Games\SavePlayedGameRequest.cs" />
     <Compile Include="Models\Games\TrendingGame.cs" />
@@ -1131,6 +1142,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709081638275_GamingGroupChampion.resx">
       <DependentUpon>201709081638275_GamingGroupChampion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710040027508_GamingGroup_Active_Flag.resx">
+      <DependentUpon>201710040027508_GamingGroup_Active_Flag.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710121937189_MakeCurrentGamingGroupIdNullable.resx">
+      <DependentUpon>201710121937189_MakeCurrentGamingGroupIdNullable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

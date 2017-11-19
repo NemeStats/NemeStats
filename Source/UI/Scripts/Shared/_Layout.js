@@ -11,8 +11,18 @@ Views.Shared.Layout = function () {
 //Implementation
 Views.Shared.Layout.prototype = {
     init: function () {
-        this.$popovers = $('[data-toggle="popover"]');
-        $.each(this.$popovers, function (i, item) {
+        var parent = this;
+        this.initializePopoversAndTooltips(parent);
+
+        this.$readmoreContainers = $("[data-readmore='true']");
+        this.$readmoreContainers.readmore({ collapsedHeight: 100, lessLink: '<a href="#">Read less</a>', speed: 200 });
+
+        PNotify.prototype.options.styling = "bootstrap3";
+        PNotify.prototype.options.styling = "fontawesome";
+    },
+    initializePopoversAndTooltips: function(parent) {
+        parent.$popovers = $('[data-toggle="popover"]');
+        $.each(parent.$popovers, function (i, item) {
             var $item = $(item);
             if ($item.data("templateselector")) {
                 var content = $($item.data("templateselector")).html();
@@ -24,12 +34,6 @@ Views.Shared.Layout.prototype = {
         });
 
         $('[data-toggle="tooltip"]').tooltip();
-
-        this.$readmoreContainers = $("[data-readmore='true']");
-        this.$readmoreContainers.readmore({ collapsedHeight: 100, lessLink: '<a href="#">Read less</a>', speed: 200 });
-
-        PNotify.prototype.options.styling = "bootstrap3";
-        PNotify.prototype.options.styling = "fontawesome";
     },
     getQueryString: function (queryParamName) {
         var result = window.location.search.match(

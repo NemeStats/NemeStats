@@ -20,5 +20,7 @@ namespace UI.Models.Home
 {
     public class HomeIndexViewModel
     {
+        public bool ShowQuickStats { get; set; }
+        public bool ShowLoginPartial { get; set; }
     }
 }

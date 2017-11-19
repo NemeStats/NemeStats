@@ -15,7 +15,7 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using BusinessLogic.DataAccess;
+
 using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.Players;
@@ -280,7 +280,7 @@ namespace UI.Controllers
         {
             _playerDeleter.DeletePlayer(id, currentUser);
             
-            SetToastMessage(TempMessageKeys.TEMP_MESSAGE_KEY_PLAYER_DELETED,"Player deleted successfully");
+            SetToastMessage(TempMessageKeys.TEMP_MESSAGE_KEY_PLAYER_DELETED, "Player deleted successfully");
 
             return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name));
         }
@@ -289,10 +289,11 @@ namespace UI.Controllers
         [UserContext]
         public virtual ActionResult CurrentPlayerQuickStats(ApplicationUser currentUser)
         {
-            var playerQuickStats = playerRetriever.GetPlayerQuickStatsForUser(currentUser.Id, currentUser.CurrentGamingGroupId);
+            var playerQuickStats = playerRetriever.GetPlayerQuickStatsForUser(currentUser.Id, currentUser.CurrentGamingGroupId.Value);
+
             var playerQuickStatsViewModel = Mapper.Map<PlayerQuickStatsViewModel>(playerQuickStats);
 
-            return View(MVC.Player.Views.CurrentPlayerQuickStats, playerQuickStatsViewModel);
+            return PartialView(MVC.Player.Views._CurrentPlayerQuickStatsPartial, playerQuickStatsViewModel);
         }
     }
 }

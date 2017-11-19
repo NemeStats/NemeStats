@@ -138,6 +138,7 @@ namespace UI.Controllers
             public readonly string GetGamingGroupGameDefinitions = "GetGamingGroupGameDefinitions";
             public readonly string GetGamingGroupPlayedGames = "GetGamingGroupPlayedGames";
             public readonly string GetTopGamingGroups = "GetTopGamingGroups";
+            public readonly string GetTopGamingGroupsPartial = "GetTopGamingGroupsPartial";
             public readonly string GetGamingGroupStats = "GetGamingGroupStats";
             public readonly string GetCurrentUserGamingGroupGameDefinitions = "GetCurrentUserGamingGroupGameDefinitions";
             public readonly string SwitchGamingGroups = "SwitchGamingGroups";
@@ -154,6 +155,7 @@ namespace UI.Controllers
             public const string GetGamingGroupGameDefinitions = "GetGamingGroupGameDefinitions";
             public const string GetGamingGroupPlayedGames = "GetGamingGroupPlayedGames";
             public const string GetTopGamingGroups = "GetTopGamingGroups";
+            public const string GetTopGamingGroupsPartial = "GetTopGamingGroupsPartial";
             public const string GetGamingGroupStats = "GetGamingGroupStats";
             public const string GetCurrentUserGamingGroupGameDefinitions = "GetCurrentUserGamingGroupGameDefinitions";
             public const string SwitchGamingGroups = "SwitchGamingGroups";
@@ -211,6 +213,14 @@ namespace UI.Controllers
             public readonly string dateRangeFilter = "dateRangeFilter";
             public readonly string numberOfItems = "numberOfItems";
         }
+        static readonly ActionParamsClass_GetTopGamingGroupsPartial s_params_GetTopGamingGroupsPartial = new ActionParamsClass_GetTopGamingGroupsPartial();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_GetTopGamingGroupsPartial GetTopGamingGroupsPartialParams { get { return s_params_GetTopGamingGroupsPartial; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_GetTopGamingGroupsPartial
+        {
+            public readonly string numberOfGamingGroups = "numberOfGamingGroups";
+        }
         static readonly ActionParamsClass_GetGamingGroupStats s_params_GetGamingGroupStats = new ActionParamsClass_GetGamingGroupStats();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_GetGamingGroupStats GetGamingGroupStatsParams { get { return s_params_GetGamingGroupStats; } }
@@ -254,8 +264,8 @@ namespace UI.Controllers
         public class ActionParamsClass_Edit
         {
             public readonly string id = "id";
-            public readonly string request = "request";
             public readonly string currentUser = "currentUser";
+            public readonly string request = "request";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -371,6 +381,18 @@ namespace UI.Controllers
         }
 
         [NonAction]
+        partial void GetTopGamingGroupsPartialOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int numberOfGamingGroups);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult GetTopGamingGroupsPartial(int numberOfGamingGroups)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GetTopGamingGroupsPartial);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "numberOfGamingGroups", numberOfGamingGroups);
+            GetTopGamingGroupsPartialOverride(callInfo, numberOfGamingGroups);
+            return callInfo;
+        }
+
+        [NonAction]
         partial void GetGamingGroupStatsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int gamingGroupId, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter);
 
         [NonAction]
@@ -423,14 +445,15 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
+        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Edit(int id)
+        public override System.Web.Mvc.ActionResult Edit(int id, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            EditOverride(callInfo, id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            EditOverride(callInfo, id, currentUser);
             return callInfo;
         }
 

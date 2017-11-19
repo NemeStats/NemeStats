@@ -26,5 +26,6 @@ namespace BusinessLogic.Models.GamingGroups
         public string PublicGamingGroupWebsite { get; set; }
         public string PublicDescription { get; set; }
         public DateTime DateCreated { get; set; }
+        public bool Active { get; set; }
     }
 }

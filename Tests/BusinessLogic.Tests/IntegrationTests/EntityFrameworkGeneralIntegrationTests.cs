@@ -50,7 +50,7 @@ namespace BusinessLogic.Tests.IntegrationTests
 
             _somePlayedGameId = dataContext.GetQueryable<PlayedGame>().Select(x => x.Id).First();
 
-            _userWithGamingGroup = dataContext.GetQueryable<ApplicationUser>().First(x => x.CurrentGamingGroupId > 0);
+            _userWithGamingGroup = dataContext.GetQueryable<ApplicationUser>().OrderBy(x => x.Id).First(x => x.CurrentGamingGroupId > 0);
         }
 
         [Test]
@@ -58,18 +58,31 @@ namespace BusinessLogic.Tests.IntegrationTests
         {
             var dataContext = GetInstance<IDataContext>();
 
-            var gamingGroup = new GamingGroup
+            var gameDefinition = new GameDefinition
             {
-                Name = "new gaming group without an ID yet",
-                OwningUserId = _userWithGamingGroup.Id
+                Name = "some testing game definition"
             };
 
-            dataContext.Save(gamingGroup, _userWithGamingGroup);
+            CleanupFromLastTime(dataContext, gameDefinition, _userWithGamingGroup);
+
+            dataContext.Save(gameDefinition, _userWithGamingGroup);
             dataContext.CommitAllChanges();
 
-            Cleanup(dataContext, gamingGroup, _userWithGamingGroup);
+            gameDefinition.Id.ShouldNotBe(default(int));
+        }
 
-            gamingGroup.Id.ShouldNotBe(default(int));
+        private static void CleanupFromLastTime(
+        IDataContext dataContext,
+        GameDefinition gameDefinition,
+        ApplicationUser currentUser)
+        {
+            var entitiesToDelete = dataContext
+                .GetQueryable<GameDefinition>().Where(game => game.Name == gameDefinition.Name).ToList();
+            foreach (var entity in entitiesToDelete)
+            {
+                dataContext.Delete(entity, currentUser);
+            }
+            dataContext.CommitAllChanges();
         }
 
         [Test]
@@ -534,21 +547,6 @@ namespace BusinessLogic.Tests.IntegrationTests
              */
 
             #endregion
-        }
-
-
-        private static void Cleanup(
-        IDataContext dataContext, 
-        GamingGroup gamingGroup, 
-        ApplicationUser currentUser)
-        {
-            var gamingGroupToDelete = dataContext
-                .GetQueryable<GamingGroup>().FirstOrDefault(game => game.Name == gamingGroup.Name);
-            if (gamingGroupToDelete != null)
-            {
-                dataContext.Delete(gamingGroupToDelete, currentUser);
-                dataContext.CommitAllChanges();
-            }
         }
     }
 }

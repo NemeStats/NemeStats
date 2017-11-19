@@ -210,6 +210,9 @@ Views.GamingGroup.GamingGroupView.prototype = {
                         new List(playersTableId, { valueNames: playersValues });
                     }
 
+                    var layout = new Views.Shared.Layout();
+                    layout.initializePopoversAndTooltips(parent);
+
                     parent._playersTabLoaded = true;
                 }
             });
@@ -250,6 +253,9 @@ Views.GamingGroup.GamingGroupView.prototype = {
                         new List(gameDefinitionTableId, { valueNames: gamedefinitionsValues });
                     }
 
+                    var layout = new Views.Shared.Layout();
+                    layout.initializePopoversAndTooltips(parent);
+
                     parent._gamesTabLoaded = true;
                 }
             });
@@ -280,6 +286,9 @@ Views.GamingGroup.GamingGroupView.prototype = {
                     var gameDefinitions = new window.Views.GameDefinition.GameDefinitions();
                     gameDefinitions.init();
                     gameDefinition.onDefinitionCreated = $.proxy(gameDefinitions.onGameCreated, gameDefinitions);
+
+                    var layout = new Views.Shared.Layout();
+                    layout.initializePopoversAndTooltips(parent);
 
                     parent._playedGamesTabLoaded = true;
                 }
@@ -369,6 +378,9 @@ Views.GamingGroup.GamingGroupView.prototype = {
 
                         nv.utils.windowResize(function () { chart.update() });
                     });
+
+                    var layout = new Views.Shared.Layout();
+                    layout.initializePopoversAndTooltips(parent);
 
                     parent._statsTabLoaded = true;
                 }
