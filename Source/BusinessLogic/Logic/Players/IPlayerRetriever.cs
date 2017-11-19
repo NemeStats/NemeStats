@@ -30,5 +30,6 @@ namespace BusinessLogic.Logic.Players
         PlayerStatistics GetPlayerStatistics(int playerId);
         Player GetPlayerForCurrentUser(string applicationUserId, int gamingGroupId);
         PlayersToCreateModel GetPlayersToCreate(string currentUserId, int currentGamingGroupId);
+        PlayersToCreateModel GetPlayersForEditingPlayedGame(int playedGameId);
     }
 }

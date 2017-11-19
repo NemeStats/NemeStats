@@ -482,6 +482,7 @@
     <Compile Include="Models\Games\TrendingGame.cs" />
     <Compile Include="Logic\Points\IWeightTierCalculator.cs" />
     <Compile Include="Models\PlayedGames\ApplicationLinkage.cs" />
+    <Compile Include="Models\PlayedGames\EditPlayedGameInfo.cs" />
     <Compile Include="Models\PlayedGames\RecentlyPlayedGamesFilter.cs" />
     <Compile Include="Models\PlayerAchievement.cs" />
     <Compile Include="Models\Games\TrendingGamesRequest.cs" />

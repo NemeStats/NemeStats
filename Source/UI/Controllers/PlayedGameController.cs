@@ -109,11 +109,17 @@ namespace UI.Controllers
         [System.Web.Mvc.HttpGet]
         public virtual ActionResult Create(ApplicationUser currentUser)
         {
-            var viewModel = FillCreatePlayedGameViewModel(currentUser, new CreatePlayedGameViewModel());
+            var viewModel = MakeBaseCreatePlayedGameViewModel<CreatePlayedGameViewModel>(currentUser);
+
+            var players = _playerRetriever.GetPlayersToCreate(currentUser.Id, currentUser.CurrentGamingGroupId);
+            viewModel.UserPlayer = players.UserPlayer;
+            viewModel.OtherPlayers = players.OtherPlayers;
+            viewModel.RecentPlayers = players.RecentPlayers;
+
             return View(MVC.PlayedGame.Views.CreateOrEdit, viewModel);
         }
 
-        private CreatePlayedGameViewModel FillCreatePlayedGameViewModel(ApplicationUser currentUser, CreatePlayedGameViewModel viewModel)
+        public virtual T MakeBaseCreatePlayedGameViewModel<T>(ApplicationUser currentUser) where T : CreatePlayedGameViewModel, new()
         {
             var mostPlayedGames =
                 _gameDefinitionRetriever.GetMostPlayedGames(new GetMostPlayedGamesQuery
@@ -130,6 +136,37 @@ namespace UI.Controllers
                     PageSize = 5
                 });
 
+            var recentPlayedGamesViewModels = _mapperFactory.GetMapper<GameDefinitionDisplayInfo, GameDefinitionDisplayInfoViewModel>()
+                .Map(recentPlayedGames)
+                .ToList();
+            var mostPlayedGamesViewModels = _mapperFactory.GetMapper<GameDefinitionDisplayInfo, GameDefinitionDisplayInfoViewModel>()
+                .Map(mostPlayedGames)
+                .ToList();
+            return new T
+            {
+                RecentPlayedGames = recentPlayedGamesViewModels,
+                MostPlayedGames = mostPlayedGamesViewModels
+            };
+        }
+
+        internal virtual CreatePlayedGameViewModel FillCreatePlayedGameViewModel(ApplicationUser currentUser, CreatePlayedGameViewModel viewModel, bool forEdit = false)
+        {
+            var mostPlayedGames =
+                _gameDefinitionRetriever.GetMostPlayedGames(new GetMostPlayedGamesQuery
+                {
+                    GamingGroupId = currentUser.CurrentGamingGroupId,
+                    Page = 1,
+                    PageSize = 5
+                });
+            var recentPlayedGames =
+                _gameDefinitionRetriever.GetRecentGames(new GetRecentPlayedGamesQuery
+                {
+                    GamingGroupId = currentUser.CurrentGamingGroupId,
+                    Page = 1,
+                    PageSize = 5
+                });
+
+//XXXX should we pass a parameter or just make a new method to pull back players differently when in edit mode?
             var players = _playerRetriever.GetPlayersToCreate(currentUser.Id, currentUser.CurrentGamingGroupId);
 
             viewModel.UserPlayer = players.UserPlayer;
@@ -209,24 +246,25 @@ namespace UI.Controllers
         [HttpGet]
         public virtual ActionResult Edit(int id, ApplicationUser currentUser)
         {
-            var viewModel = new EditPlayedGameViewModel();
-            viewModel = (EditPlayedGameViewModel)FillCreatePlayedGameViewModel(currentUser, viewModel);
+            var viewModel = MakeBaseCreatePlayedGameViewModel<EditPlayedGameViewModel>(currentUser);
+
             viewModel.EditMode = true;
             viewModel.PlayedGameId = id;
 
-            FillCreatePlayedGameViewModel(currentUser, viewModel);
+            var playedGameInfo = _playedGameRetriever.GetInfoForEditingPlayedGame(id, currentUser);
 
-            var playedGame = _playedGameRetriever.GetPlayedGameDetails(id);
-            viewModel.DatePlayed = playedGame.DatePlayed;
-            viewModel.Notes = playedGame.Notes;
-            viewModel.GameDefinitionId = playedGame.GameDefinitionId;
+            viewModel.OtherPlayers = playedGameInfo.OtherPlayers;
+            viewModel.RecentPlayers = playedGameInfo.RecentPlayers;
+            viewModel.UserPlayer = playedGameInfo.UserPlayer;
 
-            var gameDefinition = _gameDefinitionRetriever.GetGameDefinitionDisplayInfo(playedGame.GameDefinitionId);
-            viewModel.BoardGameGeekGameDefinitionId = gameDefinition.BoardGameGeekGameDefinitionId;
-            viewModel.GameDefinitionName = gameDefinition.Name;
+            viewModel.DatePlayed = playedGameInfo.DatePlayed;
+            viewModel.Notes = playedGameInfo.Notes;
+            viewModel.GameDefinitionId = playedGameInfo.GameDefinitionId;
+            viewModel.GameDefinitionName = playedGameInfo.GameDefinitionName;
+            viewModel.BoardGameGeekGameDefinitionId = playedGameInfo.BoardGameGeekGameDefinitionId;
 
-            viewModel.PlayerRanks = playedGame.PlayerGameResults.Select(item => new CreatePlayerRankRequest { GameRank = item.GameRank, PlayerId = item.PlayerId, PlayerName = item.Player.Name, PointsScored = item.PointsScored }).ToList();
-
+            viewModel.PlayerRanks = playedGameInfo.PlayerRanks;
+            
             return View(MVC.PlayedGame.Views.CreateOrEdit, viewModel);
         }
 

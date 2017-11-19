@@ -27,6 +27,7 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using BusinessLogic.Logic.BoardGameGeek;
+using BusinessLogic.Models.User;
 using BusinessLogic.Models.Utility;
 
 namespace BusinessLogic.Logic.PlayedGames
@@ -277,6 +278,11 @@ namespace BusinessLogic.Logic.PlayedGames
                     ThumbnailImageUrl = playedgame.GameDefinition.BoardGameGeekGameDefinition.Thumbnail,
                 }).ToList();
 
+        }
+
+        public EditPlayedGameInfo GetInfoForEditingPlayedGame(int playedGameId, ApplicationUser currentUser)
+        {
+            throw new NotImplementedException();
         }
     }
 }

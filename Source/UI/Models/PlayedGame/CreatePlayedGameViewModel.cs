@@ -31,7 +31,7 @@ namespace UI.Models.PlayedGame
 
         [PlayerRankValidation]
         [Required]
-        public List<CreatePlayerRankRequest> PlayerRanks { get; set; }
+        public List<PlayerRankWithName> PlayerRanks { get; set; }
 
         [Required]
         [DataType(DataType.Date)]

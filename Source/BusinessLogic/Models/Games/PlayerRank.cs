@@ -16,7 +16,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace BusinessLogic.Models.Games
 {
@@ -27,6 +26,11 @@ namespace BusinessLogic.Models.Games
         [Required]
         public int GameRank { get; set; }
         public decimal? PointsScored { get; set; }
+    }
+
+    public class PlayerRankWithName : PlayerRank
+    {
+        public string PlayerName { get; set; }
     }
 
     public interface IPlayerRank

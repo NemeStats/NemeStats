@@ -179,6 +179,13 @@ namespace UI.Transformations
                     opt => opt.MapFrom(y => BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(y.BoardGameGeekGameDefinitionId)));
 
             Mapper.CreateMap<GamingGroupStats, GamingGroupStatsViewModel>();
+
+            Mapper.CreateMap<EditPlayedGameInfo, EditPlayedGameViewModel>()
+                .ForMember(m => m.EditMode, opt => opt.Ignore())
+                .ForMember(m => m.PlayedGameId, opt => opt.Ignore())
+                .ForMember(m => m.MostActivePlayers, opt => opt.Ignore())
+                .ForMember(m => m.RecentPlayedGames, opt => opt.Ignore())
+                .ForMember(m => m.MostPlayedGames, opt => opt.Ignore());
         }
     }
 }

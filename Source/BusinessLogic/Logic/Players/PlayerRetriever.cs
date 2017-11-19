@@ -471,5 +471,10 @@ namespace BusinessLogic.Logic.Players
 
             return result;
         }
+
+        public PlayersToCreateModel GetPlayersForEditingPlayedGame(int playedGameId)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
