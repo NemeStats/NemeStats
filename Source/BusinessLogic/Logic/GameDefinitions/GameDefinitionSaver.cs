@@ -18,13 +18,8 @@
 
 using BusinessLogic.DataAccess;
 using BusinessLogic.EventTracking;
-using BusinessLogic.Exceptions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using BusinessLogic.Models.Games;
 using BusinessLogic.Logic.BoardGameGeek;
 
 namespace BusinessLogic.Logic.GameDefinitions
@@ -51,7 +46,7 @@ namespace BusinessLogic.Logic.GameDefinitions
             if (boardGameGeekGameDefinitionId.HasValue)
             {
                 newBoardGameGeekGameDefinition = _boardGameGeekGameDefinitionCreator.CreateBoardGameGeekGameDefinition(
-                    boardGameGeekGameDefinitionId.Value, currentUser);
+                    boardGameGeekGameDefinitionId.Value);
             }
 
             return newBoardGameGeekGameDefinition;

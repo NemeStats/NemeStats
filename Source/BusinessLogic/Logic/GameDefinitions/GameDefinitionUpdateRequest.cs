@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace BusinessLogic.Logic.GameDefinitions
+﻿namespace BusinessLogic.Logic.GameDefinitions
 {
     public class GameDefinitionUpdateRequest
     {

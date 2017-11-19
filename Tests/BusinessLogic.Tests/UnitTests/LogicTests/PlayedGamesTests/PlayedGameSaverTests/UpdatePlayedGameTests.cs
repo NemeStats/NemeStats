@@ -24,7 +24,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
     {
         private PlayedGame _existingPlayedGame;
         private int _existingPlayedGameId = 1;
-        private int _existingGamingGroupId;
         private int _existingGameDefinitionId = 2;
         private int _existingBoardGameGeekGameDefinitionId = 3;
         private int _existingPlayerGameResultId1 = 10;
@@ -37,12 +36,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
 
         private void SetupExpectationsForExistingPlayedGame()
         {
-            _existingGamingGroupId = CurrentUser.CurrentGamingGroupId;
-
             _existingPlayedGame = new PlayedGame
             {
                 Id = 1,
-                GamingGroupId = _existingGamingGroupId,
+                GamingGroupId = GAMING_GROUP_ID,
                 GameDefinitionId = _existingGameDefinitionId,
                 GameDefinition = new GameDefinition
                 {
@@ -227,7 +224,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
 
             //--assert
             AutoMocker.ClassUnderTest.AssertWasCalled(partialMock 
-                => partialMock.ValidateAccessToPlayers(updatedGame.PlayerRanks, _existingGamingGroupId, CurrentUser, AutoMocker.Get<IDataContext>()));
+                => partialMock.ValidateAccessToPlayers(updatedGame.PlayerRanks, GAMING_GROUP_ID, CurrentUser, AutoMocker.Get<IDataContext>()));
         }
 
         [Test]
@@ -321,7 +318,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
 
             AutoMocker.ClassUnderTest.AssertWasCalled(
                 partialMock =>
-                    partialMock.TransformNewlyCompletedGameIntoPlayedGame(updatedGame, _existingGamingGroupId,
+                    partialMock.TransformNewlyCompletedGameIntoPlayedGame(updatedGame, GAMING_GROUP_ID,
                         CurrentUser.Id, _expectedNewPlayerGameResults));
 
             var arguments =

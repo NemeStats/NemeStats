@@ -20,15 +20,17 @@ using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using System.Web.Mvc;
+using System.Web.Routing;
+using UI.Controllers;
 
 namespace UI.Attributes.Filters
 {
     public class UserContextAttribute : ActionFilterAttribute
     {
-        internal const string USER_CONTEXT_KEY = "currentUser";
+        internal const string UserContextKey = "currentUser";
 
-        private ApplicationUserManager userManager;
-        private ClientIdCalculator clientIdCalculator;
+        private ApplicationUserManager _userManager;
+        private ClientIdCalculator _clientIdCalculator;
 
         /// <summary>
         /// Indicates whether the action will send a redirect to the login page if the user isn't authenticated
@@ -37,18 +39,18 @@ namespace UI.Attributes.Filters
 
         public UserContextAttribute()
         {
-            this.RequiresGamingGroup = true;
+            RequiresGamingGroup = true;
         }
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             //TODO this doesn't appear to honor the HttpContextScoped structureMap directive... so it is getting a new
             // instance each time
-            this.userManager = DependencyResolver.Current.GetService<ApplicationUserManager>();
+            _userManager = DependencyResolver.Current.GetService<ApplicationUserManager>();
             //TODO if there is only one implementation is this OK?
-            this.clientIdCalculator = new ClientIdCalculator();
+            _clientIdCalculator = new ClientIdCalculator();
 
-            this.OnActionExecuting(filterContext, this.userManager, clientIdCalculator);
+            OnActionExecuting(filterContext, _userManager, _clientIdCalculator);
 
             base.OnActionExecuting(filterContext);
         }
@@ -58,18 +60,27 @@ namespace UI.Attributes.Filters
             ApplicationUserManager userManager,
             ClientIdCalculator clientIdCalculator)
         {
-            if (filterContext.ActionParameters.ContainsKey(USER_CONTEXT_KEY))
+            if (filterContext.ActionParameters.ContainsKey(UserContextKey))
             {
                 ApplicationUser applicationUser;
 
                 if (filterContext.HttpContext.User.Identity.IsAuthenticated)
                 {
-                    string userId = filterContext.HttpContext.User.Identity.GetUserId();
+                    var userId = filterContext.HttpContext.User.Identity.GetUserId();
                     applicationUser = userManager.FindByIdAsync(userId).Result;
-                }else
+                    if (RequiresGamingGroup 
+                        && !applicationUser.CurrentGamingGroupId.HasValue
+                        && !filterContext.IsChildAction)
+                    {
+                        var url = CreateManageAccountUrl(filterContext.RequestContext);
+
+                        filterContext.Result = new RedirectResult(url);
+                    }
+                }
+                else
                 {
                     applicationUser = new AnonymousApplicationUser();
-                    if (this.RequiresGamingGroup)
+                    if (RequiresGamingGroup)
                     {
                         filterContext.Result = new RedirectToRouteResult(MVC.Account.Login().GetRouteValueDictionary());
                     }
@@ -77,10 +88,26 @@ namespace UI.Attributes.Filters
 
                 applicationUser.AnonymousClientId = clientIdCalculator.GetClientId(filterContext.HttpContext.Request, applicationUser);
 
-                filterContext.ActionParameters[USER_CONTEXT_KEY] = applicationUser;
+                filterContext.ActionParameters[UserContextKey] = applicationUser;
             }
 
             base.OnActionExecuting(filterContext);
+        }
+
+        internal virtual string CreateManageAccountUrl(RequestContext requestContext)
+        {
+            var url = UrlHelper.GenerateUrl(
+                routeName: null,
+                actionName: MVC.Account.ActionNames.Manage,
+                controllerName: MVC.Account.Name,
+                protocol: null,
+                hostName: null,
+                fragment: AccountController.GAMING_GROUPS_TAB_HASH_SUFFIX,
+                routeValues: new RouteValueDictionary(new {message = AccountController.ManageMessageId.NoGamingGroup}),
+                routeCollection: RouteTable.Routes,
+                requestContext: requestContext,
+                includeImplicitMvcValues: false);
+            return url;
         }
     }
 }

@@ -17,38 +17,106 @@
         @Html.HiddenFor(model => model.GamingGroupId)
         <div class="panel-body">
             <div class="row form-group">
-                <div class="col-xs-2">
+                <div class="col-md-3">
                     @Html.LabelFor(model => model.GamingGroupName)
                 </div>
 
-                <div class="col-xs-6">
-                    @Html.TextBoxFor(model => model.GamingGroupName, new { @class = "form-control" })
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.GamingGroupName, new {@class = "form-control"})
                     @Html.ValidationMessageFor(model => model.GamingGroupName)
                 </div>
             </div>
             <div class="row form-group">
-                <div class="col-xs-2">
+                <div class="col-md-3">
                     @Html.LabelFor(model => model.PublicDescription)
                 </div>
 
-                <div class="col-xs-6">
-                    @Html.TextAreaFor(x => x.PublicDescription, new { @class = "form-control", @rows = "8" })
+                <div class="col-md-9">
+                    @Html.TextAreaFor(x => x.PublicDescription, new {@class = "form-control", @rows = "8", placeholder = "This description will show on the public details page for this Gaming Group..."})
                 </div>
             </div>
 
             <div class="row form-group">
-                <div class="col-xs-2">
+                <div class="col-md-3">
                     @Html.LabelFor(x => x.Website)
                 </div>
 
-                <div class="col-xs-6">
-                    @Html.TextBoxFor(x => x.Website, new { @class = "form-control" })
+                <div class="col-md-9">
+                    @Html.TextBoxFor(x => x.Website, new {@class = "form-control"})
                     @Html.ValidationMessageFor(model => model.Website)
                 </div>
             </div>
+
+            <div class="row form-group">
+                <div class="col-md-3">
+                    @Html.LabelFor(x => x.Active)
+                    <i class="fa fa-question-circle-o" data-toggle="popover" data-placement="right"
+                       data-content="This will prevent the Gaming Group from showing up in normal views. You can re-activate it in the future if need be."></i>
+                </div>
+
+                <div class="col-md-9">
+                    @Html.CheckBoxFor(x => x.Active)
+                </div>
+            </div>
+
             <div>
                 <button class="btn btn-primary" type="submit">Update</button>
             </div>
+        </div>
+    }
+
+</div>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4 class="fl-left">
+            Users in Group
+        </h4>
+        <div class="fl-clear"></div>
+    </div>
+    @if (Model.OtherUsers.Count > 0)
+    {
+        <div class="flip-scroll">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th class="name-head">
+                        Username
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Player Name
+                    </th>
+                    <th>
+                        Player Active
+                        <i class="fa fa-question-circle-o" data-toggle="popover" data-placement="left"
+                           data-content="Indicates whether the Player is active. If the User is listed here then they still have access to manage the Gaming Group -- regardless of whether their Player is active."></i>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var user in Model.OtherUsers)
+                {
+                    <tr>
+                        <td>
+                            @user.UserName
+                        </td>
+                        <td>
+                            @user.Email
+                        </td>
+                        <td>
+                            @user.PlayerName
+                        </td>
+                        <td>
+                            @Html.CheckBoxFor(x => user.Active, new { disabled = "disabled"})
+ 
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
         </div>
     }
 </div>

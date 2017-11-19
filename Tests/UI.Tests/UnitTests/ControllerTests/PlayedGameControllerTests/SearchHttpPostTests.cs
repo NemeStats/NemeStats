@@ -43,7 +43,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                     Id = GAME_DEFINITION_A_ID
                 }
             };
-            AutoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitionNames(this.CurrentUser.CurrentGamingGroupId)).Return(gameDefinitionNames);
+            AutoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitionNames(this.CurrentUser.CurrentGamingGroupId.Value)).Return(gameDefinitionNames);
 
             AutoMocker.ClassUnderTest.Expect(mock => mock.AddPlayersToViewModel(Arg<int>.Is.Anything, Arg<SearchViewModel>.Is.Anything, Arg<int?>.Is.Anything));
         }

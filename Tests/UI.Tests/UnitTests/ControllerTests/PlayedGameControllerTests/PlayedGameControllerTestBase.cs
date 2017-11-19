@@ -24,11 +24,9 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using PagedList;
 using StructureMap.AutoMocking;
 using UI.Controllers;
 using UI.Mappers.Interfaces;
-using UI.Models.GameDefinitionModels;
 using UI.Models.PlayedGame;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
@@ -38,6 +36,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 	    protected RhinoAutoMocker<PlayedGameController> AutoMocker; 
 		protected string TestUserName = "the test user name";
 		protected ApplicationUser CurrentUser;
+	    protected const int EXPECTED_GAMING_GROUP_ID = 1;
 		protected List<GameDefinitionSummary> GameDefinitionSummaries;
 		protected List<PublicGameSummary> ExpectedViewModel;
 		protected PlayedGameEditViewModel ExpectedPopulatedCompletedGameViewModel;
@@ -54,10 +53,10 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 
             CurrentUser = new ApplicationUser()
 			{
-				CurrentGamingGroupId = 1
-			};
+				CurrentGamingGroupId = EXPECTED_GAMING_GROUP_ID
+            };
 			GameDefinitionSummaries = new List<GameDefinitionSummary>();
-            AutoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitions(CurrentUser.CurrentGamingGroupId))
+            AutoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitions(EXPECTED_GAMING_GROUP_ID))
 				.Repeat.Once()
 				.Return(GameDefinitionSummaries);
 

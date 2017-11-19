@@ -40,10 +40,12 @@ namespace BusinessLogic.DataAccess.Security
         {
             var entity = _dataContext.FindById<TEntity>(primaryKeyValue);
 
-            return ValidateAccess(entity, currentUser);
+            ValidateAccess(entity, currentUser);
+
+            return entity;
         }
 
-        public virtual TEntity ValidateAccess<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : class, IEntityWithTechnicalKey
+        public virtual void ValidateAccess<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : class, IEntityWithTechnicalKey
         {
             ValidateArguments(currentUser);
 
@@ -51,7 +53,7 @@ namespace BusinessLogic.DataAccess.Security
 
             if (securedEntity == null)
             {
-                return entity;
+                return;
             }
 
             if (securedEntity.GamingGroupId != default(int) && securedEntity.GamingGroupId != currentUser.CurrentGamingGroupId)
@@ -67,7 +69,6 @@ namespace BusinessLogic.DataAccess.Security
                     throw new UnauthorizedEntityAccessException(currentUser.Id, typeof(TEntity), entity.GetIdAsObject());
                 }
             }
-            return entity;
         }
 
         private static void ValidateArguments(ApplicationUser currentUser)

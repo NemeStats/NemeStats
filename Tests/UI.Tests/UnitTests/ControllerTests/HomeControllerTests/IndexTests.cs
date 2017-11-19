@@ -18,28 +18,72 @@
 
 using NUnit.Framework;
 using System.Web.Mvc;
+using BusinessLogic.Models.User;
 using Shouldly;
+using UI.Models.Home;
 
 namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
 {
     [TestFixture]
     public class IndexTests : HomeControllerTestBase
     {
-        private ViewResult _viewResult;
-
-        [SetUp]
-        public override void SetUp()
+        [Test]
+        public void It_Returns_An_Index_View_With_Show_Quick_Stats_Set_To_False_For_Anonymous_Users()
         {
-            base.SetUp();
+            var viewResult = _autoMocker.ClassUnderTest.Index(new AnonymousApplicationUser()) as ViewResult;
 
-
-            _viewResult = _autoMocker.ClassUnderTest.Index() as ViewResult;
+            viewResult.ViewName.ShouldBe(MVC.Home.Views.Index);
+            var model = viewResult.Model as HomeIndexViewModel;
+            model.ShouldNotBeNull();
+            model.ShowQuickStats.ShouldBe(false);
         }
 
         [Test]
-        public void ItReturnsAnIndexView()
+        public void It_Shows_The_Player_Quick_Stats_If_The_User_Has_A_Current_Gaming_Group()
         {
-            _viewResult.ViewName.ShouldBe(MVC.Home.Views.Index);
+            var user = new ApplicationUser
+            {
+                CurrentGamingGroupId = 1
+            };
+            var viewResult = _autoMocker.ClassUnderTest.Index(user) as ViewResult;
+
+            var model = viewResult.Model as HomeIndexViewModel;
+            model.ShowQuickStats.ShouldBe(true);
+        }
+
+        [Test]
+        public void It_Doesnt_Show_The_Player_Quick_Stats_If_The_User_Doesnt_Have_A_Current_Gaming_Group()
+        {
+            var user = new ApplicationUser
+            {
+                CurrentGamingGroupId = null
+            };
+            var viewResult = _autoMocker.ClassUnderTest.Index(user) as ViewResult;
+
+            var model = viewResult.Model as HomeIndexViewModel;
+            model.ShowQuickStats.ShouldBe(false);
+        }
+
+        [Test]
+        public void It_Shows_The_Login_Widget_If_The_User_Is_Unauthenticated()
+        {
+            var user = new AnonymousApplicationUser();
+
+            var viewResult = _autoMocker.ClassUnderTest.Index(user) as ViewResult;
+
+            var model = viewResult.Model as HomeIndexViewModel;
+            model.ShowLoginPartial.ShouldBe(true);
+        }
+
+        [Test]
+        public void It_Doesnt_Show_The_Login_Widget_If_The_User_Is_Authenticated()
+        {
+            var user = new ApplicationUser();
+
+            var viewResult = _autoMocker.ClassUnderTest.Index(user) as ViewResult;
+
+            var model = viewResult.Model as HomeIndexViewModel;
+            model.ShowLoginPartial.ShouldBe(false);
         }
     }
 }

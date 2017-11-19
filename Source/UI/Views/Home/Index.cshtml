@@ -15,7 +15,13 @@
                 <div class="text">Board game tracking made fun!</div>
             </div>
             <div class="col-md-5 col-md-offset-0 col-xs-10 col-xs-offset-1">
-                @if (!Request.IsAuthenticated)
+                @if (Model.ShowQuickStats)
+                {
+                    <div>
+                        @{ Html.RenderAction(MVC.Player.CurrentPlayerQuickStats()); }
+                    </div>
+                }
+                else if(Model.ShowLoginPartial)
                 {
                     <div class="panel panel-default">
                         <div class="panel-body social-login">
@@ -31,14 +37,8 @@
                             @{ Html.RenderAction(MVC.Account.LoginForm()); }
                         </div>
                     </div>
-                                }
-                                else
-                                {
-                                    <div>
-                                        @{ Html.RenderAction(MVC.Player.CurrentPlayerQuickStats()); }
-                                    </div>
 
-                                            }
+                }
             </div>
         </div>
     </div>
@@ -131,7 +131,7 @@
                 },
                 {
                     widgetDivId: "topGamingGroupsWidget",
-                    widgetServiceEndpoint: "/Home/TopGamingGroups"
+                    widgetServiceEndpoint: "/GamingGroup/GetTopGamingGroupsPartial"
                 }
             ]
         };

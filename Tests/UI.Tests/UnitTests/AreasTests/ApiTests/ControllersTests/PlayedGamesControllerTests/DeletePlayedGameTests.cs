@@ -15,7 +15,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
         {
             const int PLAYED_GAME_ID = 1;
 
-            _autoMocker.ClassUnderTest.DeletePlayedGame(PLAYED_GAME_ID, this._applicationUser.CurrentGamingGroupId);
+            _autoMocker.ClassUnderTest.DeletePlayedGame(PLAYED_GAME_ID, 0);
 
             _autoMocker.Get<IPlayedGameDeleter>().AssertWasCalled(mock => mock.DeletePlayedGame(Arg<int>.Is.Equal(PLAYED_GAME_ID), Arg<ApplicationUser>.Is.Same(this._applicationUser)));
         }

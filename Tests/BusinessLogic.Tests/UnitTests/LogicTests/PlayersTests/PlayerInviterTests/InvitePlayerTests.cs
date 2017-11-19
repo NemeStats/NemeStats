@@ -21,6 +21,7 @@ using System.Configuration.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
@@ -28,122 +29,133 @@ using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Shouldly;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerInviterTests
 {
     [TestFixture]
     public class InvitePlayerTests
     {
-        private PlayerInviter playerInviter;
-        private IDataContext dataContextMock;
-        private IIdentityMessageService emailServiceMock;
-        private IConfigurationManager configurationManagerMock;
-        private PlayerInvitation playerInvitation;
-        private ApplicationUser currentUser;
-        private Player player;
-        private GamingGroup gamingGroup;
-        private GamingGroupInvitation gamingGroupInvitation;
-        private string rootUrl = "http://nemestats.com";
-        private string existingUserId = "existing user id";
+        private PlayerInviter _playerInviter;
+        private IDataContext _dataContextMock;
+        private IIdentityMessageService _emailServiceMock;
+        private IConfigurationManager _configurationManagerMock;
+        private PlayerInvitation _playerInvitation;
+        private ApplicationUser _currentUser;
+        private int _expectedGamingGroupId = 15;
+        private GamingGroup _gamingGroup;
+        private GamingGroupInvitation _gamingGroupInvitation;
+        private string _rootUrl = "http://nemestats.com";
+        private string _existingUserId = "existing user id";
 
         [SetUp]
         public void SetUp()
         {
-            dataContextMock = MockRepository.GenerateMock<IDataContext>();
-            emailServiceMock = MockRepository.GenerateMock<IIdentityMessageService>();
-            configurationManagerMock = MockRepository.GenerateMock<IConfigurationManager>();
-            playerInvitation = new PlayerInvitation
+            _dataContextMock = MockRepository.GenerateMock<IDataContext>();
+            _emailServiceMock = MockRepository.GenerateMock<IIdentityMessageService>();
+            _configurationManagerMock = MockRepository.GenerateMock<IConfigurationManager>();
+            _playerInvitation = new PlayerInvitation
             {
                 CustomEmailMessage = "custom message",
                 EmailSubject = "email subject",
                 InvitedPlayerEmail = "player email",
                 InvitedPlayerId = 1
             };
-            currentUser = new ApplicationUser
+            _currentUser = new ApplicationUser
             {
-                CurrentGamingGroupId = 15,
+                CurrentGamingGroupId = _expectedGamingGroupId,
                 UserName = "Fergie Ferg"
             };
-            player = new Player
+            _gamingGroup = new GamingGroup
             {
-                Id = playerInvitation.InvitedPlayerId,
-                GamingGroupId = 135
-            };
-            gamingGroup = new GamingGroup
-            {
-                Id = currentUser.CurrentGamingGroupId,
+                Id = _expectedGamingGroupId,
                 Name = "jake's Gaming Group"
             };
-            gamingGroupInvitation = new GamingGroupInvitation
+            _gamingGroupInvitation = new GamingGroupInvitation
             {
                 Id = Guid.NewGuid()
             };
 
-            dataContextMock.Expect(mock => mock.FindById<GamingGroup>(currentUser.CurrentGamingGroupId))
-                           .Return(gamingGroup);
+            _dataContextMock.Expect(mock => mock.FindById<GamingGroup>(_currentUser.CurrentGamingGroupId))
+                           .Return(_gamingGroup);
 
             List<ApplicationUser> applicationUsers = new List<ApplicationUser>
             {
                 new ApplicationUser
                 {
-                    Email = playerInvitation.InvitedPlayerEmail,
-                    Id = existingUserId
+                    Email = _playerInvitation.InvitedPlayerEmail,
+                    Id = _existingUserId
                 }
             };
-            dataContextMock.Expect(mock => mock.GetQueryable<ApplicationUser>())
+            _dataContextMock.Expect(mock => mock.GetQueryable<ApplicationUser>())
                            .Return(applicationUsers.AsQueryable());
 
-            dataContextMock.Expect(mock => mock.Save<GamingGroupInvitation>(Arg<GamingGroupInvitation>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
-                           .Return(gamingGroupInvitation);
+            _dataContextMock.Expect(mock => mock.Save<GamingGroupInvitation>(Arg<GamingGroupInvitation>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+                           .Return(_gamingGroupInvitation);
 
-            configurationManagerMock.Expect(mock => mock.AppSettings[PlayerInviter.APP_SETTING_URL_ROOT])
-                                    .Return(rootUrl);
+            _configurationManagerMock.Expect(mock => mock.AppSettings[PlayerInviter.APP_SETTING_URL_ROOT])
+                                    .Return(_rootUrl);
 
-            emailServiceMock.Expect(mock => mock.SendAsync(Arg<IdentityMessage>.Is.Anything))
+            _emailServiceMock.Expect(mock => mock.SendAsync(Arg<IdentityMessage>.Is.Anything))
                             .Return(Task.FromResult<object>(null));
 
-            playerInviter = new PlayerInviter(dataContextMock, emailServiceMock, configurationManagerMock);
+            _playerInviter = new PlayerInviter(_dataContextMock, _emailServiceMock, _configurationManagerMock);
         }
 
         [Test]
-        public void ItSavesAGamingGroupInvitation()
+        public void It_Throws_A_UserHasNoGamingGroupException_If_The_Inviting_User_Has_No_Gaming_Group()
         {
-            playerInviter.InvitePlayer(playerInvitation, currentUser);
+            //--arrange
+            _currentUser.CurrentGamingGroupId = null;
+            var expectedException = new UserHasNoGamingGroupException(_currentUser.Id);
 
-            dataContextMock.AssertWasCalled(mock => mock.Save<GamingGroupInvitation>(Arg<GamingGroupInvitation>.Matches(
-                invite => invite.PlayerId == playerInvitation.InvitedPlayerId
+            //--act
+            var actualException = Assert.Throws<UserHasNoGamingGroupException>(() => _playerInviter.InvitePlayer(_playerInvitation, _currentUser));
+
+            //--assert
+            actualException.Message.ShouldBe(expectedException.Message);
+        }
+
+
+        [Test]
+        public void It_Saves_A_Gaming_Group_Invitation()
+        {
+            _playerInviter.InvitePlayer(_playerInvitation, _currentUser);
+
+            _dataContextMock.AssertWasCalled(mock => mock.Save<GamingGroupInvitation>(Arg<GamingGroupInvitation>.Matches(
+                invite => invite.PlayerId == _playerInvitation.InvitedPlayerId
                 && invite.DateSent.Date == DateTime.UtcNow.Date
-                && invite.GamingGroupId == currentUser.CurrentGamingGroupId
-                && invite.InviteeEmail == playerInvitation.InvitedPlayerEmail
-                && invite.InvitingUserId == currentUser.Id),
-                Arg<ApplicationUser>.Is.Same(currentUser)));
+                && invite.GamingGroupId == _currentUser.CurrentGamingGroupId
+                && invite.InviteeEmail == _playerInvitation.InvitedPlayerEmail
+                && invite.InvitingUserId == _currentUser.Id),
+                Arg<ApplicationUser>.Is.Same(_currentUser)));
         }
 
         [Test]
-        public void ItSetsTheRegisteredUserIdOnTheGamingGroupInvitationIfTheUserAlreadyHasAnExistingAccount()
+        public void It_Sets_The_Registered_User_Id_On_The_Gaming_Group_Invitation_If_The_User_Already_Has_An_Existing_Account()
         {
-            playerInviter.InvitePlayer(playerInvitation, currentUser);
+            _playerInviter.InvitePlayer(_playerInvitation, _currentUser);
 
-            dataContextMock.AssertWasCalled(mock => mock.Save<GamingGroupInvitation>(Arg<GamingGroupInvitation>.Matches(
-                invite => invite.RegisteredUserId == existingUserId),
+            _dataContextMock.AssertWasCalled(mock => mock.Save<GamingGroupInvitation>(Arg<GamingGroupInvitation>.Matches(
+                invite => invite.RegisteredUserId == _existingUserId),
                 Arg<ApplicationUser>.Is.Anything));
         }
 
         [Test]
-        public void ItEmailsTheUser()
+        public void It_Emails_The_User()
         {
             string expectedBody = string.Format(PlayerInviter.EMAIL_MESSAGE_INVITE_PLAYER,
-                                                currentUser.UserName,
-                                                gamingGroup.Name,
-                                                rootUrl,
-                                                playerInvitation.CustomEmailMessage,
-                                                gamingGroupInvitation.Id,
+                                                _currentUser.UserName,
+                                                _gamingGroup.Name,
+                                                _rootUrl,
+                                                _playerInvitation.CustomEmailMessage,
+                                                _gamingGroupInvitation.Id,
                                                 "<br/><br/>");
 
-            playerInviter.InvitePlayer(playerInvitation, currentUser);
+            _playerInviter.InvitePlayer(_playerInvitation, _currentUser);
 
-            emailServiceMock.AssertWasCalled(mock => mock.SendAsync(Arg<IdentityMessage>.Matches(
-                message => message.Subject == playerInvitation.EmailSubject
+            _emailServiceMock.AssertWasCalled(mock => mock.SendAsync(Arg<IdentityMessage>.Matches(
+                message => message.Subject == _playerInvitation.EmailSubject
                 && message.Body == expectedBody)));
         }
     }

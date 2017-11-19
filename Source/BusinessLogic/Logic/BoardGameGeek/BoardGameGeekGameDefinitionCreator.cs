@@ -19,7 +19,7 @@ namespace BusinessLogic.Logic.BoardGameGeek
             _boardGameGeekApiClient = boardGameGeekApiClient;
         }
 
-        public BoardGameGeekGameDefinition CreateBoardGameGeekGameDefinition(int boardGameGeekGameDefinitionId, ApplicationUser currentUser)
+        public BoardGameGeekGameDefinition CreateBoardGameGeekGameDefinition(int boardGameGeekGameDefinitionId)
         {
             try
             {
@@ -58,10 +58,9 @@ namespace BusinessLogic.Logic.BoardGameGeek
                 Rank = gameDetails.Rank
             };
 
-            _dataContext.Save(newRecord, currentUser);
+            _dataContext.AdminSave(newRecord);
 
             // Save categories to BGG definition
-
             foreach (var category in gameDetails.Categories)
             {
                 var existentCategory = _dataContext.GetQueryable<BoardGameGeekGameCategory>().FirstOrDefault(c => c.BoardGameGeekGameCategoryId == category.Id);

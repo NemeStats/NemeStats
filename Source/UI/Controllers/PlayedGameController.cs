@@ -154,14 +154,14 @@ namespace UI.Controllers
             var mostPlayedGames =
                 _gameDefinitionRetriever.GetMostPlayedGames(new GetMostPlayedGamesQuery
                 {
-                    GamingGroupId = currentUser.CurrentGamingGroupId,
+                    GamingGroupId = currentUser.CurrentGamingGroupId.Value,
                     Page = 1,
                     PageSize = 5
                 });
             var recentPlayedGames =
                 _gameDefinitionRetriever.GetRecentGames(new GetRecentPlayedGamesQuery
                 {
-                    GamingGroupId = currentUser.CurrentGamingGroupId,
+                    GamingGroupId = currentUser.CurrentGamingGroupId.Value,
                     Page = 1,
                     PageSize = 5
                 });
@@ -320,10 +320,10 @@ namespace UI.Controllers
         {
             var viewModel = new SearchViewModel
             {
-                GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser.CurrentGamingGroupId)
+                GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser.CurrentGamingGroupId.Value)
             };
 
-            AddPlayersToViewModel(currentUser.CurrentGamingGroupId, viewModel, null);
+            AddPlayersToViewModel(currentUser.CurrentGamingGroupId.Value, viewModel, null);
 
 
             return View(MVC.PlayedGame.Views.Search, viewModel);
@@ -378,7 +378,7 @@ namespace UI.Controllers
                     DatePlayedStart = filter.DatePlayedStart,
                     GameDefinitionId = filter.GameDefinitionId
                 },
-                GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser.CurrentGamingGroupId),
+                GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser.CurrentGamingGroupId.Value),
                 PlayedGames = new PlayedGamesViewModel
                 {
                     PlayedGameDetailsViewModels = playedGamesDetails,
@@ -388,7 +388,7 @@ namespace UI.Controllers
                 }
             };
 
-            AddPlayersToViewModel(currentUser.CurrentGamingGroupId, viewModel, filter.IncludedPlayerId);
+            AddPlayersToViewModel(currentUser.CurrentGamingGroupId.Value, viewModel, filter.IncludedPlayerId);
 
             return View(MVC.PlayedGame.Views.Search, viewModel);
         }

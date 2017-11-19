@@ -28,12 +28,13 @@ using BusinessLogic.Logic;
 using BusinessLogic.Logic.PlayerAchievements;
 using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.PlayedGames;
+using BusinessLogic.Models.User;
 using BusinessLogic.Paging;
+using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Mappers.Extensions;
 using UI.Mappers.Interfaces;
 using UI.Models.GameDefinitionModels;
-using UI.Models.GamingGroup;
 using UI.Models.Home;
 using UI.Models.Players;
 
@@ -69,11 +70,13 @@ namespace UI.Controllers
         }
 
         [HttpGet]
-        public virtual ActionResult Index()
+        [UserContext(RequiresGamingGroup = false)]
+        public virtual ActionResult Index(ApplicationUser currentUser)
         {
-
             var homeIndexViewModel = new HomeIndexViewModel
             {
+                ShowQuickStats = currentUser.CurrentGamingGroupId.HasValue,
+                ShowLoginPartial = currentUser.IsAnonymousUser()
             };
             return View(MVC.Home.Views.Index, homeIndexViewModel);
         }
@@ -108,15 +111,6 @@ namespace UI.Controllers
             var recentPlayerAchievementWinnerViewModel = recentPlayerAchievementWinners.ToTransformedPagedList<PlayerAchievementWinner, PlayerAchievementWinnerViewModel>(_transformer);
 
             return PartialView(MVC.Achievement.Views._RecentAchievementsUnlocked, recentPlayerAchievementWinnerViewModel);
-        }
-
-        [HttpGet]
-        public virtual ActionResult TopGamingGroups()
-        {
-            var topGamingGroups = _topGamingGroupsRetriever.GetResults(NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW);
-
-            var topGamingGroupViewModels = topGamingGroups.Select(_transformer.Transform<TopGamingGroupSummaryViewModel>).ToList();
-            return PartialView(MVC.GamingGroup.Views._TopGamingGroupsPartial, topGamingGroupViewModels);
         }
 
         public virtual ActionResult About()

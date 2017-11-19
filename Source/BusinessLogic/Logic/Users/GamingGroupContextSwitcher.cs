@@ -26,11 +26,11 @@ namespace BusinessLogic.Logic.Users
     {
         public const string EXCEPTION_MESSAGE_NO_ACCESS = "User with Id '{0}' does not have access to GamingGroup with Id '{1}'";
 
-        private readonly IDataContext dataContext;
+        private readonly IDataContext _dataContext;
 
-        public GamingGroupContextSwitcher(IDataContext dataContextMock)
+        public GamingGroupContextSwitcher(IDataContext dataContext)
         {
-            this.dataContext = dataContextMock;
+            _dataContext = dataContext;
         }
 
         public void SwitchGamingGroupContext(int gamingGroupId, ApplicationUser currentUser)
@@ -40,7 +40,7 @@ namespace BusinessLogic.Logic.Users
                 return;
             }
 
-            bool hasAccess  = dataContext.GetQueryable<UserGamingGroup>()
+            var hasAccess  = _dataContext.GetQueryable<UserGamingGroup>()
                                          .Any(userGamingGroup => userGamingGroup.ApplicationUserId == currentUser.Id
                                                                  && userGamingGroup.GamingGroupId == gamingGroupId);
 
@@ -49,9 +49,41 @@ namespace BusinessLogic.Logic.Users
                 throw new UnauthorizedAccessException(string.Format(EXCEPTION_MESSAGE_NO_ACCESS, currentUser.Id, gamingGroupId));
             }
 
-            var user = dataContext.FindById<ApplicationUser>(currentUser.Id);
+            var user = _dataContext.FindById<ApplicationUser>(currentUser.Id);
             user.CurrentGamingGroupId = gamingGroupId;
-            dataContext.Save(user, currentUser);
+            _dataContext.Save(user, currentUser);
+        }
+
+        public void EnsureContextIsValid(ApplicationUser user)
+        {
+            if (user.CurrentGamingGroupId.HasValue)
+            {
+                var currentGamingGroupIsValid = _dataContext
+                    .GetQueryable<UserGamingGroup>()
+                    .Any(x => x.GamingGroupId == user.CurrentGamingGroupId.Value
+                        && x.ApplicationUserId == user.Id
+                        && x.GamingGroup.Active);
+                if (currentGamingGroupIsValid)
+                {
+                    return;
+                }
+            }
+
+            var activeGamingGroup = _dataContext
+                .GetQueryable<UserGamingGroup>()
+                .OrderBy(x => x.GamingGroup.DateCreated)
+                .FirstOrDefault(x => x.ApplicationUserId == user.Id && x.GamingGroup.Active);
+
+            if (activeGamingGroup == null)
+            {
+                user.CurrentGamingGroupId = null;
+            }
+            else
+            {
+                user.CurrentGamingGroupId = activeGamingGroup.GamingGroupId;
+            }
+            _dataContext.AdminSave(user);
+
         }
     }
 }

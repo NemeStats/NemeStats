@@ -114,6 +114,20 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEnt
             [Test]
             public void ItDoesNotThrowAnExceptionIfTheUserHasTheGamingGroupOfTheSecuredEntity()
             {
+                SetupUserGamingGroupWithAppropriateAccess();
+
+                _autoMocker.ClassUnderTest.ValidateAccess(_securedEntity, _currentUser);
+            }
+
+            [Test]
+            public void ItThrowsAnArgumentNullExceptionIfTheCurrentUserIsNullAndTheEntityIsSecured()
+            {
+                Assert.Throws<ArgumentNullException>(
+                    () => _autoMocker.ClassUnderTest.ValidateAccess(_securedEntity, null));
+            }
+
+            private void SetupUserGamingGroupWithAppropriateAccess()
+            {
                 var userGamingGroupQueryable = new List<UserGamingGroup>
                 {
                     new UserGamingGroup
@@ -124,15 +138,6 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEnt
                 }.AsQueryable();
                 _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<UserGamingGroup>())
                     .Return(userGamingGroupQueryable);
-
-                _autoMocker.ClassUnderTest.ValidateAccess(_securedEntity, _currentUser);
-            }
-
-            [Test]
-            public void ItThrowsAnArgumentNullExceptionIfTheCurrentUserIsNullAndTheEntityIsSecured()
-            {
-                Assert.Throws<ArgumentNullException>(
-                    () => _autoMocker.ClassUnderTest.ValidateAccess(_securedEntity, null));
             }
         }
 
@@ -144,9 +149,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEnt
                 //--arrange
                 _autoMocker.PartialMockTheClassUnderTest();
                 _autoMocker.Get<IDataContext>().Expect(mock => mock.FindById<GameDefinition>(_securedEntityId)).Return(_securedEntity);
-                _autoMocker.ClassUnderTest.Expect(mock => mock.ValidateAccess(Arg<GameDefinition>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
-                    .Return(_securedEntity);
-
+                _autoMocker.ClassUnderTest.Expect(mock => mock.ValidateAccess(Arg<GameDefinition>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
                 //--act
                 var result = _autoMocker.ClassUnderTest.RetrieveAndValidateAccess<GameDefinition>(_securedEntityId, _currentUser);
 

@@ -1,16 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using BusinessLogic.Components;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Events;
 using BusinessLogic.Events.HandlerFactory;
-using BusinessLogic.Events.Interfaces;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.Security;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
-using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Logic.PlayedGames
@@ -36,6 +33,11 @@ namespace BusinessLogic.Logic.PlayedGames
 
         public override PlayedGame Execute(NewlyCompletedGame newlyCompletedGame, ApplicationUser currentUser, IDataContext dataContext)
         {
+            if (!currentUser.CurrentGamingGroupId.HasValue)
+            {
+                throw new UserHasNoGamingGroupException(currentUser.Id);    
+            }
+
             if (newlyCompletedGame.GamingGroupId.HasValue && newlyCompletedGame.GamingGroupId != currentUser.CurrentGamingGroupId)
             {
                 _securedEntityValidator.RetrieveAndValidateAccess<GamingGroup>(newlyCompletedGame.GamingGroupId.Value, currentUser);
@@ -45,7 +47,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
             _linkedPlayedGameValidator.Validate(newlyCompletedGame);
 
-            var gamingGroupId = newlyCompletedGame.GamingGroupId ?? currentUser.CurrentGamingGroupId;
+            var gamingGroupId = newlyCompletedGame.GamingGroupId ?? currentUser.CurrentGamingGroupId.Value;
 
             _playedGameSaver.ValidateAccessToPlayers(newlyCompletedGame.PlayerRanks, gamingGroupId, currentUser, dataContext);
 

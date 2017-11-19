@@ -16,7 +16,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using System.Linq;
 using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Logic.Users
@@ -24,5 +23,6 @@ namespace BusinessLogic.Logic.Users
     public interface IGamingGroupContextSwitcher
     {
         void SwitchGamingGroupContext(int gamingGroupId, ApplicationUser currentUser);
+        void EnsureContextIsValid(ApplicationUser user);
     }
 }
