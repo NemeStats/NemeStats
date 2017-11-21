@@ -14,7 +14,7 @@ namespace BusinessLogic.Models.PlayedGames
         public string Notes { get; set; }
         public int GameDefinitionId { get; set; }
         public string GameDefinitionName { get; set; }
-        public int BoardGameGeekGameDefinitionId { get; set; }
+        public int? BoardGameGeekGameDefinitionId { get; set; }
         public List<PlayerRankWithName> PlayerRanks { get; set; }
     }
 }

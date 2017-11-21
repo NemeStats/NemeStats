@@ -56,6 +56,7 @@ namespace UI.Controllers
         internal INemesisHistoryRetriever nemesisHistoryRetriever;
         internal INemesisChangeViewModelBuilder nemesisChangeViewModelBuilder;
         private readonly IPlayerDeleter _playerDeleter;
+        private readonly IHomePagePlayerSummaryRetriever _homePagePlayerSummaryRetriever;
 
         public PlayerController(
             IGameResultViewModelBuilder builder,
@@ -69,7 +70,8 @@ namespace UI.Controllers
             ITopPlayerViewModelBuilder topPlayerViewModelBuilder,
             INemesisHistoryRetriever nemesisHistoryRetriever,
             INemesisChangeViewModelBuilder nemesisChangeViewModelBuilder,
-            IPlayerDeleter playerDeleter)
+            IPlayerDeleter playerDeleter, 
+            IHomePagePlayerSummaryRetriever homePagePlayerSummaryRetriever)
         {
             this.builder = builder;
             this.playerDetailsViewModelBuilder = playerDetailsViewModelBuilder;
@@ -83,6 +85,7 @@ namespace UI.Controllers
             this.nemesisHistoryRetriever = nemesisHistoryRetriever;
             this.nemesisChangeViewModelBuilder = nemesisChangeViewModelBuilder;
             _playerDeleter = playerDeleter;
+            _homePagePlayerSummaryRetriever = homePagePlayerSummaryRetriever;
         }
 
         // GET: /Player/Details/5
@@ -289,9 +292,9 @@ namespace UI.Controllers
         [UserContext]
         public virtual ActionResult CurrentPlayerQuickStats(ApplicationUser currentUser)
         {
-            var playerQuickStats = playerRetriever.GetPlayerQuickStatsForUser(currentUser.Id, currentUser.CurrentGamingGroupId.Value);
+            var homePagePlayerSummary = _homePagePlayerSummaryRetriever.GetHomePagePlayerSummaryForUser(currentUser.Id, currentUser.CurrentGamingGroupId.Value);
 
-            var playerQuickStatsViewModel = Mapper.Map<PlayerQuickStatsViewModel>(playerQuickStats);
+            var playerQuickStatsViewModel = Mapper.Map<PlayerQuickStatsViewModel>(homePagePlayerSummary);
 
             return PartialView(MVC.Player.Views._CurrentPlayerQuickStatsPartial, playerQuickStatsViewModel);
         }

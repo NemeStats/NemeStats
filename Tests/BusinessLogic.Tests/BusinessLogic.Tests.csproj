@@ -347,6 +347,7 @@
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupRetrieverTests\GetGamingGroupWithUsersTests.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupSaverTests\UpdatePublicGamingGroupDetailsTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayedGamesTests\ApplicationLinkerTests\ApplicationLinkerTests.cs" />
+    <Compile Include="UnitTests\LogicTests\PlayedGamesTests\PlayedGameRetrieverTests\GetInfoForEditingPlayedGameTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayedGamesTests\PlayedGameRetrieverTests\SearchPlayedGamesTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayedGamesTests\PlayedGameSaverTests\CreateApplicationLinkagesTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayedGamesTests\PlayedGameSaverTests\MakePlayerGameResultsTests.cs" />
@@ -357,6 +358,7 @@
     <Compile Include="UnitTests\LogicTests\PlayerAchievementTests\GetPlayerAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerDeleterTests\DeletePlayerTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerNameBuilderTests\BuildPlayerNameTests.cs" />
+    <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerQuickStatsRetrieverTests\GetHomePagePlayerSummaryForUserTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerRetrieverTests\GetPlayerQuickStatsForUserTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerRetrieverTests\GetPlayersToCreateTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerSaverTests\PlayerSaverTestBase.cs" />

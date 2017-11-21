@@ -17,13 +17,13 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         [Test]
         public void It_Returns_The_Current_Users_PlayerQuickStatsViewModel()
         {
-            var expectedPlayerQuickSummary = new PlayerQuickStats
+            var expectedHomePagePlayerSummary = new HomePagePlayerSummary()
             {
                 PlayerId = 1,
                 TotalGamesPlayed = 4,
                 TotalGamesWon = 3,
                 NemePointsSummary = new NemePointsSummary(1, 3, 5),
-                LastGamingGroupGame = new PlayedGameQuickStats
+                LastGamingGroupPlayedGame = new PlayedGameQuickStats
                 {
                     BoardGameGeekUri = new Uri("http://a.com"),
                     DatePlayed = new DateTime(),
@@ -37,26 +37,27 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 }
             };
 
-            autoMocker.Get<IPlayerRetriever>()
-                .Expect(mock => mock.GetPlayerQuickStatsForUser(currentUser.Id, currentUser.CurrentGamingGroupId.Value))
-                .Return(expectedPlayerQuickSummary);
+            autoMocker.Get<IHomePagePlayerSummaryRetriever>()
+                .Expect(mock => mock.GetHomePagePlayerSummaryForUser(currentUser.Id, currentUser.CurrentGamingGroupId.Value))
+                .Return(expectedHomePagePlayerSummary);
 
+            //--act
             var result = autoMocker.ClassUnderTest.CurrentPlayerQuickStats(currentUser) as PartialViewResult;
 
             Assert.That(result, Is.Not.Null);
             var actualModel = result.Model as PlayerQuickStatsViewModel;
             Assert.That(actualModel, Is.Not.Null);
-            Assert.That(actualModel.PlayerId, Is.EqualTo(expectedPlayerQuickSummary.PlayerId));
+            Assert.That(actualModel.PlayerId, Is.EqualTo(expectedHomePagePlayerSummary.PlayerId));
             var expectedNemePointsSummary = new NemePointsSummaryViewModel(
-                expectedPlayerQuickSummary.NemePointsSummary.BaseNemePoints,
-                expectedPlayerQuickSummary.NemePointsSummary.GameDurationBonusNemePoints,
-                expectedPlayerQuickSummary.NemePointsSummary.WeightBonusNemePoints);
+                expectedHomePagePlayerSummary.NemePointsSummary.BaseNemePoints,
+                expectedHomePagePlayerSummary.NemePointsSummary.GameDurationBonusNemePoints,
+                expectedHomePagePlayerSummary.NemePointsSummary.WeightBonusNemePoints);
             Assert.That(actualModel.NemePointsSummary, Is.EqualTo(expectedNemePointsSummary));
-            Assert.That(actualModel.TotalGamesWon, Is.EqualTo(expectedPlayerQuickSummary.TotalGamesWon));
-            Assert.That(actualModel.TotalGamesPlayed, Is.EqualTo(expectedPlayerQuickSummary.TotalGamesPlayed));
-            Assert.That(actualModel.LastGamingGroupGame, Is.Not.Null);
-            var lastGamingGroupGameViewModel = actualModel.LastGamingGroupGame;
-            var playedGameQuickStats = expectedPlayerQuickSummary.LastGamingGroupGame;
+            Assert.That(actualModel.TotalGamesWon, Is.EqualTo(expectedHomePagePlayerSummary.TotalGamesWon));
+            Assert.That(actualModel.TotalGamesPlayed, Is.EqualTo(expectedHomePagePlayerSummary.TotalGamesPlayed));
+            Assert.That(actualModel.LastGamingGroupPlayedGame, Is.Not.Null);
+            var lastGamingGroupGameViewModel = actualModel.LastGamingGroupPlayedGame;
+            var playedGameQuickStats = expectedHomePagePlayerSummary.LastGamingGroupPlayedGame;
             Assert.That(lastGamingGroupGameViewModel.BoardGameGeekUri, Is.EqualTo(playedGameQuickStats.BoardGameGeekUri));
             Assert.That(lastGamingGroupGameViewModel.DatePlayed, Is.EqualTo(playedGameQuickStats.DatePlayed));
             Assert.That(lastGamingGroupGameViewModel.GameDefinitionName, Is.EqualTo(playedGameQuickStats.GameDefinitionName));
@@ -70,14 +71,14 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         [Test]
         public void It_Leaves_The_Last_Gaming_Group_Game_Null_If_There_Are_NoGames()
         {
-            autoMocker.Get<IPlayerRetriever>()
-               .Expect(mock => mock.GetPlayerQuickStatsForUser(currentUser.Id, currentUser.CurrentGamingGroupId.Value))
-               .Return(new PlayerQuickStats());
+            autoMocker.Get<IHomePagePlayerSummaryRetriever>()
+                .Expect(mock => mock.GetHomePagePlayerSummaryForUser(currentUser.Id, currentUser.CurrentGamingGroupId.Value))
+                .Return(new HomePagePlayerSummary());
 
             var result = autoMocker.ClassUnderTest.CurrentPlayerQuickStats(currentUser) as PartialViewResult;
 
             var actualModel = result.Model as PlayerQuickStatsViewModel;
-            Assert.That(actualModel.LastGamingGroupGame, Is.Null);
+            Assert.That(actualModel.LastGamingGroupPlayedGame, Is.Null);
         }
     }
 }

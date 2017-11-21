@@ -194,6 +194,13 @@ namespace UI.Transformations
                 .ForMember(m => m.MostActivePlayers, opt => opt.Ignore())
                 .ForMember(m => m.RecentPlayedGames, opt => opt.Ignore())
                 .ForMember(m => m.MostPlayedGames, opt => opt.Ignore());
+
+            Mapper.CreateMap<PlayedGameQuickStats, PlayedGameQuickStatsViewModel>();
+
+            Mapper.CreateMap<PlayerQuickStats, HomePagePlayerSummary>()
+                .ForMember(m => m.LastGamingGroupPlayedGame, opt => opt.Ignore());
+
+            Mapper.CreateMap<HomePagePlayerSummary, PlayerQuickStatsViewModel>();
         }
     }
 }
