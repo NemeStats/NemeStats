@@ -27,6 +27,7 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using BusinessLogic.Logic.BoardGameGeek;
+using BusinessLogic.Logic.Players;
 using BusinessLogic.Models.User;
 using BusinessLogic.Models.Utility;
 
@@ -35,10 +36,12 @@ namespace BusinessLogic.Logic.PlayedGames
     public class PlayedGameRetriever : IPlayedGameRetriever
     {
         private readonly IDataContext dataContext;
+        private readonly IPlayerRetriever playerRetriever;
 
-        public PlayedGameRetriever(IDataContext dataContext)
+        public PlayedGameRetriever(IDataContext dataContext, IPlayerRetriever playerRetriever)
         {
             this.dataContext = dataContext;
+            this.playerRetriever = playerRetriever;
         }
 
         public List<PlayedGame> GetRecentGames(int numberOfGames, int gamingGroupId, IDateRangeFilter dateRangeFilter = null)
@@ -277,12 +280,30 @@ namespace BusinessLogic.Logic.PlayedGames
                     PlayedGameId = playedgame.Id,
                     ThumbnailImageUrl = playedgame.GameDefinition.BoardGameGeekGameDefinition.Thumbnail,
                 }).ToList();
-
         }
 
         public EditPlayedGameInfo GetInfoForEditingPlayedGame(int playedGameId, ApplicationUser currentUser)
         {
-            throw new NotImplementedException();
+            var editPlayedGameInfo = dataContext.GetQueryable<PlayedGame>()
+                .Where(x => x.Id == playedGameId)
+                .Select(x => new EditPlayedGameInfo
+                {
+                    DatePlayed = x.DatePlayed,
+                    GameDefinitionId = x.GameDefinitionId,
+                    Notes = x.Notes,
+                    BoardGameGeekGameDefinitionId = x.GameDefinition.BoardGameGeekGameDefinitionId,
+                    GameDefinitionName = x.GameDefinition.Name
+                }).FirstOrDefault();
+
+            //TODO throw exception if null
+
+            var playersModel = playerRetriever.GetPlayersForEditingPlayedGame(playedGameId, currentUser);
+
+            editPlayedGameInfo.OtherPlayers = playersModel.OtherPlayers;
+            editPlayedGameInfo.RecentPlayers = playersModel.RecentPlayers;
+            editPlayedGameInfo.UserPlayer = playersModel.UserPlayer;
+
+            return editPlayedGameInfo;
         }
     }
 }

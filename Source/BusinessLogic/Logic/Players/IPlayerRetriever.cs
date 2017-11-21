@@ -19,6 +19,8 @@ using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.Utility;
 using System.Collections.Generic;
+using BusinessLogic.Models.User;
+
 namespace BusinessLogic.Logic.Players
 {
     public interface IPlayerRetriever
@@ -30,6 +32,6 @@ namespace BusinessLogic.Logic.Players
         PlayerStatistics GetPlayerStatistics(int playerId);
         Player GetPlayerForCurrentUser(string applicationUserId, int gamingGroupId);
         PlayersToCreateModel GetPlayersToCreate(string currentUserId, int currentGamingGroupId);
-        PlayersToCreateModel GetPlayersForEditingPlayedGame(int playedGameId);
+        PlayersToCreateModel GetPlayersForEditingPlayedGame(int playedGameId, ApplicationUser currentUser);
     }
 }
