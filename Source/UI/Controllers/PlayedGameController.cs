@@ -119,7 +119,8 @@ namespace UI.Controllers
             return View(MVC.PlayedGame.Views.CreateOrEdit, viewModel);
         }
 
-        public virtual T MakeBaseCreatePlayedGameViewModel<T>(int currentGamingGroupId) where T : CreatePlayedGameViewModel, new()
+        [NonAction]
+        internal virtual T MakeBaseCreatePlayedGameViewModel<T>(int currentGamingGroupId) where T : CreatePlayedGameViewModel, new()
         {
             var mostPlayedGames =
                 _gameDefinitionRetriever.GetMostPlayedGames(new GetMostPlayedGamesQuery
