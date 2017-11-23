@@ -441,7 +441,41 @@ namespace BusinessLogic.Logic.Players
 
         public PlayersToCreateModel GetPlayersForEditingPlayedGame(int playedGameId, ApplicationUser currentUser)
         {
-            throw new System.NotImplementedException();
+            var recentPlayers = _dataContext.GetQueryable<PlayerGameResult>()
+                .Where(x => x.PlayedGameId == playedGameId)
+                .Select(x => new PlayerInfoForUser
+                {
+                    PlayerId = x.PlayerId,
+                    GamingGroupId = x.PlayedGame.GamingGroupId,
+                    PlayerName = x.Player.Name
+                })
+                .OrderBy(x => x.PlayerName)
+                .ToList();
+
+            var gamingGroupId = recentPlayers.First().GamingGroupId;
+            var playerIdsInGame = recentPlayers.Select(x => x.PlayerId).ToList();
+
+            var otherPlayers = _dataContext.GetQueryable<Player>()
+                .Where(x => x.Active
+                            && x.GamingGroupId == gamingGroupId
+                            && !playerIdsInGame.Contains(x.Id))
+                .Select(x => new PlayerInfoForUser
+                {
+                    PlayerId = x.Id,
+                    GamingGroupId = x.GamingGroupId,
+                    PlayerName = x.Name
+                })
+                .OrderBy(x => x.PlayerName)
+                .ToList();
+
+            var result = new PlayersToCreateModel
+            {
+                RecentPlayers = recentPlayers,
+                OtherPlayers = otherPlayers,
+                UserPlayer = null
+            };
+
+            return result;
         }
     }
 }

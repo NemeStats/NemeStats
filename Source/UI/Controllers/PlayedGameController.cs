@@ -150,6 +150,8 @@ namespace UI.Controllers
             };
         }
 
+        [NonAction]
+        [Obsolete]
         internal virtual CreatePlayedGameViewModel FillCreatePlayedGameViewModel(ApplicationUser currentUser, CreatePlayedGameViewModel viewModel, bool forEdit = false)
         {
             var mostPlayedGames =
@@ -167,7 +169,6 @@ namespace UI.Controllers
                     PageSize = 5
                 });
 
-//XXXX should we pass a parameter or just make a new method to pull back players differently when in edit mode?
             var players = _playerRetriever.GetPlayersToCreate(currentUser.Id, currentUser.CurrentGamingGroupId.Value);
 
             viewModel.UserPlayer = players.UserPlayer;
