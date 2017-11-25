@@ -226,7 +226,7 @@ namespace BusinessLogic.Logic.Players
         {
             if (returnPlayer == null)
             {
-                throw new EntityDoesNotExistException(typeof(Player), playerId);
+                throw new EntityDoesNotExistException<Player>(playerId);
             }
         }
 

@@ -175,7 +175,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
             if (playedGameWithStuff == null)
             {
-                throw new EntityDoesNotExistException(typeof(PlayedGame), updatedGame.PlayedGameId);
+                throw new EntityDoesNotExistException<PlayedGame>(updatedGame.PlayedGameId);
             }
 
             var gamingGroupId = updatedGame.GamingGroupId ?? playedGameWithStuff.GamingGroupId;

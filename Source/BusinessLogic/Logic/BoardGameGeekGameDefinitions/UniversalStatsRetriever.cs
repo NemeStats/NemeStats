@@ -33,7 +33,7 @@ namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
 
             if (result == null)
             {
-                throw new EntityDoesNotExistException(typeof(BoardGameGeekGameDefinition), boardGameGeekGameDefinitionId);
+                throw new EntityDoesNotExistException<BoardGameGeekGameDefinition>(boardGameGeekGameDefinitionId);
             }
 
             return result;

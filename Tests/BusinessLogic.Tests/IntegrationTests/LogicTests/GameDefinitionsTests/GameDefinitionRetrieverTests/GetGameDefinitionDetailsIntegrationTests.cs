@@ -101,10 +101,10 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
         public void ItThrowsAnEntityDoesNotExistExceptionIfTheIdIsntValid()
         {
             int invalidId = -1;
-            var expectedException = new EntityDoesNotExistException(typeof(GameDefinition), invalidId);
+            var expectedException = new EntityDoesNotExistException<GameDefinition>(invalidId);
             var gameDefinitionRetriever = GetInstance<GameDefinitionRetriever>();
 
-            var actualException = Assert.Throws<EntityDoesNotExistException>(() => 
+            var actualException = Assert.Throws<EntityDoesNotExistException<GameDefinition>>(() => 
                 gameDefinitionRetriever.GetGameDefinitionDetails(invalidId, 0));
 
             actualException.Message.ShouldBe(expectedException.Message);
