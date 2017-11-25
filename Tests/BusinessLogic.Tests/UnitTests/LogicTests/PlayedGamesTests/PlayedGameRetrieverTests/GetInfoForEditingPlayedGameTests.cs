@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
@@ -109,6 +110,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
             result.OtherPlayers.ShouldBeSameAs(_expectedPlayersToCreateModel.OtherPlayers);
             result.RecentPlayers.ShouldBeSameAs(_expectedPlayersToCreateModel.RecentPlayers);
             result.UserPlayer.ShouldBeSameAs(_expectedPlayersToCreateModel.UserPlayer);
+        }
+
+        [Test]
+        public void It_Throws_An_EntityNotFoundException_If_The_Played_Game_Doesnt_Exist()
+        {
+            //--arrange
+            var playedGameIdThatDoesntExist = -1;
+            var expectedException = new EntityDoesNotExistException<PlayedGame>(playedGameIdThatDoesntExist);
+
+            //--act
+            var exception = Assert.Throws<EntityDoesNotExistException<PlayedGame>>(() => _autoMocker.ClassUnderTest.GetInfoForEditingPlayedGame(playedGameIdThatDoesntExist, _currentUser));
+
+            //--assert
+            exception.Message.ShouldBe(expectedException.Message);
         }
     }
 }

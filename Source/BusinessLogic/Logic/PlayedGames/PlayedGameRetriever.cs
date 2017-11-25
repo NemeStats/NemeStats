@@ -295,7 +295,10 @@ namespace BusinessLogic.Logic.PlayedGames
                     GameDefinitionName = x.GameDefinition.Name
                 }).FirstOrDefault();
 
-            //TODO throw exception if null
+            if (editPlayedGameInfo == null)
+            {
+                throw new EntityDoesNotExistException<PlayedGame>(playedGameId);
+            }
 
             var playersModel = playerRetriever.GetPlayersForEditingPlayedGame(playedGameId, currentUser);
 
