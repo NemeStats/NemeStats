@@ -438,7 +438,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                             GameDefinitionName: this.viewModel.Game.Name,
                             BoardGameGeekGameDefinitionId: this.viewModel.Game.BoardGameGeekGameDefinitionId,
                             Notes: this.viewModel.GameNotes,
-                            DatePlayed: this.viewModel.Date.toISOString(),
+                            DatePlayed: this.viewModel.Date,
                             WinnerType: this.viewModel.WinnerType,
                             PlayerRanks: [],
                             PlayedGameId: this.viewModel.PlayedGameId,
