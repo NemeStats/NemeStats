@@ -24,6 +24,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
         private PlayedGame _expectedPlayedGame;
         private HomePagePlayerSummary _expectedHomePagePlayerSummary;
         private PlayersToCreateModel _expectedPlayersToCreateModel;
+        private PlayerGameResult _expectedPlayerGameResult1;
+        private PlayerGameResult _expectedPlayerGameResult2;
 
         [SetUp]
         public void SetUp()
@@ -31,6 +33,27 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
             _autoMocker = new RhinoAutoMocker<PlayedGameRetriever>();
 
             _currentUser = new ApplicationUser();
+
+            _expectedPlayerGameResult1 = new PlayerGameResult
+            {
+                GameRank = 1,
+                PlayerId = 5,
+                PointsScored = 6,
+                Player = new Player
+                {
+                    Name = "player 1"
+                }
+            };
+            _expectedPlayerGameResult2 = new PlayerGameResult
+            {
+                GameRank = 2,
+                PlayerId = 7,
+                PointsScored = 3,
+                Player = new Player
+                {
+                    Name = "player 2"
+                }
+            };
 
             _expectedPlayedGame = new PlayedGame
             {
@@ -45,26 +68,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
                 },
                 PlayerGameResults = new List<PlayerGameResult>
                 {
-                    new PlayerGameResult
-                    {
-                        GameRank = 1,
-                        PlayerId = 5,
-                        PointsScored = 6,
-                        Player = new Player
-                        {
-                            Name = "player 1"
-                        }
-                    },
-                    new PlayerGameResult
-                    {
-                        GameRank = 2,
-                        PlayerId = 7,
-                        PointsScored = 3,
-                        Player = new Player
-                        {
-                            Name = "player 2"
-                        }
-                    }
+                    _expectedPlayerGameResult2,
+                    _expectedPlayerGameResult1
                 }
             };
             var playedGamesQueryable = new List<PlayedGame>
@@ -110,6 +115,21 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
             result.OtherPlayers.ShouldBeSameAs(_expectedPlayersToCreateModel.OtherPlayers);
             result.RecentPlayers.ShouldBeSameAs(_expectedPlayersToCreateModel.RecentPlayers);
             result.UserPlayer.ShouldBeSameAs(_expectedPlayersToCreateModel.UserPlayer);
+
+            result.PlayerRanks.ShouldNotBeNull();
+            result.PlayerRanks.Count.ShouldBe(2);
+
+            var firstPlayerRank = result.PlayerRanks[0];
+            firstPlayerRank.PlayerName.ShouldBe(_expectedPlayerGameResult1.Player.Name);
+            firstPlayerRank.PlayerId.ShouldBe(_expectedPlayerGameResult1.PlayerId);
+            firstPlayerRank.GameRank.ShouldBe(_expectedPlayerGameResult1.GameRank);
+            firstPlayerRank.PointsScored.ShouldBe(_expectedPlayerGameResult1.PointsScored);
+
+            var secondPlayerRank = result.PlayerRanks[1];
+            secondPlayerRank.PlayerName.ShouldBe(_expectedPlayerGameResult2.Player.Name);
+            secondPlayerRank.PlayerId.ShouldBe(_expectedPlayerGameResult2.PlayerId);
+            secondPlayerRank.GameRank.ShouldBe(_expectedPlayerGameResult2.GameRank);
+            secondPlayerRank.PointsScored.ShouldBe(_expectedPlayerGameResult2.PointsScored);
         }
 
         [Test]

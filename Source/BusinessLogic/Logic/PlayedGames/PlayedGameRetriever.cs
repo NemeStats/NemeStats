@@ -292,7 +292,17 @@ namespace BusinessLogic.Logic.PlayedGames
                     GameDefinitionId = x.GameDefinitionId,
                     Notes = x.Notes,
                     BoardGameGeekGameDefinitionId = x.GameDefinition.BoardGameGeekGameDefinitionId,
-                    GameDefinitionName = x.GameDefinition.Name
+                    GameDefinitionName = x.GameDefinition.Name,
+                    PlayerRanks = x.PlayerGameResults.Select(y =>  new PlayerRankWithName
+                    {
+                        PlayerId = y.PlayerId,
+                        PlayerName = y.Player.Name,
+                        GameRank = y.GameRank,
+                        PointsScored = y.PointsScored
+                    })
+                    .OrderBy(y => y.GameRank)
+                    .ThenBy(y => y.PlayerName)
+                    .ToList()
                 }).FirstOrDefault();
 
             if (editPlayedGameInfo == null)
