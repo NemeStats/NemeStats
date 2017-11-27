@@ -133,7 +133,7 @@
                                 <ul class="list-group recent-players">
                                     <li class="list-group-item checkbox" v-for="player in viewModel.RecentPlayers | orderBy 'PlayerName'" v-bind:class="{'selected':player.Selected}">
                                         <label>
-                                            <input type="checkbox" v-model="player.Selected"> {{ player.PlayerName }}
+                                            <input type="checkbox" v-model="player.Selected" @(Model.EditMode ? "checked" : "")> {{ player.PlayerName }}
                                         </label>
                                     </li>
                                 </ul>
