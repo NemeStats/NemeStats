@@ -29,7 +29,7 @@
                     </span>
                     <div v-show="currentStep > 1" style="display: none">
                         <div class="value-desc">Date:</div>
-                        <div class="value">{{ viewModel.Date | moment "LL" }}</div>
+                        <div class="value">{{ viewModel.Date | convertToLocalDate }}</div>
                     </div>
                 </li>
                 <li class="arrow_box disabled" v-bind:class="{'current': currentStep == 2,'disabled' : currentStep < 2 || currentStep == 5, 'completed': currentStep > 2}" v-on:click="backToSelectGame">
@@ -192,7 +192,7 @@
                             <div class="tab-content">
                                 <div role="tabpanel" class="tab-pane active" id="ranked">
                                     <ul class="list-group" id="ranked-game">
-                                        <li class="list-group-item result-item" v-for="player in viewModel.Players | orderBy 'Rank'" data-index="{{ $index }}">
+                                        <li class="list-group-item result-item" v-for="player in viewModel.Players | orderBy 'Rank'" :data-index="{{ index }}">
 
                                             <input type="number" class="form-control input-sm rank" v-model="player.Rank" number @@click="focus" />
                                             {{ player.Name }}
@@ -206,7 +206,7 @@
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="scored">
                                     <ul class="list-group" id="scored-game">
-                                        <li class="list-group-item result-item" v-for="player in viewModel.Players | orderBy 'PointsScored' -1" data-index="{{ $index }}">
+                                        <li class="list-group-item result-item" v-for="player in viewModel.Players | orderBy 'PointsScored' -1" :data-index="{{ index }}">
                                             <strong>{{ player.RankScored | scoredposition }}</strong> - 
                                             {{ player.Name }}
                                             <div class="result-float-right">
@@ -248,7 +248,7 @@
                     <div class="content">
                         <h2 class="title">Played game recorded successfully</h2>
                         <div class="well">
-                            <h4 style="margin-bottom: 20px"><strong>{{ viewModel.Players.length }}</strong> players played <strong>{{ viewModel.Game.Name }}</strong> on <strong>{{ viewModel.Date | moment "LL" }}</strong></h4>
+                            <h4 style="margin-bottom: 20px"><strong>{{ viewModel.Players.length }}</strong> players played <strong>{{ viewModel.Game.Name }}</strong> on <strong>{{ viewModel.Date | convertToLocalDate }}</strong></h4>
 
                             <h4 class="title">What do you want to do next?</h4>
                             <div class="action-buttons">

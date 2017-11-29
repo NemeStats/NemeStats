@@ -189,6 +189,11 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 
             });
 
+            Vue.filter('convertToLocalDate',
+                function(isoDate) {
+                    return isoDate.format("LL");
+                });
+
             var editMode = $(componentSelector).data("edit-mode");
             var model = $(componentSelector).data("model");
 

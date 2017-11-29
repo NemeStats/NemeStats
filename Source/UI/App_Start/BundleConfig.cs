@@ -53,8 +53,10 @@ namespace UI
                 .Include("~/Scripts/jquery.signalR-2.2.0.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/vue")
-                .Include("~/Scripts/vue.min.js")
-                .Include("~/Scripts/vue-moment.js"));
+                .Include(Links.Bundles.Scripts.Assets.vue_js)
+                //.Include("~/Scripts/vue.js")
+                //.Include("~/Scripts/vue.min.js")
+                .Include(Links.Bundles.Scripts.Assets.vue_moment_js));
 
             bundles.Add(new ScriptBundle("~/bundles/pnotify")
                 .Include("~/Scripts/pnotify.custom.min.js"));

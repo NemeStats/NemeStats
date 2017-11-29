@@ -232,6 +232,7 @@ namespace Links
     
         public static readonly string typeahead_bundle_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/typeahead-bundle.min.js") ? Url("typeahead-bundle.min.js") : Url("typeahead-bundle.js");
         public static readonly string vue_moment_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/vue-moment.min.js") ? Url("vue-moment.min.js") : Url("vue-moment.js");
+        public static readonly string vue_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/vue.min.js") ? Url("vue.min.js") : Url("vue.js");
         public static readonly string vue_min_js = Url("vue.min.js");
     }
 
@@ -468,6 +469,7 @@ namespace Links
                 public const string responsive_bootstrap_toolkit_js = "~/Scripts/responsive-bootstrap-toolkit.js"; 
                 public const string typeahead_bundle_js = "~/Scripts/typeahead-bundle.js"; 
                 public const string vue_moment_js = "~/Scripts/vue-moment.js"; 
+                public const string vue_js = "~/Scripts/vue.js"; 
                 public const string vue_min_js = "~/Scripts/vue.min.js"; 
             }
         }

@@ -719,6 +719,7 @@
     <Content Include="Scripts\dragula.min.js" />
     <Content Include="Scripts\typeahead-bundle.js" />
     <Content Include="Scripts\vue-moment.js" />
+    <Content Include="Scripts\vue.js" />
     <Content Include="Scripts\vue.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="sitemaps\gaminggroupssitemap-001.xml">
