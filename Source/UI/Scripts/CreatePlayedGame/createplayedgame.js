@@ -169,34 +169,42 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
         var container = $(componentSelector);
         if (container) {
 
-            Vue.filter('winnertype', function (value) {
-                if (value === parent._winnerTypes.PlayerWin) {
-                    return "Ranked game";
-                }
-                if (value === parent._winnerTypes.TeamWin) {
-                    return "Everybody won";
-                }
-                if (value === parent._winnerTypes.TeamLoss) {
-                    return "Everybody lost";
-                }
-                return "";
-            });
+            Vue.filter('winnertype',
+                function(value) {
+                    if (value === parent._winnerTypes.PlayerWin) {
+                        return "Ranked game";
+                    }
+                    if (value === parent._winnerTypes.TeamWin) {
+                        return "Everybody won";
+                    }
+                    if (value === parent._winnerTypes.TeamLoss) {
+                        return "Everybody lost";
+                    }
+                    return "";
+                });
 
-            Vue.filter('scoredposition', function (rank) {
-                var s = ["th", "st", "nd", "rd"],
-                v = rank % 100;
-                return rank + (s[(v - 20) % 10] || s[v] || s[0]);
+            Vue.filter('scoredposition',
+                function(rank) {
+                    var s = ["th", "st", "nd", "rd"],
+                        v = rank % 100;
+                    return rank + (s[(v - 20) % 10] || s[v] || s[0]);
 
-            });
+                });
 
             Vue.filter('convertToLocalDate',
                 function(isoDate) {
-                    return isoDate.format("LL");
+                    return moment(isoDate).format("LL");
                 });
 
             var editMode = $(componentSelector).data("edit-mode");
             var model = $(componentSelector).data("model");
 
+            if (editMode) {
+                model.RecentPlayers.forEach(function(recentPlayer) {
+                    recentPlayer.Selected = true;
+                });
+            }
+            
             this._viewModel.RecentPlayers = model.RecentPlayers;
             this._viewModel.OtherPlayers = model.OtherPlayers;
 
@@ -205,6 +213,8 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                 model.UserPlayer.PlayerName += " (me)";
                 this._viewModel.RecentPlayers.push(model.UserPlayer);
             }
+
+            this._viewModel.Game = {};
 
             if (editMode) {
                 this._viewModel.Date = moment(model.DatePlayed).format("YYYY-MM-DD");
@@ -286,9 +296,11 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                             this.changeStep(parent._steps.SelectDate);
                         }
                     },
-                    backToSelectGame: function () {
-                        if (this.viewModel.Game) {
-                            this.viewModel.Game = null;
+                    backToSelectGame: function (event) {
+                        if (this.viewModel.Game.Id) {
+                            if (!this.editMode) {
+                                this.viewModel.Game = {};
+                            }
                             parent.gaObject.trackGAEvent("PlayedGames", "Back", "BackToSelectGame", this.currentStep);
                             this.changeStep(parent._steps.SelectGame);
                         }
