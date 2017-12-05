@@ -215,6 +215,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
             }
 
             this._viewModel.Game = {};
+            this._viewModel.CompletedSteps = {};
 
             if (editMode) {
                 this._viewModel.Date = moment(model.DatePlayed).format("YYYY-MM-DD");
@@ -235,6 +236,12 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                 this._viewModel.GameNotes = model.Notes;
                 this._viewModel.WinnerType = model.WinnerType;
                 this._viewModel.PlayedGameId = model.PlayedGameId;
+
+                this._viewModel.CompletedSteps[this._steps.SelectDate] = true;
+                this._viewModel.CompletedSteps[this._steps.SelectGame] = true;
+                this._viewModel.CompletedSteps[this._steps.SelectPlayers] = true;
+                this._viewModel.CompletedSteps[this._steps.SetResult] = true;
+                this._viewModel.CompletedSteps[this._steps.Summary] = true;
             }
 
             this.component = new Vue({
@@ -257,8 +264,12 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                     }
                 },
                 methods: {
-                    changeStep : function(step) {
+                    stepAlreadyCompleted: function(step) {
+                        return this.viewModel.CompletedSteps[step];
+                    },
+                    changeStep: function (step) {
                         this.currentStep = step;
+                        this.viewModel.CompletedSteps[step - 1] = true;
                         window.scrollTo(0,0);
                     },
                     hideAlert: function () {
@@ -298,9 +309,6 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                     },
                     backToSelectGame: function (event) {
                         if (this.viewModel.Game.Id) {
-                            if (!this.editMode) {
-                                this.viewModel.Game = {};
-                            }
                             parent.gaObject.trackGAEvent("PlayedGames", "Back", "BackToSelectGame", this.currentStep);
                             this.changeStep(parent._steps.SelectGame);
                         }

@@ -5,9 +5,6 @@
 @{
     ViewBag.Title = "Record a Game";
     Layout = MVC.Shared.Views._BaseLayout;
-
-    var step1CurrentClass = !Model.EditMode ? "current" : "";
-    var step5CurrentClass = Model.EditMode ? "current" : "disabled";
 }
 
 <h2 class="page-header">@ViewBag.Title</h2>
@@ -22,47 +19,47 @@
     <div class="row">
         <div class="col-sm-3">
             <ul class="steps">
-                <li class="arrow_box @step1CurrentClass" v-bind:class="{'current': currentStep == 1, 'completed': currentStep > 1 || editMode, 'disabled': currentStep == 5}" v-on:click="backToSelectDate">
+                <li class="arrow_box" v-bind:class="{'current': currentStep == 1,'completed': stepAlreadyCompleted(1), 'disabled': currentStep == 5}" v-on:click="backToSelectDate">
                     <span class="number">1</span>
-                    <span class="desc" v-show="currentStep <= 1 && !editMode">
+                    <span class="desc" v-show="!stepAlreadyCompleted(1)">
                         Set date
                     </span>
-                    <div v-show="currentStep > 1 || editMode" style="display: none">
+                    <div v-show="stepAlreadyCompleted(1)" style="display: none">
                         <div class="value-desc">Date:</div>
                         <div class="value">{{ viewModel.Date | convertToLocalDate }}</div>
                     </div>
                 </li>
-                <li class="arrow_box" v-bind:class="{'current': currentStep == 2,'disabled' : !editMode && (currentStep < 2 || currentStep == 5), 'completed': currentStep > 2 || editMode}" v-on:click="backToSelectGame">
+                <li class="arrow_box" v-bind:class="{'current': currentStep == 2,'disabled' : !stepAlreadyCompleted(2) || currentStep == 5, 'completed': stepAlreadyCompleted(2)}" v-on:click="backToSelectGame">
                     <span class="number">2</span>
-                    <span class="desc" v-show="currentStep <= 2 && !editMode">
+                    <span class="desc" v-show="!stepAlreadyCompleted(2)">
                         Select game
                     </span>
-                    <div v-show="currentStep > 2 || editMode" style="display: none">
+                    <div v-show="stepAlreadyCompleted(2)" style="display: none">
                         <div class="value-desc">Game:</div>
                         <div class="value">{{ viewModel.Game.Name }}</div>
                     </div>
                 </li>
-                <li class="arrow_box disabled" v-bind:class="{'current': currentStep == 3,'disabled' : currentStep < 3 || currentStep == 5, 'completed': currentStep > 3}" v-on:click="backToSelectPlayers">
+                <li class="arrow_box" v-bind:class="{'current': currentStep == 3,'disabled' : !stepAlreadyCompleted(3) || currentStep == 5, 'completed': stepAlreadyCompleted(3)}" v-on:click="backToSelectPlayers">
                     <span class="number">3</span>
-                    <span class="desc" v-show="currentStep <= 3 && !editMode">
+                    <span class="desc" v-show="!stepAlreadyCompleted(3)">
                         Select players
                     </span>
-                    <div v-show="currentStep > 3 || editMode" style="display: none">
+                    <div v-show="stepAlreadyCompleted(3)" style="display: none">
                         <div class="value-desc"># of Players:</div>
                         <div class="value">{{ viewModel.Players.length }} players</div>
                     </div>
                 </li>
-                <li class="arrow_box disabled" v-bind:class="{'current': currentStep == 4,'disabled' : currentStep < 4 || currentStep == 5, 'completed': currentStep > 4}">
+                <li class="arrow_box" v-bind:class="{'current': currentStep == 4,'disabled' : !stepAlreadyCompleted(4) || currentStep == 5, 'completed': stepAlreadyCompleted(4)}">
                     <span class="number">4</span>
-                    <span class="desc" v-show="currentStep <= 4 && !editMode">
-                        Set game result
+                    <span class="desc" v-show="!stepAlreadyCompleted(4)">
+                        Set result
                     </span>
-                    <div v-show="currentStep > 4 || editMode" style="display: none">
+                    <div v-show="stepAlreadyCompleted(4)" style="display: none">
                         <div class="value-desc">Result:</div>
                         <div class="value">{{ viewModel.WinnerType | winnertype }}</div>
                     </div>
                 </li>
-                <li class="arrow_box @step5CurrentClass" v-bind:class="{'current': currentStep == 5,'disabled' : currentStep < 5}">
+                <li class="arrow_box" v-bind:class="{'current': currentStep == 5,'disabled' : !stepAlreadyCompleted(5)}">
                     <span class="number">5</span>
                     <span class="desc">
                         Summary
