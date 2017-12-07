@@ -6,6 +6,8 @@ using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
+using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
@@ -100,6 +102,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
         public void It_Returns_An_EditPlayedGameInfo_For_The_Specified_Played_Game()
         {
             //--arrange
+            var expectedWinnerType = WinnerTypes.TeamLoss;
+            _autoMocker.Get<IWinnerTypeCalculator>()
+                .Expect(mock => mock.CalculateWinnerType(Arg<IList<int>>.Is.Anything))
+                .Return(expectedWinnerType);
 
             //--act
             var result = _autoMocker.ClassUnderTest.GetInfoForEditingPlayedGame(_playedGameId, _currentUser);
@@ -130,6 +136,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
             secondPlayerRank.PlayerId.ShouldBe(_expectedPlayerGameResult2.PlayerId);
             secondPlayerRank.GameRank.ShouldBe(_expectedPlayerGameResult2.GameRank);
             secondPlayerRank.PointsScored.ShouldBe(_expectedPlayerGameResult2.PointsScored);
+
+            result.WinnerType.ShouldBe(expectedWinnerType);
         }
 
         [Test]

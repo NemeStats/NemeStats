@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using BusinessLogic.DataAccess;
-using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.PlayedGames;
-using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.PlayedGames;
@@ -45,7 +42,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		        GameDefinitionId = 3,
                 GameDefinitionName = "some game definition name",
 		        BoardGameGeekGameDefinitionId = 4,
-                PlayerRanks = new List<PlayerRankWithName>()
+                PlayerRanks = new List<PlayerRankWithName>(),
+                WinnerType = WinnerTypes.TeamLoss
             };
             AutoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetInfoForEditingPlayedGame(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
 		        .Return(_expectedEditPlayedGameInfo);
@@ -87,6 +85,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 	        editPlayedGameViewModel.GameDefinitionName.ShouldBe(_expectedEditPlayedGameInfo.GameDefinitionName);
 	        editPlayedGameViewModel.Notes.ShouldBe(_expectedEditPlayedGameInfo.Notes);
 	        editPlayedGameViewModel.PlayerRanks.ShouldBeSameAs(_expectedEditPlayedGameInfo.PlayerRanks);
-        }
+	        editPlayedGameViewModel.WinnerType.ShouldBe(_expectedEditPlayedGameInfo.WinnerType);
+	    }
 	}
 }

@@ -35,13 +35,15 @@ namespace BusinessLogic.Logic.PlayedGames
 {
     public class PlayedGameRetriever : IPlayedGameRetriever
     {
-        private readonly IDataContext dataContext;
-        private readonly IPlayerRetriever playerRetriever;
+        private readonly IDataContext _dataContext;
+        private readonly IPlayerRetriever _playerRetriever;
+        private readonly IWinnerTypeCalculator _winnerTypeCalculator;
 
-        public PlayedGameRetriever(IDataContext dataContext, IPlayerRetriever playerRetriever)
+        public PlayedGameRetriever(IDataContext dataContext, IPlayerRetriever playerRetriever, IWinnerTypeCalculator winnerTypeCalculator)
         {
-            this.dataContext = dataContext;
-            this.playerRetriever = playerRetriever;
+            _dataContext = dataContext;
+            _playerRetriever = playerRetriever;
+            _winnerTypeCalculator = winnerTypeCalculator;
         }
 
         public List<PlayedGame> GetRecentGames(int numberOfGames, int gamingGroupId, IDateRangeFilter dateRangeFilter = null)
@@ -51,7 +53,7 @@ namespace BusinessLogic.Logic.PlayedGames
                 dateRangeFilter = new BasicDateRangeFilter();
             }
 
-            List<PlayedGame> playedGames = dataContext.GetQueryable<PlayedGame>()
+            List<PlayedGame> playedGames = _dataContext.GetQueryable<PlayedGame>()
                 .Where(game => game.GamingGroupId == gamingGroupId
                             && game.DatePlayed >= dateRangeFilter.FromDate
                                               && game.DatePlayed <= dateRangeFilter.ToDate)
@@ -76,7 +78,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
         public PlayedGame GetPlayedGameDetails(int playedGameId)
         {
-            PlayedGame result = dataContext.GetQueryable<PlayedGame>()
+            PlayedGame result = _dataContext.GetQueryable<PlayedGame>()
                 .Where(playedGame => playedGame.Id == playedGameId)
                     .Include(playedGame => playedGame.GameDefinition)
                     .Include(playedGame => playedGame.GameDefinition.BoardGameGeekGameDefinition)
@@ -97,7 +99,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
         public List<PublicGameSummary> GetRecentPublicGames(RecentlyPlayedGamesFilter filter)
         {
-            var query = dataContext.GetQueryable<PlayedGame>()
+            var query = _dataContext.GetQueryable<PlayedGame>()
                 .Where(x => x.DatePlayed <= filter.MaxDate);
 
             if (filter.BoardGameGeekGameDefinitionId.HasValue)
@@ -140,7 +142,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
         public List<PlayedGameSearchResult> SearchPlayedGames(PlayedGameFilter playedGameFilter)
         {
-            var queryable = from playedGame in dataContext.GetQueryable<PlayedGame>()
+            var queryable = from playedGame in _dataContext.GetQueryable<PlayedGame>()
                 .OrderByDescending(game => game.DatePlayed)
                 .ThenByDescending(game => game.DateCreated)
                 select new PlayedGameSearchResult
@@ -270,7 +272,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
         public List<PlayedGameQuickStats> GetPlayedGamesQuickStats(List<int> playedGameIds)
         {
-            return dataContext.GetQueryable<PlayedGame>()
+            return _dataContext.GetQueryable<PlayedGame>()
                 .Where(pg => playedGameIds.Contains(pg.Id))
                 .Select(playedgame => new PlayedGameQuickStats
                 {
@@ -284,7 +286,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
         public EditPlayedGameInfo GetInfoForEditingPlayedGame(int playedGameId, ApplicationUser currentUser)
         {
-            var editPlayedGameInfo = dataContext.GetQueryable<PlayedGame>()
+            var editPlayedGameInfo = _dataContext.GetQueryable<PlayedGame>()
                 .Where(x => x.Id == playedGameId)
                 .Select(x => new EditPlayedGameInfo
                 {
@@ -310,7 +312,10 @@ namespace BusinessLogic.Logic.PlayedGames
                 throw new EntityDoesNotExistException<PlayedGame>(playedGameId);
             }
 
-            var playersModel = playerRetriever.GetPlayersForEditingPlayedGame(playedGameId, currentUser);
+            var gameRanks = editPlayedGameInfo.PlayerRanks.Select(x => x.GameRank).ToList();
+            editPlayedGameInfo.WinnerType = _winnerTypeCalculator.CalculateWinnerType(gameRanks);
+
+            var playersModel = _playerRetriever.GetPlayersForEditingPlayedGame(playedGameId, currentUser);
 
             editPlayedGameInfo.OtherPlayers = playersModel.OtherPlayers;
             editPlayedGameInfo.RecentPlayers = playersModel.RecentPlayers;

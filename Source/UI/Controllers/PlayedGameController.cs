@@ -264,10 +264,12 @@ namespace UI.Controllers
             viewModel.GameDefinitionId = playedGameInfo.GameDefinitionId;
             viewModel.GameDefinitionName = playedGameInfo.GameDefinitionName;
             viewModel.BoardGameGeekGameDefinitionId = playedGameInfo.BoardGameGeekGameDefinitionId;
+            viewModel.WinnerType = playedGameInfo.WinnerType;
 
             viewModel.PlayerRanks = playedGameInfo.PlayerRanks;
             
             return View(MVC.PlayedGame.Views.CreateOrEdit, viewModel);
+//TODO allow editing of a game immediately after saving. No need to disable if currentStep == 5
         }
 
 

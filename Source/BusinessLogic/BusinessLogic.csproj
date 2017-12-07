@@ -320,6 +320,8 @@
     <Compile Include="Logic\Email\EmailService.cs" />
     <Compile Include="Logic\GameDefinitions\CreateGameDefinitionComponent.cs" />
     <Compile Include="Logic\GameDefinitions\ICreateGameDefinitionComponent.cs" />
+    <Compile Include="Logic\PlayedGames\IWinnerTypeCalculator.cs" />
+    <Compile Include="Logic\PlayedGames\WinnerTypeCalculator.cs" />
     <Compile Include="Models\Players\HomePagePlayerSummary.cs" />
     <Compile Include="Logic\Players\IHomePagePlayerSummaryRetriever.cs" />
     <Compile Include="Logic\Players\HomePagePlayerSummaryRetriever.cs" />

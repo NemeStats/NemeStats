@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.Games.Validation;
+using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.Validation;
 using UI.Models.GameDefinitionModels;
@@ -37,5 +38,7 @@ namespace UI.Models.PlayedGame
         [DataType(DataType.Date)]
         [MaxDate]
         public DateTime DatePlayed { get; set; }
+
+        public WinnerTypes WinnerType { get; set; }
     }
 }
