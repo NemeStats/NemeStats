@@ -24,7 +24,7 @@
                     <span class="desc" v-show="!stepAlreadyCompleted(1)">
                         Set date
                     </span>
-                    <div v-show="stepAlreadyCompleted(1)" style="display: none">
+                    <div v-show="stepAlreadyCompleted(1)" style="display: none" v-bind:title="viewModel.Date | convertToLocalDate">
                         <div class="value-desc">Date:</div>
                         <div class="value">{{ viewModel.Date | convertToLocalDate }}</div>
                     </div>
@@ -34,7 +34,7 @@
                     <span class="desc" v-show="!stepAlreadyCompleted(2)">
                         Select game
                     </span>
-                    <div v-show="stepAlreadyCompleted(2)" style="display: none">
+                    <div v-show="stepAlreadyCompleted(2)" style="display: none" v-bind:title="viewModel.Game.Name">
                         <div class="value-desc">Game:</div>
                         <div class="value">{{ viewModel.Game.Name }}</div>
                     </div>
@@ -44,12 +44,12 @@
                     <span class="desc" v-show="!stepAlreadyCompleted(3)">
                         Select players
                     </span>
-                    <div v-show="stepAlreadyCompleted(3)" style="display: none">
+                    <div v-show="stepAlreadyCompleted(3)" style="display: none" v-bind:title="numberOfPlayersLabel">
                         <div class="value-desc"># of Players:</div>
-                        <div class="value">{{ viewModel.Players.length }} players</div>
+                        <div class="value">{{ numberOfPlayersLabel }}</div>
                     </div>
                 </li>
-                <li class="arrow_box" v-bind:class="{'current': currentStep == 4,'disabled' : !stepAlreadyCompleted(4) || currentStep == 5, 'completed': stepAlreadyCompleted(4)}">
+                <li class="arrow_box" v-bind:class="{'current': currentStep == 4,'disabled' : !stepAlreadyCompleted(4) || currentStep == 5, 'completed': stepAlreadyCompleted(4)}" v-on:click="backToSetResult">
                     <span class="number">4</span>
                     <span class="desc" v-show="!stepAlreadyCompleted(4)">
                         Set result
@@ -130,7 +130,7 @@
                                 <ul class="list-group recent-players">
                                     <li class="list-group-item checkbox" v-for="player in viewModel.RecentPlayers" v-bind:class="{'selected':player.Selected}">
                                         <label>
-                                            <input type="checkbox" v-model="player.Selected" @*@(Model.EditMode ? "checked" : "")*@> {{ player.PlayerName }}
+                                            <input type="checkbox" v-model="player.Selected"> {{ player.PlayerName }}
                                         </label>
                                     </li>
                                 </ul>

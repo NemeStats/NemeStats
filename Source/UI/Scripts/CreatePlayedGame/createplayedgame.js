@@ -170,7 +170,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
         if (container) {
 
             Vue.filter('winnertype',
-                function(value) {
+                function (value) {
                     if (value === parent._winnerTypes.PlayerWin) {
                         return "Ranked game";
                     }
@@ -261,6 +261,9 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                 computed: {
                     newPlayedGameUrl: function () {
                         return "/PlayedGame/Details/" + this.recentlyPlayedGameId;
+                    },
+                    numberOfPlayersLabel: function () {
+                        return this.viewModel.Players.length + " players";
                     }
                 },
                 methods: {
@@ -307,7 +310,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                             this.changeStep(parent._steps.SelectDate);
                         }
                     },
-                    backToSelectGame: function (event) {
+                    backToSelectGame: function () {
                         if (this.viewModel.Game.Id) {
                             parent.gaObject.trackGAEvent("PlayedGames", "Back", "BackToSelectGame", this.currentStep);
                             this.changeStep(parent._steps.SelectGame);
@@ -317,6 +320,12 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         if (this.viewModel.Players.length > 1 && this.viewModel.Game != null) {
                             parent.gaObject.trackGAEvent("PlayedGames", "Back", "BackToSelectPlayers", this.currentStep);
                             this.changeStep(parent._steps.SelectPlayers);
+                        }
+                    },
+                    backToSetResult: function () {
+                        if (this.viewModel.Players.length > 1 && this.viewModel.Game != null) {
+                            parent.gaObject.trackGAEvent("PlayedGames", "Back", "BackToSetResult", this.currentStep);
+                            this.changeStep(parent._steps.SetResult);
                         }
                     },
                     createNewPlayer: function () {
@@ -497,6 +506,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                                 if (response.success) {
                                     component.recentlyPlayedGameId = response.playedGameId;
                                     component.currentStep = parent._steps.Summary;
+                                    component.viewModel.CompletedSteps[parent._steps.SetResult] = true;
                                 } else {
 
                                     if (response.errors) {
