@@ -40,5 +40,6 @@ namespace UI.Models.PlayedGame
         public DateTime DatePlayed { get; set; }
 
         public WinnerTypes WinnerType { get; set; }
+        public GameResultTypes GameType { get; set; }
     }
 }

@@ -172,22 +172,22 @@
                         <h4 class="title">Select game type:</h4>
                         <div class="form-group">
                             <ul class="nav nav-tabs" role="tablist">
-                                <li role="presentation" class="active" v-on:click="setGameType(1)">
+                                <li role="presentation" v-bind:class="{ 'active': viewModel.GameType == 1 }" v-on:click="setGameType(1)">
                                     <a href="#ranked" role="tab" data-toggle="tab" class="hidden-xs">Ranked game</a>
                                     <a href="#ranked" role="tab" data-toggle="tab" class="hidden-sm hidden-md hidden-lg">Ranked</a>
                                 </li>
-                                <li role="presentation" v-on:click="setGameType(2)">
+                                <li role="presentation"  v-bind:class="{ 'active': viewModel.GameType == 2 }"  v-on:click="setGameType(2)">
                                     <a href="#scored" role="tab" data-toggle="tab" class="hidden-xs">Scored game</a>
                                     <a href="#scored" role="tab" data-toggle="tab" class="hidden-sm hidden-md hidden-lg">Scored</a>
                                 </li>
-                                <li role="presentation" v-on:click="setGameType(3)">
+                                <li role="presentation"  v-bind:class="{ 'active': viewModel.GameType == 3 }"  v-on:click="setGameType(3)">
                                     <a href="#cooperative" role="tab" data-toggle="tab" class="hidden-xs">Cooperative game</a>
                                     <a href="#cooperative" role="tab" data-toggle="tab" class="hidden-sm hidden-md hidden-lg">Cooperative</a>
                                 </li>
                             </ul>
 
                             <div class="tab-content">
-                                <div role="tabpanel" class="tab-pane active" id="ranked">
+                                <div role="tabpanel" class="tab-pane" v-bind:class="{ 'active': viewModel.GameType == 1 }" id="ranked">
                                     <ul class="list-group" id="ranked-game">
                                         <li class="list-group-item result-item" v-for="(player, index) in viewModel.Players" :key="player.PlayerId" v-bind:data-index="index">
 
@@ -201,7 +201,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <div role="tabpanel" class="tab-pane" id="scored">
+                                <div role="tabpanel" class="tab-pane" v-bind:class="{ 'active': viewModel.GameType == 2 }" id="scored">
                                     <ul class="list-group" id="scored-game">
                                         <li class="list-group-item result-item" v-for="(player, index) in viewModel.Players" :key="player.PlayerId" v-bind:data-index="index">
                                             <strong>{{ player.RankScored | scoredposition }}</strong> - 
@@ -213,7 +213,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <div role="tabpanel" class="tab-pane" id="cooperative">
+                                <div role="tabpanel" class="tab-pane" v-bind:class="{ 'active': viewModel.GameType == 3 }" id="cooperative">
                                     <div class="row">
                                         <div class="col-sm-offset-2 col-sm-4">
                                             <div class="btn-wrapper" data-container="body" data-toggle="popover" data-placement="left" data-content="Record a game where everyone won (e.g. you saved the world in Pandemic)" v-on:click="setGameResult(2)">

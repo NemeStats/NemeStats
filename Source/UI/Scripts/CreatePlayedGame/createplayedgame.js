@@ -236,6 +236,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                 this._viewModel.GameNotes = model.Notes;
                 this._viewModel.WinnerType = model.WinnerType;
                 this._viewModel.PlayedGameId = model.PlayedGameId;
+                this._viewModel.GameType = model.GameType;
 
                 this._viewModel.CompletedSteps[this._steps.SelectDate] = true;
                 this._viewModel.CompletedSteps[this._steps.SelectGame] = true;

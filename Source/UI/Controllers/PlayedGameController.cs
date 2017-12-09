@@ -265,11 +265,28 @@ namespace UI.Controllers
             viewModel.GameDefinitionName = playedGameInfo.GameDefinitionName;
             viewModel.BoardGameGeekGameDefinitionId = playedGameInfo.BoardGameGeekGameDefinitionId;
             viewModel.WinnerType = playedGameInfo.WinnerType;
+            viewModel.GameType = SetGameType(playedGameInfo.PlayerRanks);
 
             viewModel.PlayerRanks = playedGameInfo.PlayerRanks;
             
             return View(MVC.PlayedGame.Views.CreateOrEdit, viewModel);
 //TODO allow editing of a game immediately after saving. No need to disable if currentStep == 5
+        }
+
+        private GameResultTypes SetGameType(List<PlayerRankWithName> playerRanks)
+        {
+            if (playerRanks.All(x => x.PointsScored.HasValue) && playerRanks.Any(x => x.PointsScored != 0))
+            {
+                return GameResultTypes.Scored;
+            }
+
+            var firstRank = playerRanks.First().GameRank;
+            if (playerRanks.All(x => x.GameRank == firstRank))
+            {
+                return GameResultTypes.Cooperative;
+            }
+
+            return GameResultTypes.Ranked;
         }
 
 
