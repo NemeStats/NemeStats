@@ -194,7 +194,8 @@ namespace UI.Transformations
                 .ForMember(m => m.PlayedGameId, opt => opt.Ignore())
                 .ForMember(m => m.MostActivePlayers, opt => opt.Ignore())
                 .ForMember(m => m.RecentPlayedGames, opt => opt.Ignore())
-                .ForMember(m => m.MostPlayedGames, opt => opt.Ignore());
+                .ForMember(m => m.MostPlayedGames, opt => opt.Ignore())
+                .ForMember(m => m.GameType, opt => opt.Ignore());
 
             Mapper.CreateMap<PlayedGameQuickStats, PlayedGameQuickStatsViewModel>();
 
