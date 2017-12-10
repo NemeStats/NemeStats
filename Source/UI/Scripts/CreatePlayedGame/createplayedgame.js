@@ -318,7 +318,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         }
                     },
                     backToSelectPlayers: function () {
-                        if (this.viewModel.Players.length > 1 && this.viewModel.Game != null) {
+                        if (this.viewModel.Players.length > 0 && this.viewModel.Game != null) {
                             parent.gaObject.trackGAEvent("PlayedGames", "Back", "BackToSelectPlayers", this.currentStep);
                             this.changeStep(parent._steps.SelectPlayers);
                         }
@@ -331,19 +331,36 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                     },
                     createNewPlayer: function () {
                         if (this.newPlayerName) {
-                            var player = {
-                                PlayerName: this.newPlayerName,
-                                Selected: true
-                            };
-                            this.viewModel.RecentPlayers.push(player);
-                            $(".recent-players").addClass("animated pulse");
-                            $(".recent-players").one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-                                $(this).removeClass("animated pulse");
+                            var owner = this;
+                            $.ajax({
+                                type: "POST",
+                                url: "/player/save",
+                                data: { 'Name': this.newPlayerName },
+                                success: function (newPlayer) {
+                                    var player = {
+                                        PlayerName: owner.newPlayerName,
+                                        Id: newPlayer.Id,
+                                        Selected: true
+                                    };
+                                    owner.viewModel.RecentPlayers.push(player);
+                                    var recentPlayersElement = $(".recent-players");
+                                    recentPlayersElement.addClass("animated pulse");
+                                    recentPlayersElement.one("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend", function () {
+                                        $(this).removeClass("animated pulse");
+                                    });
+                                    owner.newPlayerName = "";
+
+                                    parent.gaObject.trackGAEvent("PlayedGames", "SetPlayers", "CreatedNewPlayer");
+                                },
+                                error: function (err) {
+                                    if (err.status === 409) {
+                                        alert("There is already a player with this name in your Gaming Group!");
+                                    } else {
+                                        alert("There was an unexpected error saving this Player. Please try again or report the issue if it persists.");
+                                    }
+                                },
+                                dataType: "json"
                             });
-                            this.newPlayerName = "";
-
-
-                            parent.gaObject.trackGAEvent("PlayedGames", "SetPlayers", "CreatedNewPlayer");
                         }
                     },
                     gotoSetGameResult: function () {

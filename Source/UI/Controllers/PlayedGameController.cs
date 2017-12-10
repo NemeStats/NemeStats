@@ -220,15 +220,6 @@ namespace UI.Controllers
                         }, currentUser).Id;
                     }
 
-                    foreach (var newPlayer in request.PlayerRanks.Where(p => !p.PlayerId.HasValue))
-                    {
-                        newPlayer.PlayerId = _playerSaver.CreatePlayer(new CreatePlayerRequest
-                        {
-                            GamingGroupId = currentUser.CurrentGamingGroupId,
-                            Name = newPlayer.PlayerName
-                        }, currentUser).Id;
-                    }
-
                     var newlyCompletedGame = _mapperFactory.GetMapper<SavePlayedGameRequest, NewlyCompletedGame>().Map(request);
                     newlyCompletedGame.TransactionSource = TransactionSource.WebApplication;
                     resultId =
