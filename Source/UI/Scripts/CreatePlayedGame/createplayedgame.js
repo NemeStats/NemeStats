@@ -41,8 +41,8 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
     init: function () {
         this.setupDatePicker();
         this.setupAutocomplete();;
-        this.setupPlayersDragAndDrop();
         this.configureViewModel();
+        this.setupPlayersDragAndDrop();
 
         this.gaObject = new window.Views.Shared.GoogleAnalytics();
     },
@@ -560,11 +560,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         location.reload();
                     }
                 }
-            });
-
-
-
+            });//--end creating Vue component
         }
-
     }
 };
