@@ -122,6 +122,7 @@ namespace Links
             public static readonly string nv_d3_min_js = Url("nv.d3.min.js");
         }
     
+        public static readonly string dragula_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/dragula.min.js") ? Url("dragula.min.js") : Url("dragula.js");
         public static readonly string dragula_min_js = Url("dragula.min.js");
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public static class GameDefinition {
@@ -434,6 +435,7 @@ namespace Links
             public static class Assets
             {
                 public const string _references_js = "~/Scripts/_references.js"; 
+                public const string dragula_js = "~/Scripts/dragula.js"; 
                 public const string dragula_min_js = "~/Scripts/dragula.min.js"; 
                 public const string handlebars_amd_js = "~/Scripts/handlebars.amd.js"; 
                 public const string handlebars_amd_min_js = "~/Scripts/handlebars.amd.min.js"; 

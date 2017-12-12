@@ -666,6 +666,7 @@
     <Content Include="robots.txt" />
     <Content Include="Scripts\d3\nv.d3.min.js" />
     <Content Include="Scripts\d3\css\nv.d3.css" />
+    <Content Include="Scripts\dragula.js" />
     <Content Include="Scripts\GameDefinition\createGameDefinition.js" />
     <Content Include="Scripts\GameDefinition\createGameDefinitionPartial.js" />
     <Content Include="Scripts\GameDefinition\gameDefinitionAutoComplete.js" />
