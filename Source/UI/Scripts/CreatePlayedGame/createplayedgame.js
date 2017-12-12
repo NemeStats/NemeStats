@@ -40,7 +40,7 @@ Views.PlayedGame.CreatePlayedGame = function () {
 Views.PlayedGame.CreatePlayedGame.prototype = {
     init: function () {
         this.setupDatePicker();
-        this.setupAutocomplete();;
+        this.setupAutocomplete();
         this.configureViewModel();
         this.setupPlayersDragAndDrop();
 
