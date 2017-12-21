@@ -50,6 +50,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
         var parent = this;
         var rankedGameContainer = document.getElementById("ranked-game");
         var list = dragula([rankedGameContainer]);
+//TODO IT  LOOKS LIKE DRAGGING AN ITEM SOMEHOW MESSES UP THE VUE BINDING WITH THE PLAYERS LIST. The data-index doesn't get updated
         list.on("dragend", function (el) {
             $.each($(el).parent().find("li"), function (i, player) {
                 var $player = $(player);
@@ -426,19 +427,20 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                             newRank = player.Rank + 1;
                         }
 
-                        var replacingPlayer = null;
-
                         this.viewModel.Players.forEach(function (p) {
                             if (p.Rank === newRank) {
-                                replacingPlayer = p;
+                                p.Rank = player.Rank;
                                 return;
                             }
                         });
 
-                        if (replacingPlayer) {
-                            replacingPlayer.Rank = player.Rank;
-                        }
                         player.Rank = newRank;
+
+                        this.viewModel.Players.sort(function(player1, player2) {
+                            if (player1.Rank < player2.Rank) return -1;
+                            if (player1.Rank > player2.Rank) return 1;
+                            return 0;
+                        });
                     },
                     isLastRank: function (player) {
                         var hasMoreRankThanOtherPlayer = false;
