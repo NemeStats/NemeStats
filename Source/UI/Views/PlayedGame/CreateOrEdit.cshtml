@@ -189,13 +189,13 @@
                             <div class="tab-content">
                                 <div role="tabpanel" class="tab-pane" v-bind:class="{ 'active': viewModel.GameType == 1 }" id="ranked">
                                     <ul class="list-group" id="ranked-game">
-                                        <li class="list-group-item result-item" v-for="(player, index) in viewModel.Players" :key="player.PlayerId" v-bind:data-index="index">
+                                        <li class="list-group-item result-item" v-for="(player, index) in orderedPlayers" :key="player.Id" :data-index="player.Id">
 
                                             <input type="number" class="form-control input-sm rank" v-model="player.Rank" number @@click="focus" />
                                             {{ player.Name }}
                                             <div class="result-float-right">
-                                                <button class="btn btn-default" id="btn-reducerank" v-on:click="changeRank(index, player,true)" tabindex="-1" :disabled="player.Rank === 1"><span class="fa fa-arrow-up"></span></button>
-                                                <button class="btn btn-default" id="btn-increaserank" v-on:click="changeRank(index, player,false)" tabindex="-1" :disabled="isLastRank(player)"><span class="fa fa-arrow-down"></span></button>
+                                                <button class="btn btn-default" id="btn-reducerank" v-on:click="changeRank(player,true)" tabindex="-1" :disabled="player.Rank === 1"><span class="fa fa-arrow-up"></span></button>
+                                                <button class="btn btn-default" id="btn-increaserank" v-on:click="changeRank(player,false)" tabindex="-1" :disabled="isLastRank(player)"><span class="fa fa-arrow-down"></span></button>
 
                                             </div>
                                         </li>

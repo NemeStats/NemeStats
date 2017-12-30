@@ -50,14 +50,13 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
         var parent = this;
         var rankedGameContainer = document.getElementById("ranked-game");
         var list = dragula([rankedGameContainer]);
-//TODO IT  LOOKS LIKE DRAGGING AN ITEM SOMEHOW MESSES UP THE VUE BINDING WITH THE PLAYERS LIST. The data-index doesn't get updated
+
         list.on("dragend", function (el) {
             $.each($(el).parent().find("li"), function (i, player) {
                 var $player = $(player);
-                var index = $player.data("index");
-                parent.component.$data.viewModel.Players[index].Rank = i + 1;
-
-                parent.gaObject.trackGAEvent("PlayedGames", "SetRank", "DragAndDrop", index);
+                var key = $player.data("index");
+                parent.component.setRank(key, i + 1);
+                parent.gaObject.trackGAEvent("PlayedGames", "SetRank", "DragAndDrop", key);
             });
         });
 
@@ -266,6 +265,13 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                     },
                     numberOfPlayersLabel: function () {
                         return this.viewModel.Players.length + " players";
+                    },
+                    orderedPlayers: function () {
+                        return this.viewModel.Players.sort(function (player1, player2) {
+                            if (player1.Rank < player2.Rank) return -1;
+                            if (player1.Rank > player2.Rank) return 1;
+                            return 0;
+                        });
                     }
                 },
                 methods: {
@@ -409,10 +415,20 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                     setGameType: function(gameType) {
                         this.viewModel.GameType = gameType;
                     },
-                    changeRank: function ($index, player, increase) {
+                    setRank: function (key, rank) {
+                        var owner = this;
+                        this.viewModel.Players.forEach(function (player, index) {
+                            if (player.Id == key) {
+                                player.Rank = rank;
+                                Vue.set(owner.viewModel.Players, index, player);
+                                return;
+                            }
+                        });                        
+                    },
+                    changeRank: function (player, increase) {
                         var newRank;
 
-                        var elementMoved = $("[data-index=" + $index + "]");
+                        var elementMoved = $("[data-index=" + player.Id + "]");
                         elementMoved.addClass("animated pulse");
                         elementMoved.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
                             $(this).removeClass("animated pulse");
@@ -436,11 +452,11 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 
                         player.Rank = newRank;
 
-                        this.viewModel.Players.sort(function(player1, player2) {
-                            if (player1.Rank < player2.Rank) return -1;
-                            if (player1.Rank > player2.Rank) return 1;
-                            return 0;
-                        });
+                        //this.viewModel.Players.sort(function(player1, player2) {
+                        //    if (player1.Rank < player2.Rank) return -1;
+                        //    if (player1.Rank > player2.Rank) return 1;
+                        //    return 0;
+                        //});
                     },
                     isLastRank: function (player) {
                         var hasMoreRankThanOtherPlayer = false;
