@@ -15,6 +15,7 @@
 
 #endregion LICENSE
 
+using System;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Users;
@@ -59,6 +60,7 @@ namespace UI.Controllers
         internal ITransformer transformer;
         internal ITopGamingGroupsRetriever topGamingGroupsRetriever;
         internal ISecuredEntityValidator securedEntityValidator;
+        internal IGamingGroupDeleter gamingGroupDeleter;
 
         public GamingGroupController(
             IGamingGroupSaver gamingGroupSaver,
@@ -72,7 +74,8 @@ namespace UI.Controllers
             IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder,
             ITransformer transformer, 
             ITopGamingGroupsRetriever topGamingGroupsRetriever, 
-            ISecuredEntityValidator securedEntityValidator)
+            ISecuredEntityValidator securedEntityValidator,
+            IGamingGroupDeleter gamingGroupDeleter)
         {
             this.gamingGroupSaver = gamingGroupSaver;
             this.gamingGroupRetriever = gamingGroupRetriever;
@@ -86,6 +89,7 @@ namespace UI.Controllers
             this.transformer = transformer;
             this.topGamingGroupsRetriever = topGamingGroupsRetriever;
             this.securedEntityValidator = securedEntityValidator;
+            this.gamingGroupDeleter = gamingGroupDeleter;
         }
 
         // GET: /GamingGroup
@@ -262,17 +266,11 @@ namespace UI.Controllers
         {
             if (string.IsNullOrWhiteSpace(gamingGroupName))
             {
-                return MakeRedirectResultToManageAccountPageWithMessage();
+                return MakeRedirectResultToManageAccountPageGamingGroupsTab();
             }
             gamingGroupSaver.CreateNewGamingGroup(gamingGroupName.Trim(), TransactionSource.WebApplication, currentUser);
 
             return RedirectToAction(MVC.GamingGroup.ActionNames.Details, new {id = currentUser.CurrentGamingGroupId } );
-        }
-
-        internal virtual RedirectResult MakeRedirectResultToManageAccountPageWithMessage()
-        {
-            return new RedirectResult(Url.Action(MVC.Account.ActionNames.Manage, MVC.Account.Name,
-                                          new {message = AccountController.ManageMessageId.EmptyGamingGroupName} ) + "#" + AccountController.GAMING_GROUPS_TAB_HASH_SUFFIX);
         }
 
         [HttpGet]
@@ -304,15 +302,27 @@ namespace UI.Controllers
             {
                 gamingGroupSaver.UpdatePublicGamingGroupDetails(request, currentUser);
                 
-                return MakeRedirectResultToManageAccountPageGamingGroupTab();
+                return MakeRedirectResultToManageAccountPageGamingGroupsTab();
             }
 
             return Edit(request.GamingGroupId, currentUser);
         }
 
-        internal virtual RedirectResult MakeRedirectResultToManageAccountPageGamingGroupTab()
+        [HttpPost]
+        [Authorize]
+        [UserContext(RequiresGamingGroup = false)]
+        public virtual ActionResult Delete(int gamingGroupId)
         {
-            return Redirect(Url.Action(MVC.Account.Manage()) + "#" + AccountController.GAMING_GROUPS_TAB_HASH_SUFFIX);
+            gamingGroupDeleter.DeleteGamingGroup(gamingGroupId);
+
+            return MakeRedirectResultToManageAccountPageGamingGroupsTab(AccountController.ManageMessageId.GamingGroupDeleted);
+        }
+
+        internal virtual RedirectResult MakeRedirectResultToManageAccountPageGamingGroupsTab(
+            AccountController.ManageMessageId? message = AccountController.ManageMessageId.EmptyGamingGroupName)
+        {
+            return new RedirectResult(Url.Action(MVC.Account.ActionNames.Manage, MVC.Account.Name,
+                                          new { message }) + "#" + AccountController.GAMING_GROUPS_TAB_HASH_SUFFIX);
         }
     }
 }

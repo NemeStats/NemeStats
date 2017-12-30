@@ -320,6 +320,8 @@
     <Compile Include="Logic\Email\EmailService.cs" />
     <Compile Include="Logic\GameDefinitions\CreateGameDefinitionComponent.cs" />
     <Compile Include="Logic\GameDefinitions\ICreateGameDefinitionComponent.cs" />
+    <Compile Include="Logic\GamingGroups\GamingGroupDeleter.cs" />
+    <Compile Include="Logic\GamingGroups\IGamingGroupDeleter.cs" />
     <Compile Include="Migrations\201710040027508_GamingGroup_Active_Flag.cs" />
     <Compile Include="Migrations\201710040027508_GamingGroup_Active_Flag.Designer.cs">
       <DependentUpon>201710040027508_GamingGroup_Active_Flag.cs</DependentUpon>

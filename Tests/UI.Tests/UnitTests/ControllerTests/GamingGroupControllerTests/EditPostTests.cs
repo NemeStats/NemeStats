@@ -13,7 +13,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         public void It_Updates_Gaming_Group_Public_Details_And_Redirects_Back_To_Gaming_Group_Listing()
         {
             var expectedResult = new RedirectResult("some url");
-            autoMocker.ClassUnderTest.Expect(mock => mock.MakeRedirectResultToManageAccountPageGamingGroupTab())
+            autoMocker.ClassUnderTest.Expect(mock => mock.MakeRedirectResultToManageAccountPageGamingGroupsTab())
                 .Return(expectedResult);
             var request = new GamingGroupEditRequest();
 
