@@ -195,6 +195,7 @@
     <Compile Include="DataAccess\Security\GenericSecuredEntityValidator.cs" />
     <Compile Include="DataAccess\Security\IGenericSecuredEntityValidator.cs" />
     <Compile Include="DataAccess\Security\ISecuredEntityValidator.cs" />
+    <Compile Include="DataAccess\Security\ISecuredEntityValidatorFactory.cs" />
     <Compile Include="DataAccess\Security\SecuredEntityValidator.cs" />
     <Compile Include="DataAccess\ISingleColumnTechnicalKey.cs" />
     <Compile Include="DataAccess\Repositories\IPlayerRepository.cs" />
