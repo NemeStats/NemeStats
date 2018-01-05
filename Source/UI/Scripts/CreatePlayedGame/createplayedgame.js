@@ -346,7 +346,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                                 success: function (newPlayer) {
                                     var player = {
                                         PlayerName: owner.newPlayerName,
-                                        Id: newPlayer.Id,
+                                        PlayerId: newPlayer.Id,
                                         Selected: true
                                     };
                                     owner.viewModel.RecentPlayers.push(player);
@@ -451,12 +451,6 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         });
 
                         player.Rank = newRank;
-
-                        //this.viewModel.Players.sort(function(player1, player2) {
-                        //    if (player1.Rank < player2.Rank) return -1;
-                        //    if (player1.Rank > player2.Rank) return 1;
-                        //    return 0;
-                        //});
                     },
                     isLastRank: function (player) {
                         var hasMoreRankThanOtherPlayer = false;
