@@ -5,9 +5,6 @@
 @{
     ViewBag.Title = "Record a Game";
     Layout = MVC.Shared.Views._BaseLayout;
-
-    var step1CurrentClass = !Model.EditMode ? "current" : "";
-    var step5CurrentClass = Model.EditMode ? "current" : "disabled";
 }
 
 <h2 class="page-header">@ViewBag.Title</h2>
@@ -22,47 +19,47 @@
     <div class="row">
         <div class="col-sm-3">
             <ul class="steps">
-                <li class="arrow_box @step1CurrentClass" v-bind:class="{'current': currentStep == 1, 'completed': currentStep > 1, 'disabled': currentStep == 5}" v-on:click="backToSelectDate">
+                <li class="arrow_box" v-bind:class="{'current': currentStep == 1,'completed': stepAlreadyCompleted(1), 'disabled': currentStep == 5}" v-on:click="backToSelectDate">
                     <span class="number">1</span>
-                    <span class="desc" v-show="currentStep <= 1">
+                    <span class="desc" v-show="!stepAlreadyCompleted(1)">
                         Set date
                     </span>
-                    <div v-show="currentStep > 1" style="display: none">
+                    <div v-show="stepAlreadyCompleted(1)" style="display: none" v-bind:title="viewModel.Date | convertToLocalDate">
                         <div class="value-desc">Date:</div>
-                        <div class="value">{{ viewModel.Date | moment "LL" }}</div>
+                        <div class="value">{{ viewModel.Date | convertToLocalDate }}</div>
                     </div>
                 </li>
-                <li class="arrow_box disabled" v-bind:class="{'current': currentStep == 2,'disabled' : currentStep < 2 || currentStep == 5, 'completed': currentStep > 2}" v-on:click="backToSelectGame">
+                <li class="arrow_box" v-bind:class="{'current': currentStep == 2,'disabled' : !stepAlreadyCompleted(2) || currentStep == 5, 'completed': stepAlreadyCompleted(2)}" v-on:click="backToSelectGame">
                     <span class="number">2</span>
-                    <span class="desc" v-show="currentStep <= 2">
+                    <span class="desc" v-show="!stepAlreadyCompleted(2)">
                         Select game
                     </span>
-                    <div v-show="currentStep > 2" style="display: none">
+                    <div v-show="stepAlreadyCompleted(2)" style="display: none" v-bind:title="viewModel.Game.Name">
                         <div class="value-desc">Game:</div>
                         <div class="value">{{ viewModel.Game.Name }}</div>
                     </div>
                 </li>
-                <li class="arrow_box disabled" v-bind:class="{'current': currentStep == 3,'disabled' : currentStep < 3 || currentStep == 5, 'completed': currentStep > 3}" v-on:click="backToSelectPlayers">
+                <li class="arrow_box" v-bind:class="{'current': currentStep == 3,'disabled' : !stepAlreadyCompleted(3) || currentStep == 5, 'completed': stepAlreadyCompleted(3)}" v-on:click="backToSelectPlayers">
                     <span class="number">3</span>
-                    <span class="desc" v-show="currentStep <= 3">
+                    <span class="desc" v-show="!stepAlreadyCompleted(3)">
                         Select players
                     </span>
-                    <div v-show="currentStep > 3" style="display: none">
+                    <div v-show="stepAlreadyCompleted(3)" style="display: none" v-bind:title="numberOfPlayersLabel">
                         <div class="value-desc"># of Players:</div>
-                        <div class="value">{{ viewModel.Players.length }} players</div>
+                        <div class="value">{{ numberOfPlayersLabel }}</div>
                     </div>
                 </li>
-                <li class="arrow_box disabled" v-bind:class="{'current': currentStep == 4,'disabled' : currentStep < 4 || currentStep == 5, 'completed': currentStep > 4}">
+                <li class="arrow_box" v-bind:class="{'current': currentStep == 4,'disabled' : !stepAlreadyCompleted(4) || currentStep == 5, 'completed': stepAlreadyCompleted(4)}" v-on:click="backToSetResult">
                     <span class="number">4</span>
-                    <span class="desc" v-show="currentStep <= 4">
-                        Set game result
+                    <span class="desc" v-show="!stepAlreadyCompleted(4)">
+                        Set result
                     </span>
-                    <div v-show="currentStep > 4" style="display: none">
+                    <div v-show="stepAlreadyCompleted(4)" style="display: none">
                         <div class="value-desc">Result:</div>
                         <div class="value">{{ viewModel.WinnerType | winnertype }}</div>
                     </div>
                 </li>
-                <li class="arrow_box @step5CurrentClass" v-bind:class="{'current': currentStep == 5,'disabled' : currentStep < 5}">
+                <li class="arrow_box" v-bind:class="{'current': currentStep == 5,'disabled' : true}">
                     <span class="number">5</span>
                     <span class="desc">
                         Summary
@@ -131,7 +128,7 @@
                             <div class="col-sm-6">
                                 <h4 class="title">Recent Players:</h4>
                                 <ul class="list-group recent-players">
-                                    <li class="list-group-item checkbox" v-for="player in viewModel.RecentPlayers | orderBy 'PlayerName'" v-bind:class="{'selected':player.Selected}">
+                                    <li class="list-group-item checkbox" v-for="player in viewModel.RecentPlayers" v-bind:class="{'selected':player.Selected}">
                                         <label>
                                             <input type="checkbox" v-model="player.Selected"> {{ player.PlayerName }}
                                         </label>
@@ -142,7 +139,7 @@
                             <div class="col-sm-6">
                                 <h4 class="title">Other Players:</h4>
                                 <ul class="list-group other-players">
-                                    <li class="list-group-item checkbox" v-for="player in viewModel.OtherPlayers | orderBy 'PlayerName'" v-bind:class="{'selected':player.Selected}">
+                                    <li class="list-group-item checkbox" v-for="player in viewModel.OtherPlayers" v-bind:class="{'selected':player.Selected}">
                                         <label>
                                             <input type="checkbox" v-model="player.Selected"> {{ player.PlayerName }}
                                         </label>
@@ -175,38 +172,38 @@
                         <h4 class="title">Select game type:</h4>
                         <div class="form-group">
                             <ul class="nav nav-tabs" role="tablist">
-                                <li role="presentation" class="active" v-on:click="setGameType(1)">
+                                <li role="presentation" v-bind:class="{ 'active': viewModel.GameType == 1 }" v-on:click="setGameType(1)">
                                     <a href="#ranked" role="tab" data-toggle="tab" class="hidden-xs">Ranked game</a>
                                     <a href="#ranked" role="tab" data-toggle="tab" class="hidden-sm hidden-md hidden-lg">Ranked</a>
                                 </li>
-                                <li role="presentation" v-on:click="setGameType(2)">
+                                <li role="presentation"  v-bind:class="{ 'active': viewModel.GameType == 2 }"  v-on:click="setGameType(2)">
                                     <a href="#scored" role="tab" data-toggle="tab" class="hidden-xs">Scored game</a>
                                     <a href="#scored" role="tab" data-toggle="tab" class="hidden-sm hidden-md hidden-lg">Scored</a>
                                 </li>
-                                <li role="presentation" v-on:click="setGameType(3)">
+                                <li role="presentation"  v-bind:class="{ 'active': viewModel.GameType == 3 }"  v-on:click="setGameType(3)">
                                     <a href="#cooperative" role="tab" data-toggle="tab" class="hidden-xs">Cooperative game</a>
                                     <a href="#cooperative" role="tab" data-toggle="tab" class="hidden-sm hidden-md hidden-lg">Cooperative</a>
                                 </li>
                             </ul>
 
                             <div class="tab-content">
-                                <div role="tabpanel" class="tab-pane active" id="ranked">
+                                <div role="tabpanel" class="tab-pane" v-bind:class="{ 'active': viewModel.GameType == 1 }" id="ranked">
                                     <ul class="list-group" id="ranked-game">
-                                        <li class="list-group-item result-item" v-for="player in viewModel.Players | orderBy 'Rank'" data-index="{{ $index }}">
+                                        <li class="list-group-item result-item" v-for="(player, index) in orderedPlayers" :key="player.Id" :data-index="player.Id">
 
                                             <input type="number" class="form-control input-sm rank" v-model="player.Rank" number @@click="focus" />
                                             {{ player.Name }}
                                             <div class="result-float-right">
-                                                <button class="btn btn-default" id="btn-reducerank" v-on:click="changeRank($index, player,true)" tabindex="-1" :disabled="player.Rank === 1"><span class="fa fa-arrow-up"></span></button>
-                                                <button class="btn btn-default" id="btn-increaserank" v-on:click="changeRank($index, player,false)" tabindex="-1" :disabled="isLastRank(player)"><span class="fa fa-arrow-down"></span></button>
+                                                <button class="btn btn-default" id="btn-reducerank" v-on:click="changeRank(player,true)" tabindex="-1" :disabled="player.Rank === 1"><span class="fa fa-arrow-up"></span></button>
+                                                <button class="btn btn-default" id="btn-increaserank" v-on:click="changeRank(player,false)" tabindex="-1" :disabled="isLastRank(player)"><span class="fa fa-arrow-down"></span></button>
 
                                             </div>
                                         </li>
                                     </ul>
                                 </div>
-                                <div role="tabpanel" class="tab-pane" id="scored">
+                                <div role="tabpanel" class="tab-pane" v-bind:class="{ 'active': viewModel.GameType == 2 }" id="scored">
                                     <ul class="list-group" id="scored-game">
-                                        <li class="list-group-item result-item" v-for="player in viewModel.Players | orderBy 'PointsScored' -1" data-index="{{ $index }}">
+                                        <li class="list-group-item result-item" v-for="(player, index) in viewModel.Players" :key="player.PlayerId" v-bind:data-index="index">
                                             <strong>{{ player.RankScored | scoredposition }}</strong> - 
                                             {{ player.Name }}
                                             <div class="result-float-right">
@@ -216,7 +213,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <div role="tabpanel" class="tab-pane" id="cooperative">
+                                <div role="tabpanel" class="tab-pane" v-bind:class="{ 'active': viewModel.GameType == 3 }" id="cooperative">
                                     <div class="row">
                                         <div class="col-sm-offset-2 col-sm-4">
                                             <div class="btn-wrapper" data-container="body" data-toggle="popover" data-placement="left" data-content="Record a game where everyone won (e.g. you saved the world in Pandemic)" v-on:click="setGameResult(2)">
@@ -248,7 +245,7 @@
                     <div class="content">
                         <h2 class="title">Played game recorded successfully</h2>
                         <div class="well">
-                            <h4 style="margin-bottom: 20px"><strong>{{ viewModel.Players.length }}</strong> players played <strong>{{ viewModel.Game.Name }}</strong> on <strong>{{ viewModel.Date | moment "LL" }}</strong></h4>
+                            <h4 style="margin-bottom: 20px"><strong>{{ viewModel.Players.length }}</strong> players played <strong>{{ viewModel.Game.Name }}</strong> on <strong>{{ viewModel.Date | convertToLocalDate }}</strong></h4>
 
                             <h4 class="title">What do you want to do next?</h4>
                             <div class="action-buttons">

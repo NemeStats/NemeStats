@@ -131,10 +131,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
                 PlayerRanks = playerRanks,
                 PlayedGameId = -1
             };
-            var expectedException = new EntityDoesNotExistException(typeof(PlayedGame), updatedGame.PlayedGameId);
+            var expectedException = new EntityDoesNotExistException<PlayedGame>(updatedGame.PlayedGameId);
 
             //--act
-            var actualException = Assert.Throws<EntityDoesNotExistException>(
+            var actualException = Assert.Throws<EntityDoesNotExistException<PlayedGame>>(
                 () => AutoMocker.ClassUnderTest.UpdatePlayedGame(updatedGame, TransactionSource.RestApi, CurrentUser));
 
             //--assert

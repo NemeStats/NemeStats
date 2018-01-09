@@ -65,10 +65,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
         {
             //--arrange
             int invalidBoardGameGeekGameDefinitionId = -100;
-            var expectedException = new EntityDoesNotExistException(typeof(BoardGameGeekGameDefinition), invalidBoardGameGeekGameDefinitionId);
+            var expectedException = new EntityDoesNotExistException<BoardGameGeekGameDefinition>(invalidBoardGameGeekGameDefinitionId);
 
             //--act
-            var exception = Assert.Throws<EntityDoesNotExistException>(() => _autoMocker.ClassUnderTest.GetFromSource(invalidBoardGameGeekGameDefinitionId));
+            var exception = Assert.Throws<EntityDoesNotExistException<BoardGameGeekGameDefinition>>(() => _autoMocker.ClassUnderTest.GetFromSource(invalidBoardGameGeekGameDefinitionId));
 
             //--assert
             exception.Message.ShouldBe(expectedException.Message);

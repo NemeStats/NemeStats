@@ -194,8 +194,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         public void ItThrowsAnEntityDoesNotExistExceptionIfThePlayerDoesNotExist()
         {
             const int invalidPlayerId = -1;
-            var expectedException = new EntityDoesNotExistException(typeof(Player), invalidPlayerId);
-            Exception actualException = Assert.Throws<EntityDoesNotExistException>(
+            var expectedException = new EntityDoesNotExistException<Player>(invalidPlayerId);
+            Exception actualException = Assert.Throws<EntityDoesNotExistException<Player>>(
                                                                             () => autoMocker.ClassUnderTest.GetPlayerDetails(
                                                                                 invalidPlayerId, 
                                                                                 0));

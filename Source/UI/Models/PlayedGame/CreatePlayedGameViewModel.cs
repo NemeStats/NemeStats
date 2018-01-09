@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.Games.Validation;
+using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.Validation;
 using UI.Models.GameDefinitionModels;
@@ -31,11 +32,14 @@ namespace UI.Models.PlayedGame
 
         [PlayerRankValidation]
         [Required]
-        public List<CreatePlayerRankRequest> PlayerRanks { get; set; }
+        public List<PlayerRankWithName> PlayerRanks { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
         [MaxDate]
         public DateTime DatePlayed { get; set; }
+
+        public WinnerTypes WinnerType { get; set; }
+        public GameResultTypes GameType { get; set; }
     }
 }

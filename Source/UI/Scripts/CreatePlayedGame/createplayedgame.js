@@ -40,9 +40,9 @@ Views.PlayedGame.CreatePlayedGame = function () {
 Views.PlayedGame.CreatePlayedGame.prototype = {
     init: function () {
         this.setupDatePicker();
-        this.setupAutocomplete();;
-        this.setupPlayersDragAndDrop();
+        this.setupAutocomplete();
         this.configureViewModel();
+        this.setupPlayersDragAndDrop();
 
         this.gaObject = new window.Views.Shared.GoogleAnalytics();
     },
@@ -50,13 +50,13 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
         var parent = this;
         var rankedGameContainer = document.getElementById("ranked-game");
         var list = dragula([rankedGameContainer]);
+
         list.on("dragend", function (el) {
             $.each($(el).parent().find("li"), function (i, player) {
                 var $player = $(player);
-                var index = $player.data("index");
-                parent.component.$data.viewModel.Players[index].Rank = i + 1;
-
-                parent.gaObject.trackGAEvent("PlayedGames", "SetRank", "DragAndDrop", index);
+                var key = $player.data("index");
+                parent.component.setRank(key, i + 1);
+                parent.gaObject.trackGAEvent("PlayedGames", "SetRank", "DragAndDrop", key);
             });
         });
 
@@ -169,29 +169,42 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
         var container = $(componentSelector);
         if (container) {
 
-            Vue.filter('winnertype', function (value) {
-                if (value === parent._winnerTypes.PlayerWin) {
-                    return "Ranked game";
-                }
-                if (value === parent._winnerTypes.TeamWin) {
-                    return "Everybody won";
-                }
-                if (value === parent._winnerTypes.TeamLoss) {
-                    return "Everybody lost";
-                }
-                return "";
-            });
+            Vue.filter('winnertype',
+                function (value) {
+                    if (value === parent._winnerTypes.PlayerWin) {
+                        return "Ranked game";
+                    }
+                    if (value === parent._winnerTypes.TeamWin) {
+                        return "Everybody won";
+                    }
+                    if (value === parent._winnerTypes.TeamLoss) {
+                        return "Everybody lost";
+                    }
+                    return "";
+                });
 
-            Vue.filter('scoredposition', function (rank) {
-                var s = ["th", "st", "nd", "rd"],
-                v = rank % 100;
-                return rank + (s[(v - 20) % 10] || s[v] || s[0]);
+            Vue.filter('scoredposition',
+                function(rank) {
+                    var s = ["th", "st", "nd", "rd"],
+                        v = rank % 100;
+                    return rank + (s[(v - 20) % 10] || s[v] || s[0]);
 
-            });
+                });
+
+            Vue.filter('convertToLocalDate',
+                function(isoDate) {
+                    return moment(isoDate).format("LL");
+                });
 
             var editMode = $(componentSelector).data("edit-mode");
             var model = $(componentSelector).data("model");
 
+            if (editMode) {
+                model.RecentPlayers.forEach(function(recentPlayer) {
+                    recentPlayer.Selected = true;
+                });
+            }
+            
             this._viewModel.RecentPlayers = model.RecentPlayers;
             this._viewModel.OtherPlayers = model.OtherPlayers;
 
@@ -201,8 +214,11 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                 this._viewModel.RecentPlayers.push(model.UserPlayer);
             }
 
+            this._viewModel.Game = {};
+            this._viewModel.CompletedSteps = {};
+
             if (editMode) {
-                this._viewModel.Date = moment(model.DatePlayed);
+                this._viewModel.Date = moment(model.DatePlayed).format("YYYY-MM-DD");
                 this._viewModel.Game = {
                     Id: model.GameDefinitionId,
                     BoardGameGeekGameDefinitionId: model.BoardGameGeekGameDefinitionId,
@@ -220,6 +236,13 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                 this._viewModel.GameNotes = model.Notes;
                 this._viewModel.WinnerType = model.WinnerType;
                 this._viewModel.PlayedGameId = model.PlayedGameId;
+                this._viewModel.GameType = model.GameType;
+
+                this._viewModel.CompletedSteps[this._steps.SelectDate] = true;
+                this._viewModel.CompletedSteps[this._steps.SelectGame] = true;
+                this._viewModel.CompletedSteps[this._steps.SelectPlayers] = true;
+                this._viewModel.CompletedSteps[this._steps.SetResult] = true;
+                this._viewModel.CompletedSteps[this._steps.Summary] = true;
             }
 
             this.component = new Vue({
@@ -239,28 +262,42 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                 computed: {
                     newPlayedGameUrl: function () {
                         return "/PlayedGame/Details/" + this.recentlyPlayedGameId;
+                    },
+                    numberOfPlayersLabel: function () {
+                        return this.viewModel.Players.length + " players";
+                    },
+                    orderedPlayers: function () {
+                        return this.viewModel.Players.sort(function (player1, player2) {
+                            if (player1.Rank < player2.Rank) return -1;
+                            if (player1.Rank > player2.Rank) return 1;
+                            return 0;
+                        });
                     }
                 },
                 methods: {
-                    changeStep : function(step) {
+                    stepAlreadyCompleted: function(step) {
+                        return this.viewModel.CompletedSteps[step];
+                    },
+                    changeStep: function (step) {
                         this.currentStep = step;
+                        this.viewModel.CompletedSteps[step - 1] = true;
                         window.scrollTo(0,0);
                     },
                     hideAlert: function () {
                         this.alertVisible = false;
                     },
                     setDateYesterday: function () {
-                        this.viewModel.Date = moment().add(-1,"days").startOf("day");
+                        this.viewModel.Date = moment().add(-1,"days").startOf("day").format("YYYY-MM-DD");
                         this.gotoSelectGame();
                     },
                     setDateToday: function () {
-                        this.viewModel.Date = moment().startOf("day");
+                        this.viewModel.Date = moment().startOf("day").format("YYYY-MM-DD");
                         this.gotoSelectGame();
                     },
                     gotoSelectGame: function () {
                         if (this.viewModel.Date) {
                             this.alertVisible = false;
-                            this.viewModel.Date = moment(this.viewModel.Date).startOf("day");
+                            this.viewModel.Date = moment(this.viewModel.Date).startOf("day").format("YYYY-MM-DD");
                             this.changeStep(parent._steps.SelectGame);
                         } else {
                             this.alertText = "You must set the played game or use the yesterday/today buttons.";
@@ -277,39 +314,60 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                     },
                     backToSelectDate: function () {
                         if (this.viewModel.Date) {
-                            this.viewModel.Date = this.viewModel.Date.format("YYYY-MM-DD");
                             parent.gaObject.trackGAEvent("PlayedGames", "Back", "BackToSelectDate", this.currentStep);
                             this.changeStep(parent._steps.SelectDate);
                         }
                     },
                     backToSelectGame: function () {
-                        if (this.viewModel.Game) {
-                            this.viewModel.Game = null;
+                        if (this.viewModel.Game.Id) {
                             parent.gaObject.trackGAEvent("PlayedGames", "Back", "BackToSelectGame", this.currentStep);
                             this.changeStep(parent._steps.SelectGame);
                         }
                     },
                     backToSelectPlayers: function () {
-                        if (this.viewModel.Players.length > 1 && this.viewModel.Game != null) {
+                        if (this.viewModel.Players.length > 0 && this.viewModel.Game != null) {
                             parent.gaObject.trackGAEvent("PlayedGames", "Back", "BackToSelectPlayers", this.currentStep);
                             this.changeStep(parent._steps.SelectPlayers);
                         }
                     },
+                    backToSetResult: function () {
+                        if (this.viewModel.Players.length > 1 && this.viewModel.Game != null) {
+                            parent.gaObject.trackGAEvent("PlayedGames", "Back", "BackToSetResult", this.currentStep);
+                            this.changeStep(parent._steps.SetResult);
+                        }
+                    },
                     createNewPlayer: function () {
                         if (this.newPlayerName) {
-                            var player = {
-                                PlayerName: this.newPlayerName,
-                                Selected: true
-                            };
-                            this.viewModel.RecentPlayers.push(player);
-                            $(".recent-players").addClass("animated pulse");
-                            $(".recent-players").one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-                                $(this).removeClass("animated pulse");
+                            var owner = this;
+                            $.ajax({
+                                type: "POST",
+                                url: "/player/save",
+                                data: { 'Name': this.newPlayerName },
+                                success: function (newPlayer) {
+                                    var player = {
+                                        PlayerName: owner.newPlayerName,
+                                        PlayerId: newPlayer.Id,
+                                        Selected: true
+                                    };
+                                    owner.viewModel.RecentPlayers.push(player);
+                                    var recentPlayersElement = $(".recent-players");
+                                    recentPlayersElement.addClass("animated pulse");
+                                    recentPlayersElement.one("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend", function () {
+                                        $(this).removeClass("animated pulse");
+                                    });
+                                    owner.newPlayerName = "";
+
+                                    parent.gaObject.trackGAEvent("PlayedGames", "SetPlayers", "CreatedNewPlayer");
+                                },
+                                error: function (err) {
+                                    if (err.status === 409) {
+                                        alert("There is already a player with this name in your Gaming Group!");
+                                    } else {
+                                        alert("There was an unexpected error saving this Player. Please try again or report the issue if it persists.");
+                                    }
+                                },
+                                dataType: "json"
                             });
-                            this.newPlayerName = "";
-
-
-                            parent.gaObject.trackGAEvent("PlayedGames", "SetPlayers", "CreatedNewPlayer");
                         }
                     },
                     gotoSetGameResult: function () {
@@ -357,10 +415,20 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                     setGameType: function(gameType) {
                         this.viewModel.GameType = gameType;
                     },
-                    changeRank: function ($index, player, increase) {
+                    setRank: function (key, rank) {
+                        var owner = this;
+                        this.viewModel.Players.forEach(function (player, index) {
+                            if (player.Id == key) {
+                                player.Rank = rank;
+                                Vue.set(owner.viewModel.Players, index, player);
+                                return;
+                            }
+                        });                        
+                    },
+                    changeRank: function (player, increase) {
                         var newRank;
 
-                        var elementMoved = $("[data-index=" + $index + "]");
+                        var elementMoved = $("[data-index=" + player.Id + "]");
                         elementMoved.addClass("animated pulse");
                         elementMoved.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
                             $(this).removeClass("animated pulse");
@@ -375,18 +443,13 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                             newRank = player.Rank + 1;
                         }
 
-                        var replacingPlayer = null;
-
                         this.viewModel.Players.forEach(function (p) {
                             if (p.Rank === newRank) {
-                                replacingPlayer = p;
+                                p.Rank = player.Rank;
                                 return;
                             }
                         });
 
-                        if (replacingPlayer) {
-                            replacingPlayer.Rank = player.Rank;
-                        }
                         player.Rank = newRank;
                     },
                     isLastRank: function (player) {
@@ -439,7 +502,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                             GameDefinitionName: this.viewModel.Game.Name,
                             BoardGameGeekGameDefinitionId: this.viewModel.Game.BoardGameGeekGameDefinitionId,
                             Notes: this.viewModel.GameNotes,
-                            DatePlayed: this.viewModel.Date.toISOString(),
+                            DatePlayed: this.viewModel.Date,
                             WinnerType: this.viewModel.WinnerType,
                             PlayerRanks: [],
                             PlayedGameId: this.viewModel.PlayedGameId,
@@ -473,6 +536,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                                 if (response.success) {
                                     component.recentlyPlayedGameId = response.playedGameId;
                                     component.currentStep = parent._steps.Summary;
+                                    component.viewModel.CompletedSteps[parent._steps.SetResult] = true;
                                 } else {
 
                                     if (response.errors) {
@@ -508,11 +572,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         location.reload();
                     }
                 }
-            });
-
-
-
+            });//--end creating Vue component
         }
-
     }
 };
