@@ -16,8 +16,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using System.Linq;
-
 namespace BusinessLogic.Models.PlayedGames
 {
     public enum WinnerTypes

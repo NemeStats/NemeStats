@@ -95,7 +95,8 @@ namespace UI.Transformations
                   .ForMember(x => x.GameDurationBonusNemePoints, opt => opt.MapFrom(src => src.NemePointsSummary.GameDurationBonusNemePoints))
                   .ForMember(x => x.WeightBonusNemePoints, opt => opt.MapFrom(src => src.NemePointsSummary.WeightBonusNemePoints))
                   .ForMember(x => x.TotalPoints, opt => opt.MapFrom(src => src.NemePointsSummary.TotalPoints));
-            Mapper.CreateMap<PlayerQuickStats, PlayerQuickStatsViewModel>(MemberList.Destination);
+            Mapper.CreateMap<PlayerQuickStats, PlayerQuickStatsViewModel>(MemberList.Destination)
+                .ForMember(m => m.LastGamingGroupPlayedGame, opt => opt.Ignore());
             Mapper.CreateMap<NemePointsSummary, NemePointsSummaryViewModel>(MemberList.Destination)
                   .ConstructUsing(x => new NemePointsSummaryViewModel(x.BaseNemePoints, x.GameDurationBonusNemePoints, x.WeightBonusNemePoints));
             Mapper.CreateMap<TrendingGame, TrendingGameViewModel>(MemberList.Destination);
@@ -187,6 +188,21 @@ namespace UI.Transformations
             Mapper.CreateMap<GamingGroupStats, GamingGroupStatsViewModel>();
 
             Mapper.CreateMap<BasicUserInfo, BasicUserInfoViewModel>();
+
+            Mapper.CreateMap<EditPlayedGameInfo, EditPlayedGameViewModel>()
+                .ForMember(m => m.EditMode, opt => opt.Ignore())
+                .ForMember(m => m.PlayedGameId, opt => opt.Ignore())
+                .ForMember(m => m.MostActivePlayers, opt => opt.Ignore())
+                .ForMember(m => m.RecentPlayedGames, opt => opt.Ignore())
+                .ForMember(m => m.MostPlayedGames, opt => opt.Ignore())
+                .ForMember(m => m.GameType, opt => opt.Ignore());
+
+            Mapper.CreateMap<PlayedGameQuickStats, PlayedGameQuickStatsViewModel>();
+
+            Mapper.CreateMap<PlayerQuickStats, HomePagePlayerSummary>()
+                .ForMember(m => m.LastGamingGroupPlayedGame, opt => opt.Ignore());
+
+            Mapper.CreateMap<HomePagePlayerSummary, PlayerQuickStatsViewModel>();
         }
     }
 }

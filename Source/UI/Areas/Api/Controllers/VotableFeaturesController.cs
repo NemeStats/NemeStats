@@ -47,7 +47,7 @@ namespace UI.Areas.Api.Controllers
                 VotableFeature votableFeature = votableFeatureRetriever.RetrieveVotableFeature(id);
                 return Mapper.Map<VotableFeature, VotableFeatureViewModel>(votableFeature);
             }
-            catch (EntityDoesNotExistException)
+            catch (EntityDoesNotExistException<VotableFeature>)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
@@ -60,7 +60,7 @@ namespace UI.Areas.Api.Controllers
             {
                 votableFeatureVoter.CastVote(featureVote.VotableFeatureId, featureVote.VoteUp);
             }
-            catch (EntityDoesNotExistException)
+            catch (EntityDoesNotExistException<VotableFeature>)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }

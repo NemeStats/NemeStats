@@ -27,17 +27,23 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using BusinessLogic.Logic.BoardGameGeek;
+using BusinessLogic.Logic.Players;
+using BusinessLogic.Models.User;
 using BusinessLogic.Models.Utility;
 
 namespace BusinessLogic.Logic.PlayedGames
 {
     public class PlayedGameRetriever : IPlayedGameRetriever
     {
-        private readonly IDataContext dataContext;
+        private readonly IDataContext _dataContext;
+        private readonly IPlayerRetriever _playerRetriever;
+        private readonly IWinnerTypeCalculator _winnerTypeCalculator;
 
-        public PlayedGameRetriever(IDataContext dataContext)
+        public PlayedGameRetriever(IDataContext dataContext, IPlayerRetriever playerRetriever, IWinnerTypeCalculator winnerTypeCalculator)
         {
-            this.dataContext = dataContext;
+            _dataContext = dataContext;
+            _playerRetriever = playerRetriever;
+            _winnerTypeCalculator = winnerTypeCalculator;
         }
 
         public List<PlayedGame> GetRecentGames(int numberOfGames, int gamingGroupId, IDateRangeFilter dateRangeFilter = null)
@@ -47,7 +53,7 @@ namespace BusinessLogic.Logic.PlayedGames
                 dateRangeFilter = new BasicDateRangeFilter();
             }
 
-            List<PlayedGame> playedGames = dataContext.GetQueryable<PlayedGame>()
+            List<PlayedGame> playedGames = _dataContext.GetQueryable<PlayedGame>()
                 .Where(game => game.GamingGroupId == gamingGroupId
                             && game.DatePlayed >= dateRangeFilter.FromDate
                                               && game.DatePlayed <= dateRangeFilter.ToDate)
@@ -72,7 +78,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
         public PlayedGame GetPlayedGameDetails(int playedGameId)
         {
-            PlayedGame result = dataContext.GetQueryable<PlayedGame>()
+            PlayedGame result = _dataContext.GetQueryable<PlayedGame>()
                 .Where(playedGame => playedGame.Id == playedGameId)
                     .Include(playedGame => playedGame.GameDefinition)
                     .Include(playedGame => playedGame.GameDefinition.BoardGameGeekGameDefinition)
@@ -83,7 +89,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
             if (result == null)
             {
-                throw new EntityDoesNotExistException(typeof(PlayedGame), playedGameId);
+                throw new EntityDoesNotExistException<PlayedGame>(playedGameId);
             }
 
             result.PlayerGameResults = result.PlayerGameResults.OrderBy(playerGameResult => playerGameResult.GameRank).ToList();
@@ -93,7 +99,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
         public List<PublicGameSummary> GetRecentPublicGames(RecentlyPlayedGamesFilter filter)
         {
-            var query = dataContext.GetQueryable<PlayedGame>()
+            var query = _dataContext.GetQueryable<PlayedGame>()
                 .Where(x => x.DatePlayed <= filter.MaxDate);
 
             if (filter.BoardGameGeekGameDefinitionId.HasValue)
@@ -136,7 +142,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
         public List<PlayedGameSearchResult> SearchPlayedGames(PlayedGameFilter playedGameFilter)
         {
-            var queryable = from playedGame in dataContext.GetQueryable<PlayedGame>()
+            var queryable = from playedGame in _dataContext.GetQueryable<PlayedGame>()
                 .OrderByDescending(game => game.DatePlayed)
                 .ThenByDescending(game => game.DateCreated)
                 select new PlayedGameSearchResult
@@ -266,7 +272,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
         public List<PlayedGameQuickStats> GetPlayedGamesQuickStats(List<int> playedGameIds)
         {
-            return dataContext.GetQueryable<PlayedGame>()
+            return _dataContext.GetQueryable<PlayedGame>()
                 .Where(pg => playedGameIds.Contains(pg.Id))
                 .Select(playedgame => new PlayedGameQuickStats
                 {
@@ -276,7 +282,46 @@ namespace BusinessLogic.Logic.PlayedGames
                     PlayedGameId = playedgame.Id,
                     ThumbnailImageUrl = playedgame.GameDefinition.BoardGameGeekGameDefinition.Thumbnail,
                 }).ToList();
+        }
 
+        public EditPlayedGameInfo GetInfoForEditingPlayedGame(int playedGameId, ApplicationUser currentUser)
+        {
+            var editPlayedGameInfo = _dataContext.GetQueryable<PlayedGame>()
+                .Where(x => x.Id == playedGameId)
+                .Select(x => new EditPlayedGameInfo
+                {
+                    DatePlayed = x.DatePlayed,
+                    GameDefinitionId = x.GameDefinitionId,
+                    Notes = x.Notes,
+                    BoardGameGeekGameDefinitionId = x.GameDefinition.BoardGameGeekGameDefinitionId,
+                    GameDefinitionName = x.GameDefinition.Name,
+                    PlayerRanks = x.PlayerGameResults.Select(y =>  new PlayerRankWithName
+                    {
+                        PlayerId = y.PlayerId,
+                        PlayerName = y.Player.Name,
+                        GameRank = y.GameRank,
+                        PointsScored = y.PointsScored
+                    })
+                    .OrderBy(y => y.GameRank)
+                    .ThenBy(y => y.PlayerName)
+                    .ToList()
+                }).FirstOrDefault();
+
+            if (editPlayedGameInfo == null)
+            {
+                throw new EntityDoesNotExistException<PlayedGame>(playedGameId);
+            }
+
+            var gameRanks = editPlayedGameInfo.PlayerRanks.Select(x => x.GameRank).ToList();
+            editPlayedGameInfo.WinnerType = _winnerTypeCalculator.CalculateWinnerType(gameRanks);
+
+            var playersModel = _playerRetriever.GetPlayersForEditingPlayedGame(playedGameId, currentUser);
+
+            editPlayedGameInfo.OtherPlayers = playersModel.OtherPlayers;
+            editPlayedGameInfo.RecentPlayers = playersModel.RecentPlayers;
+            editPlayedGameInfo.UserPlayer = playersModel.UserPlayer;
+
+            return editPlayedGameInfo;
         }
     }
 }

@@ -321,6 +321,12 @@
     <Compile Include="Logic\Email\EmailService.cs" />
     <Compile Include="Logic\GameDefinitions\CreateGameDefinitionComponent.cs" />
     <Compile Include="Logic\GameDefinitions\ICreateGameDefinitionComponent.cs" />
+    <Compile Include="Logic\PlayedGames\IWinnerTypeCalculator.cs" />
+    <Compile Include="Logic\PlayedGames\WinnerTypeCalculator.cs" />
+    <Compile Include="Models\PlayedGames\GameResultTypesEnum.cs" />
+    <Compile Include="Models\Players\HomePagePlayerSummary.cs" />
+    <Compile Include="Logic\Players\IHomePagePlayerSummaryRetriever.cs" />
+    <Compile Include="Logic\Players\HomePagePlayerSummaryRetriever.cs" />
     <Compile Include="Logic\GamingGroups\GamingGroupDeleter.cs" />
     <Compile Include="Logic\GamingGroups\IGamingGroupDeleter.cs" />
     <Compile Include="Migrations\201710040027508_GamingGroup_Active_Flag.cs" />
@@ -496,6 +502,7 @@
     <Compile Include="Models\Games\TrendingGame.cs" />
     <Compile Include="Logic\Points\IWeightTierCalculator.cs" />
     <Compile Include="Models\PlayedGames\ApplicationLinkage.cs" />
+    <Compile Include="Models\PlayedGames\EditPlayedGameInfo.cs" />
     <Compile Include="Models\PlayedGames\RecentlyPlayedGamesFilter.cs" />
     <Compile Include="Models\PlayerAchievement.cs" />
     <Compile Include="Models\Games\TrendingGamesRequest.cs" />

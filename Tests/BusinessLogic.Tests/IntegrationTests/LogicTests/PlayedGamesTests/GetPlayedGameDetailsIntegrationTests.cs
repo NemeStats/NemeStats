@@ -71,9 +71,9 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
         public void ItThrowsAnEntityDoesNotExistExceptionIfTheIdIsInvalid()
         {
             var invalidId = -1;
-            var expectedException = new EntityDoesNotExistException(typeof(PlayedGame), invalidId);
+            var expectedException = new EntityDoesNotExistException<PlayedGame>(invalidId);
 
-            Exception actualException = Assert.Throws<EntityDoesNotExistException>(() => _playedGameRetriever.GetPlayedGameDetails(invalidId));
+            Exception actualException = Assert.Throws<EntityDoesNotExistException<PlayedGame>>(() => _playedGameRetriever.GetPlayedGameDetails(invalidId));
 
             Assert.That(expectedException.Message, Is.EqualTo(actualException.Message));
         }

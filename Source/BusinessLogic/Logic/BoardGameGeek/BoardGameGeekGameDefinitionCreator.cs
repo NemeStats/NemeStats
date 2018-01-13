@@ -29,7 +29,7 @@ namespace BusinessLogic.Logic.BoardGameGeek
                     return existingRecord;
                 }
             }
-            catch (EntityDoesNotExistException)
+            catch (EntityDoesNotExistException<BoardGameGeekGameDefinition>)
             {
                 //this is OK, just means we need to create a new one
             }
