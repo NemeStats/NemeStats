@@ -19,7 +19,7 @@
     <div class="row">
         <div class="col-sm-3">
             <ul class="steps">
-                <li class="arrow_box" v-bind:class="{'current': currentStep == 1,'completed': stepAlreadyCompleted(1), 'disabled': currentStep == 5}" v-on:click="backToSelectDate">
+                <li class="arrow_box" v-bind:class="{'current': currentStep == 1,'completed': stepAlreadyCompleted(1), 'disabled': currentStep == 5}" v-on:click="backToSelectDate(); recalculateSelectedPlayers();">
                     <span class="number">1</span>
                     <span class="desc" v-show="!stepAlreadyCompleted(1)">
                         Set date
@@ -29,7 +29,7 @@
                         <div class="value">{{ viewModel.Date | convertToLocalDate }}</div>
                     </div>
                 </li>
-                <li class="arrow_box" v-bind:class="{'current': currentStep == 2,'disabled' : !stepAlreadyCompleted(2) || currentStep == 5, 'completed': stepAlreadyCompleted(2)}" v-on:click="backToSelectGame">
+                <li class="arrow_box" v-bind:class="{'current': currentStep == 2,'disabled' : !stepAlreadyCompleted(2) || currentStep == 5, 'completed': stepAlreadyCompleted(2)}" v-on:click="backToSelectGame(); recalculateSelectedPlayers();">
                     <span class="number">2</span>
                     <span class="desc" v-show="!stepAlreadyCompleted(2)">
                         Select game
@@ -49,7 +49,7 @@
                         <div class="value">{{ numberOfPlayersLabel }}</div>
                     </div>
                 </li>
-                <li class="arrow_box" v-bind:class="{'current': currentStep == 4,'disabled' : !stepAlreadyCompleted(4) || currentStep == 5, 'completed': stepAlreadyCompleted(4)}" v-on:click="backToSetResult">
+                <li class="arrow_box" v-bind:class="{'current': currentStep == 4,'disabled' : !stepAlreadyCompleted(4) || currentStep == 5, 'completed': stepAlreadyCompleted(4)}" v-on:click="backToSetResult(); ; recalculateSelectedPlayers();">
                     <span class="number">4</span>
                     <span class="desc" v-show="!stepAlreadyCompleted(4)">
                         Set result

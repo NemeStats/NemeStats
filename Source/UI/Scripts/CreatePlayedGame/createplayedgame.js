@@ -370,25 +370,25 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                             });
                         }
                     },
-                    gotoSetGameResult: function () {
+                    recalculateSelectedPlayers: function() {
                         var _this = this;
 
                         this.viewModel.Players = [];
                         this.alertText = "";
                         this.alertVisible = false;
 
-                        var i = 1;
+                        var numberOfSelectedPlayers = 1;
 
-                        this.viewModel.RecentPlayers.forEach(function(player) {
+                        this.viewModel.RecentPlayers.forEach(function (player) {
                             if (player.Selected) {
                                 _this.viewModel.Players.push({
                                     Id: player.PlayerId,
                                     Name: player.PlayerName,
-                                    Rank: i,
+                                    Rank: numberOfSelectedPlayers,
                                     PointsScored: 0,
                                     RankScored: 1
                                 });
-                                i++;
+                                numberOfSelectedPlayers++;
                             }
                         });
 
@@ -397,15 +397,20 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                                 _this.viewModel.Players.push({
                                     Id: player.PlayerId,
                                     Name: player.PlayerName,
-                                    Rank: i,
+                                    Rank: numberOfSelectedPlayers,
                                     PointsScored: 0,
                                     RankScored: 1
                                 });
-                                i++;
+                                numberOfSelectedPlayers++;
                             }
                         });
 
-                        if (i > 1) {
+                        return numberOfSelectedPlayers;
+                    },
+                    gotoSetGameResult: function () {
+                        var numberOfSelectedPlayers = this.recalculateSelectedPlayers();
+
+                        if (numberOfSelectedPlayers > 1) {
                             this.changeStep(parent._steps.SetResult);
                         } else {
                             this.alertText = "You must select at least 2 players to continue.";
