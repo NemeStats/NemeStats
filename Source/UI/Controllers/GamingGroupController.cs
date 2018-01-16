@@ -60,7 +60,7 @@ namespace UI.Controllers
         internal ITransformer transformer;
         internal ITopGamingGroupsRetriever topGamingGroupsRetriever;
         internal ISecuredEntityValidator securedEntityValidator;
-        internal IGamingGroupDeleter gamingGroupDeleter;
+        internal IDeleteGamingGroupComponent deleteGamingGroupComponent;
 
         public GamingGroupController(
             IGamingGroupSaver gamingGroupSaver,
@@ -75,7 +75,7 @@ namespace UI.Controllers
             ITransformer transformer, 
             ITopGamingGroupsRetriever topGamingGroupsRetriever, 
             ISecuredEntityValidator securedEntityValidator,
-            IGamingGroupDeleter gamingGroupDeleter)
+            IDeleteGamingGroupComponent deleteGamingGroupComponent)
         {
             this.gamingGroupSaver = gamingGroupSaver;
             this.gamingGroupRetriever = gamingGroupRetriever;
@@ -89,7 +89,7 @@ namespace UI.Controllers
             this.transformer = transformer;
             this.topGamingGroupsRetriever = topGamingGroupsRetriever;
             this.securedEntityValidator = securedEntityValidator;
-            this.gamingGroupDeleter = gamingGroupDeleter;
+            this.deleteGamingGroupComponent = deleteGamingGroupComponent;
         }
 
         // GET: /GamingGroup
@@ -311,9 +311,9 @@ namespace UI.Controllers
         [HttpPost]
         [Authorize]
         [UserContext(RequiresGamingGroup = false)]
-        public virtual ActionResult Delete(int gamingGroupId)
+        public virtual ActionResult Delete(int gamingGroupId, ApplicationUser currentUser)
         {
-            gamingGroupDeleter.DeleteGamingGroup(gamingGroupId);
+            deleteGamingGroupComponent.Execute(gamingGroupId, currentUser);
 
             return MakeRedirectResultToManageAccountPageGamingGroupsTab(AccountController.ManageMessageId.GamingGroupDeleted);
         }

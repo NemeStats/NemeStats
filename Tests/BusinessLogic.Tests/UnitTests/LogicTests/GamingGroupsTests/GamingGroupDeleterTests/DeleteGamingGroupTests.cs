@@ -14,7 +14,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
     [TestFixture]
     public class DeleteGamingGroupTests
     {
-        private RhinoAutoMocker<GamingGroupDeleter> _autoMocker;
+        private RhinoAutoMocker<DeleteGamingGroupComponent> _autoMocker;
         private IDataContext _dataContextMock;
         private ApplicationUser _currentUser;
         private int _gamingGroupId = 1;
@@ -23,7 +23,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [SetUp]
         public void SetUp()
         {
-            _autoMocker = new RhinoAutoMocker<GamingGroupDeleter>();
+            _autoMocker = new RhinoAutoMocker<DeleteGamingGroupComponent>();
             _autoMocker.PartialMockTheClassUnderTest();
 
             _dataContextMock = MockRepository.GenerateMock<IDataContext>();

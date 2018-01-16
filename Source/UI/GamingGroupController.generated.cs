@@ -282,6 +282,7 @@ namespace UI.Controllers
         public class ActionParamsClass_Delete
         {
             public readonly string gamingGroupId = "gamingGroupId";
+            public readonly string currentUser = "currentUser";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -487,14 +488,15 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void DeleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int gamingGroupId);
+        partial void DeleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int gamingGroupId, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Delete(int gamingGroupId)
+        public override System.Web.Mvc.ActionResult Delete(int gamingGroupId, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamingGroupId", gamingGroupId);
-            DeleteOverride(callInfo, gamingGroupId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            DeleteOverride(callInfo, gamingGroupId, currentUser);
             return callInfo;
         }
 

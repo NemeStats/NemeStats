@@ -23,10 +23,10 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
                 .Return(expectedRedirectResult);
 
             //--act
-            var result = autoMocker.ClassUnderTest.Delete(gamingGroupId) as RedirectResult;
+            var result = autoMocker.ClassUnderTest.Delete(gamingGroupId, currentUser) as RedirectResult;
 
             //--assert
-            autoMocker.Get<IGamingGroupDeleter>().AssertWasCalled(mock => mock.DeleteGamingGroup(gamingGroupId));
+            autoMocker.Get<IDeleteGamingGroupComponent>().AssertWasCalled(mock => mock.Execute(gamingGroupId, currentUser));
             result.ShouldBeSameAs(expectedRedirectResult);
         }
     }
