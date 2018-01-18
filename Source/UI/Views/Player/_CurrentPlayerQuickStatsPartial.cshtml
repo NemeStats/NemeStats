@@ -3,24 +3,24 @@
 <div class="panel panel-default">
     <div class="panel-body current-player-stats">
         <a id="gtm-recordplayedgamebutton-fromquickstats" href="@Url.Action(MVC.PlayedGame.Create())" class="btn btn-action btn-lg">Record Played Game</a>
-        @if (Model.LastGamingGroupGame != null)
+        @if (Model.LastGamingGroupPlayedGame != null)
         {
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <a href="@Url.Action(MVC.PlayedGame.ActionNames.Details,MVC.PlayedGame.Name,new {id = Model.LastGamingGroupGame.PlayedGameId})">Last group game played</a>
+                    <a href="@Url.Action(MVC.PlayedGame.ActionNames.Details,MVC.PlayedGame.Name,new {id = Model.LastGamingGroupPlayedGame.PlayedGameId})">Last group game played</a>
                 </div>
                 <div class="panel-body last-game-played">
                     <div class="col-sm-4">
                         <div class="image-col voffset2">
-                            <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details,MVC.GameDefinition.Name,new {id= Model.LastGamingGroupGame.GameDefinitionId})">
-                                @if (!string.IsNullOrEmpty(Model.LastGamingGroupGame.ThumbnailImageUrl))
+                            <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details,MVC.GameDefinition.Name,new {id= Model.LastGamingGroupPlayedGame.GameDefinitionId})">
+                                @if (!string.IsNullOrEmpty(Model.LastGamingGroupPlayedGame.ThumbnailImageUrl))
                                 {
-                                    <img class="bgg-thumbnail" src="@Model.LastGamingGroupGame.ThumbnailImageUrl" alt="@Model.LastGamingGroupGame.GameDefinitionName" title="@Model.LastGamingGroupGame.GameDefinitionName" />
+                                    <img class="bgg-thumbnail" src="@Model.LastGamingGroupPlayedGame.ThumbnailImageUrl" alt="@Model.LastGamingGroupPlayedGame.GameDefinitionName" title="@Model.LastGamingGroupPlayedGame.GameDefinitionName" />
                                 }
                                 else
                                 {
-                                    <span>@Model.LastGamingGroupGame.GameDefinitionName</span>
+                                    <span>@Model.LastGamingGroupPlayedGame.GameDefinitionName</span>
                                 }
 
                             </a>
@@ -28,25 +28,25 @@
                     </div>
                     <div class="col-sm-4 voffset2">
                         <span>Winner:</span>
-                        @if (Model.LastGamingGroupGame.WinnerType == BusinessLogic.Models.PlayedGames.WinnerTypes.TeamWin)
+                        @if (Model.LastGamingGroupPlayedGame.WinnerType == BusinessLogic.Models.PlayedGames.WinnerTypes.TeamWin)
                         {
                             <div class="gameResult-teamWin voffset2">EVERYONE WON</div>
                         }
-                        else if (Model.LastGamingGroupGame.WinnerType == BusinessLogic.Models.PlayedGames.WinnerTypes.TeamLoss)
+                        else if (Model.LastGamingGroupPlayedGame.WinnerType == BusinessLogic.Models.PlayedGames.WinnerTypes.TeamLoss)
                         {
                             <div class="gameResult-teamLoss voffset2">EVERYONE LOST</div>
                         }
                         else
                         {
                             <div class="voffset2">
-                                <a href="@Url.Action(MVC.Player.ActionNames.Details,MVC.Player.Name, new {id = Model.LastGamingGroupGame.WinningPlayerId})">@Model.LastGamingGroupGame.WinningPlayerName</a>
+                                <a href="@Url.Action(MVC.Player.ActionNames.Details,MVC.Player.Name, new {id = Model.LastGamingGroupPlayedGame.WinningPlayerId})">@Model.LastGamingGroupPlayedGame.WinningPlayerName</a>
                             </div>
                         }
                     </div>
                     <div class="col-sm-4 voffset2">
                         <span>Date:</span>
                         <div class="voffset2">
-                            <a href="@Url.Action(MVC.PlayedGame.ActionNames.Details,MVC.PlayedGame.Name, new {id = Model.LastGamingGroupGame.PlayedGameId})">@Model.LastGamingGroupGame.DatePlayed.ToShortDateString()</a>
+                            <a href="@Url.Action(MVC.PlayedGame.ActionNames.Details,MVC.PlayedGame.Name, new {id = Model.LastGamingGroupPlayedGame.PlayedGameId})">@Model.LastGamingGroupPlayedGame.DatePlayed.ToShortDateString()</a>
                         </div>
                     </div>
                 </div>

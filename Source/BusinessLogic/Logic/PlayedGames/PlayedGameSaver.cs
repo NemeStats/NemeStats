@@ -40,13 +40,11 @@ namespace BusinessLogic.Logic.PlayedGames
     public class PlayedGameSaver : IPlayedGameSaver
     {
         private readonly IDataContext _dataContext;
-        private readonly INemeStatsEventTracker _playedGameTracker;
-        private readonly INemesisRecalculator _nemesisRecalculator;
-        private readonly IChampionRecalculator _championRecalculator;
         private readonly ISecuredEntityValidator _securedEntityValidator;
         private readonly IPointsCalculator _pointsCalculator;
         private readonly IApplicationLinker _applicationLinker;
         private readonly IBusinessLogicEventSender _businessLogicEventSender;
+        private readonly IWinnerTypeCalculator _winnerTypeCalculator;
 
         public PlayedGameSaver(
             IDataContext applicationDataContext,
@@ -56,16 +54,14 @@ namespace BusinessLogic.Logic.PlayedGames
             ISecuredEntityValidator securedEntityValidator,
             IPointsCalculator pointsCalculator,
             IApplicationLinker applicationLinker, 
-            IBusinessLogicEventSender businessLogicEventSender)
+            IBusinessLogicEventSender businessLogicEventSender, IWinnerTypeCalculator winnerTypeCalculator)
         {
             _dataContext = applicationDataContext;
-            _playedGameTracker = playedGameTracker;
-            _nemesisRecalculator = nemesisRecalculator;
-            _championRecalculator = championRecalculator;
             _securedEntityValidator = securedEntityValidator;
             _pointsCalculator = pointsCalculator;
             _applicationLinker = applicationLinker;
             _businessLogicEventSender = businessLogicEventSender;
+            _winnerTypeCalculator = winnerTypeCalculator;
         }
 
         public virtual void ValidateAccessToPlayers(IEnumerable<PlayerRank> playerRanks, int gamingGroupId, ApplicationUser currentUser, IDataContext dataContext)
@@ -118,16 +114,8 @@ namespace BusinessLogic.Logic.PlayedGames
             string applicationUserId,
             List<PlayerGameResult> playerGameResults)
         {
-            var winnerType = WinnerTypes.PlayerWin;
-
-            if (playerGameResults.All(x => x.GameRank == 1))
-            {
-                winnerType = WinnerTypes.TeamWin;
-            }
-            else if (playerGameResults.All(x => x.GameRank > 1))
-            {
-                winnerType = WinnerTypes.TeamLoss;
-            }
+            var gameRanks = playerGameResults.Select(x => x.GameRank).ToList();
+            var winnerType = _winnerTypeCalculator.CalculateWinnerType(gameRanks);
 
             var numberOfPlayers = savedGame.PlayerRanks.Count;
             var playedGame = new PlayedGame
@@ -175,7 +163,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
             if (playedGameWithStuff == null)
             {
-                throw new EntityDoesNotExistException(typeof(PlayedGame), updatedGame.PlayedGameId);
+                throw new EntityDoesNotExistException<PlayedGame>(updatedGame.PlayedGameId);
             }
 
             var gamingGroupId = updatedGame.GamingGroupId ?? playedGameWithStuff.GamingGroupId;

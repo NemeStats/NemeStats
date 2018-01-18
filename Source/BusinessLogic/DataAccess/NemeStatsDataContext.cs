@@ -164,10 +164,11 @@ namespace BusinessLogic.DataAccess
         {
             if (entity == null)
             {
-                throw new EntityDoesNotExistException(typeof(TEntity), id);
+                throw new EntityDoesNotExistException<TEntity>(id);
             }
         }
 
+        /// <exception cref="EntityDoesNotExistException{T}">Thrown when the specified entity id does not match a real entity.</exception>
         public virtual TEntity FindById<TEntity>(object id) where TEntity : class, IEntityWithTechnicalKey
         {
             var entity = nemeStatsDbContext.Set<TEntity>().Find(id);
@@ -186,6 +187,8 @@ namespace BusinessLogic.DataAccess
             }
         }
 
+        /// <exception cref="ArgumentNullException">Thrown when the passed in entity is null.</exception>
+        /// <exception cref="EntityDoesNotExistException{T}">Thrown when the passed in entityis a SecuredEntityWithTechnical key, is not a GamingGroup, and doesn't have a GamingGroupId set.</exception>
         public TEntity AdminSave<TEntity>(TEntity entity) where TEntity : class, IEntityWithTechnicalKey
         {
             if (entity == null)

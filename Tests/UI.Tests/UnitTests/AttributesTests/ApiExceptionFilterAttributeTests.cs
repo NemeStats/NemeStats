@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
@@ -15,15 +14,15 @@ namespace UI.Tests.UnitTests.AttributesTests
     [TestFixture]
     public class ApiExceptionFilterAttributeTests
     {
-        private RhinoAutoMocker<ApiExceptionFilterAttribute> autoMocker;
-        private HttpActionExecutedContext context;
+        private RhinoAutoMocker<ApiExceptionFilterAttribute> _autoMocker;
+        private HttpActionExecutedContext _context;
 
         [SetUp]
         public void SetUp()
         {
-            autoMocker = new RhinoAutoMocker<ApiExceptionFilterAttribute>();
+            _autoMocker = new RhinoAutoMocker<ApiExceptionFilterAttribute>();
 
-            context = new HttpActionExecutedContext
+            _context = new HttpActionExecutedContext
             {
                 ActionContext = new HttpActionContext
                 {
@@ -34,19 +33,19 @@ namespace UI.Tests.UnitTests.AttributesTests
 
                 }
             };
-            context.Request.SetConfiguration(new HttpConfiguration());
+            _context.Request.SetConfiguration(new HttpConfiguration());
         }
 
         [Test]
         public async Task ItReturnsTheStatusCodeAndMessageIfItIsHandlingAnApiExceptionFilter()
         {
-            var expectedException = new EntityDoesNotExistException(typeof(Player), "some id");
-            context.Exception = expectedException;
+            var expectedException = new EntityDoesNotExistException<Player>("some id");
+            _context.Exception = expectedException;
 
-            autoMocker.ClassUnderTest.OnException(context);
+            _autoMocker.ClassUnderTest.OnException(_context);
 
-            Assert.That(context.Response.StatusCode, Is.EqualTo(expectedException.StatusCode));
-            Assert.That(await context.Response.Content.ReadAsStringAsync(),Does.Contain(expectedException.Message));
+            Assert.That(_context.Response.StatusCode, Is.EqualTo(expectedException.StatusCode));
+            Assert.That(await _context.Response.Content.ReadAsStringAsync(),Does.Contain(expectedException.Message));
         }
     }
 }

@@ -19,6 +19,7 @@ using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using System.Collections.Generic;
 using BusinessLogic.Models.PlayedGames;
+using BusinessLogic.Models.User;
 using BusinessLogic.Models.Utility;
 
 namespace BusinessLogic.Logic.PlayedGames
@@ -30,5 +31,6 @@ namespace BusinessLogic.Logic.PlayedGames
         List<PublicGameSummary> GetRecentPublicGames(RecentlyPlayedGamesFilter filter);
         List<PlayedGameSearchResult> SearchPlayedGames(PlayedGameFilter playedGameFilter);
         List<PlayedGameQuickStats> GetPlayedGamesQuickStats(List<int> playedGameIds);
+        EditPlayedGameInfo GetInfoForEditingPlayedGame(int playedGameId, ApplicationUser currentUser);
     }
 }

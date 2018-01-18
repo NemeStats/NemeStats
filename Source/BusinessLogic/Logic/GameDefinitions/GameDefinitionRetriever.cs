@@ -206,7 +206,7 @@ namespace BusinessLogic.Logic.GameDefinitions
 
             if (gameDefinition == null)
             {
-                throw new EntityDoesNotExistException(typeof(GameDefinition), id);
+                throw new EntityDoesNotExistException<GameDefinition>(id);
             }
 
             BoardGameGeekInfo boardGameGeekInfo = null;

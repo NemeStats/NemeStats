@@ -24,12 +24,10 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using BusinessLogic.Exceptions;
-using BusinessLogic.Logic.PlayedGames;
-using BusinessLogic.Models.PlayedGames;
-using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.PlayerAchievements;
 using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.Points;
+using BusinessLogic.Models.User;
 using BusinessLogic.Models.Utility;
 using BusinessLogic.Paging;
 
@@ -39,7 +37,6 @@ namespace BusinessLogic.Logic.Players
     {
         private readonly IDataContext _dataContext;
         private readonly IPlayerRepository _playerRepository;
-        private readonly IPlayedGameRetriever _playedGameRetriever;
         private readonly IRecentPlayerAchievementsUnlockedRetriever _recentPlayerAchievementsUnlockedRetriever;
         public const string ExceptionMessagePlayerCouldNotBeFound = "Could not find player with Id: {0}";
         public const int MAX_NUMBER_OF_RECENT_PLAYERS = 5;
@@ -47,12 +44,10 @@ namespace BusinessLogic.Logic.Players
         public PlayerRetriever(
             IDataContext dataContext, 
             IPlayerRepository playerRepository, 
-            IPlayedGameRetriever playedGameRetriever, 
             IRecentPlayerAchievementsUnlockedRetriever recentPlayerAchievementsUnlockedRetriever)
         {
             _dataContext = dataContext;
             _playerRepository = playerRepository;
-            _playedGameRetriever = playedGameRetriever;
             _recentPlayerAchievementsUnlockedRetriever = recentPlayerAchievementsUnlockedRetriever;
         }
 
@@ -231,7 +226,7 @@ namespace BusinessLogic.Logic.Players
         {
             if (returnPlayer == null)
             {
-                throw new EntityDoesNotExistException(typeof(Player), playerId);
+                throw new EntityDoesNotExistException<Player>(playerId);
             }
         }
 
@@ -382,34 +377,6 @@ namespace BusinessLogic.Logic.Players
                 var topLevelTotals = GetTopLevelTotals(gameDefinitionTotals);
                 returnValue.TotalGamesPlayed = topLevelTotals.TotalGames;
                 returnValue.TotalGamesWon = topLevelTotals.TotalGamesWon;
-
-                var lastPlayedGameForGamingGroupList = _playedGameRetriever.GetRecentGames(1, gamingGroupId);
-                if (lastPlayedGameForGamingGroupList.Count() == 1)
-                {
-                    var lastGame = lastPlayedGameForGamingGroupList[0];
-                    returnValue.LastGamingGroupGame = new PlayedGameQuickStats
-                    {
-                        DatePlayed = lastGame.DatePlayed,
-                        GameDefinitionName = lastGame.GameDefinition.Name,
-                        GameDefinitionId = lastGame.GameDefinitionId,
-                        PlayedGameId = lastGame.Id,
-                        WinnerType = lastGame.WinnerType
-                    };
-
-                    if (lastGame.WinningPlayer != null)
-                    {
-                        returnValue.LastGamingGroupGame.WinningPlayerId = lastGame.WinningPlayer.Id;
-                        returnValue.LastGamingGroupGame.WinningPlayerName = lastGame.WinningPlayer.Name;
-                    }
-
-                    var bggGameDefinition = lastGame.GameDefinition.BoardGameGeekGameDefinition;
-
-                    if (bggGameDefinition != null)
-                    {
-                        returnValue.LastGamingGroupGame.BoardGameGeekUri = BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(bggGameDefinition.Id);
-                        returnValue.LastGamingGroupGame.ThumbnailImageUrl = bggGameDefinition.Thumbnail;
-                    }
-                }
             }
 
             return returnValue;
@@ -467,6 +434,45 @@ namespace BusinessLogic.Logic.Players
                 UserPlayer = currentUserPlayerResult?.PlayerInfo,
                 OtherPlayers = otherPlayers.OrderBy(x => x.PlayerName).ToList(),
                 RecentPlayers = recentPlayers
+            };
+
+            return result;
+        }
+
+        public PlayersToCreateModel GetPlayersForEditingPlayedGame(int playedGameId, ApplicationUser currentUser)
+        {
+            var recentPlayers = _dataContext.GetQueryable<PlayerGameResult>()
+                .Where(x => x.PlayedGameId == playedGameId)
+                .Select(x => new PlayerInfoForUser
+                {
+                    PlayerId = x.PlayerId,
+                    GamingGroupId = x.PlayedGame.GamingGroupId,
+                    PlayerName = x.Player.Name
+                })
+                .OrderBy(x => x.PlayerName)
+                .ToList();
+
+            var gamingGroupId = recentPlayers.First().GamingGroupId;
+            var playerIdsInGame = recentPlayers.Select(x => x.PlayerId).ToList();
+
+            var otherPlayers = _dataContext.GetQueryable<Player>()
+                .Where(x => x.Active
+                            && x.GamingGroupId == gamingGroupId
+                            && !playerIdsInGame.Contains(x.Id))
+                .Select(x => new PlayerInfoForUser
+                {
+                    PlayerId = x.Id,
+                    GamingGroupId = x.GamingGroupId,
+                    PlayerName = x.Name
+                })
+                .OrderBy(x => x.PlayerName)
+                .ToList();
+
+            var result = new PlayersToCreateModel
+            {
+                RecentPlayers = recentPlayers,
+                OtherPlayers = otherPlayers,
+                UserPlayer = null
             };
 
             return result;

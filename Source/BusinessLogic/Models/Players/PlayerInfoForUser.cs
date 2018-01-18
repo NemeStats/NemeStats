@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace BusinessLogic.Models.Players
+﻿namespace BusinessLogic.Models.Players
 {
     public class PlayerInfoForUser
     {

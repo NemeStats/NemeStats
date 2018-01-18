@@ -21,12 +21,12 @@ using System.Net;
 
 namespace BusinessLogic.Exceptions
 {
-    public class EntityDoesNotExistException : ApiFriendlyException
+    public class EntityDoesNotExistException<T> : ApiFriendlyException
     {
         internal const string EXCEPTION_MESSAGE_FORMAT = "Entity of type '{0}' with Id '{1}' does not exist.";
 
-        public EntityDoesNotExistException(Type entityType, object entityId)
-            : base(string.Format(EXCEPTION_MESSAGE_FORMAT, entityType.Name, entityId), HttpStatusCode.NotFound)
+        public EntityDoesNotExistException(object entityId)
+            : base(string.Format(EXCEPTION_MESSAGE_FORMAT, typeof(T), entityId), HttpStatusCode.NotFound)
         {
 
         }
