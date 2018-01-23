@@ -12,7 +12,7 @@
                     {
                         <img class="thumbnail" src="@Model.ImageUrl" alt="@Model.GameName" title="@Model.GameName" itemprop="image"/>
                     }
-                    else
+                    else if (!string.IsNullOrEmpty(Model.ThumbnailImageUrl))
                     {
                         <img class="thumbnail" src="@Model.ThumbnailImageUrl" alt="@Model.GameName" title="@Model.GameName"  itemprop="image"/>
                     }
