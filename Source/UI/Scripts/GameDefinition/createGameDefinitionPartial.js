@@ -51,7 +51,7 @@ Views.GameDefinition.CreateGameDefinitionPartial.prototype = {
         }
     },
     configureViewModel: function () {
-        var componentSelector = "#createGameDefinitionPartial";
+        var componentSelector = "#importGameDefinitionPartial";
         var gaminggroupcontainer = $(componentSelector);
         if (gaminggroupcontainer) {
 
