@@ -31,9 +31,6 @@ Views.GameDefinition.CreateGameDefinitionPartial.prototype = {
             e.preventDefault();
             owner.createGameDefinition();
         });
-
-        var gameDefinitionAutoComplete = new Views.GameDefinition.GameDefinitionAutoComplete();
-        gameDefinitionAutoComplete.init(this.$gameNameInput, this.$boardGameId);
     },
     createGameDefinition: function () {
         var owner = this;
@@ -54,7 +51,7 @@ Views.GameDefinition.CreateGameDefinitionPartial.prototype = {
         }
     },
     configureViewModel: function () {
-        var componentSelector = "#createGameDefinitionPartial";
+        var componentSelector = "#importGameDefinitionPartial";
         var gaminggroupcontainer = $(componentSelector);
         if (gaminggroupcontainer) {
 
@@ -69,10 +66,11 @@ Views.GameDefinition.CreateGameDefinitionPartial.prototype = {
                 },
                 computed: {
                     progressWidth: function () {
+                        var width = 0;
                         if (this.stepPercentage && this.currentGamesImported) {
-                            return this.stepPercentage * this.currentGamesImported + "%";
+                            width = this.stepPercentage * this.currentGamesImported + "%";
                         }
-                        return 0;
+                        return "width: " + width;
                     }
                 },
                 methods: {
@@ -84,6 +82,8 @@ Views.GameDefinition.CreateGameDefinitionPartial.prototype = {
                 }
             });
 
+            var gameDefinitionAutoComplete = new Views.GameDefinition.GameDefinitionAutoComplete();
+            gameDefinitionAutoComplete.init(this.$gameNameInput, this.$boardGameId);
 
             var signalrConnection = $.hubConnection();
             var longRunningTaskHub = signalrConnection.createHubProxy("longRunningTaskHub");
