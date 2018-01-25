@@ -31,6 +31,9 @@ namespace BusinessLogic.Logic.GamingGroups
             DeleteChampionsAndGameDefinitions(gamingGroupId, currentUser);
             DeleteNemeses(gamingGroupId, currentUser);
             DeletePlayers(gamingGroup, currentUser);
+            UnassociateUsers(gamingGroupId, currentUser);
+            DeleteGamingGroupInvitations(gamingGroupId, currentUser);
+            DeleteGamingGroup(gamingGroupId, currentUser);
         }
 
         internal virtual void DeletePlayerGameResults(int gamingGroupId, ApplicationUser currentUser)
@@ -126,17 +129,36 @@ namespace BusinessLogic.Logic.GamingGroups
 
         internal virtual void UnassociateUsers(int gamingGroupId, ApplicationUser currentUser)
         {
-            throw new System.NotImplementedException();
+            var usersWithThisCurrentGamingGroup = _dataContext.GetQueryable<ApplicationUser>()
+                .Where(x => x.CurrentGamingGroupId == gamingGroupId)
+                .ToList();
+
+            foreach (var user in usersWithThisCurrentGamingGroup)
+            {
+                user.CurrentGamingGroupId = null;
+                _dataContext.Save(user, currentUser);
+            }
+
+            var gamingGroupAssociations = _dataContext.GetQueryable<UserGamingGroup>()
+                .Where(x => x.GamingGroupId == gamingGroupId)
+                .Select(x => x.Id)
+                .ToList();
+            gamingGroupAssociations.ForEach(x => _dataContext.DeleteById<UserGamingGroup>(x, currentUser));
         }
 
         internal virtual void DeleteGamingGroupInvitations(int gamingGroupId, ApplicationUser currentUser)
         {
-            throw new System.NotImplementedException();
+            var gamingGroupInvitations = _dataContext.GetQueryable<GamingGroupInvitation>()
+                .Where(x => x.GamingGroupId == gamingGroupId)
+                .Select(x => x.Id)
+                .ToList();
+
+            gamingGroupInvitations.ForEach(x => _dataContext.DeleteById<GamingGroupInvitation>(x, currentUser));
         }
 
         internal virtual void DeleteGamingGroup(int gamingGroupId, ApplicationUser currentUser)
         {
-            throw new System.NotImplementedException();
+            _dataContext.DeleteById<GamingGroup>(gamingGroupId, currentUser);
         }
     }
 }
