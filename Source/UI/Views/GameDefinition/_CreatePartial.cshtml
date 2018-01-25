@@ -5,7 +5,7 @@
     Layout = null;
 }
 
-<div class="createGameDefinitionPartial" id="createGameDefinitionPartial" data-gaminggroupid="@Model.GamingGroupId">
+<div class="createGameDefinitionPartial" data-gaminggroupid="@Model.GamingGroupId">
     <div class="row">
         <div class="col-md-6">
             <form id="js-createGameForm">
@@ -29,7 +29,7 @@
                 </div>
             </form>
         </div>
-        <div class="col-md-6 importbgg">
+        <div class="col-md-6 importbgg" id="importGameDefinitionPartial">
 
             @if (string.IsNullOrEmpty(Model.BGGUserName))
             {
@@ -64,7 +64,7 @@
                     <h5><span class="fa fa-spinner fa-spin"></span> Importing your BoardGameGeek games... this may take a while</h5>
                     <h5 v-show="totalGamesToImport > 0"><b>{{currentGamesImported}}</b> of <b>{{totalGamesToImport}}</b> games imported. Importing now: <i>{{currentGameName}}</i></h5>
                     <div class="progress">
-                        <div class="progress-bar progress-bar-striped active" role="progressbar" style="width: {{progressWidth}}"></div>
+                        <div class="progress-bar progress-bar-striped active" role="progressbar" :style="progressWidth"></div>
                     </div>
                 </div>
             </div>

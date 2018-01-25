@@ -56,20 +56,16 @@
                     <td class="bgg-link-col">
                         @if (boardGameGeekInfo != null)
                         {
-                            if (!string.IsNullOrEmpty(boardGameGeekInfo.ThumbnailImageUrl))
-                            {
                                 <a href="@Url.Action(MVC.GameDefinition.Details().AddRouteValue("id", item.Id))">
-                                    <img class="bgg-thumbnail" src="@boardGameGeekInfo.ThumbnailImageUrl" alt="View Global Stats" title="View Global Stats"/>
+                                    @if (string.IsNullOrEmpty(boardGameGeekInfo.ThumbnailImageUrl))
+                                    {
+                                        <img src="~/Content/Images/bgg_small.png" alt="View Global Stats" title="View Global Stats" />
+                                    }else
+                                    {
+                                        <img class="bgg-thumbnail" src="@boardGameGeekInfo.ThumbnailImageUrl" alt="View Global Stats" title="View Global Stats"/> 
+                                    }
                                 </a>
-                            }
-                            else
-                            {
-                                <a href="@boardGameGeekInfo.BoardGameGeekUri.AbsoluteUri" target="_blank;">
-                                    <img src="~/Content/Images/bgg_small.png" alt="View Global Stats" title="View Global Stats"/>
-                                </a>
-                            }
-
-                            }
+                         }
                         </td>
                         <td class="name-col">
                             <b>
