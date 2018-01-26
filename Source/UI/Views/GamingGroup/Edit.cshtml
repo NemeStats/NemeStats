@@ -121,7 +121,7 @@
     }
 </div>
 
-@using (Html.BeginForm(MVC.GamingGroup.Delete(@Model.GamingGroupId), FormMethod.Post))
+@using (Html.BeginForm(MVC.GamingGroup.Delete().AddRouteValue("gamingGroupId", @Model.GamingGroupId), FormMethod.Post))
 {
     <div class="form-group">
         <button type="submit" class="btn btn-danger"
