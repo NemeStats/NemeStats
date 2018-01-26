@@ -310,7 +310,7 @@ namespace UI.Controllers
 
         [HttpPost]
         [Authorize]
-        [UserContext(RequiresGamingGroup = false)]
+        [UserContext(RequiresGamingGroup = false)] //--a user with only inactive gaming groups should be able to delete one
         public virtual ActionResult Delete(int gamingGroupId, ApplicationUser currentUser)
         {
             deleteGamingGroupComponent.Execute(gamingGroupId, currentUser);
