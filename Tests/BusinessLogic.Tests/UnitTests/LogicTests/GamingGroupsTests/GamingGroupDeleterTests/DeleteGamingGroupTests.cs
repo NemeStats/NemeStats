@@ -52,7 +52,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             //--arrange
 
             //--act
-            _autoMocker.ClassUnderTest.Execute(_gamingGroupId, _currentUser);
+            _autoMocker.ClassUnderTest.Execute(_gamingGroupId, _currentUser, _dataContextMock);
 
             //--assert
             _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.SetCommandTimeout(300));
