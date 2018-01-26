@@ -273,6 +273,7 @@
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\AjaxCreatePostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\ShowTrendingGamesTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\CreateNewGamingGroupTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\DeleteTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\EditGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\EditPostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GamingGroupControllerTestBase.cs" />

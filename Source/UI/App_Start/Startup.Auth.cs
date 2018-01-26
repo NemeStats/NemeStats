@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using System;
 using System.Configuration;
 using System.Net;
 using Microsoft.AspNet.Identity;
@@ -29,6 +30,7 @@ namespace UI
     public partial class Startup
     {
         private const string NEMESTATS_API_PATH = "api/";
+        private const int NINETY_DAYS = 90;
 
         // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
         public void ConfigureAuth(IAppBuilder app)
@@ -38,6 +40,8 @@ namespace UI
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 LoginPath = new PathString("/Account/Login"),
+                ExpireTimeSpan = new TimeSpan(NINETY_DAYS, 0, 0, 0),
+                SlidingExpiration = true,
                 Provider = new CookieAuthenticationProvider
                 {
                     OnApplyRedirect = rd =>

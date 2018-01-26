@@ -195,6 +195,7 @@
     <Compile Include="DataAccess\Security\GenericSecuredEntityValidator.cs" />
     <Compile Include="DataAccess\Security\IGenericSecuredEntityValidator.cs" />
     <Compile Include="DataAccess\Security\ISecuredEntityValidator.cs" />
+    <Compile Include="DataAccess\Security\ISecuredEntityValidatorFactory.cs" />
     <Compile Include="DataAccess\Security\SecuredEntityValidator.cs" />
     <Compile Include="DataAccess\ISingleColumnTechnicalKey.cs" />
     <Compile Include="DataAccess\Repositories\IPlayerRepository.cs" />
@@ -326,6 +327,8 @@
     <Compile Include="Models\Players\HomePagePlayerSummary.cs" />
     <Compile Include="Logic\Players\IHomePagePlayerSummaryRetriever.cs" />
     <Compile Include="Logic\Players\HomePagePlayerSummaryRetriever.cs" />
+    <Compile Include="Logic\GamingGroups\DeleteGamingGroupComponent.cs" />
+    <Compile Include="Logic\GamingGroups\IDeleteGamingGroupComponent.cs" />
     <Compile Include="Migrations\201710040027508_GamingGroup_Active_Flag.cs" />
     <Compile Include="Migrations\201710040027508_GamingGroup_Active_Flag.Designer.cs">
       <DependentUpon>201710040027508_GamingGroup_Active_Flag.cs</DependentUpon>

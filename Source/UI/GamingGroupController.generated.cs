@@ -116,6 +116,12 @@ namespace UI.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Delete()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public GamingGroupController Actions { get { return MVC.GamingGroup; } }
@@ -144,6 +150,7 @@ namespace UI.Controllers
             public readonly string SwitchGamingGroups = "SwitchGamingGroups";
             public readonly string CreateNewGamingGroup = "CreateNewGamingGroup";
             public readonly string Edit = "Edit";
+            public readonly string Delete = "Delete";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -161,6 +168,7 @@ namespace UI.Controllers
             public const string SwitchGamingGroups = "SwitchGamingGroups";
             public const string CreateNewGamingGroup = "CreateNewGamingGroup";
             public const string Edit = "Edit";
+            public const string Delete = "Delete";
         }
 
 
@@ -266,6 +274,15 @@ namespace UI.Controllers
             public readonly string id = "id";
             public readonly string currentUser = "currentUser";
             public readonly string request = "request";
+        }
+        static readonly ActionParamsClass_Delete s_params_Delete = new ActionParamsClass_Delete();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Delete DeleteParams { get { return s_params_Delete; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Delete
+        {
+            public readonly string gamingGroupId = "gamingGroupId";
+            public readonly string currentUser = "currentUser";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -467,6 +484,19 @@ namespace UI.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "request", request);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
             EditOverride(callInfo, request, currentUser);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void DeleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int gamingGroupId, BusinessLogic.Models.User.ApplicationUser currentUser);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Delete(int gamingGroupId, BusinessLogic.Models.User.ApplicationUser currentUser)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamingGroupId", gamingGroupId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            DeleteOverride(callInfo, gamingGroupId, currentUser);
             return callInfo;
         }
 

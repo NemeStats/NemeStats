@@ -34,8 +34,8 @@ namespace BusinessLogic.DataAccess
         internal const string UNKNOWN_ENTITY_ID = "<unknown>";
         internal const string EXCEPTION_MESSAGE_NO_ENTITY_EXISTS_FOR_THIS_ID = "No entity exists for Id '{0}'";
 
-        private readonly SecuredEntityValidatorFactory securedEntityValidatorFactory;
-        private readonly NemeStatsDbContext nemeStatsDbContext;
+        private readonly ISecuredEntityValidatorFactory _securedEntityValidatorFactory;
+        private readonly NemeStatsDbContext _nemeStatsDbContext;
 
         //TODO do i really need this constructor? MockRepository.GenerateMock<ApplicationDbContext>() fails saying it needs a parameterless constructor
         public NemeStatsDataContext()
@@ -46,25 +46,25 @@ namespace BusinessLogic.DataAccess
 
         public NemeStatsDataContext(
             NemeStatsDbContext nemeStatsDbContext,
-            SecuredEntityValidatorFactory securedEntityValidatorFactory)
+            ISecuredEntityValidatorFactory securedEntityValidatorFactory)
         {
-            this.nemeStatsDbContext = nemeStatsDbContext;
-            this.securedEntityValidatorFactory = securedEntityValidatorFactory;
+            _nemeStatsDbContext = nemeStatsDbContext;
+            _securedEntityValidatorFactory = securedEntityValidatorFactory;
         }
 
         public virtual void CommitAllChanges()
         {
-            nemeStatsDbContext.SaveChanges();
+            _nemeStatsDbContext.SaveChanges();
         }
 
         public virtual IQueryable<TEntity> GetQueryable<TEntity>() where TEntity : class, IEntityWithTechnicalKey
         {
-            return nemeStatsDbContext.Set<TEntity>();
+            return _nemeStatsDbContext.Set<TEntity>();
         }
 
         internal virtual TEntity AddOrInsertOverride<TEntity>(TEntity entity) where TEntity : class
         {
-            nemeStatsDbContext.Set<TEntity>().AddOrUpdate(entity);
+            _nemeStatsDbContext.Set<TEntity>().AddOrUpdate(entity);
 
             return entity;
         }
@@ -81,7 +81,7 @@ namespace BusinessLogic.DataAccess
         {
             ValidateArguments(entity, currentUser);
 
-            var validator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>(this);
+            var validator = _securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>(this);
             validator.ValidateAccess<TEntity>(entity, currentUser);
 
             if (!entity.AlreadyInDatabase() && typeof(TEntity) != typeof(GamingGroup))
@@ -127,37 +127,42 @@ namespace BusinessLogic.DataAccess
 
         public virtual void Delete<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : class, IEntityWithTechnicalKey
         {
-            var validator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>(this);
+            var validator = _securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>(this);
             validator.ValidateAccess<TEntity>(entity, currentUser);
-            nemeStatsDbContext.Set<TEntity>().Remove(entity);
+            _nemeStatsDbContext.Set<TEntity>().Remove(entity);
         }
 
         public virtual DbRawSqlQuery<T> MakeRawSqlQuery<T>(string sql, params object[] parameters)
         {
-            return nemeStatsDbContext.Database.SqlQuery<T>(sql, parameters);
+            return _nemeStatsDbContext.Database.SqlQuery<T>(sql, parameters);
+        }
+
+        public virtual void MakeScarySqlAlteration(string sql, params object[] parameters)
+        {
+            _nemeStatsDbContext.Database.ExecuteSqlCommand(sql, parameters);
         }
 
         public DbContextTransaction CurrentTransaction()
         {
-            return nemeStatsDbContext.Database.CurrentTransaction;
+            return _nemeStatsDbContext.Database.CurrentTransaction;
         }
 
         public DbContextTransaction BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
         {
-            return nemeStatsDbContext.Database.BeginTransaction(isolationLevel);
+            return _nemeStatsDbContext.Database.BeginTransaction(isolationLevel);
         }
 
         public virtual void Dispose()
         {
-            nemeStatsDbContext.Dispose();
+            _nemeStatsDbContext.Dispose();
         }
 
         public virtual void DeleteById<TEntity>(object id, ApplicationUser currentUser) where TEntity : class, IEntityWithTechnicalKey
         {
-            var securedEntityValidator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>(this);
+            var securedEntityValidator = _securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>(this);
             var entityToDelete = securedEntityValidator.RetrieveAndValidateAccess<TEntity>(id, currentUser);
 
-            nemeStatsDbContext.Set<TEntity>().Remove(entityToDelete);
+            _nemeStatsDbContext.Set<TEntity>().Remove(entityToDelete);
         }
 
         internal virtual void ValidateEntityExists<TEntity>(object id, TEntity entity) where TEntity : class, IEntityWithTechnicalKey
@@ -171,7 +176,7 @@ namespace BusinessLogic.DataAccess
         /// <exception cref="EntityDoesNotExistException{T}">Thrown when the specified entity id does not match a real entity.</exception>
         public virtual TEntity FindById<TEntity>(object id) where TEntity : class, IEntityWithTechnicalKey
         {
-            var entity = nemeStatsDbContext.Set<TEntity>().Find(id);
+            var entity = _nemeStatsDbContext.Set<TEntity>().Find(id);
 
             ValidateEntityExists(id, entity);
 
@@ -180,7 +185,7 @@ namespace BusinessLogic.DataAccess
 
         public void DetachEntities<TEntity>() where TEntity : class, IEntityWithTechnicalKey
         {
-            var trackedEntities = nemeStatsDbContext.ChangeTracker.Entries<TEntity>().ToList();
+            var trackedEntities = _nemeStatsDbContext.ChangeTracker.Entries<TEntity>().ToList();
             foreach (var entity in trackedEntities)
             {
                 entity.State = EntityState.Detached;
@@ -210,7 +215,7 @@ namespace BusinessLogic.DataAccess
 
         public void SetCommandTimeout(int timeoutInSeconds)
         {
-            nemeStatsDbContext.Database.CommandTimeout = timeoutInSeconds;
+            _nemeStatsDbContext.Database.CommandTimeout = timeoutInSeconds;
         }
     }
 }

@@ -46,4 +46,45 @@ namespace BusinessLogic.Components
             }
         }
     }
+
+    public abstract class TransactionalComponentBase<TInput> : DbComponentBase<TInput>
+    {
+        public virtual Func<Task> PostExecuteAction { get; set; }
+
+        public virtual Task PostSaveTask { get; set; }
+
+        public virtual void ExecuteTransaction(TInput inputParameter, ApplicationUser currentUser, IDataContext dataContext)
+        {
+            if (dataContext.CurrentTransaction() != null)
+            {
+                Execute(inputParameter, currentUser, dataContext);
+                return;
+            }
+
+            using (var transaction = dataContext.BeginTransaction())
+            {
+                try
+                {
+                    Execute(inputParameter, currentUser, dataContext);
+                    transaction.Commit();
+
+                    PostSaveTask = PostExecuteAction?.Invoke();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+        }
+
+        public override void Execute(TInput inputParameter, ApplicationUser currentUser)
+        {
+            //TODO how to use the IContainer here instead?
+            using (var dataContext = new NemeStatsDataContext())
+            {
+                ExecuteTransaction(inputParameter, currentUser, dataContext);
+            }
+        }
+    }
 }

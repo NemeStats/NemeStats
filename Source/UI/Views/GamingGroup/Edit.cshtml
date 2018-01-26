@@ -121,6 +121,17 @@
     }
 </div>
 
+@using (Html.BeginForm(MVC.GamingGroup.Delete().AddRouteValue("gamingGroupId", @Model.GamingGroupId), FormMethod.Post))
+{
+    <div class="form-group">
+        <button type="submit" class="btn btn-danger"
+                onclick="return confirm('Are you sure you want to PERMANENTLY delete everything related to this gaming group.... forever... with no turning back?')"
+                title="PERMENANTLY DESTROY everything related to this Gaming Group including Plays, Players, Games, Stats, etc.?">
+            <span class="fa fa-trash"></span> PERMENANTLY Delete Gaming Group
+        </button>
+    </div>
+}
+
 <div>
     @Html.ActionLink("Back to Gaming Group", "Index")
 </div>

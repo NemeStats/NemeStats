@@ -18,7 +18,7 @@
 
 namespace BusinessLogic.DataAccess.Security
 {
-    public class SecuredEntityValidatorFactory
+    public class SecuredEntityValidatorFactory : ISecuredEntityValidatorFactory
     {
         public virtual ISecuredEntityValidator MakeSecuredEntityValidator<TEntity>(IDataContext dataContext) where TEntity : class
         {

@@ -1,19 +1,12 @@
 --this terrifying script is supposed to clear out a gaming group entirely
 
 BEGIN TRANSACTION
- 
---13473
---13477
---13478
---13480
+
 -- the main gaming group that we are clearing out
-DECLARE @gamingGroupId int = 13480
+DECLARE @gamingGroupId int = 13605
 
 --indicates whether the actual GamingGroup record itself should get blown away
 DECLARE @deletGamingGroupEntirely bit = 1
---if deleting the entire gaming group, may need to provide a fallback gaming group so we can 
---set the currentGamingGroupId of the user to this before deleting the gaming group
-DECLARE @fallbackGamingGroupId int = 45
 
 --delete played games / player game results
 DELETE pgr
@@ -45,13 +38,15 @@ DELETE FROM Nemesis WHERE MinionPlayerId IN (SELECT Id FROM Player WHERE GamingG
 --delete nemesis in the gaming group
 DELETE FROM Nemesis WHERE NemesisPlayerId IN (SELECT Id FROM Player WHERE GamingGroupId = @gamingGroupId);
 
+UPDATE GamingGroup SET GamingGroupChampionPlayerId = NULL WHERE Id = @gamingGroupId;
+
 --delete players in this gaming group
 DELETE FROM Player WHERE GamingGroupId = @gamingGroupId;
 
 --if specified, delete the actual gaming group and gaming group associations as well
 if @deletGamingGroupEntirely = 1
 BEGIN
-	UPDATE AspNetUsers SET CurrentGamingGroupId = @fallbackGamingGroupId WHERE CurrentGamingGroupId = @gamingGroupId
+	UPDATE AspNetUsers SET CurrentGamingGroupId = NULL WHERE CurrentGamingGroupId = @gamingGroupId
 	DELETE FROM UserGamingGroup WHERE GamingGroupId = @gamingGroupId
 	DELETE FROM GamingGroupInvitation WHERE GamingGroupId = @gamingGroupId;
 	DELETE FROM GamingGroup WHERE Id = @gamingGroupId

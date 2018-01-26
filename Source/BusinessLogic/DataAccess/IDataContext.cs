@@ -28,6 +28,7 @@ namespace BusinessLogic.DataAccess
     {
         void CommitAllChanges();
         DbRawSqlQuery<T> MakeRawSqlQuery<T>(string sql, params object[] parameters);
+        void MakeScarySqlAlteration(string sql, params object[] parameters);
         IQueryable<TEntity> GetQueryable<TEntity>() where TEntity : class, IEntityWithTechnicalKey;
         TEntity FindById<TEntity>(object id) where TEntity : class, IEntityWithTechnicalKey;
         TEntity Save<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : class, IEntityWithTechnicalKey;
