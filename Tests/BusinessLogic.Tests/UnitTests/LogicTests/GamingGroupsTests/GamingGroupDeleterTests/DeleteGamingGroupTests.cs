@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using BusinessLogic.DataAccess;
+﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models;

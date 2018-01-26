@@ -34,6 +34,7 @@ namespace BusinessLogic.Logic.GamingGroups
             UnassociateUsers(gamingGroupId, currentUser);
             DeleteGamingGroupInvitations(gamingGroupId, currentUser);
             DeleteGamingGroup(gamingGroupId, currentUser);
+            _dataContext.CommitAllChanges();
         }
 
         internal virtual void DeletePlayerGameResults(int gamingGroupId, ApplicationUser currentUser)
@@ -86,7 +87,7 @@ namespace BusinessLogic.Logic.GamingGroups
 
             championIds.ForEach(x => _dataContext.DeleteById<Champion>(x, currentUser));
 
-            gameDefinitions.ForEach(x => _dataContext.DeleteById<GameDefinition>(x, currentUser));
+            gameDefinitions.ForEach(x => _dataContext.DeleteById<GameDefinition>(x.Id, currentUser));
 
             _dataContext.MakeScarySqlAlteration("ALTER TABLE GameDefinition WITH CHECK CHECK CONSTRAINT ALL");
         }
