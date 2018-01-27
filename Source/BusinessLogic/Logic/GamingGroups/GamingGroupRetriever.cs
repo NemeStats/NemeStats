@@ -174,7 +174,8 @@ namespace BusinessLogic.Logic.GamingGroups
                 Active = gamingGroup.Active,
                 PublicDescription = gamingGroup.PublicDescription,
                 PublicGamingGroupWebsite = gamingGroup.PublicGamingGroupWebsite,
-                OtherUsers = users
+                OtherUsers = users,
+                UserCanDelete = gamingGroup.OwningUserId == currentUser.Id
             };
         }
     }

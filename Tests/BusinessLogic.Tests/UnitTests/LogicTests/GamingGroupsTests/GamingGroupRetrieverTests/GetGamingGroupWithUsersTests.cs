@@ -22,17 +22,22 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             base.SetUp();
 
             _gamingGroupId = CurrentUser.CurrentGamingGroupId.Value;
+        }
 
+        private void SetUpGamingGroup(string owningUserId = "some id")
+        {
             _expectedGamingGroup = new GamingGroup
             {
                 Id = _gamingGroupId,
                 Active = false,
                 Name = "some gaming group name",
                 PublicDescription = "some public description",
-                PublicGamingGroupWebsite = "some website"
+                PublicGamingGroupWebsite = "some website",
+                OwningUserId = owningUserId
             };
             AutoMocker.Get<ISecuredEntityValidator>()
-                .Expect(mock => mock.RetrieveAndValidateAccess<GamingGroup>(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+                .Expect(mock =>
+                    mock.RetrieveAndValidateAccess<GamingGroup>(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                 .Return(_expectedGamingGroup);
         }
 
@@ -41,6 +46,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         {
             //--arrange
             AutoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>()).Return(new List<Player>().AsQueryable());
+            SetUpGamingGroup();
 
             //--act
             var result = AutoMocker.ClassUnderTest.GetGamingGroupWithUsers(_gamingGroupId, CurrentUser);
@@ -54,6 +60,26 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             result.GamingGroupName.ShouldBe(_expectedGamingGroup.Name);
             result.PublicDescription.ShouldBe(_expectedGamingGroup.PublicDescription);
             result.PublicGamingGroupWebsite.ShouldBe(_expectedGamingGroup.PublicGamingGroupWebsite);
+            //--the current user is not the owner
+            result.UserCanDelete.ShouldBeFalse();
+        }
+
+        [Test]
+        public void The_Owner_Of_The_Gaming_Group_Is_Allowed_To_Delete_It()
+        {
+            //--arrange
+            AutoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>()).Return(new List<Player>().AsQueryable());
+            SetUpGamingGroup(CurrentUser.Id);
+
+            //--act
+            var result = AutoMocker.ClassUnderTest.GetGamingGroupWithUsers(_gamingGroupId, CurrentUser);
+
+            //--assert
+            AutoMocker.Get<ISecuredEntityValidator>()
+                .AssertWasCalled(mock => mock.RetrieveAndValidateAccess<GamingGroup>(Arg<int>.Is.Equal(_gamingGroupId), Arg<ApplicationUser>.Is.Same(CurrentUser)));
+
+            //--the current user is the owner
+            result.UserCanDelete.ShouldBeTrue();
         }
 
         [Test]
@@ -118,6 +144,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
                 expectedPlayer1
             }.AsQueryable();
             AutoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>()).Return(players);
+
+            SetUpGamingGroup();
 
             //--act
             var result = AutoMocker.ClassUnderTest.GetGamingGroupWithUsers(_gamingGroupId, CurrentUser);

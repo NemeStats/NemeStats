@@ -12,5 +12,6 @@ namespace BusinessLogic.Models.GamingGroups
 
         public List<BasicUserInfo> OtherUsers { get; set; }
         public int GamingGroupId { get; set; }
+        public bool UserCanDelete { get; set; }
     }
 }

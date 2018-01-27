@@ -15,5 +15,6 @@ namespace UI.Models.GamingGroup
         public string GamingGroupName { get; set; }
         public bool Active { get; set; }
         public List<BasicUserInfoViewModel> OtherUsers { get; set; }
+        public bool UserCanDelete { get; set; }
     }
 }

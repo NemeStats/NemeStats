@@ -37,7 +37,8 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
                     {
                         UserName = "username 2"
                     }
-                }
+                },
+                UserCanDelete = true
             };
             autoMocker.Get<IGamingGroupRetriever>().Expect(mock => mock.GetGamingGroupWithUsers(GAMING_GROUP_ID, currentUser))
                 .Return(gamingGroup);
@@ -66,6 +67,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             viewModel.OtherUsers.Count.ShouldBe(2);
             viewModel.OtherUsers[0].ShouldBeSameAs(expectedBasicUserInfoViewModel1);
             viewModel.OtherUsers[1].ShouldBeSameAs(expectedBasicUserInfoViewModel2);
+            viewModel.UserCanDelete.ShouldBe(gamingGroup.UserCanDelete);
         }
     }
 }

@@ -287,7 +287,8 @@ namespace UI.Controllers
                 PublicDescription = gamingGroup.PublicDescription,
                 Website = gamingGroup.PublicGamingGroupWebsite,
                 Active = gamingGroup.Active,
-                OtherUsers = gamingGroup.OtherUsers.Select(x => transformer.Transform<BasicUserInfoViewModel>(x)).ToList()
+                OtherUsers = gamingGroup.OtherUsers.Select(x => transformer.Transform<BasicUserInfoViewModel>(x)).ToList(),
+                UserCanDelete = gamingGroup.UserCanDelete
             };
 
             return View(MVC.GamingGroup.Views.Edit, model);
