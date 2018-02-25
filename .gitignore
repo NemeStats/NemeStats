@@ -9,7 +9,7 @@ Web.Jake.config
 Web.Tosho.config
 Web.Debug.config
 Web.Release.config
-PrivateAppSettings.config
+Source/UI/PrivateAppSettings.config
 .vs/
 
 # Build results
