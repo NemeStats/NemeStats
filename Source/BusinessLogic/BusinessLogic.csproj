@@ -250,6 +250,7 @@
     <Compile Include="Jobs\SitemapGenerator\UniversalGameSitemapGenerator.cs" />
     <Compile Include="Logic\Achievements\AchievementProcessor.cs" />
     <Compile Include="Logic\Achievements\AchievementRetriever.cs" />
+    <Compile Include="Logic\Achievements\BoardGameGeek2018_10x10Achievement.cs" />
     <Compile Include="Logic\Achievements\BoardGameGeek2017_10x10Achievement.cs" />
     <Compile Include="Logic\Achievements\BoardGameGeek_10x10Achievement.cs" />
     <Compile Include="Logic\Achievements\IAchievementProcessor.cs" />
