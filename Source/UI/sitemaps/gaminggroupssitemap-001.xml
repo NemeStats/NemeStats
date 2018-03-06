@@ -2,8 +2,8 @@
 <urlset xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/1</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/2</loc>
@@ -451,11 +451,6 @@
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://nemestats.com/GamingGroup/Details/3099</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://nemestats.com/GamingGroup/Details/3100</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
@@ -479,11 +474,6 @@
     <loc>https://nemestats.com/GamingGroup/Details/3104</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://nemestats.com/GamingGroup/Details/3105</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/3106</loc>
@@ -617,8 +607,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/3132</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/3133</loc>
@@ -912,8 +902,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/5179</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/5180</loc>
@@ -1277,8 +1267,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/8246</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/8248</loc>
@@ -1372,8 +1362,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/8266</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/8267</loc>
@@ -1382,8 +1372,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/8268</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/8269</loc>
@@ -1422,13 +1412,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/8276</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/8277</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/9271</loc>
@@ -1637,8 +1627,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/11305</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/11306</loc>
@@ -1659,11 +1649,6 @@
     <loc>https://nemestats.com/GamingGroup/Details/11309</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://nemestats.com/GamingGroup/Details/11310</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/11311</loc>
@@ -1876,21 +1861,6 @@
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://nemestats.com/GamingGroup/Details/13331</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://nemestats.com/GamingGroup/Details/13332</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://nemestats.com/GamingGroup/Details/13333</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
     <loc>https://nemestats.com/GamingGroup/Details/13334</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
@@ -1932,8 +1902,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13342</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13343</loc>
@@ -2057,8 +2027,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13367</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13369</loc>
@@ -2111,11 +2081,6 @@
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://nemestats.com/GamingGroup/Details/13380</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://nemestats.com/GamingGroup/Details/13381</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -2142,13 +2107,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13386</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13387</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13388</loc>
@@ -2172,8 +2137,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13392</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13393</loc>
@@ -2237,8 +2202,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13405</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13406</loc>
@@ -2527,13 +2492,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13463</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13464</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13465</loc>
@@ -2552,8 +2517,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13468</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13469</loc>
@@ -2562,8 +2527,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13470</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13471</loc>
@@ -2587,8 +2552,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13476</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13479</loc>
@@ -2677,8 +2642,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13501</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13502</loc>
@@ -2697,8 +2662,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13505</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13506</loc>
@@ -2732,8 +2697,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13512</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13513</loc>
@@ -2747,8 +2712,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13515</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13516</loc>
@@ -2807,8 +2772,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13527</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13528</loc>
@@ -2917,8 +2882,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13551</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13552</loc>
@@ -2977,8 +2942,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13563</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13564</loc>
@@ -3032,13 +2997,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13574</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13575</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13576</loc>
@@ -3072,8 +3037,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13582</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13583</loc>
@@ -3177,18 +3142,18 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13603</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13604</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13605</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13606</loc>
@@ -3202,13 +3167,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13608</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13609</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13610</loc>
@@ -3307,8 +3272,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13629</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13630</loc>
@@ -3327,8 +3292,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13633</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13634</loc>
@@ -3342,8 +3307,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13636</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13637</loc>
@@ -3412,8 +3377,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13650</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13651</loc>
@@ -3437,8 +3402,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13655</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13656</loc>
@@ -3532,8 +3497,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13674</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13675</loc>
@@ -3552,8 +3517,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13678</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13679</loc>
@@ -3562,8 +3527,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13680</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13681</loc>
@@ -3657,8 +3622,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13699</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13700</loc>
@@ -3752,8 +3717,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13718</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13719</loc>
@@ -3772,8 +3737,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13722</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13723</loc>
@@ -3952,13 +3917,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13758</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13759</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13760</loc>
@@ -4077,8 +4042,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13783</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13784</loc>
@@ -4197,8 +4162,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13807</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13808</loc>
@@ -4287,8 +4252,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13825</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13826</loc>
@@ -4427,8 +4392,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13853</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13854</loc>
@@ -4437,13 +4402,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13855</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13856</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13857</loc>
@@ -4502,8 +4467,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13868</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13869</loc>
@@ -4517,18 +4482,18 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13871</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13872</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13873</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13874</loc>
@@ -4537,8 +4502,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13875</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13876</loc>
@@ -4572,8 +4537,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13882</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13883</loc>
@@ -4672,8 +4637,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13902</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13903</loc>
@@ -4692,8 +4657,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13906</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13907</loc>
@@ -4717,8 +4682,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13911</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13912</loc>
@@ -4932,8 +4897,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13956</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13957</loc>
@@ -4952,13 +4917,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13960</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13961</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13962</loc>
@@ -4977,8 +4942,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13965</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13966</loc>
@@ -4992,8 +4957,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13968</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13969</loc>
@@ -5047,8 +5012,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13979</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13981</loc>
@@ -5082,8 +5047,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13987</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13988</loc>
@@ -5107,8 +5072,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13992</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/13993</loc>
@@ -5152,8 +5117,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14001</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14002</loc>
@@ -5237,13 +5202,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14018</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14019</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14020</loc>
@@ -5342,8 +5307,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14039</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14040</loc>
@@ -5397,8 +5362,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14050</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14051</loc>
@@ -5532,8 +5497,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14077</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14078</loc>
@@ -5567,8 +5532,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14084</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14085</loc>
@@ -5597,8 +5562,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14090</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14091</loc>
@@ -5682,8 +5647,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14107</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14108</loc>
@@ -5757,8 +5722,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14122</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14123</loc>
@@ -5787,18 +5752,18 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14128</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14129</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14130</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14131</loc>
@@ -5992,8 +5957,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14169</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14170</loc>
@@ -6197,8 +6162,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14210</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14211</loc>
@@ -6247,8 +6212,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14220</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14221</loc>
@@ -6282,13 +6247,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14227</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14228</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14229</loc>
@@ -6402,8 +6367,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14251</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14252</loc>
@@ -6412,8 +6377,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14253</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14254</loc>
@@ -6462,13 +6427,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14263</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14264</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14265</loc>
@@ -6492,8 +6457,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14269</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14270</loc>
@@ -6557,8 +6522,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14282</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14283</loc>
@@ -6572,8 +6537,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14285</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14286</loc>
@@ -6607,8 +6572,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14292</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14293</loc>
@@ -6647,8 +6612,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14300</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14301</loc>
@@ -6672,18 +6637,18 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14305</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14306</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14307</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14308</loc>
@@ -6812,8 +6777,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14333</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14334</loc>
@@ -6972,8 +6937,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14365</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14366</loc>
@@ -7247,8 +7212,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14420</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14421</loc>
@@ -7312,8 +7277,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14433</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14434</loc>
@@ -7337,8 +7302,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14438</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14439</loc>
@@ -7387,8 +7352,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14448</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14449</loc>
@@ -7397,8 +7362,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14450</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14451</loc>
@@ -7417,8 +7382,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14454</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14455</loc>
@@ -7427,8 +7392,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14456</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14457</loc>
@@ -7567,13 +7532,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14484</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14485</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14486</loc>
@@ -7617,8 +7582,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14494</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14495</loc>
@@ -7627,8 +7592,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14496</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14497</loc>
@@ -7682,8 +7647,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14507</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14508</loc>
@@ -7707,8 +7672,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14512</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14513</loc>
@@ -7797,8 +7762,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14530</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14531</loc>
@@ -7827,8 +7792,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14536</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14537</loc>
@@ -7837,8 +7802,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14538</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14539</loc>
@@ -7942,8 +7907,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14559</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14560</loc>
@@ -7957,8 +7922,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14562</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14563</loc>
@@ -8027,13 +7992,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14576</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14577</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14578</loc>
@@ -8087,8 +8052,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14588</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14589</loc>
@@ -8187,8 +8152,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14608</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14609</loc>
@@ -8217,8 +8182,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14614</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14615</loc>
@@ -8272,8 +8237,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14625</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14626</loc>
@@ -8332,8 +8297,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14637</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14638</loc>
@@ -8367,13 +8332,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14644</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14645</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14646</loc>
@@ -8386,14 +8351,9 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://nemestats.com/GamingGroup/Details/14648</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://nemestats.com/GamingGroup/Details/14649</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14650</loc>
@@ -8512,8 +8472,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14673</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14674</loc>
@@ -8662,8 +8622,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14703</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14704</loc>
@@ -8752,8 +8712,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14721</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14722</loc>
@@ -8762,13 +8722,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14723</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14724</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14725</loc>
@@ -8787,8 +8747,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14728</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14729</loc>
@@ -8932,8 +8892,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14757</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14758</loc>
@@ -8977,13 +8937,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14766</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14767</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14768</loc>
@@ -8992,8 +8952,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14769</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14770</loc>
@@ -9007,8 +8967,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14772</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14773</loc>
@@ -9017,13 +8977,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14774</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14775</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14776</loc>
@@ -9092,8 +9052,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14789</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14790</loc>
@@ -9112,8 +9072,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14793</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14794</loc>
@@ -9132,8 +9092,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14797</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14798</loc>
@@ -9147,8 +9107,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14800</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14801</loc>
@@ -9162,8 +9122,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14803</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14804</loc>
@@ -9187,8 +9147,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14808</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14809</loc>
@@ -9207,8 +9167,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14812</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14813</loc>
@@ -9222,8 +9182,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14815</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14816</loc>
@@ -9237,13 +9197,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14818</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14819</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14820</loc>
@@ -9282,8 +9242,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14827</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14828</loc>
@@ -9297,8 +9257,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14830</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14831</loc>
@@ -9322,8 +9282,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14835</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14836</loc>
@@ -9342,8 +9302,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14839</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14840</loc>
@@ -9372,13 +9332,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14845</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14846</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14847</loc>
@@ -9422,8 +9382,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14855</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14856</loc>
@@ -9442,8 +9402,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14859</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14860</loc>
@@ -9467,8 +9427,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14864</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14865</loc>
@@ -9547,8 +9507,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14880</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14881</loc>
@@ -9702,13 +9662,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14911</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14912</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14913</loc>
@@ -9722,8 +9682,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14915</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14916</loc>
@@ -9742,8 +9702,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14919</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14920</loc>
@@ -9752,8 +9712,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14921</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14922</loc>
@@ -9802,8 +9762,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14931</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14932</loc>
@@ -9862,8 +9822,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14943</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14944</loc>
@@ -10017,13 +9977,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14974</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14975</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14976</loc>
@@ -10067,8 +10027,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14984</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/14985</loc>
@@ -10152,8 +10112,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15001</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15002</loc>
@@ -10177,8 +10137,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15006</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15007</loc>
@@ -10192,8 +10152,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15009</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15010</loc>
@@ -10242,8 +10202,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15019</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15020</loc>
@@ -10252,18 +10212,18 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15021</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15022</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15023</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15024</loc>
@@ -10282,8 +10242,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15027</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15028</loc>
@@ -10292,8 +10252,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15029</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15030</loc>
@@ -10302,18 +10262,18 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15031</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15032</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15033</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15034</loc>
@@ -10337,8 +10297,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15038</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15039</loc>
@@ -10352,8 +10312,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15041</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15042</loc>
@@ -10372,8 +10332,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15045</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15046</loc>
@@ -10382,8 +10342,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15047</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15048</loc>
@@ -10392,18 +10352,18 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15049</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15050</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15051</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15052</loc>
@@ -10427,8 +10387,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15056</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15057</loc>
@@ -10437,8 +10397,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15058</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15059</loc>
@@ -10472,13 +10432,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15065</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15066</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15067</loc>
@@ -10487,8 +10447,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15068</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15069</loc>
@@ -10502,8 +10462,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15071</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15072</loc>
@@ -10517,13 +10477,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15074</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15075</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15076</loc>
@@ -10542,8 +10502,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15079</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15080</loc>
@@ -10557,13 +10517,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15082</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15083</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15084</loc>
@@ -10582,13 +10542,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15087</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15088</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15089</loc>
@@ -10597,8 +10557,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15090</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15091</loc>
@@ -10612,8 +10572,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15093</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15094</loc>
@@ -10627,8 +10587,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15096</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15097</loc>
@@ -10647,8 +10607,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15100</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15101</loc>
@@ -10657,8 +10617,8 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15102</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15103</loc>
@@ -10672,13 +10632,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15105</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15106</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15107</loc>
@@ -10692,13 +10652,13 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15109</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15110</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15111</loc>
@@ -10727,11 +10687,976 @@
   </url>
   <url>
     <loc>https://nemestats.com/GamingGroup/Details/15116</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15117</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15118</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15119</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15120</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15121</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15122</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15123</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15124</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15125</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15126</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15127</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15128</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15129</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15130</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15131</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15132</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15133</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15134</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15135</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15136</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15137</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15138</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15139</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15140</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15141</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15142</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15143</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15144</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15145</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15146</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15147</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15148</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15149</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15150</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15151</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15152</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15153</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15154</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15155</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15156</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15157</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15158</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15159</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15160</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15161</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15162</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15163</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15164</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15165</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15166</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15167</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15168</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15169</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15170</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15171</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15172</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15173</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15174</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15175</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15176</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15177</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15178</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15179</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15180</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15181</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15182</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15183</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15184</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15185</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15186</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15187</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15188</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15189</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15190</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15192</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15193</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15194</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15195</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15196</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15197</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15198</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15199</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15200</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15201</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15202</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15203</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15204</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15205</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15206</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15207</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15208</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15209</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15210</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15211</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15212</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15213</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15214</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15215</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15216</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15217</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15218</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15219</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15220</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15221</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15222</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15223</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15224</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15225</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15226</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15227</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15228</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15229</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15230</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15231</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15232</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15233</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15234</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15235</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15236</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15237</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15238</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15239</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15240</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15241</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15242</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15243</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15244</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15245</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15246</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15247</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15248</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15249</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15250</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15251</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15252</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15253</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15254</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15255</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15256</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15257</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15258</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15259</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15260</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15261</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15262</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15263</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15264</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15265</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15266</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15267</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15268</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15269</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15270</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15271</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15272</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15273</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15274</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15275</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15276</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15277</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15278</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15279</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15280</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15281</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15282</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15283</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15284</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15285</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15286</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15287</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15288</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15289</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15290</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15291</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15292</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15293</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15294</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15295</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15296</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15297</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15298</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15299</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15300</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15301</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15303</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15304</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15305</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15306</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15307</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15347</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/15390</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/16194</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://nemestats.com/GamingGroup/Details/15117</loc>
+    <loc>https://nemestats.com/GamingGroup/Details/16195</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://nemestats.com/GamingGroup/Details/16196</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
