@@ -30,6 +30,7 @@
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -263,9 +264,8 @@
       <HintPath>..\..\packages\T4MVCExtensions.3.16.5\lib\net40\T4MVCExtensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="UniversalAnalyticsHttpWrapper, Version=1.2.0.13248, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\UniversalAnalyticsMeasurementProtocolWrapper.1.4.1\lib\net40\UniversalAnalyticsHttpWrapper.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="UniversalAnalyticsHttpWrapper, Version=1.2.0.29103, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\UniversalAnalyticsMeasurementProtocolWrapper.1.4.3\lib\net40\UniversalAnalyticsHttpWrapper.dll</HintPath>
     </Reference>
     <Reference Include="VersionedRestApi, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\VersionedRestApi.1.0.0.2\lib\net45\VersionedRestApi.dll</HintPath>
