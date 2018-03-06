@@ -35,6 +35,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.PlayedGameTrackerTest
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
+                Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
@@ -51,6 +52,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.PlayedGameTrackerTest
                 Arg<string>.Is.Equal(EventCategoryEnum.PlayedGames.ToString()),
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
+                Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
             tracker.TrackPlayedGame(currentUser, TransactionSource.WebApplication);
@@ -65,6 +67,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.PlayedGameTrackerTest
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Equal(EventActionEnum.Created.ToString()),
+                Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
@@ -84,6 +87,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.PlayedGameTrackerTest
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Equal(transactionSource.ToString()),
+                Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 

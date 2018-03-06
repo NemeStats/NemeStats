@@ -33,6 +33,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
+                Arg<string>.Is.Anything, 
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
@@ -49,6 +50,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Equal(EventCategoryEnum.Players.ToString()),
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
+                Arg<string>.Is.Anything, 
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
@@ -65,6 +67,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Equal(EventActionEnum.Created.ToString()),
                 Arg<string>.Is.Anything,
+                Arg<string>.Is.Anything, 
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
@@ -81,6 +84,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Equal(UniversalAnalyticsNemeStatsEventTracker.DEFAULT_EVENT_LABEL),
+                Arg<string>.Is.Anything, 
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 

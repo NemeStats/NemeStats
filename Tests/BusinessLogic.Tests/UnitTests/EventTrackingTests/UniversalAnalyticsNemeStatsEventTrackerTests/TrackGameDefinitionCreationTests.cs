@@ -33,6 +33,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
+                Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
@@ -47,6 +48,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
             eventFactoryMock.Expect(mock => mock.MakeUniversalAnalyticsEvent(
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Equal(EventCategoryEnum.GameDefinitions.ToString()),
+                Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything))
@@ -65,6 +67,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Equal(EventActionEnum.Created.ToString()),
                 Arg<string>.Is.Anything,
+                Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
@@ -82,6 +85,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Equal(gameDefinitionName),
+                Arg<string>.Is.Anything, 
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 

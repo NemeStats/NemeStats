@@ -34,6 +34,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
+                Arg<string>.Is.Anything, 
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
@@ -50,6 +51,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Equal(EventCategoryEnum.Users.ToString()),
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
+                Arg<string>.Is.Anything, 
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
@@ -66,6 +68,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Equal(EventActionEnum.Created.ToString()),
                 Arg<string>.Is.Anything,
+                Arg<string>.Is.Anything, 
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
@@ -82,6 +85,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Equal(TransactionSource.RestApi.ToString()),
+                Arg<string>.Is.Anything, 
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
