@@ -325,6 +325,10 @@
     <Compile Include="Migrations\201803070213090_FixInvalidWinnerTypes.Designer.cs">
       <DependentUpon>201803070213090_FixInvalidWinnerTypes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803070243504_AddTpoGamesEverVotableFeature.cs" />
+    <Compile Include="Migrations\201803070243504_AddTpoGamesEverVotableFeature.Designer.cs">
+      <DependentUpon>201803070243504_AddTpoGamesEverVotableFeature.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\PlayedGames\GameResultTypesEnum.cs" />
     <Compile Include="Models\Players\HomePagePlayerSummary.cs" />
     <Compile Include="Logic\Players\IHomePagePlayerSummaryRetriever.cs" />
@@ -1156,6 +1160,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803070213090_FixInvalidWinnerTypes.resx">
       <DependentUpon>201803070213090_FixInvalidWinnerTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803070243504_AddTpoGamesEverVotableFeature.resx">
+      <DependentUpon>201803070243504_AddTpoGamesEverVotableFeature.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

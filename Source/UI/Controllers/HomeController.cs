@@ -42,11 +42,14 @@ namespace UI.Controllers
 {
     public partial class HomeController : BaseController
     {
+        [Obsolete("This method will go away since users voted down this feature a lot")]
         public const int NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW = 10;
         public const int NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW = 5;
         public const int NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW = 15;
         public const int NUMBER_OF_DAYS_OF_TRENDING_GAMES = 90;
+        public const int A_LOT_OF_DAYS = 100000;
         public const int NUMBER_OF_TRENDING_GAMES_TO_SHOW = 5;
+        public const int NUMBER_OF_TOP_GAMES_TO_SHOW = 10;
 
         private readonly IRecentPublicGamesRetriever _recentPublicGamesRetriever;
         private readonly ITopGamingGroupsRetriever _topGamingGroupsRetriever;
@@ -84,7 +87,13 @@ namespace UI.Controllers
         [HttpGet]
         public virtual ActionResult TrendingGames()
         {
-            var trendingGamesRequest = new TrendingGamesRequest(NUMBER_OF_TRENDING_GAMES_TO_SHOW, NUMBER_OF_DAYS_OF_TRENDING_GAMES);
+            return GetTopGamesPartialView(NUMBER_OF_TRENDING_GAMES_TO_SHOW, NUMBER_OF_DAYS_OF_TRENDING_GAMES);
+        }
+
+        [NonAction]
+        public virtual PartialViewResult GetTopGamesPartialView(int numberOfGamesToShow, int numberOfDaysToConsider)
+        {
+            var trendingGamesRequest = new TrendingGamesRequest(numberOfGamesToShow, numberOfDaysToConsider);
             var trendingGames = _trendingGamesRetriever.GetResults(trendingGamesRequest);
             var trendingGameViewModels = trendingGames.Select(_transformer.Transform<TrendingGameViewModel>).ToList();
 
@@ -104,6 +113,7 @@ namespace UI.Controllers
             return PartialView(MVC.PlayedGame.Views._RecentlyPlayedGamesPartial, publicGameSummaries);
         }
 
+        [Obsolete("Took this widget off of the home page due to too many downvotes")]
         [HttpGet]
         public virtual ActionResult RecentAchievementsUnlocked()
         {
@@ -111,6 +121,12 @@ namespace UI.Controllers
             var recentPlayerAchievementWinnerViewModel = recentPlayerAchievementWinners.ToTransformedPagedList<PlayerAchievementWinner, PlayerAchievementWinnerViewModel>(_transformer);
 
             return PartialView(MVC.Achievement.Views._RecentAchievementsUnlocked, recentPlayerAchievementWinnerViewModel);
+        }
+
+        [HttpGet]
+        public virtual ActionResult TopGamesEver()
+        {
+            return GetTopGamesPartialView(NUMBER_OF_TRENDING_GAMES_TO_SHOW, A_LOT_OF_DAYS);
         }
 
         public virtual ActionResult About()

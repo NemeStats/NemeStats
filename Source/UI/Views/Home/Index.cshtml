@@ -79,16 +79,15 @@
         <div class="col-md-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    Recent @HomeController.NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW Achievements Unlocked @Html.ActionLink(" - View More", MVC.Achievement.RecentAchievementsUnlocked())
-                    <div id="recentAchievementsUnlockedVote" class="fl-right"></div>
+                    Top @HomeController.NUMBER_OF_TOP_GAMES_TO_SHOW Games on NemeStats
+                    <div id="topGamesVote" class="fl-right"></div>
                     <div class="fl-clear"></div>
                 </div>
-                <div class="panel-body" id="achiementsWidget">
+                <div class="panel-body" id="topGamesVoteWidget">
                     <div class="loader"></div>
                 </div>
             </div>
         </div>
-
         <div class="col-md-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
@@ -110,7 +109,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $("#recentGamesVote").rank({ votableFeatureId: "RecentGlobalGames" });
-            $("#recentAchievementsUnlockedVote").rank({ votableFeatureId: "RecentAchievementsUnlocked" });
+            $("#topGamesVote").rank({ votableFeatureId: "TopGamesEver" });
             $("#topGlobalGameDefinitionsVote").rank({ votableFeatureId: "RecentGlobalTopGameDefinitions" });
             $("#gamingGroupsVote").rank({ votableFeatureId: "TopGlobalGamingGroups" });
 
@@ -126,8 +125,8 @@
                     widgetServiceEndpoint: "/Home/RecentPlayedGames"
                 },
                 {
-                    widgetDivId: "achiementsWidget",
-                    widgetServiceEndpoint: "/Home/RecentAchievementsUnlocked"
+                    widgetDivId: "topGamesVoteWidget",
+                    widgetServiceEndpoint: "/Home/TopGamesEver"
                 },
                 {
                     widgetDivId: "topGamingGroupsWidget",
