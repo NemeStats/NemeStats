@@ -49,7 +49,7 @@ namespace UI.Controllers
         public const int NUMBER_OF_DAYS_OF_TRENDING_GAMES = 90;
         public const int A_LOT_OF_DAYS = 100000;
         public const int NUMBER_OF_TRENDING_GAMES_TO_SHOW = 5;
-        public const int NUMBER_OF_TOP_GAMES_TO_SHOW = 10;
+        public const int NUMBER_OF_TOP_GAMES_TO_SHOW = 5;
 
         private readonly IRecentPublicGamesRetriever _recentPublicGamesRetriever;
         private readonly ITopGamingGroupsRetriever _topGamingGroupsRetriever;
@@ -126,7 +126,7 @@ namespace UI.Controllers
         [HttpGet]
         public virtual ActionResult TopGamesEver()
         {
-            return GetTopGamesPartialView(NUMBER_OF_TRENDING_GAMES_TO_SHOW, A_LOT_OF_DAYS);
+            return GetTopGamesPartialView(NUMBER_OF_TOP_GAMES_TO_SHOW, A_LOT_OF_DAYS);
         }
 
         public virtual ActionResult About()
