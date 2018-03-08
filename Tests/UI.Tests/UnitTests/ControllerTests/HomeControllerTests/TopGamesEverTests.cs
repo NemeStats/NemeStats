@@ -1,17 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
-using BusinessLogic.Facades;
-using BusinessLogic.Logic;
-using BusinessLogic.Models.Games;
+﻿using System.Web.Mvc;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
 using UI.Controllers;
-using UI.Models.GameDefinitionModels;
 
 namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
 {
-    public class TrendingGamesTests : HomeControllerTestBase
+    public class TopGamesEverTests : HomeControllerTestBase
     {
         [Test]
         public void It_Returns_A_Partial_View_For_The_Specified_Number_Of_Days()
@@ -24,12 +19,12 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
                 .Return(expectedResult);
 
             //--act
-            var results = _autoMocker.ClassUnderTest.TrendingGames();
+            var results = _autoMocker.ClassUnderTest.TopGamesEver();
 
             //--assert
             _autoMocker.ClassUnderTest.AssertWasCalled(mock => mock.GetTopGamesPartialView(
-                Arg<int>.Is.Equal(HomeController.NUMBER_OF_TRENDING_GAMES_TO_SHOW), 
-                Arg<int>.Is.Equal(HomeController.NUMBER_OF_DAYS_OF_TRENDING_GAMES)));
+                Arg<int>.Is.Equal(HomeController.NUMBER_OF_TOP_GAMES_TO_SHOW), 
+                Arg<int>.Is.Equal(HomeController.A_LOT_OF_DAYS)));
             results.ShouldBeSameAs(expectedResult);
         }
     }
