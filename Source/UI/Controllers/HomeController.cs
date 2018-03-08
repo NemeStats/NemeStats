@@ -52,7 +52,6 @@ namespace UI.Controllers
         public const int NUMBER_OF_TOP_GAMES_TO_SHOW = 5;
 
         private readonly IRecentPublicGamesRetriever _recentPublicGamesRetriever;
-        private readonly ITopGamingGroupsRetriever _topGamingGroupsRetriever;
         private readonly ITrendingGamesRetriever _trendingGamesRetriever;
         private readonly ITransformer _transformer;
         private readonly IRecentPlayerAchievementsUnlockedRetriever _recentPlayerAchievementsUnlockedRetriever;
@@ -66,7 +65,6 @@ namespace UI.Controllers
             IMapperFactory mapperFactory, IDataContext dataContext)
         {
             _recentPublicGamesRetriever = recentPublicGamesRetriever;
-            _topGamingGroupsRetriever = topGamingGroupsRetriever;
             _trendingGamesRetriever = trendingGamesRetriever;
             _transformer = transformer;
             _recentPlayerAchievementsUnlockedRetriever = recentPlayerAchievementsUnlockedRetriever;
