@@ -129,6 +129,7 @@ namespace UI.Controllers
             public readonly string SearchBoardGameGeekHttpGet = "SearchBoardGameGeekHttpGet";
             public readonly string SearchGameDefinition = "SearchGameDefinition";
             public readonly string ShowTrendingGames = "ShowTrendingGames";
+            public readonly string TopGames = "TopGames";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -143,6 +144,7 @@ namespace UI.Controllers
             public const string SearchBoardGameGeekHttpGet = "SearchBoardGameGeekHttpGet";
             public const string SearchGameDefinition = "SearchGameDefinition";
             public const string ShowTrendingGames = "ShowTrendingGames";
+            public const string TopGames = "TopGames";
         }
 
 
@@ -236,6 +238,7 @@ namespace UI.Controllers
                 public readonly string Create = "Create";
                 public readonly string Details = "Details";
                 public readonly string Edit = "Edit";
+                public readonly string TopGamesEver = "TopGamesEver";
                 public readonly string TrendingGames = "TrendingGames";
             }
             public readonly string _CreatePartial = "~/Views/GameDefinition/_CreatePartial.cshtml";
@@ -247,6 +250,7 @@ namespace UI.Controllers
             public readonly string Create = "~/Views/GameDefinition/Create.cshtml";
             public readonly string Details = "~/Views/GameDefinition/Details.cshtml";
             public readonly string Edit = "~/Views/GameDefinition/Edit.cshtml";
+            public readonly string TopGamesEver = "~/Views/GameDefinition/TopGamesEver.cshtml";
             public readonly string TrendingGames = "~/Views/GameDefinition/TrendingGames.cshtml";
         }
     }
@@ -390,6 +394,17 @@ namespace UI.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ShowTrendingGames);
             ShowTrendingGamesOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void TopGamesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult TopGames()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.TopGames);
+            TopGamesOverride(callInfo);
             return callInfo;
         }
 

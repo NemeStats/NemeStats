@@ -1,0 +1,12 @@
+﻿@model List<UI.Models.GameDefinitionModels.TrendingGameViewModel>
+
+@{
+    ViewBag.Title = $"Top { Model.Count } Board Games on NemeStats";
+    ViewBag.Description = "See the all-time hottest games on NemeStats. These games have had the most plays recorded since the site went live.";
+    Layout = MVC.Shared.Views._BaseLayout;
+}
+
+<div class="container">
+    <h2 class="page-header">Top @Model.Count Games on NemeStats</h2>
+    @Html.Partial(MVC.GameDefinition.Views._TrendingGamesPartial, Model)
+</div>

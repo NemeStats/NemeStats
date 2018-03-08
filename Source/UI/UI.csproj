@@ -908,6 +908,7 @@
     <Content Include="Views\GameDefinition\_GameDefinitionPlayedGamesPartial.cshtml" />
     <Content Include="Views\Player\_TopChampions.cshtml" />
     <Content Include="Views\GamingGroup\_GamingGroupStatsPartial.cshtml" />
+    <Content Include="Views\GameDefinition\TopGamesEver.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Api\Views\Shared\" />

@@ -44,7 +44,9 @@ namespace UI.Controllers
     {
         internal const int NUMBER_OF_RECENT_GAMES_TO_SHOW = 5;
         internal const int NUMBER_OF_TRENDING_GAMES_TO_SHOW = 25;
+        internal const int NUMBER_OF_TOP_GAMES_EVER_TO_SHOW = 25;
         internal const int NUMBER_OF_DAYS_OF_TRENDING_GAMES = 90;
+        internal const int A_LOT_OF_DAYS = 10000;
 
         private readonly IGameDefinitionRetriever _gameDefinitionRetriever;
         private readonly ITrendingGamesRetriever _trendingGamesRetriever;
@@ -312,12 +314,27 @@ namespace UI.Controllers
         [HttpGet]
         public virtual ActionResult ShowTrendingGames()
         {
-            var trendingGamesRequest = new TrendingGamesRequest(NUMBER_OF_TRENDING_GAMES_TO_SHOW, NUMBER_OF_DAYS_OF_TRENDING_GAMES);
-            var trendingGames = _trendingGamesRetriever.GetResults(trendingGamesRequest);
-            var trendingGamesViewModels = trendingGames.Select(_transformer.Transform<TrendingGameViewModel>).ToList();
+            var trendingGamesViewModels = GetTrendingGamesViewModels(NUMBER_OF_TRENDING_GAMES_TO_SHOW, NUMBER_OF_DAYS_OF_TRENDING_GAMES);
             ViewBag.NumTrendingDays = NUMBER_OF_DAYS_OF_TRENDING_GAMES;
 
             return View(MVC.GameDefinition.Views.TrendingGames, trendingGamesViewModels);
+        }
+
+        [NonAction]
+        internal virtual List<TrendingGameViewModel> GetTrendingGamesViewModels(int numberOfGames, int numberOfDays)
+        {
+            var trendingGamesRequest =
+                new TrendingGamesRequest(numberOfGames, numberOfDays);
+            var trendingGames = _trendingGamesRetriever.GetResults(trendingGamesRequest);
+            return trendingGames.Select(_transformer.Transform<TrendingGameViewModel>).ToList();
+        }
+
+        [HttpGet]
+        public virtual ActionResult TopGames()
+        {
+            var trendingGamesViewModels = GetTrendingGamesViewModels(NUMBER_OF_TOP_GAMES_EVER_TO_SHOW, A_LOT_OF_DAYS);
+
+            return View(MVC.GameDefinition.Views.TopGamesEver, trendingGamesViewModels);
         }
     }
 }
