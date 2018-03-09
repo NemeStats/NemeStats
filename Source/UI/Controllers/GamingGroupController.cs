@@ -319,6 +319,7 @@ namespace UI.Controllers
             return MakeRedirectResultToManageAccountPageGamingGroupsTab(AccountController.ManageMessageId.GamingGroupDeleted);
         }
 
+        [NonAction]
         internal virtual RedirectResult MakeRedirectResultToManageAccountPageGamingGroupsTab(
             AccountController.ManageMessageId? message = AccountController.ManageMessageId.EmptyGamingGroupName)
         {
