@@ -22,8 +22,6 @@ Views.GamingGroup.GamingGroupView = function () {
         statsTabId: null,
         statsDivId: null
     };
-//TODO NOT SURE THIS IS WORKING AT THE MOMENT
-    this._updateGamingGroupNameServiceAddress = "/GamingGroup/UpdateGamingGroupName";
     this._getGamingGroupPlayersServiceAddress = "/GamingGroup/GetGamingGroupPlayers/";
     this._getGamingGroupGameDefinitionsServiceAddress = "/GamingGroup/GetGamingGroupGameDefinitions/";
     this._getGamingGroupPlayedGamesServiceAddress = "/GamingGroup/GetGamingGroupPlayedGames/";
@@ -402,23 +400,6 @@ Views.GamingGroup.GamingGroupView.prototype = {
                 }
             });
         }
-    },
-    renameGamingGroup: function (element) {
-        var parent = this;
-        $.ajax({
-            type: "POST",
-            url: parent._updateGamingGroupNameServiceAddress,
-            data: { "gamingGroupName": element.value },
-            success: function (data) {
-
-            },
-            error: function (err) {
-                alert("Error " + err.status + ":\r\n" + err.statusText);
-            },
-            dataType: "json"
-        });
-
-        this.trackGAEvent("GamingGroups", "GamingGroupRenamed", "GamingGroupRenamed");
     },
     reloadCurrentTabAndResetOthers: function ($playersTab, $gamesTab, $playedGamesTab, $statsTab, $fromDatePicker, $toDatePicker, settings, parent) {
         parent._playersTabLoaded = false;
