@@ -4,7 +4,6 @@ Namespace("Views.GamingGroup");
 //Initialization
 Views.GamingGroup.GamingGroupView = function () {
     this.$container = null;
-    this.$title = null;
     this.$fromDatePicker = null;
     this.$toDatePicker = null;
 
@@ -44,8 +43,6 @@ Views.GamingGroup.GamingGroupView = function () {
 Views.GamingGroup.GamingGroupView.prototype = {
     init: function (gaObject, options) {
         var owner = this;
-        this.$title = $("#gamingGroupTitle");
-        this.$title.toEditBox({ onFocusOut: $.proxy(owner.renameGamingGroup, this), cssClass: "gaming-group-name" });
         this._googleAnalytics = gaObject;
 
         if (options.gamingGroupId == null) {
