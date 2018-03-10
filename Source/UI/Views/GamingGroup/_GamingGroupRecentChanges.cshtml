@@ -28,7 +28,7 @@ else
             </h4>
         </div>
         <div class="panel-body">
-            @Html.Partial(MVC.Achievement.Views._RecentAchievementsUnlocked, Model.RecentAchievements)
+            @Html.Partial(MVC.Achievement.Views._RecentAchievementsUnlocked, Model.RecentAchievements, new ViewDataDictionary { { "hideGamingGroupColumn", true } })
         </div>
     </div>
 }
