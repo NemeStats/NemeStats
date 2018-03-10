@@ -16,7 +16,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using System.Collections.Generic;
-using System.Linq;
 using BusinessLogic.Models.Nemeses;
 
 namespace BusinessLogic.Logic.Nemeses
@@ -24,6 +23,6 @@ namespace BusinessLogic.Logic.Nemeses
     public interface INemesisHistoryRetriever
     {
         NemesisHistoryData GetNemesisHistory(int playerId, int numberOfPreviousNemesisToReturn);
-        List<NemesisChange> GetRecentNemesisChanges(int numberOfRecentNemeses);
+        List<NemesisChange> GetRecentNemesisChanges(GetRecentNemesisChangesRequest request);
     }
 }

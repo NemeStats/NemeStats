@@ -16,16 +16,17 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using System.Linq;
+using System;
 
 namespace UI.Models.Nemeses
 {
     public class NemesisChangeViewModel
     {
-        public int PlayerId { get; set; }
-        public string PlayerName { get; set; }
+        public int MinionPlayerId { get; set; }
+        public string MinionPlayerName { get; set; }
         public int NemesisPlayerId { get; set; }
         public string NemesisPlayerName { get; set; }
         public float LossPercentageVersusNemesis { get; set; }
+        public DateTime DateCreated { get; set; }
     }
 }

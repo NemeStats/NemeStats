@@ -19,7 +19,7 @@
 		{
 			<tr data-position="@position">
                 @{ position++; }
-				<td>@Html.ActionLink(nemesisChange.PlayerName, "Details", "Player", new { id = nemesisChange.PlayerId }, new { })</td>
+				<td>@Html.ActionLink(nemesisChange.MinionPlayerName, "Details", "Player", new { id = nemesisChange.MinionPlayerId }, new { })</td>
 				<td>@Html.ActionLink(nemesisChange.NemesisPlayerName, "Details", "Player", new { id = nemesisChange.NemesisPlayerId }, new { })</td>
 				<td>@nemesisChange.LossPercentageVersusNemesis&nbsp;%</td>
 			</tr>

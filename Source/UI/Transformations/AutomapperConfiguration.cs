@@ -24,6 +24,7 @@ using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.GamingGroups;
+using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Logic.Points;
 using BusinessLogic.Models;
@@ -40,6 +41,7 @@ using UI.Models;
 using UI.Models.Achievements;
 using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
+using UI.Models.Nemeses;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
 using UI.Models.Points;
@@ -204,7 +206,7 @@ namespace UI.Transformations
 
             Mapper.CreateMap<HomePagePlayerSummary, PlayerQuickStatsViewModel>();
 
-            Mapper.CreateMap<RecentGamingGroupChanges, RecentGamingGroupChangesViewModel>();
+            Mapper.CreateMap<NemesisChange, NemesisChangeViewModel>();
         }
     }
 }

@@ -1,6 +1,23 @@
 ﻿@model UI.Models.GamingGroup.RecentGamingGroupChangesViewModel
 
 <div class="container">
+
+    @if (Model.RecentNemesisChanges.Count > 0)
+    {
+        <div class="container">
+            <h2 class="page-header">Last @Model.RecentNemesisChanges.Count Nemesis Changes</h2>
+            @Html.Partial(MVC.Player.Views._RecentNemesisChangesPartial, Model.RecentNemesisChanges)
+        </div>
+    }
+    else
+    {
+        <h2 class="page-header">No recent Nemesis changes. Play some games with some new players!</h2>
+    }
+</div>
+
+
+<div class="container">
+
     @if (Model.RecentAchievements.Count > 0)
     {
         <h2 class="page-header">Last @Model.RecentAchievements.Count Unlocked Achievements</h2>

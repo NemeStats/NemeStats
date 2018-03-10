@@ -21,6 +21,7 @@ using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Nemeses;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -29,31 +30,35 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisHistoryRe
     [TestFixture]
     public class GetRecentNemesisChangesTests
     {
-        private IDataContext dataContextMock;
+        private IDataContext _dataContextMock;
         private NemesisHistoryRetriever nemesisHistoryRetriever;
         private int repeatedMinionPlayerId = 10;
         private int nemesisPlayerId1 = 1;
         private string nemesisPlayerName1 = "nemesis player name 1";
         private string repeatedMinionPlayerName1 = "minion player name 1";
         private int lossPercentage = 51;
+        private const int GAMING_GROUP_ID = 1;
+        private int playerIdWithWrongGamingGroup = 123;
 
         [SetUp]
         public void SetUp()
         {
-            dataContextMock = MockRepository.GenerateMock<IDataContext>();
-            nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContextMock);
+            _dataContextMock = MockRepository.GenerateMock<IDataContext>();
+            nemesisHistoryRetriever = new NemesisHistoryRetriever(_dataContextMock);
 
-            List<Nemesis> nemeses = new List<Nemesis>
+            var nemeses = new List<Nemesis>
             {
                 BuildNemesisItem(nemesisPlayerId1, nemesisPlayerName1, repeatedMinionPlayerId, repeatedMinionPlayerName1, lossPercentage, 0),
                 BuildNemesisItem(35, "another nemesis player name", repeatedMinionPlayerId, repeatedMinionPlayerName1, 59, 1),
                 BuildNemesisItem(36, "nemesis3", 515, "minion3", 59, 3),
                 BuildNemesisItem(37, "nemesis4", 516, "minion4", 100, 2),
-                BuildNemesisItem(39, "nemesis5", 515116, "minion4", 70, 5)
+                BuildNemesisItem(39, "nemesis5", 515116, "minion4", 70, 5),
+                BuildNemesisItem(playerIdWithWrongGamingGroup, "exclude_because_wrong_gaming_group_Id", 99, "minion4", 71, 1, -1)
+
 
             };
 
-            dataContextMock.Expect(mock => mock.GetQueryable<Nemesis>())
+            _dataContextMock.Expect(mock => mock.GetQueryable<Nemesis>())
                            .Return(nemeses.AsQueryable());
         }
 
@@ -63,14 +68,16 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisHistoryRe
             int minionPlayerId, 
             string minionPlayerName, 
             int lossPercentage,
-            int daysAgo)
+            int daysAgo,
+            int gamingGroupId = GAMING_GROUP_ID)
         {
             return new Nemesis
             {
                 NemesisPlayerId = nemesisPlayerId,
                 NemesisPlayer = new Player
                 {
-                    Name = nemesisPlayerName
+                    Name = nemesisPlayerName,
+                    GamingGroupId = gamingGroupId
                 },
                 MinionPlayerId = minionPlayerId,
                 MinionPlayer = new Player
@@ -85,26 +92,65 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisHistoryRe
         [Test]
         public void ItReturnsTheSpecifiedNumberOfNemesisChanges()
         {
-            int numberOfNemesesToRetrieve = 3;
+            //--arrange
+            var request = new GetRecentNemesisChangesRequest
+            {
+                NumberOfRecentChangesToRetrieve = 1
+            };
 
-            List<NemesisChange> nemesisChanges = nemesisHistoryRetriever.GetRecentNemesisChanges(numberOfNemesesToRetrieve);
+            //--act
+            var nemesisChanges = nemesisHistoryRetriever.GetRecentNemesisChanges(request);
 
-            Assert.AreEqual(numberOfNemesesToRetrieve, nemesisChanges.Count);
+            //--assert
+            Assert.AreEqual(request.NumberOfRecentChangesToRetrieve, nemesisChanges.Count);
         }
 
         [Test]
         public void ItDoesntReturnTheSameMinionPlayerMoreThanOnce()
         {
-            List<NemesisChange> nemesisChanges = nemesisHistoryRetriever.GetRecentNemesisChanges(4);
+            //--arrange
+            var request = new GetRecentNemesisChangesRequest
+            {
+                NumberOfRecentChangesToRetrieve = 10
+            };
 
+            //--act
+            var nemesisChanges = nemesisHistoryRetriever.GetRecentNemesisChanges(request);
+
+            //--assert
             Assert.AreEqual(1, nemesisChanges.Count(nemesis => nemesis.MinionPlayerId == repeatedMinionPlayerId));
+        }
+
+        [Test]
+        public void ItOnlyReturnsResultsThatMatchTheSpecifiedGamingGroupId()
+        {
+            //--arrange
+            var request = new GetRecentNemesisChangesRequest
+            {
+                NumberOfRecentChangesToRetrieve = 10,
+                GamingGroupId = GAMING_GROUP_ID
+            };
+
+            //--act
+            var nemesisChanges = nemesisHistoryRetriever.GetRecentNemesisChanges(request);
+
+            //--assert
+            Assert.False(nemesisChanges.Any(x => x.NemesisPlayerId == playerIdWithWrongGamingGroup));
         }
 
         [Test]
         public void ItReturnsNemesisChangesInOrderOfDateDescending()
         {
-            List<NemesisChange> nemesisChanges = nemesisHistoryRetriever.GetRecentNemesisChanges(4);
+            //--arrange
+            var request = new GetRecentNemesisChangesRequest
+            {
+                NumberOfRecentChangesToRetrieve = 10
+            };
 
+            //--act
+            var nemesisChanges = nemesisHistoryRetriever.GetRecentNemesisChanges(request);
+
+            //--assert
             var sorted = nemesisChanges.OrderByDescending(s => s.DateCreated);
             CollectionAssert.AreEqual(sorted.ToList(), nemesisChanges);
         }
@@ -112,9 +158,17 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisHistoryRe
         [Test]
         public void ItSetsAllTheFields()
         {
-            List<NemesisChange> nemesisChanges = nemesisHistoryRetriever.GetRecentNemesisChanges(1);
+            //--arrange
+            var request = new GetRecentNemesisChangesRequest
+            {
+                NumberOfRecentChangesToRetrieve = 1
+            };
 
-            NemesisChange nemesisChange = nemesisChanges[0];
+            //--act
+            var nemesisChanges = nemesisHistoryRetriever.GetRecentNemesisChanges(request);
+
+            //--assert
+            var nemesisChange = nemesisChanges[0];
             Assert.AreEqual(repeatedMinionPlayerId, nemesisChange.MinionPlayerId);
             Assert.AreEqual(repeatedMinionPlayerName1, nemesisChange.MinionPlayerName);
             Assert.AreEqual(nemesisPlayerId1, nemesisChange.NemesisPlayerId);

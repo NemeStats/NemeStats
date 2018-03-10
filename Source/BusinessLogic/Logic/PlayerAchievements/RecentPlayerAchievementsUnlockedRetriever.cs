@@ -21,7 +21,6 @@ namespace BusinessLogic.Logic.PlayerAchievements
             _achievementRetriever = achievementRetriever;
         }
  
- //TODO create version that isn't paged....
         public IPagedList<PlayerAchievementWinner> GetResults(GetRecentPlayerAchievementsUnlockedQuery query)
         {
             var playerAchievementWinnersQueryable =
