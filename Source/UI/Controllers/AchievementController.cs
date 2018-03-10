@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
-using AutoMapper;
-using BusinessLogic.Events.HandlerFactory;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Logic.PlayerAchievements;
-using BusinessLogic.Logic.Players;
-using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.User;
 using BusinessLogic.Paging;
@@ -17,8 +11,6 @@ using UI.Controllers.Helpers;
 using UI.Models.Achievements;
 using UI.Mappers.Extensions;
 using UI.Mappers.Interfaces;
-using UI.Models.GameDefinitionModels;
-using UI.Models.PlayedGame;
 using UI.Models.Players;
 
 namespace UI.Controllers
@@ -29,7 +21,6 @@ namespace UI.Controllers
 
         private readonly IPlayerAchievementRetriever _playerAchievementRetriever;
         private readonly IRecentPlayerAchievementsUnlockedRetriever _recentPlayerAchievementsUnlockedRetriever;
-        private readonly IMapperFactory _mapperFactory;
         private readonly IAchievementRetriever _achievementRetriever;
         private readonly ITransformer _transformer;
 
@@ -41,7 +32,6 @@ namespace UI.Controllers
         {
             _playerAchievementRetriever = playerAchievementRetriever;
             _recentPlayerAchievementsUnlockedRetriever = recentPlayerAchievementsUnlockedRetriever;
-            _mapperFactory = mapperFactory;
             _achievementRetriever = achievementRetriever;
             _transformer = transformer;
         }

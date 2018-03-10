@@ -14,23 +14,23 @@
         </tr>
         </thead>
         @{ var position = 1; }
-        @foreach (var playerSummaryViewModel in @Model)
+        @foreach (var topPlayerViewModel in @Model)
         {
             <tr data-position="@position">
                 @{ position++; }
-                <td>@Html.ActionLink(playerSummaryViewModel.PlayerName, "Details", "Player", new
+                <td>@Html.ActionLink(topPlayerViewModel.PlayerName, "Details", "Player", new
                     {
-                        id = playerSummaryViewModel.PlayerId
+                        id = topPlayerViewModel.PlayerId
                     }, new
                     {
                     })</td>
                 <td>
-                    <span data-toggle="popover" data-html="true" data-templateselector="#@playerSummaryViewModel.PlayerId" data-title="NemePoints breakdown">
-                        @playerSummaryViewModel.NemePointsSummary.TotalNemePoints
+                    <span data-toggle="popover" data-html="true" data-templateselector="#@topPlayerViewModel.PlayerId" data-title="NemePoints breakdown">
+                        @topPlayerViewModel.NemePointsSummary.TotalNemePoints
                     </span>
                 </td>
-                <td>@playerSummaryViewModel.TotalNumberOfGamesPlayed</td>
-                <td>@playerSummaryViewModel.WinPercentage&nbsp;%</td>
+                <td>@topPlayerViewModel.TotalNumberOfGamesPlayed</td>
+                <td>@topPlayerViewModel.WinPercentage&nbsp;%</td>
             </tr>
         }
     </table>

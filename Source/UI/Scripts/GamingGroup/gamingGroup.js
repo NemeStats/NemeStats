@@ -4,7 +4,6 @@ Namespace("Views.GamingGroup");
 //Initialization
 Views.GamingGroup.GamingGroupView = function () {
     this.$container = null;
-    this.$title = null;
     this.$fromDatePicker = null;
     this.$toDatePicker = null;
 
@@ -20,25 +19,28 @@ Views.GamingGroup.GamingGroupView = function () {
         playedGamesTabId: null,
         playedGamesDivId: null,
         statsTabId: null,
-        statsDivId: null
+        statsDivId: null,
+        recentTabId: null,
+        recentDivId: null
     };
-//TODO NOT SURE THIS IS WORKING AT THE MOMENT
-    this._updateGamingGroupNameServiceAddress = "/GamingGroup/UpdateGamingGroupName";
     this._getGamingGroupPlayersServiceAddress = "/GamingGroup/GetGamingGroupPlayers/";
     this._getGamingGroupGameDefinitionsServiceAddress = "/GamingGroup/GetGamingGroupGameDefinitions/";
     this._getGamingGroupPlayedGamesServiceAddress = "/GamingGroup/GetGamingGroupPlayedGames/";
     this._getGamingGroupStatsServiceAddress = "/GamingGroup/GetGamingGroupStats/";
+    this._getGamingGroupRecentChangesServiceAddress = "/GamingGroup/GetRecentChanges/";
 
     this._googleAnalytics = null;
     this._playersTabLoaded = false;
     this._gamesTabLoaded = false;
     this._playedGamesTabLoaded = false;
     this._statsTabLoaded = false;
+    this._recentTabLoaded = false;
     this._tabEnum = {
         PLAYERS : "players",
         GAMES : "games",
         PLAYS: "plays",
-        STATS : "stats"
+        STATS: "stats",
+        RECENT: "recent"
     }
 };
 
@@ -46,8 +48,6 @@ Views.GamingGroup.GamingGroupView = function () {
 Views.GamingGroup.GamingGroupView.prototype = {
     init: function (gaObject, options) {
         var owner = this;
-        this.$title = $("#gamingGroupTitle");
-        this.$title.toEditBox({ onFocusOut: $.proxy(owner.renameGamingGroup, this), cssClass: "gaming-group-name" });
         this._googleAnalytics = gaObject;
 
         if (options.gamingGroupId == null) {
@@ -99,6 +99,16 @@ Views.GamingGroup.GamingGroupView.prototype = {
             throw "statsDivId is required.";
         }
         this._settings.statsDivId = options.statsDivId;
+
+        if (options.recentTabId == null) {
+            throw "recentTabId is required.";
+        }
+        this._settings.recentTabId = options.recentTabId;
+
+        if (options.recentDivId == null) {
+            throw "recentDivId is required.";
+        }
+        this._settings.recentDivId = options.recentDivId;
 
         this._settings.gamingGroupId = options.gamingGroupId;
 
@@ -169,6 +179,12 @@ Views.GamingGroup.GamingGroupView.prototype = {
         $statsTab.click((function (event) {
             event.preventDefault();
             return owner.getStats(owner._settings.gamingGroupId, owner.$fromDatePicker, owner.$toDatePicker, owner._settings.statsDivId, owner);
+        }));
+
+        var $recentTab = $("#" + this._settings.recentTabId);
+        $recentTab.click((function (event) {
+            event.preventDefault();
+            return owner.getRecentGamingGroupChanges(owner._settings.gamingGroupId, owner.$fromDatePicker, owner.$toDatePicker, owner._settings.recentDivId, owner);
         }));
 
         var $dateFilteredButton = $("#" + this._settings.dateFilterButtonId);
@@ -403,22 +419,31 @@ Views.GamingGroup.GamingGroupView.prototype = {
             });
         }
     },
-    renameGamingGroup: function (element) {
-        var parent = this;
-        $.ajax({
-            type: "POST",
-            url: parent._updateGamingGroupNameServiceAddress,
-            data: { "gamingGroupName": element.value },
-            success: function (data) {
+    getRecentGamingGroupChanges: function (gamingGroupId, $fromDatePicker, toDatePicker, divIdForRenderingResults, parent) {
+        var fromDate = $fromDatePicker.val();
+        var toDate = toDatePicker.val();
+        parent.updateUrl(parent._tabEnum.RECENT, fromDate, toDate);
 
-            },
-            error: function (err) {
-                alert("Error " + err.status + ":\r\n" + err.statusText);
-            },
-            dataType: "json"
-        });
+        if (!parent._recentTabLoaded) {
+            $.ajax({
+                url: parent._getGamingGroupRecentChangesServiceAddress,
+                data: {
+                    "gamingGroupId": gamingGroupId,
+                    "Iso8601FromDate": fromDate,
+                    "Iso8601ToDate": toDate
+                },
+                cache: false,
+                type: "GET",
+                success: function (html) {
+                    $("#" + divIdForRenderingResults).html(html);
 
-        this.trackGAEvent("GamingGroups", "GamingGroupRenamed", "GamingGroupRenamed");
+                    var layout = new Views.Shared.Layout();
+                    layout.initializePopoversAndTooltips(parent);
+
+                    parent._recentTabLoaded = true;
+                }
+            });
+        }
     },
     reloadCurrentTabAndResetOthers: function ($playersTab, $gamesTab, $playedGamesTab, $statsTab, $fromDatePicker, $toDatePicker, settings, parent) {
         parent._playersTabLoaded = false;

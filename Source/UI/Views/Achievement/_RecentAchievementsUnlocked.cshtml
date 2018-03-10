@@ -2,6 +2,8 @@
     @{
         Layout = null;
         var position = 1;
+
+        bool showGamingGroup = ViewData["hideGamingGroupColumn"] == null || !(bool) ViewData["hideGamingGroupColumn"];
     }
 
     <div class="flip-scroll">
@@ -10,7 +12,10 @@
                 <tr>
                     <th class="achievement-head">Achievement</th>
                     <th>Player</th>
-                    <th>Gaming Group</th>
+                    @if(showGamingGroup)
+                    {
+                        <th>Gaming Group</th>
+                    }
                     <th>Date</th>
                 </tr>
             </thead>
@@ -31,11 +36,14 @@
                     </a>
                 </td>
                 <td>
-                    @Html.ActionLink(playerAchievement.PlayerName, "Details", "Player", new {id=playerAchievement.PlayerId}, new {})
+                    @Html.ActionLink(playerAchievement.PlayerName, "Details", "Player", new { id = playerAchievement.PlayerId }, new { })
                 </td>
-                <td>
-                    @Html.ActionLink(playerAchievement.GamingGroupName, "Details", "GamingGroup", new {id=playerAchievement.GamingGroupId}, new {})
-                </td>
+                @if(showGamingGroup)
+                {
+                    <td>
+                        @Html.ActionLink(playerAchievement.GamingGroupName, "Details", "GamingGroup", new { id = playerAchievement.GamingGroupId }, new { })
+                    </td>
+                }
                 <td>
                     <a href="@Url.Action(MVC.Achievement.PlayerAchievement(playerAchievement.AchievementId, playerAchievement.PlayerId))">@playerAchievement.AchievementLastUpdateDate.ToShortDateString()</a>
                 </td>

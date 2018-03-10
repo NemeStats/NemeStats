@@ -32,6 +32,7 @@ using UI.Models.Nemeses;
 using UI.Models.Players;
 using StructureMap.AutoMocking;
 using AutoMapper;
+using BusinessLogic.Models.Nemeses;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {
@@ -74,7 +75,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 
 			autoMocker.ClassUnderTest.ControllerContext = new ControllerContext(context, new RouteData(), autoMocker.ClassUnderTest);
 			autoMocker.Get<IPlayerSummaryBuilder>().Expect(mock => mock.GetTopPlayers(Arg<int>.Is.Anything)).Return(new List<TopPlayer>());
-			autoMocker.Get<INemesisHistoryRetriever>().Expect(mock => mock.GetRecentNemesisChanges(Arg<int>.Is.Anything)).Return(new List<NemesisChange>());
+			autoMocker.Get<INemesisHistoryRetriever>().Expect(mock => mock.GetRecentNemesisChanges(Arg<GetRecentNemesisChangesRequest>.Is.Anything)).Return(new List<NemesisChange>());
 			autoMocker.Get<INemesisChangeViewModelBuilder>().Expect(mock => mock.Build(Arg<List<NemesisChange>>.Is.Anything)).Return(new List<NemesisChangeViewModel>());
 			autoMocker.ClassUnderTest.Expect(mock => mock.ShowTopPlayers()).Return(new ViewResult { ViewName = MVC.Player.Views.TopPlayers, ViewData = new ViewDataDictionary(expectedTopPlayersViewModel) });
 			autoMocker.ClassUnderTest.Expect(mock => mock.ShowRecentNemesisChanges()).Return(new ViewResult { ViewName = MVC.Player.Views.RecentNemesisChanges, ViewData = new ViewDataDictionary(expectedNemesisChangeViewModel) });

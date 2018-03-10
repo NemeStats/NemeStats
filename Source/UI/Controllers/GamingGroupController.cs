@@ -16,6 +16,7 @@
 #endregion LICENSE
 
 using System;
+using System.Collections.Generic;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Users;
@@ -27,12 +28,18 @@ using System.Web.Mvc;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Facades;
 using BusinessLogic.Logic.GameDefinitions;
+using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
+using BusinessLogic.Models.Achievements;
+using BusinessLogic.Models.Nemeses;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
+using UI.Mappers.Extensions;
 using UI.Models.GamingGroup;
+using UI.Models.Nemeses;
 using UI.Models.PlayedGame;
+using UI.Models.Players;
 using UI.Models.User;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
@@ -44,6 +51,7 @@ namespace UI.Controllers
         public const int MAX_NUMBER_OF_RECENT_GAMES = 10;
         public const int NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW = 25;
         public const int NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW_ON_HOME_PAGE = 15;
+        public const int NUMBER_OF_RECENT_NEMESIS_TO_SHOW = 5;
         public const string SECTION_ANCHOR_PLAYERS = "playersListDivId";
         public const string SECTION_ANCHOR_GAMEDEFINITIONS = "gamesListDivId";
         public const string SECTION_ANCHOR_RECENT_GAMES = "playedGamesListDivId";
@@ -61,6 +69,7 @@ namespace UI.Controllers
         internal ITopGamingGroupsRetriever topGamingGroupsRetriever;
         internal ISecuredEntityValidator securedEntityValidator;
         internal IDeleteGamingGroupComponent deleteGamingGroupComponent;
+        internal INemesisHistoryRetriever nemesisHistoryRetriever;
 
         public GamingGroupController(
             IGamingGroupSaver gamingGroupSaver,
@@ -75,7 +84,8 @@ namespace UI.Controllers
             ITransformer transformer, 
             ITopGamingGroupsRetriever topGamingGroupsRetriever, 
             ISecuredEntityValidator securedEntityValidator,
-            IDeleteGamingGroupComponent deleteGamingGroupComponent)
+            IDeleteGamingGroupComponent deleteGamingGroupComponent,
+            INemesisHistoryRetriever nemesisHistoryRetriever)
         {
             this.gamingGroupSaver = gamingGroupSaver;
             this.gamingGroupRetriever = gamingGroupRetriever;
@@ -90,6 +100,7 @@ namespace UI.Controllers
             this.topGamingGroupsRetriever = topGamingGroupsRetriever;
             this.securedEntityValidator = securedEntityValidator;
             this.deleteGamingGroupComponent = deleteGamingGroupComponent;
+            this.nemesisHistoryRetriever = nemesisHistoryRetriever;
         }
 
         // GET: /GamingGroup
@@ -226,6 +237,7 @@ namespace UI.Controllers
             return viewModel;
         }
 
+
         [HttpGet]
         public virtual ActionResult GetGamingGroupStats(int gamingGroupId, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null)
         {
@@ -233,6 +245,32 @@ namespace UI.Controllers
             var viewModel = transformer.Transform<GamingGroupStatsViewModel>(gamingGroupStats);
 
             return PartialView(MVC.GamingGroup.Views._GamingGroupStatsPartial, viewModel);
+        }
+
+        [HttpGet]
+        public virtual ActionResult GetRecentChanges(int gamingGroupId, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null)
+        {
+            var recentChanges = gamingGroupRetriever.GetRecentChanges(gamingGroupId, dateRangeFilter);
+
+            var getRecentNemesisChangesRequest = new GetRecentNemesisChangesRequest
+            {
+                GamingGroupId = gamingGroupId,
+                NumberOfRecentChangesToRetrieve = NUMBER_OF_RECENT_NEMESIS_TO_SHOW
+            };
+            var recentNemesisChanges = nemesisHistoryRetriever.GetRecentNemesisChanges(getRecentNemesisChangesRequest);
+            var recentNemesisChangesViewModel = transformer.Transform<List<NemesisChangeViewModel>>(recentNemesisChanges);
+
+            var recentAchievemments =
+                recentChanges.RecentAchievements
+                    .ToTransformedPagedList<PlayerAchievementWinner, PlayerAchievementWinnerViewModel>(transformer);
+
+            var viewModel = new RecentGamingGroupChangesViewModel()
+            {
+                RecentAchievements = recentAchievemments,
+                RecentNemesisChanges = recentNemesisChangesViewModel
+            };
+
+            return PartialView(MVC.GamingGroup.Views._GamingGroupRecentChanges, viewModel);
         }
 
         [HttpGet]
@@ -319,6 +357,7 @@ namespace UI.Controllers
             return MakeRedirectResultToManageAccountPageGamingGroupsTab(AccountController.ManageMessageId.GamingGroupDeleted);
         }
 
+        [NonAction]
         internal virtual RedirectResult MakeRedirectResultToManageAccountPageGamingGroupsTab(
             AccountController.ManageMessageId? message = AccountController.ManageMessageId.EmptyGamingGroupName)
         {

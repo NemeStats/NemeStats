@@ -1,0 +1,38 @@
+﻿@model UI.Models.GamingGroup.RecentGamingGroupChangesViewModel
+
+
+@if (Model.RecentNemesisChanges.Count > 0)
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4>
+                Last @Model.RecentNemesisChanges.Count Nemesis Changes
+            </h4>
+        </div>
+        <div class="panel-body">
+            @Html.Partial(MVC.Player.Views._RecentNemesisChangesPartial, Model.RecentNemesisChanges)
+        </div>
+    </div>
+}
+else
+{
+    <h2 class="page-header">No Nemesis changes yet -- go play some games!</h2>
+}
+
+@if (Model.RecentAchievements.Count > 0)
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4>
+                Last @Model.RecentAchievements.Count Unlocked Achievements
+            </h4>
+        </div>
+        <div class="panel-body">
+            @Html.Partial(MVC.Achievement.Views._RecentAchievementsUnlocked, Model.RecentAchievements, new ViewDataDictionary { { "hideGamingGroupColumn", true } })
+        </div>
+    </div>
+}
+else
+{
+    <h2 class="page-header">No achievements unlocked yet. Go record some games!</h2>
+}

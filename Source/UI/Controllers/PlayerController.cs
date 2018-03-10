@@ -33,6 +33,7 @@ using UI.Models.Players;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
 using AutoMapper;
+using BusinessLogic.Models.Nemeses;
 
 namespace UI.Controllers
 {
@@ -158,7 +159,11 @@ namespace UI.Controllers
         [HttpGet]
         public virtual ActionResult ShowRecentNemesisChanges()
         {
-            var recentNemesisChanges = nemesisHistoryRetriever.GetRecentNemesisChanges(NUMBER_OF_RECENT_NEMESIS_CHANGES_TO_RETRIEVE);
+            var request = new GetRecentNemesisChangesRequest
+            {
+                NumberOfRecentChangesToRetrieve = NUMBER_OF_RECENT_NEMESIS_CHANGES_TO_RETRIEVE
+            };
+            var recentNemesisChanges = nemesisHistoryRetriever.GetRecentNemesisChanges(request);
             var recentNemesisChangesViewModels = nemesisChangeViewModelBuilder.Build(recentNemesisChanges).ToList();
             return View(MVC.Player.Views.RecentNemesisChanges, recentNemesisChangesViewModels);
         }

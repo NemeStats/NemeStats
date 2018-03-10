@@ -73,9 +73,11 @@ namespace BusinessLogic.Logic.Nemeses
             return nemesisHistoryData;
         }
 
-        public List<NemesisChange> GetRecentNemesisChanges(int numberOfRecentNemeses)
+        public List<NemesisChange> GetRecentNemesisChanges(GetRecentNemesisChangesRequest request)
         {
-            return (from nemesisChange in dataContext.GetQueryable<Nemesis>().GroupBy(n => n.MinionPlayerId)
+            return (from nemesisChange in dataContext.GetQueryable<Nemesis>()
+                        .Where(x => request.GamingGroupId == null || x.NemesisPlayer.GamingGroupId == request.GamingGroupId)
+                        .GroupBy(n => n.MinionPlayerId)
                                                      .Select(n => n.OrderByDescending(p => p.DateCreated)
                                                                    .FirstOrDefault())
                     select new NemesisChange
@@ -87,7 +89,7 @@ namespace BusinessLogic.Logic.Nemeses
                         MinionPlayerId = nemesisChange.MinionPlayerId,
                         DateCreated = nemesisChange.DateCreated
                     }).OrderByDescending(n => n.DateCreated)
-                    .Take(numberOfRecentNemeses)
+                    .Take(request.NumberOfRecentChangesToRetrieve)
                     .ToList();
         }
     }

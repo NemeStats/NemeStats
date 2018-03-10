@@ -22,21 +22,26 @@ using BusinessLogic.Models.User;
 using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.DataAccess.Security;
+using BusinessLogic.Logic.PlayerAchievements;
 using BusinessLogic.Models.Utility;
+using BusinessLogic.Paging;
 
 namespace BusinessLogic.Logic.GamingGroups
 {
     public class GamingGroupRetriever : IGamingGroupRetriever
     {
         private readonly IDataContext _dataContext;
+        private readonly IRecentPlayerAchievementsUnlockedRetriever _recentPlayerAchievementsUnlockedRetriever;
         private readonly ISecuredEntityValidator _securedEntityValidator;
 
         public GamingGroupRetriever(
             IDataContext dataContext,
-            ISecuredEntityValidator securedEntityValidator)
+            ISecuredEntityValidator securedEntityValidator, 
+            IRecentPlayerAchievementsUnlockedRetriever recentPlayerAchievementsUnlockedRetriever)
         {
             _dataContext = dataContext;
             _securedEntityValidator = securedEntityValidator;
+            _recentPlayerAchievementsUnlockedRetriever = recentPlayerAchievementsUnlockedRetriever;
         }
 
         public GamingGroup GetGamingGroupById(int gamingGroupId)
@@ -177,6 +182,20 @@ namespace BusinessLogic.Logic.GamingGroups
                 OtherUsers = users,
                 UserCanDelete = gamingGroup.OwningUserId == currentUser.Id
             };
+        }
+
+        public RecentGamingGroupChanges GetRecentChanges(int gamingGroupId, BasicDateRangeFilter dateFilter)
+        {
+            var recentGamingGroupChanges = new RecentGamingGroupChanges();
+            var query = new GetRecentPlayerAchievementsUnlockedQuery
+            {
+                GamingGroupId = gamingGroupId,
+                IncludeOnlyOnePage = true,
+                PageSize = 10
+            };
+            recentGamingGroupChanges.RecentAchievements = _recentPlayerAchievementsUnlockedRetriever.GetResults(query);
+
+            return recentGamingGroupChanges;
         }
     }
 }
