@@ -11,7 +11,8 @@
 					New Nemesis <i class="fa fa-question-circle" data-container="body" data-toggle="popover" data-placement="right"
 						 data-content="@NemesisBadgeViewModel.POPOVER_TEXT"></i>
 				</th>
-				<th>Loss %</th>
+			    <th>Loss %</th>
+			    <th>Date</th>
 			</tr>
 		</thead>
         @{ var position = 1; }
@@ -21,7 +22,8 @@
                 @{ position++; }
 				<td>@Html.ActionLink(nemesisChange.MinionPlayerName, "Details", "Player", new { id = nemesisChange.MinionPlayerId }, new { })</td>
 				<td>@Html.ActionLink(nemesisChange.NemesisPlayerName, "Details", "Player", new { id = nemesisChange.NemesisPlayerId }, new { })</td>
-				<td>@nemesisChange.LossPercentageVersusNemesis&nbsp;%</td>
+			    <td>@nemesisChange.LossPercentageVersusNemesis&nbsp;%</td>
+			    <td>@nemesisChange.DateCreated.ToShortDateString()</td>
 			</tr>
 		}
 	</table>

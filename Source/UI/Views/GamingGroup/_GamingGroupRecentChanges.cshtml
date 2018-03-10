@@ -1,30 +1,38 @@
 ﻿@model UI.Models.GamingGroup.RecentGamingGroupChangesViewModel
 
-<div class="container">
 
-    @if (Model.RecentNemesisChanges.Count > 0)
-    {
-        <div class="container">
-            <h2 class="page-header">Last @Model.RecentNemesisChanges.Count Nemesis Changes</h2>
+@if (Model.RecentNemesisChanges.Count > 0)
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4>
+                Last @Model.RecentNemesisChanges.Count Nemesis Changes
+            </h4>
+        </div>
+        <div class="panel-body">
             @Html.Partial(MVC.Player.Views._RecentNemesisChangesPartial, Model.RecentNemesisChanges)
         </div>
-    }
-    else
-    {
-        <h2 class="page-header">No recent Nemesis changes. Play some games with some new players!</h2>
-    }
-</div>
+    </div>
+}
+else
+{
+    <h2 class="page-header">No Nemesis changes yet -- go play some games!</h2>
+}
 
-
-<div class="container">
-
-    @if (Model.RecentAchievements.Count > 0)
-    {
-        <h2 class="page-header">Last @Model.RecentAchievements.Count Unlocked Achievements</h2>
-        @Html.Partial(MVC.Achievement.Views._RecentAchievementsUnlocked, Model.RecentAchievements)
-    }
-    else
-    {
-        <h2 class="page-header">No achievements unlocked yet. Go record some games!</h2>
-    }
-</div>
+@if (Model.RecentAchievements.Count > 0)
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4>
+                Last @Model.RecentAchievements.Count Unlocked Achievements
+            </h4>
+        </div>
+        <div class="panel-body">
+            @Html.Partial(MVC.Achievement.Views._RecentAchievementsUnlocked, Model.RecentAchievements)
+        </div>
+    </div>
+}
+else
+{
+    <h2 class="page-header">No achievements unlocked yet. Go record some games!</h2>
+}
