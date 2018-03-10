@@ -29,10 +29,13 @@ using BusinessLogic.Facades;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
+using BusinessLogic.Models.Achievements;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
+using UI.Mappers.Extensions;
 using UI.Models.GamingGroup;
 using UI.Models.PlayedGame;
+using UI.Models.Players;
 using UI.Models.User;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
@@ -226,6 +229,7 @@ namespace UI.Controllers
             return viewModel;
         }
 
+
         [HttpGet]
         public virtual ActionResult GetGamingGroupStats(int gamingGroupId, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null)
         {
@@ -233,6 +237,19 @@ namespace UI.Controllers
             var viewModel = transformer.Transform<GamingGroupStatsViewModel>(gamingGroupStats);
 
             return PartialView(MVC.GamingGroup.Views._GamingGroupStatsPartial, viewModel);
+        }
+
+        [HttpGet]
+        public virtual ActionResult GetRecentChanges(int gamingGroupId, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null)
+        {
+            var recentChanges = gamingGroupRetriever.GetRecentChanges(gamingGroupId, dateRangeFilter);
+
+            var viewModel = new RecentGamingGroupChangesViewModel()
+            {
+                RecentAchievements = recentChanges.RecentAchievements.ToTransformedPagedList<PlayerAchievementWinner, PlayerAchievementWinnerViewModel>(transformer)
+            };
+
+            return PartialView(MVC.GamingGroup.Views._GamingGroupRecentChanges, viewModel);
         }
 
         [HttpGet]

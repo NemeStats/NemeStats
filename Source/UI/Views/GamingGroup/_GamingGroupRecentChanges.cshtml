@@ -1,0 +1,13 @@
+﻿@model UI.Models.GamingGroup.RecentGamingGroupChangesViewModel
+
+<div class="container">
+    @if (Model.RecentAchievements.Count > 0)
+    {
+        <h2 class="page-header">Last @Model.RecentAchievements.Count Unlocked Achievements</h2>
+        @Html.Partial(MVC.Achievement.Views._RecentAchievementsUnlocked, Model.RecentAchievements)
+    }
+    else
+    {
+        <h2 class="page-header">No achievements unlocked yet. Go record some games!</h2>
+    }
+</div>

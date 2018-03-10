@@ -38,5 +38,6 @@ namespace BusinessLogic.Logic.GamingGroups
 	    List<GamingGroupSitemapInfo> GetGamingGroupsSitemapInfo();
 	    GamingGroupStats GetGamingGroupStats(int gamingGroupId, BasicDateRangeFilter dateFilter);
 	    GamingGroupWithUsers GetGamingGroupWithUsers(int gamingGroupId, ApplicationUser currentUser);
+	    RecentGamingGroupChanges GetRecentChanges(int gamingGroupId, BasicDateRangeFilter dateFilter);
 	}
 }

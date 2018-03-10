@@ -329,6 +329,7 @@
     <Compile Include="Migrations\201803070243504_AddTpoGamesEverVotableFeature.Designer.cs">
       <DependentUpon>201803070243504_AddTpoGamesEverVotableFeature.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\GamingGroups\RecentGamingGroupChanges.cs" />
     <Compile Include="Models\PlayedGames\GameResultTypesEnum.cs" />
     <Compile Include="Models\Players\HomePagePlayerSummary.cs" />
     <Compile Include="Logic\Players\IHomePagePlayerSummaryRetriever.cs" />

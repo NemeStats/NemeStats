@@ -19,23 +19,28 @@ Views.GamingGroup.GamingGroupView = function () {
         playedGamesTabId: null,
         playedGamesDivId: null,
         statsTabId: null,
-        statsDivId: null
+        statsDivId: null,
+        recentTabId: null,
+        recentDivId: null
     };
     this._getGamingGroupPlayersServiceAddress = "/GamingGroup/GetGamingGroupPlayers/";
     this._getGamingGroupGameDefinitionsServiceAddress = "/GamingGroup/GetGamingGroupGameDefinitions/";
     this._getGamingGroupPlayedGamesServiceAddress = "/GamingGroup/GetGamingGroupPlayedGames/";
     this._getGamingGroupStatsServiceAddress = "/GamingGroup/GetGamingGroupStats/";
+    this._getGamingGroupRecentChangesServiceAddress = "/GamingGroup/GetRecentChanges/";
 
     this._googleAnalytics = null;
     this._playersTabLoaded = false;
     this._gamesTabLoaded = false;
     this._playedGamesTabLoaded = false;
     this._statsTabLoaded = false;
+    this._recentTabLoaded = false;
     this._tabEnum = {
         PLAYERS : "players",
         GAMES : "games",
         PLAYS: "plays",
-        STATS : "stats"
+        STATS: "stats",
+        RECENT: "recent"
     }
 };
 
@@ -94,6 +99,16 @@ Views.GamingGroup.GamingGroupView.prototype = {
             throw "statsDivId is required.";
         }
         this._settings.statsDivId = options.statsDivId;
+
+        if (options.recentTabId == null) {
+            throw "recentTabId is required.";
+        }
+        this._settings.recentTabId = options.recentTabId;
+
+        if (options.recentDivId == null) {
+            throw "recentDivId is required.";
+        }
+        this._settings.recentDivId = options.recentDivId;
 
         this._settings.gamingGroupId = options.gamingGroupId;
 
@@ -164,6 +179,12 @@ Views.GamingGroup.GamingGroupView.prototype = {
         $statsTab.click((function (event) {
             event.preventDefault();
             return owner.getStats(owner._settings.gamingGroupId, owner.$fromDatePicker, owner.$toDatePicker, owner._settings.statsDivId, owner);
+        }));
+
+        var $recentTab = $("#" + this._settings.recentTabId);
+        $recentTab.click((function (event) {
+            event.preventDefault();
+            return owner.getRecentGamingGroupChanges(owner._settings.gamingGroupId, owner.$fromDatePicker, owner.$toDatePicker, owner._settings.recentDivId, owner);
         }));
 
         var $dateFilteredButton = $("#" + this._settings.dateFilterButtonId);
@@ -394,6 +415,32 @@ Views.GamingGroup.GamingGroupView.prototype = {
                     $divForResults.find("#statsLoader").removeClass("loader").html(html);
 
                     parent._statsTabLoaded = true;
+                }
+            });
+        }
+    },
+    getRecentGamingGroupChanges: function (gamingGroupId, $fromDatePicker, toDatePicker, divIdForRenderingResults, parent) {
+        var fromDate = $fromDatePicker.val();
+        var toDate = toDatePicker.val();
+        parent.updateUrl(parent._tabEnum.RECENT, fromDate, toDate);
+
+        if (!parent._recentTabLoaded) {
+            $.ajax({
+                url: parent._getGamingGroupRecentChangesServiceAddress,
+                data: {
+                    "gamingGroupId": gamingGroupId,
+                    "Iso8601FromDate": fromDate,
+                    "Iso8601ToDate": toDate
+                },
+                cache: false,
+                type: "GET",
+                success: function (html) {
+                    $("#" + divIdForRenderingResults).html(html);
+
+                    var layout = new Views.Shared.Layout();
+                    layout.initializePopoversAndTooltips(parent);
+
+                    parent._recentTabLoaded = true;
                 }
             });
         }

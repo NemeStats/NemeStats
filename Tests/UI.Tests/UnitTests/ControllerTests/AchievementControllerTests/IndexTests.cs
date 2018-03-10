@@ -34,6 +34,5 @@ namespace UI.Tests.UnitTests.ControllerTests.AchievementControllerTests
             viewModel.CurrentUserId.ShouldBe(CurrentUser.Id);
             viewModel.Achievements.ShouldBeSameAs(expectedAchievementViewModels);
         }
-
     }
 }

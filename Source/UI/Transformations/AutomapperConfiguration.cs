@@ -203,6 +203,8 @@ namespace UI.Transformations
                 .ForMember(m => m.LastGamingGroupPlayedGame, opt => opt.Ignore());
 
             Mapper.CreateMap<HomePagePlayerSummary, PlayerQuickStatsViewModel>();
+
+            Mapper.CreateMap<RecentGamingGroupChanges, RecentGamingGroupChangesViewModel>();
         }
     }
 }

@@ -414,6 +414,7 @@
     <Compile Include="Models\GameDefinitionModels\GameDefinitionDetailsViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GamingGroupGameDefinitionStatsViewModel.cs" />
     <Compile Include="Models\GamingGroup\CreateGamingGroupViewModel.cs" />
+    <Compile Include="Models\GamingGroup\RecentGamingGroupChangesViewModel.cs" />
     <Compile Include="Models\UniversalGameModels\TopGame.cs" />
     <Compile Include="Models\User\BasicUserInfoViewModel.cs" />
     <Compile Include="Models\GamingGroup\GamingGroupsSummaryViewModel.cs" />
@@ -909,6 +910,7 @@
     <Content Include="Views\Player\_TopChampions.cshtml" />
     <Content Include="Views\GamingGroup\_GamingGroupStatsPartial.cshtml" />
     <Content Include="Views\GameDefinition\TopGamesEver.cshtml" />
+    <Content Include="Views\GamingGroup\_GamingGroupRecentChanges.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Api\Views\Shared\" />

@@ -20,12 +20,12 @@ namespace BusinessLogic.Logic.PlayerAchievements
             _dataContext = dataContext;
             _achievementRetriever = achievementRetriever;
         }
-
+ 
+ //TODO create version that isn't paged....
         public IPagedList<PlayerAchievementWinner> GetResults(GetRecentPlayerAchievementsUnlockedQuery query)
         {
             var playerAchievementWinnersQueryable =
                 _dataContext.GetQueryable<PlayerAchievement>()
-                    .Where(x => query.PlayerId == null || x.PlayerId == query.PlayerId.Value)
                     .Select(x => new PlayerAchievementWinner
                     {
                         AchievementId = x.AchievementId,
@@ -38,8 +38,21 @@ namespace BusinessLogic.Logic.PlayerAchievements
                         UserId = x.Player.ApplicationUserId,
                         DateCreated = x.DateCreated,
                         LastUpdatedDate = x.LastUpdatedDate
-                    })
-                    .OrderByDescending(p => p.AchievementLastUpdateDate);
+                    });
+
+            if (query.PlayerId.HasValue)
+            {
+                playerAchievementWinnersQueryable =
+                    playerAchievementWinnersQueryable.Where(x => x.PlayerId == query.PlayerId);
+            }
+
+            if (query.GamingGroupId.HasValue)
+            {
+                playerAchievementWinnersQueryable =
+                    playerAchievementWinnersQueryable.Where(x => x.GamingGroupId == query.GamingGroupId);
+            }
+
+            playerAchievementWinnersQueryable = playerAchievementWinnersQueryable.OrderByDescending(p => p.AchievementLastUpdateDate);
 
             var pagedList = playerAchievementWinnersQueryable.ToPagedList(query.Page, query.PageSize);
 
