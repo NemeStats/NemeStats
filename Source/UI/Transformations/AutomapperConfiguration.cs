@@ -39,6 +39,7 @@ using BusinessLogic.Models.User;
 using UI.Areas.Api.Models;
 using UI.Models;
 using UI.Models.Achievements;
+using UI.Models.Champions;
 using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
 using UI.Models.Nemeses;
@@ -207,6 +208,8 @@ namespace UI.Transformations
             Mapper.CreateMap<HomePagePlayerSummary, PlayerQuickStatsViewModel>();
 
             Mapper.CreateMap<NemesisChange, NemesisChangeViewModel>();
+
+            Mapper.CreateMap<ChampionChange, ChampionChangeViewModel>();
         }
     }
 }
