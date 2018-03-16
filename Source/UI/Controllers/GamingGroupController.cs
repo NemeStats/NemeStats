@@ -15,7 +15,6 @@
 
 #endregion LICENSE
 
-using System;
 using System.Collections.Generic;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.GamingGroups;
@@ -27,15 +26,18 @@ using System.Linq;
 using System.Web.Mvc;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Facades;
+using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models.Achievements;
+using BusinessLogic.Models.Champions;
 using BusinessLogic.Models.Nemeses;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Mappers.Extensions;
+using UI.Models.Champions;
 using UI.Models.GamingGroup;
 using UI.Models.Nemeses;
 using UI.Models.PlayedGame;
@@ -52,24 +54,25 @@ namespace UI.Controllers
         public const int NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW = 25;
         public const int NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW_ON_HOME_PAGE = 15;
         public const int NUMBER_OF_RECENT_NEMESIS_TO_SHOW = 5;
+        public const int NUMBER_OF_RECENT_CHAMPION_CHANGES_TO_SHOW = 5;
         public const string SECTION_ANCHOR_PLAYERS = "playersListDivId";
         public const string SECTION_ANCHOR_GAMEDEFINITIONS = "gamesListDivId";
         public const string SECTION_ANCHOR_RECENT_GAMES = "playedGamesListDivId";
 
-        internal IGamingGroupSaver gamingGroupSaver;
-        internal IGamingGroupRetriever gamingGroupRetriever;
-        internal IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder;
-        internal IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilder;
-        internal IGamingGroupContextSwitcher gamingGroupContextSwitcher;
-        internal IPlayerRetriever playerRetriever;
-        internal IGameDefinitionRetriever gameDefinitionRetriever;
-        internal IPlayedGameRetriever playedGameRetriever;
-        internal IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
-        internal ITransformer transformer;
-        internal ITopGamingGroupsRetriever topGamingGroupsRetriever;
-        internal ISecuredEntityValidator securedEntityValidator;
-        internal IDeleteGamingGroupComponent deleteGamingGroupComponent;
-        internal INemesisHistoryRetriever nemesisHistoryRetriever;
+        private readonly IGamingGroupSaver _gamingGroupSaver;
+        private readonly IGamingGroupRetriever _gamingGroupRetriever;
+        private readonly IPlayerWithNemesisViewModelBuilder _playerWithNemesisViewModelBuilder;
+        private readonly IGameDefinitionSummaryViewModelBuilder _gameDefinitionSummaryViewModelBuilder;
+        private readonly IGamingGroupContextSwitcher _gamingGroupContextSwitcher;
+        private readonly IPlayerRetriever _playerRetriever;
+        private readonly IGameDefinitionRetriever _gameDefinitionRetriever;
+        private readonly IPlayedGameRetriever _playedGameRetriever;
+        private readonly IPlayedGameDetailsViewModelBuilder _playedGameDetailsViewModelBuilder;
+        private readonly ITransformer _transformer;
+        private readonly ITopGamingGroupsRetriever _topGamingGroupsRetriever;
+        private readonly IDeleteGamingGroupComponent _deleteGamingGroupComponent;
+        private readonly INemesisHistoryRetriever _nemesisHistoryRetriever;
+        private readonly IRecentChampionRetriever _recentChampionRetriever;
 
         public GamingGroupController(
             IGamingGroupSaver gamingGroupSaver,
@@ -85,22 +88,23 @@ namespace UI.Controllers
             ITopGamingGroupsRetriever topGamingGroupsRetriever, 
             ISecuredEntityValidator securedEntityValidator,
             IDeleteGamingGroupComponent deleteGamingGroupComponent,
-            INemesisHistoryRetriever nemesisHistoryRetriever)
+            INemesisHistoryRetriever nemesisHistoryRetriever, 
+            IRecentChampionRetriever recentChampionRetriever)
         {
-            this.gamingGroupSaver = gamingGroupSaver;
-            this.gamingGroupRetriever = gamingGroupRetriever;
-            this.playerWithNemesisViewModelBuilder = playerWithNemesisViewModelBuilder;
-            this.gameDefinitionSummaryViewModelBuilder = gameDefinitionSummaryViewModelBuilder;
-            this.gamingGroupContextSwitcher = gamingGroupContextSwitcher;
-            this.playerRetriever = playerRetriever;
-            this.gameDefinitionRetriever = gameDefinitionRetriever;
-            this.playedGameRetriever = playedGameRetriever;
-            this.playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
-            this.transformer = transformer;
-            this.topGamingGroupsRetriever = topGamingGroupsRetriever;
-            this.securedEntityValidator = securedEntityValidator;
-            this.deleteGamingGroupComponent = deleteGamingGroupComponent;
-            this.nemesisHistoryRetriever = nemesisHistoryRetriever;
+            _gamingGroupSaver = gamingGroupSaver;
+            _gamingGroupRetriever = gamingGroupRetriever;
+            _playerWithNemesisViewModelBuilder = playerWithNemesisViewModelBuilder;
+            _gameDefinitionSummaryViewModelBuilder = gameDefinitionSummaryViewModelBuilder;
+            _gamingGroupContextSwitcher = gamingGroupContextSwitcher;
+            _playerRetriever = playerRetriever;
+            _gameDefinitionRetriever = gameDefinitionRetriever;
+            _playedGameRetriever = playedGameRetriever;
+            _playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
+            _transformer = transformer;
+            _topGamingGroupsRetriever = topGamingGroupsRetriever;
+            _deleteGamingGroupComponent = deleteGamingGroupComponent;
+            _nemesisHistoryRetriever = nemesisHistoryRetriever;
+            _recentChampionRetriever = recentChampionRetriever;
         }
 
         // GET: /GamingGroup
@@ -155,21 +159,17 @@ namespace UI.Controllers
                 dateRangeFilter.ToDate = dateRangeFilter.ToDate;
             }
 
-            var filter = new GamingGroupFilter(dateRangeFilter)
-            {
-                NumberOfRecentGamesToShow = MAX_NUMBER_OF_RECENT_GAMES,
-                GamingGroupId = gamingGroupId
-            };
+            var filter = new GamingGroupFilter(gamingGroupId, dateRangeFilter);
 
-            return gamingGroupRetriever.GetGamingGroupDetails(filter);
+            return _gamingGroupRetriever.GetGamingGroupDetails(filter);
         }
 
         [HttpGet]
         [UserContext(RequiresGamingGroup = false)]
         public virtual ActionResult GetGamingGroupPlayers(int id, ApplicationUser currentUser, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null)
         {
-            var playersWithNemesis = playerRetriever.GetAllPlayersWithNemesisInfo(id, dateRangeFilter)
-                .Select(player => playerWithNemesisViewModelBuilder.Build(player, currentUser))
+            var playersWithNemesis = _playerRetriever.GetAllPlayersWithNemesisInfo(id, dateRangeFilter)
+                .Select(player => _playerWithNemesisViewModelBuilder.Build(player, currentUser))
                 .ToList();
 
             ViewBag.canEdit = currentUser.CurrentGamingGroupId == id;
@@ -182,8 +182,8 @@ namespace UI.Controllers
         public virtual ActionResult GetGamingGroupGameDefinitions(int id, ApplicationUser currentUser, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null)
         {
             var games =
-                gameDefinitionRetriever.GetAllGameDefinitions(id, dateRangeFilter)
-                    .Select(gameDefinition => gameDefinitionSummaryViewModelBuilder.Build(gameDefinition, currentUser))
+                _gameDefinitionRetriever.GetAllGameDefinitions(id, dateRangeFilter)
+                    .Select(gameDefinition => _gameDefinitionSummaryViewModelBuilder.Build(gameDefinition, currentUser))
                     .OrderByDescending(x => x.TotalNumberOfGamesPlayed)
                     .ThenBy(x => x.Name)
                     .ToList();
@@ -197,12 +197,12 @@ namespace UI.Controllers
         [UserContext(RequiresGamingGroup = false)]
         public virtual ActionResult GetGamingGroupPlayedGames(int id, ApplicationUser currentUser, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null, [System.Web.Http.FromUri]int numberOfItems = 20)
         {
-            var games = playedGameRetriever.GetRecentGames(numberOfItems, id, dateRangeFilter);
+            var games = _playedGameRetriever.GetRecentGames(numberOfItems, id, dateRangeFilter);
             var viewModel = new PlayedGamesViewModel
             {
                 GamingGroupId = id,
                 ShowSearchLinkInResultsHeader = true,
-                PlayedGameDetailsViewModels = games.Select(playedGame => playedGameDetailsViewModelBuilder.Build(playedGame, currentUser)).ToList(),
+                PlayedGameDetailsViewModels = games.Select(playedGame => _playedGameDetailsViewModelBuilder.Build(playedGame, currentUser)).ToList(),
                 UserCanEdit = currentUser.CurrentGamingGroupId == id
             };
 
@@ -225,9 +225,9 @@ namespace UI.Controllers
 
         internal virtual GamingGroupsSummaryViewModel GetGamingGroupsSummaryViewModel(int numberOfGamingGroups)
         {
-            var topGamingGroups = topGamingGroupsRetriever.GetResults(numberOfGamingGroups);
+            var topGamingGroups = _topGamingGroupsRetriever.GetResults(numberOfGamingGroups);
 
-            var topGamingGroupViewModels = topGamingGroups.Select(transformer.Transform<GamingGroupSummaryViewModel>).ToList();
+            var topGamingGroupViewModels = topGamingGroups.Select(_transformer.Transform<GamingGroupSummaryViewModel>).ToList();
 
             var viewModel = new GamingGroupsSummaryViewModel
             {
@@ -241,8 +241,8 @@ namespace UI.Controllers
         [HttpGet]
         public virtual ActionResult GetGamingGroupStats(int gamingGroupId, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null)
         {
-            var gamingGroupStats = gamingGroupRetriever.GetGamingGroupStats(gamingGroupId, dateRangeFilter);
-            var viewModel = transformer.Transform<GamingGroupStatsViewModel>(gamingGroupStats);
+            var gamingGroupStats = _gamingGroupRetriever.GetGamingGroupStats(gamingGroupId, dateRangeFilter);
+            var viewModel = _transformer.Transform<GamingGroupStatsViewModel>(gamingGroupStats);
 
             return PartialView(MVC.GamingGroup.Views._GamingGroupStatsPartial, viewModel);
         }
@@ -250,24 +250,32 @@ namespace UI.Controllers
         [HttpGet]
         public virtual ActionResult GetRecentChanges(int gamingGroupId, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null)
         {
-            var recentChanges = gamingGroupRetriever.GetRecentChanges(gamingGroupId, dateRangeFilter);
+            var recentChanges = _gamingGroupRetriever.GetRecentChanges(gamingGroupId, dateRangeFilter);
 
             var getRecentNemesisChangesRequest = new GetRecentNemesisChangesRequest
             {
                 GamingGroupId = gamingGroupId,
                 NumberOfRecentChangesToRetrieve = NUMBER_OF_RECENT_NEMESIS_TO_SHOW
             };
-            var recentNemesisChanges = nemesisHistoryRetriever.GetRecentNemesisChanges(getRecentNemesisChangesRequest);
-            var recentNemesisChangesViewModel = transformer.Transform<List<NemesisChangeViewModel>>(recentNemesisChanges);
+            var recentNemesisChanges = _nemesisHistoryRetriever.GetRecentNemesisChanges(getRecentNemesisChangesRequest);
+            var recentNemesisChangesViewModel = _transformer.Transform<List<NemesisChangeViewModel>>(recentNemesisChanges);
 
             var recentAchievemments =
                 recentChanges.RecentAchievements
-                    .ToTransformedPagedList<PlayerAchievementWinner, PlayerAchievementWinnerViewModel>(transformer);
+                    .ToTransformedPagedList<PlayerAchievementWinner, PlayerAchievementWinnerViewModel>(_transformer);
 
-            var viewModel = new RecentGamingGroupChangesViewModel()
+            var getRecentChampionChangesFilter =
+                new GetRecentChampionChangesFilter(gamingGroupId, NUMBER_OF_RECENT_CHAMPION_CHANGES_TO_SHOW);
+            var recentChampionChanges =
+                _recentChampionRetriever.GetRecentChampionChanges(getRecentChampionChangesFilter);
+            var recentChampionChangesViewModels =
+                _transformer.Transform<List<ChampionChangeViewModel>>(recentChampionChanges);
+
+            var viewModel = new RecentGamingGroupChangesViewModel
             {
                 RecentAchievements = recentAchievemments,
-                RecentNemesisChanges = recentNemesisChangesViewModel
+                RecentNemesisChanges = recentNemesisChangesViewModel,
+                RecentChampionChanges = recentChampionChangesViewModels
             };
 
             return PartialView(MVC.GamingGroup.Views._GamingGroupRecentChanges, viewModel);
@@ -277,8 +285,8 @@ namespace UI.Controllers
         [UserContext]
         public virtual ActionResult GetCurrentUserGamingGroupGameDefinitions(int id, ApplicationUser currentUser)
         {
-            var model = gameDefinitionRetriever.GetAllGameDefinitions(id)
-                .Select(summary => gameDefinitionSummaryViewModelBuilder.Build(summary, currentUser)).ToList();
+            var model = _gameDefinitionRetriever.GetAllGameDefinitions(id)
+                .Select(summary => _gameDefinitionSummaryViewModelBuilder.Build(summary, currentUser)).ToList();
 
             ViewData["canEdit"] = true;
 
@@ -291,7 +299,7 @@ namespace UI.Controllers
         {
             if (gamingGroupId != currentUser.CurrentGamingGroupId)
             {
-                gamingGroupContextSwitcher.SwitchGamingGroupContext(gamingGroupId, currentUser);
+                _gamingGroupContextSwitcher.SwitchGamingGroupContext(gamingGroupId, currentUser);
             }
 
             return RedirectToAction(MVC.GamingGroup.Details().AddRouteValue("id", gamingGroupId));
@@ -306,7 +314,7 @@ namespace UI.Controllers
             {
                 return MakeRedirectResultToManageAccountPageGamingGroupsTab();
             }
-            gamingGroupSaver.CreateNewGamingGroup(gamingGroupName.Trim(), TransactionSource.WebApplication, currentUser);
+            _gamingGroupSaver.CreateNewGamingGroup(gamingGroupName.Trim(), TransactionSource.WebApplication, currentUser);
 
             return RedirectToAction(MVC.GamingGroup.ActionNames.Details, new {id = currentUser.CurrentGamingGroupId } );
         }
@@ -316,7 +324,7 @@ namespace UI.Controllers
         [UserContext(RequiresGamingGroup = false)] //--a user with only inactive gaming groups should be able to reactivate one
         public virtual ActionResult Edit(int id, ApplicationUser currentUser)
         {
-            var gamingGroup = gamingGroupRetriever.GetGamingGroupWithUsers(id, currentUser);
+            var gamingGroup = _gamingGroupRetriever.GetGamingGroupWithUsers(id, currentUser);
 
             var model = new GamingGroupPublicDetailsViewModel
             {
@@ -325,7 +333,7 @@ namespace UI.Controllers
                 PublicDescription = gamingGroup.PublicDescription,
                 Website = gamingGroup.PublicGamingGroupWebsite,
                 Active = gamingGroup.Active,
-                OtherUsers = gamingGroup.OtherUsers.Select(x => transformer.Transform<BasicUserInfoViewModel>(x)).ToList(),
+                OtherUsers = gamingGroup.OtherUsers.Select(x => _transformer.Transform<BasicUserInfoViewModel>(x)).ToList(),
                 UserCanDelete = gamingGroup.UserCanDelete
             };
 
@@ -339,7 +347,7 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                gamingGroupSaver.UpdatePublicGamingGroupDetails(request, currentUser);
+                _gamingGroupSaver.UpdatePublicGamingGroupDetails(request, currentUser);
                 
                 return MakeRedirectResultToManageAccountPageGamingGroupsTab();
             }
@@ -352,7 +360,7 @@ namespace UI.Controllers
         [UserContext(RequiresGamingGroup = false)] //--a user with only inactive gaming groups should be able to delete one
         public virtual ActionResult Delete(int gamingGroupId, ApplicationUser currentUser)
         {
-            deleteGamingGroupComponent.Execute(gamingGroupId, currentUser);
+            _deleteGamingGroupComponent.Execute(gamingGroupId, currentUser);
 
             return MakeRedirectResultToManageAccountPageGamingGroupsTab(AccountController.ManageMessageId.GamingGroupDeleted);
         }

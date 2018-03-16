@@ -316,6 +316,8 @@
     <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
     <Compile Include="Logic\Champions\GamingGroupChampionRecalculator.cs" />
     <Compile Include="Logic\Champions\IGamingGroupChampionRecalculator.cs" />
+    <Compile Include="Logic\Champions\IRecentChampionRetriever.cs" />
+    <Compile Include="Logic\Champions\RecentChampionRetriever.cs" />
     <Compile Include="Logic\Email\EmailService.cs" />
     <Compile Include="Logic\GameDefinitions\CreateGameDefinitionComponent.cs" />
     <Compile Include="Logic\GameDefinitions\ICreateGameDefinitionComponent.cs" />
@@ -329,6 +331,8 @@
     <Compile Include="Migrations\201803070243504_AddTpoGamesEverVotableFeature.Designer.cs">
       <DependentUpon>201803070243504_AddTpoGamesEverVotableFeature.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Champions\GetRecentChampionChangesFilter.cs" />
+    <Compile Include="Models\Champions\ChampionChange.cs" />
     <Compile Include="Models\GamingGroups\RecentGamingGroupChanges.cs" />
     <Compile Include="Models\Nemeses\GetRecentNemesisChangesRequest.cs" />
     <Compile Include="Models\PlayedGames\GameResultTypesEnum.cs" />
