@@ -49,10 +49,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
                 OwningUserId = CurrentUser.Id
             };
 
-            _filter = new GamingGroupFilter
-            {
-                GamingGroupId = _gamingGroupId
-            };
+            _filter = new GamingGroupFilter(_gamingGroupId);
 
             AutoMocker.Get<IDataContext>().Expect(mock => mock.FindById<GamingGroup>(_gamingGroupId))
                 .Return(_expectedGamingGroup);

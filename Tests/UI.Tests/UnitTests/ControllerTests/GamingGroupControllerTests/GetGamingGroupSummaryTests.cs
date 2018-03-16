@@ -4,24 +4,12 @@ using BusinessLogic.Models.Utility;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
-using UI.Controllers;
 
 namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 {
     [TestFixture]
     public class GetGamingGroupSummaryTests : GamingGroupControllerTestBase
     {
-        [Test]
-        public void ItRetrievesTheSpecifiedNumberOfGamingGroupSummaries()
-        {
-            autoMocker.ClassUnderTest.GetGamingGroupSummary(0);
-
-            autoMocker.Get<IGamingGroupRetriever>().AssertWasCalled(
-                mock => mock.GetGamingGroupDetails(
-                    Arg<GamingGroupFilter>.Matches(x =>
-                    x.NumberOfRecentGamesToShow == GamingGroupController.MAX_NUMBER_OF_RECENT_GAMES)));
-        }
-
         [Test]
         public void ItFiltersOnGamingGroupId()
         {

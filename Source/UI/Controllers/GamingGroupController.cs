@@ -155,11 +155,7 @@ namespace UI.Controllers
                 dateRangeFilter.ToDate = dateRangeFilter.ToDate;
             }
 
-            var filter = new GamingGroupFilter(dateRangeFilter)
-            {
-                NumberOfRecentGamesToShow = MAX_NUMBER_OF_RECENT_GAMES,
-                GamingGroupId = gamingGroupId
-            };
+            var filter = new GamingGroupFilter(gamingGroupId, dateRangeFilter);
 
             return gamingGroupRetriever.GetGamingGroupDetails(filter);
         }
