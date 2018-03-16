@@ -1,6 +1,5 @@
 ﻿@model UI.Models.GamingGroup.RecentGamingGroupChangesViewModel
 
-
 @if (Model.RecentNemesisChanges.Count > 0)
 {
     <div class="panel panel-primary">
@@ -18,7 +17,6 @@ else
 {
     <h2 class="page-header">No Nemesis changes yet -- go play some games!</h2>
 }
-
 @if (Model.RecentAchievements.Count > 0)
 {
     <div class="panel panel-primary">
@@ -35,4 +33,21 @@ else
 else
 {
     <h2 class="page-header">No achievements unlocked yet. Go record some games!</h2>
+}
+@if (Model.RecentChampionChanges.Count > 0)
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4>
+                Last @Model.RecentChampionChanges.Count Champion Changes
+            </h4>
+        </div>
+        <div class="panel-body">
+            @Html.Partial(MVC.GameDefinition.Views._RecentChampionChangesPartial, Model.RecentAchievements)
+        </div>
+    </div>
+}
+else
+{
+    <h2 class="page-header">No Champion changes lately. Go record some games!</h2>
 }

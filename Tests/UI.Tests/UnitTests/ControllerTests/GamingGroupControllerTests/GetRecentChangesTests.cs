@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using BusinessLogic.Logic;
+using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Models.Achievements;
+using BusinessLogic.Models.Champions;
 using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.Nemeses;
 using BusinessLogic.Models.Utility;
@@ -13,6 +15,7 @@ using PagedList;
 using Rhino.Mocks;
 using Shouldly;
 using UI.Controllers;
+using UI.Models.Champions;
 using UI.Models.GamingGroup;
 using UI.Models.Nemeses;
 
@@ -22,6 +25,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
     public class GetRecentChangesTests : GamingGroupControllerTestBase
     {
         private List<NemesisChangeViewModel> _expectedNemesisChangeViewModels;
+        private List<ChampionChangeViewModel> _expectedChampionChangeViewModels;
 
         [SetUp]
         public override void SetUp()
@@ -40,6 +44,15 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             autoMocker.Get<ITransformer>()
                 .Expect(mock => mock.Transform<List<NemesisChangeViewModel>>(expectedNemesisChanges))
                 .Return(_expectedNemesisChangeViewModels);
+
+            var expectedRecentChampionChanges = new List<ChampionChange>();
+            autoMocker.Get<IRecentChampionRetriever>().Expect(mock =>
+                    mock.GetRecentChampionChanges(Arg<GetRecentChampionChangesFilter>.Is.Anything))
+                .Return(expectedRecentChampionChanges);
+            _expectedChampionChangeViewModels = new List<ChampionChangeViewModel>();
+            autoMocker.Get<ITransformer>()
+                .Expect(mock => mock.Transform<List<ChampionChangeViewModel>>(expectedRecentChampionChanges))
+                .Return(_expectedChampionChangeViewModels);
         }
 
         [Test]
@@ -67,6 +80,13 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
                 .NUMBER_OF_RECENT_NEMESIS_TO_SHOW);
             actualRequest.GamingGroupId.ShouldBe(gamingGroupId);
             viewModel.RecentNemesisChanges.ShouldBeSameAs(_expectedNemesisChangeViewModels);
+
+            var getRecentChampionArgs = autoMocker.Get<IRecentChampionRetriever>()
+                .GetArgumentsForCallsMadeOn(mock => mock.GetRecentChampionChanges(Arg<GetRecentChampionChangesFilter>.Is.Anything));
+            var actualFilter = getRecentChampionArgs.AssertFirstCallIsType<GetRecentChampionChangesFilter>();
+            actualFilter.NumberOfDaysOfRecentChangesToShow.ShouldBe(GamingGroupController.NUMBER_OF_RECENT_CHAMPION_CHANGES_TO_SHOW);
+            actualFilter.GamingGroupId.ShouldBe(gamingGroupId);
+            viewModel.RecentChampionChanges.ShouldBeSameAs(_expectedChampionChangeViewModels);
         }
     }
 }
