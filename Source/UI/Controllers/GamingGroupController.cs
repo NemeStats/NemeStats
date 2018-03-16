@@ -91,19 +91,19 @@ namespace UI.Controllers
             INemesisHistoryRetriever nemesisHistoryRetriever, 
             IRecentChampionRetriever recentChampionRetriever)
         {
-            this._gamingGroupSaver = gamingGroupSaver;
-            this._gamingGroupRetriever = gamingGroupRetriever;
-            this._playerWithNemesisViewModelBuilder = playerWithNemesisViewModelBuilder;
-            this._gameDefinitionSummaryViewModelBuilder = gameDefinitionSummaryViewModelBuilder;
-            this._gamingGroupContextSwitcher = gamingGroupContextSwitcher;
-            this._playerRetriever = playerRetriever;
-            this._gameDefinitionRetriever = gameDefinitionRetriever;
-            this._playedGameRetriever = playedGameRetriever;
-            this._playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
-            this._transformer = transformer;
-            this._topGamingGroupsRetriever = topGamingGroupsRetriever;
-            this._deleteGamingGroupComponent = deleteGamingGroupComponent;
-            this._nemesisHistoryRetriever = nemesisHistoryRetriever;
+            _gamingGroupSaver = gamingGroupSaver;
+            _gamingGroupRetriever = gamingGroupRetriever;
+            _playerWithNemesisViewModelBuilder = playerWithNemesisViewModelBuilder;
+            _gameDefinitionSummaryViewModelBuilder = gameDefinitionSummaryViewModelBuilder;
+            _gamingGroupContextSwitcher = gamingGroupContextSwitcher;
+            _playerRetriever = playerRetriever;
+            _gameDefinitionRetriever = gameDefinitionRetriever;
+            _playedGameRetriever = playedGameRetriever;
+            _playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
+            _transformer = transformer;
+            _topGamingGroupsRetriever = topGamingGroupsRetriever;
+            _deleteGamingGroupComponent = deleteGamingGroupComponent;
+            _nemesisHistoryRetriever = nemesisHistoryRetriever;
             _recentChampionRetriever = recentChampionRetriever;
         }
 
