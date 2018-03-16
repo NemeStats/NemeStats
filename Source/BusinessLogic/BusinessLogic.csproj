@@ -317,6 +317,7 @@
     <Compile Include="Logic\Champions\GamingGroupChampionRecalculator.cs" />
     <Compile Include="Logic\Champions\IGamingGroupChampionRecalculator.cs" />
     <Compile Include="Logic\Champions\IRecentChampionRetriever.cs" />
+    <Compile Include="Logic\Champions\RecentChampionRetriever.cs" />
     <Compile Include="Logic\Email\EmailService.cs" />
     <Compile Include="Logic\GameDefinitions\CreateGameDefinitionComponent.cs" />
     <Compile Include="Logic\GameDefinitions\ICreateGameDefinitionComponent.cs" />

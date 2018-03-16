@@ -84,7 +84,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             var getRecentChampionArgs = autoMocker.Get<IRecentChampionRetriever>()
                 .GetArgumentsForCallsMadeOn(mock => mock.GetRecentChampionChanges(Arg<GetRecentChampionChangesFilter>.Is.Anything));
             var actualFilter = getRecentChampionArgs.AssertFirstCallIsType<GetRecentChampionChangesFilter>();
-            actualFilter.NumberOfDaysOfRecentChangesToShow.ShouldBe(GamingGroupController.NUMBER_OF_RECENT_CHAMPION_CHANGES_TO_SHOW);
+            actualFilter.NumberOfRecentChangesToShow.ShouldBe(GamingGroupController.NUMBER_OF_RECENT_CHAMPION_CHANGES_TO_SHOW);
             actualFilter.GamingGroupId.ShouldBe(gamingGroupId);
             viewModel.RecentChampionChanges.ShouldBeSameAs(_expectedChampionChangeViewModels);
         }

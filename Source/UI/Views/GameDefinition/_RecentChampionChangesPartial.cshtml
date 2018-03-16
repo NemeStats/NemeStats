@@ -9,7 +9,7 @@
 			    <th>Previous Champion</th>
 				<th>
 					New Champion <i class="@ChampionBadgeViewModel.FONT_AWESOME_CSS_CLASS" data-toggle="popover" data-placement="top"
-					               data-content="This Player now has the most for this board game!"></i>
+					               data-content="This Player now has the most wins for this board game!"></i>
 				</th>
 			    <th>Game</th>
 			    <th>Date</th>
@@ -20,7 +20,12 @@
 		{
 			<tr data-position="@position">
                 @{ position++; }
-				<td>@Html.ActionLink(championChange.PreviousChampionPlayerName, "Details", "Player", new { id = championChange.PreviousChampionPlayerId }, new { })</td>
+			    <td>
+			        @if (championChange.PreviousChampionPlayerId.HasValue)
+			        {
+			            @Html.ActionLink(championChange.PreviousChampionPlayerName, "Details", "Player", new {id = championChange.PreviousChampionPlayerId}, new {})
+			        }
+			    </td>
 				<td>@Html.ActionLink(championChange.NewChampionPlayerName, "Details", "Player", new { id = championChange.NewChampionPlayerId }, new { })</td>
                 <td>@Html.ActionLink(championChange.GameName, "Details", "GameDefinition", new { id = championChange.GameDefinitionId }, new { })</td>
 			    <td>@championChange.DateCreated.ToShortDateString()</td>

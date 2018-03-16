@@ -8,7 +8,7 @@ namespace UI.Models.Champions
         public string NewChampionPlayerName { get; set; }
         public string GameName { get; set; }
         public DateTime DateCreated { get; set; }
-        public int PreviousChampionPlayerId { get; set; }
+        public int? PreviousChampionPlayerId { get; set; }
         public int NewChampionPlayerId { get; set; }
         public int GameDefinitionId { get; set; }
     }

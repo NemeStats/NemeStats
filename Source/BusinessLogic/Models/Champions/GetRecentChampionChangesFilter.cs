@@ -2,13 +2,13 @@
 {
     public class GetRecentChampionChangesFilter
     {
-        public GetRecentChampionChangesFilter(int numberOfDaysOfRecentChangesToShow, int gamingGroupId)
+        public GetRecentChampionChangesFilter(int gamingGroupId, int numberOfRecentChangesToShow)
         {
-            NumberOfDaysOfRecentChangesToShow = numberOfDaysOfRecentChangesToShow;
+            NumberOfRecentChangesToShow = numberOfRecentChangesToShow;
             GamingGroupId = gamingGroupId;
         }
 
-        public int NumberOfDaysOfRecentChangesToShow { get; }
+        public int NumberOfRecentChangesToShow { get; }
         public int GamingGroupId { get; }
     }
 }

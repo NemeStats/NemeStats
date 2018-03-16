@@ -265,7 +265,7 @@ namespace UI.Controllers
                     .ToTransformedPagedList<PlayerAchievementWinner, PlayerAchievementWinnerViewModel>(_transformer);
 
             var getRecentChampionChangesFilter =
-                new GetRecentChampionChangesFilter(NUMBER_OF_RECENT_CHAMPION_CHANGES_TO_SHOW, gamingGroupId);
+                new GetRecentChampionChangesFilter(gamingGroupId, NUMBER_OF_RECENT_CHAMPION_CHANGES_TO_SHOW);
             var recentChampionChanges =
                 _recentChampionRetriever.GetRecentChampionChanges(getRecentChampionChangesFilter);
             var recentChampionChangesViewModels =
