@@ -8,15 +8,12 @@
     <div class="bgguser-integration">
         @if (!string.IsNullOrEmpty(Model.AvatarUrl))
         {
-            <img src="@Model.AvatarUrl" title="BGG Avatar" />
+            <img src="@Model.AvatarUrl" title="BGG Avatar" alt="Board Game Geek avatar"/>
         }
         <span>
-            You are logged on BGG as <b><a href="@Model.BoardGameGeekUserUrl" target="_blank;">@Model.BoardGameGeekUserName</a></b> :-)
+            You are logged on BGG as <b><a href="@Model.BoardGameGeekUserUrl" target="_blank;" title="View user on Board Game Geek">@Model.BoardGameGeekUserName</a></b> :-)
         </span>
     </div>
-
-
-
 }
 else
 {

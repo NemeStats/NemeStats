@@ -14,8 +14,8 @@
 
 <div id="neme-tab" class="container">
     <ul class="nav nav-pills">
-        <li class="active"><a href="#account" data-toggle="tab" id="accountTab">Account</a></li>
-        <li><a href="#@AccountController.GAMING_GROUPS_TAB_HASH_SUFFIX" data-toggle="tab" id="gamingGroupsTab">Gaming Groups</a></li>
+        <li class="active"><a href="#account" data-toggle="tab" id="accountTab" title="Manage details related to your NemeStats account">Account</a></li>
+        <li><a href="#@AccountController.GAMING_GROUPS_TAB_HASH_SUFFIX" data-toggle="tab" id="gamingGroupsTab" title="Manage the Gaming Groups associated with this account">Gaming Groups</a></li>
     </ul>
 
     <div class="tab-content clearfix">
@@ -56,7 +56,7 @@
                     </div>
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h4><a href="http://www.boardgamegeek.com" target="_blank;"><img src="~/Content/Images/bgg_small.png" alt="BoardGameGeek.com" title="BoardGameGeek.com" /></a> BoardGameGeek Integration</h4>
+                            <h4><a href="http://www.boardgamegeek.com" target="_blank;"><img src="~/Content/Images/bgg_small.png" alt="BoardGameGeek.com" title="Visit boardgamegeek.com" /></a> BoardGameGeek Integration</h4>
                         </div>
                         <div class="panel-body">
                             @Html.Partial(MVC.Account.Views.BoardGameGeekIntegration, Model.BoardGameGeekIntegrationModel)

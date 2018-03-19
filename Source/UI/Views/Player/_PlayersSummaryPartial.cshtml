@@ -45,7 +45,7 @@
                         }
                     </td>
                     <td class="name-col" data-name="@playerSummary.PlayerName">
-                        @Html.ActionLink(playerSummary.PlayerName, "Details", "Player", new {id = playerSummary.PlayerId}, new {})
+                        @Html.ActionLink(playerSummary.PlayerName, "Details", "Player", new {id = playerSummary.PlayerId}, new { title = "View Player details" })
                     </td>
                     <td class="winloss-col" data-winloss="@(playerSummary.GamesWon - playerSummary.GamesLost)">
                         <div class="progress" data-container="body" data-toggle="popover" data-placement="top"

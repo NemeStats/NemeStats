@@ -13,12 +13,12 @@
     <ul class="dropdown-menu" role="menu">
         @foreach (var gamingGroup in Model.GamingGroups)
         {
-            <li><a class="ga-topgaminggroupswitcher-switchlink" href="@Url.Action(MVC.GamingGroup.SwitchGamingGroups().AddRouteValue("gamingGroupId", gamingGroup.Id))">@gamingGroup.Name</a></li>
+            <li><a class="ga-topgaminggroupswitcher-switchlink" href="@Url.Action(MVC.GamingGroup.SwitchGamingGroups().AddRouteValue("gamingGroupId", gamingGroup.Id))" title="Switch over to this Gaming Group">@gamingGroup.Name</a></li>
         }
         <li role="separator" class="divider"></li>
-        <li><a class="ga-topgaminggroupswitcher-viewall" href="@Url.Action(MVC.Account.Manage())#@AccountController.GAMING_GROUPS_TAB_HASH_SUFFIX">Manage My Groups</a></li>
+        <li><a class="ga-topgaminggroupswitcher-viewall" href="@Url.Action(MVC.Account.Manage())#@AccountController.GAMING_GROUPS_TAB_HASH_SUFFIX" title="View info related to all of your Gaming Groups">Manage My Groups</a></li>
         <li role="separator" class="divider"></li>
-        <li><a class="ga-topgaminggroupswitcher-createnew" href="@Url.Action(MVC.Account.Manage())#@AccountController.GAMING_GROUPS_TAB_HASH_SUFFIX">Create new Gaming Group</a></li>
+        <li><a class="ga-topgaminggroupswitcher-createnew" href="@Url.Action(MVC.Account.Manage())#@AccountController.GAMING_GROUPS_TAB_HASH_SUFFIX" title="Add another Gaming Group to your account">Create new Gaming Group</a></li>
     </ul>
 </li>
 
