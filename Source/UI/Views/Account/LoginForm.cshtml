@@ -18,7 +18,7 @@
     <div class="form-group">
         @Html.LabelFor(m => m.Password, new { @class = "col-xs-4 control-label" })
         <div class="col-xs-7">
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control", autocomplete = "current-password" })
             @Html.ValidationMessageFor(m => m.Password)
         </div>
     </div>
