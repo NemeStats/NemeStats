@@ -10,7 +10,7 @@
     <div class="form-group">
         @Html.LabelFor(m => m.EmailAddress, new { @class = "col-md-3 control-label" })
         <div class="col-md-9">
-            @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control", type = "email" })
             @Html.ValidationMessageFor(m=>m.EmailAddress)
         </div>
     </div>
