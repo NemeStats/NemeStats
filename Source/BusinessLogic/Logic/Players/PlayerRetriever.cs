@@ -196,7 +196,7 @@ namespace BusinessLogic.Logic.Players
             };
             var recentAchievementsUnlocked = _recentPlayerAchievementsUnlockedRetriever.GetResults(query);
 
-            var playerDetails = new PlayerDetails()
+            var playerDetails = new PlayerDetails
             {
                 Active = returnPlayer.Active,
                 ApplicationUserId = returnPlayer.ApplicationUserId,

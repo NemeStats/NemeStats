@@ -1,7 +1,5 @@
 ﻿@model UI.Models.Players.PlayerDetailsViewModel
-@using BusinessLogic.Models.PlayedGames
 @using UI.HtmlHelpers
-@using UI.Models.Players
 @{
     ViewBag.Title = Model.PlayerName + " - " + Model.GamingGroupName;
     ViewBag.Description = $"View stats and details about the Player called '{Model.PlayerName}' on NemeStats.";
@@ -13,9 +11,16 @@
         @Html.DisplayFor(model => model.PlayerName) on @Html.ActionLink(Model.GamingGroupName, MVC.GamingGroup.ActionNames.Details, MVC.GamingGroup.Name, new {id = Model.GamingGroupId}, new {})
         @if (Model.UserCanEdit)
         {
-        <a href="@Url.Action(MVC.Player.ActionNames.Edit, MVC.Player.Name, new {id = Model.PlayerId})" class="btn btn-xs btn-default">
-            <span class="fa fa-pencil"></span>&nbsp;Edit
-        </a>
+            <a href="@Url.Action(MVC.Player.ActionNames.Edit, MVC.Player.Name, new {id = Model.PlayerId})" class="btn btn-xs btn-default" title = "Go to the Edit the details of this Player">
+                <span class="fa fa-pencil"></span>&nbsp;Edit
+            </a>
+
+            if (!Model.PlayerRegistered)
+            {
+                <a href="@Url.Action(MVC.Player.InvitePlayer().AddRouteValue("id", Model.PlayerId))" id="invitePlayer" class="btn btn-xs btn-default" title = "Go to the Player invitation page so you can invite them to this Gaming Group">
+                    <i class="fa fa-envelope"></i>&nbsp;Invite Player
+                </a>
+            }
         }
     </h2>
 
