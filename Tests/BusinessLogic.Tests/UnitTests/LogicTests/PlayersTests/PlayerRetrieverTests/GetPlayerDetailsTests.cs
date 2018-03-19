@@ -32,6 +32,7 @@ using BusinessLogic.Models.Points;
 using BusinessLogic.Paging;
 using NemeStats.TestingHelpers.NemeStatsTestingExtensions;
 using PagedList;
+using Shouldly;
 using StructureMap.AutoMocking;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverTests
@@ -94,13 +95,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                 Id = 1351,
                 Name = "the player",
                 PlayerGameResults = new List<PlayerGameResult>(),
-                GamingGroup = new GamingGroup{ Id = _gamingGroupId },
+                GamingGroup = new GamingGroup{ Id = _gamingGroupId, Name = "some gaming group name" },
                 GamingGroupId = _gamingGroupId,
                 Active = true,
                 NemesisId = _expectedNemesis.Id,
                 Nemesis = _expectedNemesis,
                 PreviousNemesisId = _expectedPriorNemesis.Id,
-                PreviousNemesis = _expectedPriorNemesis
+                PreviousNemesis = _expectedPriorNemesis,
+                ApplicationUserId = "some user id"
             };
             _expectedFormerChampionGame = new GameDefinition
             {
@@ -188,6 +190,23 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             _autoMocker.Get<IRecentPlayerAchievementsUnlockedRetriever>()
                 .Expect(mock => mock.GetResults(Arg<GetRecentPlayerAchievementsUnlockedQuery>.Is.Anything))
                 .Return(_expectedPlayerAchievementWinnersPageableList);
+        }
+
+        [Test]
+        public void It_Sets_The_Regular_Fields()
+        {
+            //--arrange
+
+            //--act
+            var playerDetails = _autoMocker.ClassUnderTest.GetPlayerDetails(_player.Id, 0);
+
+            //--assert
+            playerDetails.GamingGroupId.ShouldBe(_player.GamingGroupId);
+            playerDetails.Active.ShouldBe(_player.Active);
+            playerDetails.GamingGroupName.ShouldBe(_player.GamingGroup.Name);
+            playerDetails.ApplicationUserId.ShouldBe(_player.ApplicationUserId);
+            playerDetails.Id.ShouldBe(_player.Id);
+            playerDetails.Name.ShouldBe(_player.Name);
         }
 
         [Test]
