@@ -207,12 +207,12 @@
                                     @if (!string.IsNullOrEmpty(summary.ThumbnailImageUrl))
                                     {
                                     <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details, MVC.GameDefinition.Name, new {id = summary.GameDefinitionId})">
-                                        <img class="bgg-thumbnail" src="@summary.ThumbnailImageUrl" alt="@summary.GameDefinitionName" title="@summary.GameDefinitionName" />
+                                        <img class="bgg-thumbnail" src="@summary.ThumbnailImageUrl" alt="@summary.GameDefinitionName" title="View details about '@summary.GameDefinitionName' within this Gaming Group" />
                                     </a>
                                     }
                                 </td>
                                 <td class="name-col" data-name="@summary.GameDefinitionName">
-                                    @Html.ActionLink(summary.GameDefinitionName, "Details", "GameDefinition", new {id = summary.GameDefinitionId}, new {})
+                                    @Html.ActionLink(summary.GameDefinitionName, "Details", "GameDefinition", new {id = summary.GameDefinitionId}, new { title = "View details" })
                                 </td>
                                 <td class="winloss-col" data-winloss="@(summary.NumberOfGamesWon - summary.NumberOfGamesLost)">
                                     @summary.NumberOfGamesWon - @summary.NumberOfGamesLost
@@ -256,25 +256,25 @@
                             <td class="bgg-link-col">
                                 @if (gameResultViewModel.BoardGameGeekUri != null)
                                 {
-                                if (!string.IsNullOrEmpty(gameResultViewModel.ThumbnailImageUrl))
-                                {
-                                <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details, MVC.GameDefinition.Name, new {id = gameResultViewModel.GameDefinitionId})">
-                                    <img class="bgg-thumbnail" src="@gameResultViewModel.ThumbnailImageUrl" alt="@gameResultViewModel.GameDefinitionName" title="@gameResultViewModel.GameDefinitionName" />
-                                </a>
-                                }
-                                else
-                                {
-                                <a href="@gameResultViewModel.BoardGameGeekUri.AbsoluteUri" target="_blank;">
-                                    <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
-                                </a>
-                                }
+                                    if (!string.IsNullOrEmpty(gameResultViewModel.ThumbnailImageUrl))
+                                    {
+                                    <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details, MVC.GameDefinition.Name, new {id = gameResultViewModel.GameDefinitionId})">
+                                        <img class="bgg-thumbnail" src="@gameResultViewModel.ThumbnailImageUrl" alt="@gameResultViewModel.GameDefinitionName" title="View details of '@gameResultViewModel.GameDefinitionName' within this Gaming Group" />
+                                    </a>
+                                    }
+                                    else
+                                    {
+                                    <a href="@gameResultViewModel.BoardGameGeekUri.AbsoluteUri" target="_blank;">
+                                        <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                                    </a>
+                                    }
                                 }
                             </td>
                             <td class="name-col">
-                                @Html.ActionLink(gameResultViewModel.GameDefinitionName, "Details", "GameDefinition", new {id = gameResultViewModel.GameDefinitionId}, new {})
+                                @Html.ActionLink(gameResultViewModel.GameDefinitionName, "Details", "GameDefinition", new {id = gameResultViewModel.GameDefinitionId}, new { title = "View Game Definition details" })
                             </td>
                             <td>
-                                @Html.ActionLink(gameResultViewModel.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new {id = gameResultViewModel.PlayedGameId}, new {})
+                                @Html.ActionLink(gameResultViewModel.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new {id = gameResultViewModel.PlayedGameId}, new { title = "View Played Game details" })
                             </td>
                             <td class="result-col">
                                 @Html.Partial(MVC.PlayedGame.Views._GameResult, gameResultViewModel)
