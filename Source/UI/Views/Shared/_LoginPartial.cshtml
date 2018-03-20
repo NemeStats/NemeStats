@@ -10,7 +10,7 @@
 
     <ul class="nav navbar-nav navbar-right">
         <li id="currentuserid" data-id="@User.Identity.GetUserId()">
-            @Html.ActionLink("Hi " + User.Identity.GetUserName() + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })
+            @Html.ActionLink("Hi " + User.Identity.GetUserName() + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage your account details" })
         </li>
         @{ Html.RenderAction(MVC.Account.UserGamingGroups()); }
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
@@ -20,7 +20,7 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: new { source = "nav" }, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: new { source = "nav" }, htmlAttributes: new { id = "registerLink", title="Register a new account on NemeStats" })</li>
+        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", title="Log in to NemeStats" })</li>
     </ul>
 }

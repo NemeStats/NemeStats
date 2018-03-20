@@ -51,8 +51,8 @@
                     <span class="icon-bar"></span>
                 </button>
 
-                <a href="@Url.Action(MVC.Home.Index())" class="navbar-brand">
-                    <img src="~/Content/Images/NemeStats-White.png" />
+                <a href="@Url.Action(MVC.Home.Index())" class="navbar-brand" title="Return to NemeStats.com home page">
+                    <img src="~/Content/Images/NemeStats-White.png" alt="Return to NemeStats.com home page"/>
                 </a>
             </div>
             <div class="navbar-collapse collapse">
@@ -60,29 +60,29 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Explore<span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="@Url.Action(MVC.Achievement.Index())">Achievements List</a></li>
-                            <li><a href="@Url.Action(MVC.PlayedGame.ShowRecentlyPlayedGames())">Recent Games</a></li>
-                            <li><a href="@Url.Action(MVC.GameDefinition.ShowTrendingGames())">Trending Games</a></li>
-                            <li><a href="@Url.Action(MVC.GameDefinition.TopGames())">Top Games Ever</a></li>
-                            <li><a href="@Url.Action(MVC.Achievement.RecentAchievementsUnlocked())">Recently Unlocked Achievements</a></li>
-                            <li><a href="@Url.Action(MVC.GamingGroup.GetTopGamingGroups())">Top Gaming Groups</a></li>
-                            <li><a href="@Url.Action(MVC.Player.ShowTopPlayers())">Top Players</a></li>
-                            <li><a href="@Url.Action(MVC.Home.AboutBadgesAndAchievements())">About Badges and Achievements</a></li>
-                            <li><a href="@Url.Action(MVC.Home.AboutNemePoints())">About NemePoints</a></li>
+                            <li><a href="@Url.Action(MVC.Achievement.Index())" title="View all Achievements on NemeStats">Achievements List</a></li>
+                            <li><a href="@Url.Action(MVC.PlayedGame.ShowRecentlyPlayedGames())" title="View recent Played Games on NemeStats">Recent Games</a></li>
+                            <li><a href="@Url.Action(MVC.GameDefinition.ShowTrendingGames())" title="View trending games on NemeStats">Trending Games</a></li>
+                            <li><a href="@Url.Action(MVC.GameDefinition.TopGames())" title="View top games of all time on NemeStats">Top Games Ever</a></li>
+                            <li><a href="@Url.Action(MVC.Achievement.RecentAchievementsUnlocked())" title="View recently unlocked Player Achievements on NemeStats">Recently Unlocked Achievements</a></li>
+                            <li><a href="@Url.Action(MVC.GamingGroup.GetTopGamingGroups())" title="View top active Gaming Groups on NemeStats">Top Gaming Groups</a></li>
+                            <li><a href="@Url.Action(MVC.Player.ShowTopPlayers())" title="View top Players on NemeStats">Top Players</a></li>
+                            <li><a href="@Url.Action(MVC.Home.AboutBadgesAndAchievements())" title="Learn more about Badges and Achievements on NemeStats">About Badges and Achievements</a></li>
+                            <li><a href="@Url.Action(MVC.Home.AboutNemePoints())" title="Learn more about NemePoints on NemeStats">About NemePoints</a></li>
                             <li class="dropdown-submenu">
                                 <a href="#">Contact</a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="http://nemestats.idea.informer.com/proj/?mod=one" target="_blank"><span class="fa fa-envelope"></span> Feedback</a></li>
-                                    <li><a href="https://nemestats-slack-invitation.herokuapp.com/" target="_blank"><span class="fa fa-slack"></span> Slack</a></li>
-                                    <li><a href="https://twitter.com/NemeStats" target="_blank"><span class="fa fa-twitter"></span> Twitter</a></li>
-                                    <li><a href="https://github.com/NemeStats/NemeStats" target="_blank"><span class="fa fa-github"></span> GitHub</a></li>
+                                    <li><a href="http://nemestats.idea.informer.com/proj/?mod=one" target="_blank" title="Post and upvote ideas so they get prioritized for development"><span class="fa fa-envelope"></span> Feedback</a></li>
+                                    <li><a href="https://nemestats-slack-invitation.herokuapp.com/" target="_blank" title="Join us on Slack to provide feedback or ask questions"><span class="fa fa-slack"></span> Slack</a></li>
+                                    <li><a href="https://twitter.com/NemeStats" target="_blank" title="Follow us on Twitter"><span class="fa fa-twitter"></span> Twitter</a></li>
+                                    <li><a href="https://github.com/NemeStats/NemeStats" target="_blank" title="Check out the NemeStats GitHub project"><span class="fa fa-github"></span> GitHub</a></li>
                                 </ul>
                             </li>
                         </ul>
                     </li>
-                    <li id="gtm-recordplayedgamebutton-fromnavbar"><a href="@Url.Action(MVC.PlayedGame.Create())"><span class="fa fa-plus-circle"></span> Record Played Game</a></li>
-                    <li id="navMyGamingGroup">@Html.ActionLink("My Gaming Group", "Index", "GamingGroup")</li>
-                    <li id="navAbout">@Html.ActionLink("About", "About", "Home")</li>
+                    <li id="gtm-recordplayedgamebutton-fromnavbar"><a href="@Url.Action(MVC.PlayedGame.Create())" title="Record a new Played Game"><span class="fa fa-plus-circle"></span> Record Played Game</a></li>
+                    <li id="navMyGamingGroup">@Html.ActionLink("My Gaming Group", "Index", "GamingGroup", new {}, new { title = "View your current Gaming Group's details"})</li>
+                    <li id="navAbout">@Html.ActionLink("About", "About", "Home", new {}, new { title = "Learn more about NemeStats" })</li>
                 </ul>
                 @{ Html.RenderPartial(MVC.Shared.Views._LoginPartial);}
             </div>
