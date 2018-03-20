@@ -19,7 +19,8 @@
     <div class="row">
         <div class="col-sm-3">
             <ul class="steps">
-                <li class="arrow_box" v-bind:class="{'current': currentStep == 1,'completed': stepAlreadyCompleted(1), 'disabled': currentStep == 5}" v-on:click="backToSelectDate(); recalculateSelectedPlayers();">
+                <li class="arrow_box" v-bind:class="{'current': currentStep == 1,'completed': stepAlreadyCompleted(1), 'disabled': currentStep == 5}" 
+                    v-on:click="backToSelectDate(); recalculateSelectedPlayers();" title="Set the date the game was played">
                     <span class="number">1</span>
                     <span class="desc" v-show="!stepAlreadyCompleted(1)">
                         Set date
@@ -29,7 +30,8 @@
                         <div class="value">{{ viewModel.Date | convertToLocalDate }}</div>
                     </div>
                 </li>
-                <li class="arrow_box" v-bind:class="{'current': currentStep == 2,'disabled' : !stepAlreadyCompleted(2) || currentStep == 5, 'completed': stepAlreadyCompleted(2)}" v-on:click="backToSelectGame(); recalculateSelectedPlayers();">
+                <li class="arrow_box" v-bind:class="{'current': currentStep == 2,'disabled' : !stepAlreadyCompleted(2) || currentStep == 5, 'completed': stepAlreadyCompleted(2)}" 
+                    v-on:click="backToSelectGame(); recalculateSelectedPlayers();" title="Select the game the was played">
                     <span class="number">2</span>
                     <span class="desc" v-show="!stepAlreadyCompleted(2)">
                         Select game
@@ -39,7 +41,8 @@
                         <div class="value">{{ viewModel.Game.Name }}</div>
                     </div>
                 </li>
-                <li class="arrow_box" v-bind:class="{'current': currentStep == 3,'disabled' : !stepAlreadyCompleted(3) || currentStep == 5, 'completed': stepAlreadyCompleted(3)}" v-on:click="backToSelectPlayers">
+                <li class="arrow_box" v-bind:class="{'current': currentStep == 3,'disabled' : !stepAlreadyCompleted(3) || currentStep == 5, 'completed': stepAlreadyCompleted(3)}" 
+                    v-on:click="backToSelectPlayers" title="Select the Players who participated in the game">
                     <span class="number">3</span>
                     <span class="desc" v-show="!stepAlreadyCompleted(3)">
                         Select players
@@ -49,7 +52,8 @@
                         <div class="value">{{ numberOfPlayersLabel }}</div>
                     </div>
                 </li>
-                <li class="arrow_box" v-bind:class="{'current': currentStep == 4,'disabled' : !stepAlreadyCompleted(4) || currentStep == 5, 'completed': stepAlreadyCompleted(4)}" v-on:click="backToSetResult(); ; recalculateSelectedPlayers();">
+                <li class="arrow_box" v-bind:class="{'current': currentStep == 4,'disabled' : !stepAlreadyCompleted(4) || currentStep == 5, 'completed': stepAlreadyCompleted(4)}" 
+                    v-on:click="backToSetResult(); ; recalculateSelectedPlayers();" title="Set the results of the game">
                     <span class="number">4</span>
                     <span class="desc" v-show="!stepAlreadyCompleted(4)">
                         Set result
@@ -59,7 +63,7 @@
                         <div class="value">{{ viewModel.WinnerType | winnertype }}</div>
                     </div>
                 </li>
-                <li class="arrow_box" v-bind:class="{'current': currentStep == 5,'disabled' : true}">
+                <li class="arrow_box" v-bind:class="{'current': currentStep == 5,'disabled' : true}" title="View an overview of the Played Game">
                     <span class="number">5</span>
                     <span class="desc">
                         Summary
@@ -80,10 +84,9 @@
                             <input type="date" class="form-control form-control-lg date-picker" v-model="viewModel.Date">
                         </div>
 
-                        <button class="btn btn-default" id="btn-setDateYesterday" v-on:click="setDateYesterday">Yesterday</button>
-                        <button class="btn btn-default" id="btn-setDateToday" v-on:click="setDateToday">Today</button>
-
-                        <button class="btn btn-primary" id="btn-setDateCustom" v-on:click="gotoSelectGame">Continue</button>
+                        <button class="btn btn-default" id="btn-setDateYesterday" v-on:click="setDateYesterday" title="Set the date to yesterday">Yesterday</button>
+                        <button class="btn btn-default" id="btn-setDateToday" v-on:click="setDateToday" title="Set the date to today">Today</button>
+                        <button class="btn btn-primary" id="btn-setDateCustom" v-on:click="gotoSelectGame" title="Continue with the entered date">Continue</button>
                     </div>
 
                 </div>
@@ -118,7 +121,7 @@
                                 <input type="text" class="form-control form-control-lg typeahead" id="search-bgg" />
                             </div>
                         </div>
-                        <button class="btn btn-default" v-on:click="backToSelectDate">Back</button>
+                        <button class="btn btn-default" v-on:click="backToSelectDate" title="Go back to select a different date">Back</button>
                     </div>
                 </div>
                 <div v-show="currentStep == 3" style="display: none">
@@ -128,7 +131,7 @@
                             <div class="col-sm-6">
                                 <h4 class="title">Recent Players:</h4>
                                 <ul class="list-group recent-players">
-                                    <li class="list-group-item checkbox" v-for="player in viewModel.RecentPlayers" v-bind:class="{'selected':player.Selected}">
+                                    <li class="list-group-item checkbox" v-for="player in viewModel.RecentPlayers" v-bind:class="{'selected':player.Selected}" title="Toggle player">
                                         <label>
                                             <input type="checkbox" v-model="player.Selected"> {{ player.PlayerName }}
                                         </label>
@@ -139,7 +142,7 @@
                             <div class="col-sm-6">
                                 <h4 class="title">Other Players:</h4>
                                 <ul class="list-group other-players">
-                                    <li class="list-group-item checkbox" v-for="player in viewModel.OtherPlayers" v-bind:class="{'selected':player.Selected}">
+                                    <li class="list-group-item checkbox" v-for="player in viewModel.OtherPlayers" v-bind:class="{'selected':player.Selected}" title="Toggle player">
                                         <label>
                                             <input type="checkbox" v-model="player.Selected"> {{ player.PlayerName }}
                                         </label>
@@ -154,13 +157,13 @@
                                 <input type="text" class="form-control form-control-lg" placeholder="new player name" v-model="newPlayerName" v-on:keyup.enter="createNewPlayer()" />
                             </div>
                             <div class="col-sm-2">
-                                <button class="btn btn-default" v-on:click="createNewPlayer()">Create player</button>
+                                <button class="btn btn-default" v-on:click="createNewPlayer()" title="Add this Player to your Gaming Group and include them in this game result">Create player</button>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <button class="btn btn-default" v-on:click="backToSelectGame">Back</button>
-                                <button class="btn btn-primary" v-on:click="gotoSetGameResult">Continue</button>
+                                <button class="btn btn-default" v-on:click="backToSelectGame" title="Go back to pick a new game">Back</button>
+                                <button class="btn btn-primary" v-on:click="gotoSetGameResult" title="Continue to set the game result">Continue</button>
                             </div>
                         </div>
 
@@ -172,15 +175,15 @@
                         <h4 class="title">Select game type:</h4>
                         <div class="form-group">
                             <ul class="nav nav-tabs" role="tablist">
-                                <li role="presentation" v-bind:class="{ 'active': viewModel.GameType == 1 }" v-on:click="setGameType(1)">
+                                <li role="presentation" v-bind:class="{ 'active': viewModel.GameType == 1 }" v-on:click="setGameType(1)" title="Rank players in order of their ranking position">
                                     <a href="#ranked" role="tab" data-toggle="tab" class="hidden-xs">Ranked game</a>
                                     <a href="#ranked" role="tab" data-toggle="tab" class="hidden-sm hidden-md hidden-lg">Ranked</a>
                                 </li>
-                                <li role="presentation"  v-bind:class="{ 'active': viewModel.GameType == 2 }"  v-on:click="setGameType(2)">
+                                <li role="presentation"  v-bind:class="{ 'active': viewModel.GameType == 2 }"  v-on:click="setGameType(2)" title="Rank players based on their score">
                                     <a href="#scored" role="tab" data-toggle="tab" class="hidden-xs">Scored game</a>
                                     <a href="#scored" role="tab" data-toggle="tab" class="hidden-sm hidden-md hidden-lg">Scored</a>
                                 </li>
-                                <li role="presentation"  v-bind:class="{ 'active': viewModel.GameType == 3 }"  v-on:click="setGameType(3)">
+                                <li role="presentation"  v-bind:class="{ 'active': viewModel.GameType == 3 }"  v-on:click="setGameType(3)" title="Give everyone a team win or team loss">
                                     <a href="#cooperative" role="tab" data-toggle="tab" class="hidden-xs">Cooperative game</a>
                                     <a href="#cooperative" role="tab" data-toggle="tab" class="hidden-sm hidden-md hidden-lg">Cooperative</a>
                                 </li>
@@ -194,9 +197,8 @@
                                             <input type="number" class="form-control input-sm rank" v-model="player.Rank" number @@click="focus" />
                                             {{ player.Name }}
                                             <div class="result-float-right">
-                                                <button class="btn btn-default" id="btn-reducerank" v-on:click="changeRank(player,true)" tabindex="-1" :disabled="player.Rank === 1"><span class="fa fa-arrow-up"></span></button>
-                                                <button class="btn btn-default" id="btn-increaserank" v-on:click="changeRank(player,false)" tabindex="-1" :disabled="isLastRank(player)"><span class="fa fa-arrow-down"></span></button>
-
+                                                <button class="btn btn-default" id="btn-reducerank" v-on:click="changeRank(player,true)" tabindex="-1" :disabled="player.Rank === 1" title="Improve rank"><span class="fa fa-arrow-up"></span></button>
+                                                <button class="btn btn-default" id="btn-increaserank" v-on:click="changeRank(player,false)" tabindex="-1" :disabled="isLastRank(player)" title="Decrease rank"><span class="fa fa-arrow-down"></span></button>
                                             </div>
                                         </li>
                                     </ul>
@@ -217,14 +219,14 @@
                                     <div class="row">
                                         <div class="col-sm-offset-2 col-sm-4">
                                             <div class="btn-wrapper" data-container="body" data-toggle="popover" data-placement="left" data-content="Record a game where everyone won (e.g. you saved the world in Pandemic)" v-on:click="setGameResult(2)">
-                                                <button class="btn btn-success btn-recordgame btn-everyone-won" id="btnEveryoneWonButton">
+                                                <button class="btn btn-success btn-recordgame btn-everyone-won" id="btnEveryoneWonButton" title="Give everyone a team win">
                                                     <i class="fa fa-smile-o"></i> Everyone Won
                                                 </button>
                                             </div>
                                         </div>
                                         <div class="col-sm-4">
                                             <div class="btn-wrapper" data-container="body" data-toggle="popover" data-placemenet="right" data-content="Record a game where everyone lost (e.g. no one survived in Zombicide)" v-on:click="setGameResult(3)">
-                                                <button class="btn btn-danger btn-recordgame" id="btnEveryoneLostButton">
+                                                <button class="btn btn-danger btn-recordgame" id="btnEveryoneLostButton" title="Give everyone a team loss">
                                                     <i class="fa fa-frown-o"></i> Everyone Lost
                                                 </button>
                                             </div>
@@ -237,8 +239,8 @@
                             <h4 class="title">Game notes (optional)</h4>
                             <textarea v-model="viewModel.GameNotes" class="form-control" rows="4"></textarea>
                         </div>
-                        <button class="btn btn-default" v-on:click="backToSelectPlayers">Back</button>
-                        <button class="btn btn-primary" v-on:click="setGameResult(1)">Save played game</button>
+                        <button class="btn btn-default" v-on:click="backToSelectPlayers" title="Go back to change the Players">Back</button>
+                        <button class="btn btn-primary" v-on:click="setGameResult(1)" title="Save this game now">Save played game</button>
                     </div>
                 </div>
                 <div v-show="currentStep==5" style="display: none">
@@ -293,10 +295,10 @@
     <h4 class="title">@title</h4>
 foreach (var game in games)
 {
-        <span class="game-image" v-on:click="selectGame(@game.Id,'@game.Name.Replace("'","\"")' )">
+        <span class="game-image" v-on:click="selectGame(@game.Id,'@game.Name.Replace("'","\"")' )" title="Select @game.Name as the game that was played">
             @if (!string.IsNullOrEmpty(game.ThumbnailImageUrl))
             {
-                <img src="@game.ThumbnailImageUrl" class="@gtaClass" />
+                <img src="@game.ThumbnailImageUrl" class="@gtaClass" alt="@game.Name" />
             }
             else
             {
