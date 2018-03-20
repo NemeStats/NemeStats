@@ -22,19 +22,19 @@
 		{
 			<tr data-position="@position">
                 @{ position++; }
-				<td>@Html.ActionLink(gamingGroup.GamingGroupName, "Details", "GamingGroup", new { id = gamingGroup.GamingGroupId }, new { })</td>
+				<td>@Html.ActionLink(gamingGroup.GamingGroupName, "Details", "GamingGroup", new { id = gamingGroup.GamingGroupId }, new { title = "View Gaming Group details" })</td>
 				<td>@gamingGroup.NumberOfGamesPlayed</td>
 				<td>@gamingGroup.NumberOfPlayers</td>
 			    <td>
 			        @if (gamingGroup.GamingGroupChampion != null)
 			        {
-			            @Html.ActionLink(gamingGroup.GamingGroupChampion.PlayerName, "Details", "Player", new { id = gamingGroup.GamingGroupChampion.PlayerId }, new { })
+			            @Html.ActionLink(gamingGroup.GamingGroupChampion.PlayerName, "Details", "Player", new { id = gamingGroup.GamingGroupChampion.PlayerId }, new { title = "View Player details" })
 			        }
 			    </td>
                 @if (Model.ShowForEdit)
                 {
                     <td>@Html.CheckBoxFor(m => gamingGroup.Active, new { disabled = "disabled" })</td>
-                    <td><a href="@Url.Action("Edit", "GamingGroup", new {id = gamingGroup.GamingGroupId})" title="Edit">
+                    <td><a href="@Url.Action("Edit", "GamingGroup", new {id = gamingGroup.GamingGroupId})" title="Edit Gaming Group">
                         <i class="fa fa-pencil fa-2x"></i></a>
                     </td>
                 }

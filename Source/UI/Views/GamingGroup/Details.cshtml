@@ -11,7 +11,7 @@
     @Model.PublicDetailsView.GamingGroupName
     @if (Model.UserCanEdit)
     {
-        <a href="@Url.Action(MVC.GamingGroup.Edit().AddRouteValue("id", Model.PublicDetailsView.GamingGroupId))" class="btn btn-xs btn-default">
+        <a href="@Url.Action(MVC.GamingGroup.Edit().AddRouteValue("id", Model.PublicDetailsView.GamingGroupId))" class="btn btn-xs btn-default" title="Edit Gaming Group">
             <span class="fa fa-pencil"></span>&nbsp;Edit
         </a>
     }
@@ -55,11 +55,11 @@
 
 <div id="neme-tab" class="container">
     <ul class="nav nav-pills">
-        <li class="active"><a href="#playersListDivId" data-toggle="tab" id="playersTab">Players</a></li>
-        <li><a href="#gamesListDivId" data-toggle="tab" id="gamesTab">Games</a></li>
-        <li><a href="#playedGamesListDivId" data-toggle="tab" id="playedGamesTab">Plays</a></li>
-        <li><a href="#statsDivId" data-toggle="tab" id="statsTab">Stats</a></li>
-        <li><a href="#recentDivId" data-toggle="tab" id="recentTab">Recent</a></li>
+        <li class="active"><a href="#playersListDivId" data-toggle="tab" id="playersTab" title="View Players within this Gaming Group">Players</a></li>
+        <li><a href="#gamesListDivId" data-toggle="tab" id="gamesTab" title="View Game Definitions within this Gaming Group">Games</a></li>
+        <li><a href="#playedGamesListDivId" data-toggle="tab" id="playedGamesTab" title="View Played Games within this Gaming Group">Plays</a></li>
+        <li><a href="#statsDivId" data-toggle="tab" id="statsTab" title="View aggregate stats for this Gaming Group">Stats</a></li>
+        <li><a href="#recentDivId" data-toggle="tab" id="recentTab" title="View recent Nemesis changes, champion changes, and Achievements awarded within this Gaming Group">Recent</a></li>
     </ul>
 
     <div class="tab-content clearfix">
