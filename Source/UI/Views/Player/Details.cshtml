@@ -11,7 +11,7 @@
         @Html.DisplayFor(model => model.PlayerName) on @Html.ActionLink(Model.GamingGroupName, MVC.GamingGroup.ActionNames.Details, MVC.GamingGroup.Name, new {id = Model.GamingGroupId}, new {})
         @if (Model.UserCanEdit)
         {
-            <a href="@Url.Action(MVC.Player.ActionNames.Edit, MVC.Player.Name, new {id = Model.PlayerId})" class="btn btn-xs btn-default" title = "Go to the Edit the details of this Player">
+            <a href="@Url.Action(MVC.Player.ActionNames.Edit, MVC.Player.Name, new {id = Model.PlayerId})" class="btn btn-xs btn-default" title = "Edit Player">
                 <span class="fa fa-pencil"></span>&nbsp;Edit
             </a>
 
@@ -75,6 +75,7 @@
                         id = @Model.GamingGroupId
                         }, new
                         {
+                            title = "View Gaming Group details"
                         })
                     </div>
                 </div>
@@ -206,13 +207,14 @@
                                 <td class="bgg-link-col">
                                     @if (!string.IsNullOrEmpty(summary.ThumbnailImageUrl))
                                     {
-                                    <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details, MVC.GameDefinition.Name, new {id = summary.GameDefinitionId})">
-                                        <img class="bgg-thumbnail" src="@summary.ThumbnailImageUrl" alt="@summary.GameDefinitionName" title="View details about '@summary.GameDefinitionName' within this Gaming Group" />
+                                        <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details, MVC.GameDefinition.Name, new {id = summary.GameDefinitionId})" 
+                                           title="View details about '@summary.GameDefinitionName' within this Gaming Group">
+                                        <img class="bgg-thumbnail" src="@summary.ThumbnailImageUrl" alt="View details about '@summary.GameDefinitionName' within this Gaming Group" />
                                     </a>
                                     }
                                 </td>
                                 <td class="name-col" data-name="@summary.GameDefinitionName">
-                                    @Html.ActionLink(summary.GameDefinitionName, "Details", "GameDefinition", new {id = summary.GameDefinitionId}, new { title = "View details" })
+                                    @Html.ActionLink(summary.GameDefinitionName, "Details", "GameDefinition", new {id = summary.GameDefinitionId}, new { title = "View Game Definition details" })
                                 </td>
                                 <td class="winloss-col" data-winloss="@(summary.NumberOfGamesWon - summary.NumberOfGamesLost)">
                                     @summary.NumberOfGamesWon - @summary.NumberOfGamesLost
@@ -258,14 +260,15 @@
                                 {
                                     if (!string.IsNullOrEmpty(gameResultViewModel.ThumbnailImageUrl))
                                     {
-                                    <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details, MVC.GameDefinition.Name, new {id = gameResultViewModel.GameDefinitionId})">
-                                        <img class="bgg-thumbnail" src="@gameResultViewModel.ThumbnailImageUrl" alt="@gameResultViewModel.GameDefinitionName" title="View details of '@gameResultViewModel.GameDefinitionName' within this Gaming Group" />
+                                        <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details, MVC.GameDefinition.Name, new {id = gameResultViewModel.GameDefinitionId})"
+                                           title="View details of '@gameResultViewModel.GameDefinitionName' within this Gaming Group">
+                                        <img class="bgg-thumbnail" src="@gameResultViewModel.ThumbnailImageUrl" alt="View details of '@gameResultViewModel.GameDefinitionName' within this Gaming Group"  />
                                     </a>
                                     }
                                     else
                                     {
-                                    <a href="@gameResultViewModel.BoardGameGeekUri.AbsoluteUri" target="_blank;">
-                                        <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                                    <a href="@gameResultViewModel.BoardGameGeekUri.AbsoluteUri" target="_blank;" title="View on BoardGameGeek.com" >
+                                        <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com"/>
                                     </a>
                                     }
                                 }

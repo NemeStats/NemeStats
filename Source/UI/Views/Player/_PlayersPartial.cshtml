@@ -82,7 +82,7 @@
                             {
                             <tr>
                                 <td class="player-name-col" data-name="@item.PlayerName">
-                                    <b>@Html.ActionLink(item.PlayerName, MVC.Player.Details(item.PlayerId, null))</b>
+                                    <b>@Html.ActionLink(item.PlayerName, MVC.Player.Details(item.PlayerId, null), new { title = "View Player details"})</b>
                                 </td>
                                 <td class="total-nemepoints-col" data-nemepoints="@item.NemePointsSummary.TotalNemePoints">
                                     <span data-toggle="popover" data-html="true" data-templateselector="#@item.PlayerId" data-title="NemePoints breakdown">
@@ -98,7 +98,7 @@
                                     @item.TotalChampionedGames
                                 </td>
                                 <td class="achievements-col" data-achievements="@item.AchievementsPerLevel.Sum(a => a.Value)">
-                                    <a href="@Url.Action(MVC.Player.Details(item.PlayerId,null))">
+                                    <a href="@Url.Action(MVC.Player.Details(item.PlayerId,null))" title="View Player details">
                                         <span class="achievements">
                                             <span class="achievement bronze" data-toggle="popover" data-placement="top"
                                                   data-content="Bronze Achievements">
@@ -126,7 +126,7 @@
                                     {
                                     <span style="text-decoration: line-through">
                                         <b>
-                                            @Html.ActionLink(item.PreviousNemesisPlayerName, MVC.Player.Details(item.PreviousNemesisPlayerId.Value, null))
+                                            @Html.ActionLink(item.PreviousNemesisPlayerName, MVC.Player.Details(item.PreviousNemesisPlayerId.Value, null), new { title = "View Player details"})
                                         </b>
                                     </span>
                                     @:<br />
@@ -135,7 +135,7 @@
                                     @if (item.NemesisPlayerId.HasValue)
                                     {
                                     <b>
-                                        @Html.ActionLink(item.NemesisPlayerName, MVC.Player.Details(item.NemesisPlayerId.Value, null))
+                                        @Html.ActionLink(item.NemesisPlayerName, MVC.Player.Details(item.NemesisPlayerId.Value, null), new { title = "View Player details" })
                                     </b>
                                     }
                                 </td>
@@ -156,7 +156,7 @@
                                 @if (item.UserCanEdit)
                                 {
                                 <td class="edit-col">
-                                    <a href="@Url.Action("Edit", "Player", new {id = item.PlayerId})" title="Edit">
+                                    <a href="@Url.Action("Edit", "Player", new {id = item.PlayerId})" title="Edit Player">
                                         <i class="fa fa-pencil fa-2x"></i>
                                     </a>
                                 </td>

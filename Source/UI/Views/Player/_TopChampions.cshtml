@@ -16,8 +16,8 @@
         @foreach (var championDataModel in @Model)
         {
             <tr>
-                <td>@Html.ActionLink(championDataModel.PlayerName, "Details", "Player", new { id = championDataModel.PlayerId}, new{})</td>
-                <td>@Html.ActionLink(championDataModel.PlayerGamingGroupName, "Details", "GamingGroup", new { id = championDataModel.PlayerGamingGroupId }, new { })</td>
+                <td>@Html.ActionLink(championDataModel.PlayerName, "Details", "Player", new { id = championDataModel.PlayerId}, new{ title = "View Player details"})</td>
+                <td>@Html.ActionLink(championDataModel.PlayerGamingGroupName, "Details", "GamingGroup", new { id = championDataModel.PlayerGamingGroupId }, new { title = "View Gaming Group details" })</td>
                 <td>@championDataModel.NumberOfWins</td>
                 <td>@championDataModel.NumberOfGames</td>
                 <td>@championDataModel.WinPercentage&nbsp;%</td>   
