@@ -16,10 +16,10 @@
             <tr class="game-item" data-position="@position">
                 @{position++;}
                 <td class="bgg-link-col">
-                    <a href="@Url.Action(MVC.UniversalGame.Details().AddRouteValue("id", trendingGame.BoardGameGeekGameDefinitionId))">
+                    <a href="@Url.Action(MVC.UniversalGame.Details().AddRouteValue("id", trendingGame.BoardGameGeekGameDefinitionId))" title="View universal stats for Game Definition">
                         @if (!string.IsNullOrEmpty(trendingGame.ThumbnailImageUrl))
                         {
-                            <img class="bgg-thumbnail" src="@trendingGame.ThumbnailImageUrl" alt="View universal stats" title="View universal stats"/>
+                            <img class="bgg-thumbnail" src="@trendingGame.ThumbnailImageUrl" alt="View universal stats" title="View universal stats for Game Definition"/>
                         }
                         else
                         {
@@ -28,7 +28,7 @@
 
                     </a>
                 </td>
-                <td><a href="@Url.Action(MVC.UniversalGame.Details().AddRouteValue("id", trendingGame.BoardGameGeekGameDefinitionId))">@trendingGame.Name</a></td>
+                <td><a href="@Url.Action(MVC.UniversalGame.Details().AddRouteValue("id", trendingGame.BoardGameGeekGameDefinitionId))" title="View universal stats for Game Definition">@trendingGame.Name</a></td>
                 <td>@trendingGame.GamingGroupsPlayingThisGame</td>
                 <td>@trendingGame.GamesPlayed</td>
             </tr>

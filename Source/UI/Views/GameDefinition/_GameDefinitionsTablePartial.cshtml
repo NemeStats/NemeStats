@@ -69,7 +69,7 @@
                         </td>
                         <td class="name-col">
                             <b>
-                                @Html.ActionLink(item.Name, "Details", "GameDefinition", new { id = item.Id }, new { @class = "name" })
+                                @Html.ActionLink(item.Name, "Details", "GameDefinition", new { id = item.Id }, new { @class = "name", title = "View Game Definition details" })
                             </b>
                         </td>
                         <td class="plays-col">@Html.DisplayFor(modelItem => item.TotalNumberOfGamesPlayed)</td>
@@ -82,7 +82,7 @@
                                             "Details",
                                             "Player",
                                             new { id = item.PreviousChampionPlayerId },
-                                            new { })
+                                            new { title = "View Player details"})
                                     </b>
                                 </span>
                                 <span>/</span>
@@ -90,7 +90,7 @@
                             @if (item.ChampionName != null)
                             {
                                 <b>
-                                    @Html.ActionLink(item.ChampionName, "Details", "Player", new { id = item.ChampionPlayerId }, new { })
+                                    @Html.ActionLink(item.ChampionName, "Details", "Player", new { id = item.ChampionPlayerId }, new { title = "View Player details" })
                                 </b>
                             }
                             else
@@ -105,7 +105,7 @@
                                 <a href="@Url.Action("Edit", "GameDefinition", new
                                      {
                                          id = item.Id
-                                     })" title="Edit">
+                                     })" title="Edit Game Definition">
                                     <span class="fa fa-pencil fa-2x"></span>
                                 </a>
                             </td>

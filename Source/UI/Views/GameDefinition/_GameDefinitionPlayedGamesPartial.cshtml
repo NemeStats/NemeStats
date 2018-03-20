@@ -2,7 +2,7 @@
 
 <div class="panel panel-primary">
     <div class="panel-heading">
-        <h4>Last @Model.Count Played Games for <a href="@Url.Action(MVC.GamingGroup.Details().AddRouteValue("id", ViewData["GamingGroupId"]))">@ViewData["GamingGroupName"]</a></h4>
+        <h4>Last @Model.Count Played Games for <a href="@Url.Action(MVC.GamingGroup.Details().AddRouteValue("id", ViewData["GamingGroupId"]))" title="View Gaming Group details">@ViewData["GamingGroupName"]</a></h4>
     </div>
     <div class="panel-body">
         <div class="table-responsive">
@@ -28,21 +28,19 @@
                             <td class="result-col">
                                 @foreach (var gameResultViewModel in playedGameViewModel.PlayerResults)
                                 {
-
                                     @Html.Partial(MVC.PlayedGame.Views._GameResult, gameResultViewModel)
-
                                 }
                             </td>
                             <td class="edit-col">
-                                <a href="@Url.Action("Details", "PlayedGame", new {id = playedGameViewModel.PlayedGameId})" title="Details">
+                                <a href="@Url.Action("Details", "PlayedGame", new {id = playedGameViewModel.PlayedGameId})" title="View Played Game details">
                                     <i class="fa fa-book fa-2x"></i>
                                 </a>
                                 @if (playedGameViewModel.UserCanEdit)
                                 {
-                                    <a href="@Url.Action("Edit", "PlayedGame", new {id = playedGameViewModel.PlayedGameId})" title="Edit">
+                                    <a href="@Url.Action("Edit", "PlayedGame", new {id = playedGameViewModel.PlayedGameId})" title="Edit this Played Game">
                                         <i class="fa fa-pencil fa-2x"></i>
                                     </a>
-                                                <a href="@Url.Action("Delete", "PlayedGame", new {id = playedGameViewModel.PlayedGameId})" title="Delete">
+                                                <a href="@Url.Action("Delete", "PlayedGame", new {id = playedGameViewModel.PlayedGameId})" title="Delete this Played Game">
                                                     <i class="fa fa-trash-o fa-2x"></i>
                                                 </a>
                                 }

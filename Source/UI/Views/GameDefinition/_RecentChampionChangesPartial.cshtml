@@ -23,11 +23,11 @@
 			    <td>
 			        @if (championChange.PreviousChampionPlayerId.HasValue)
 			        {
-			            @Html.ActionLink(championChange.PreviousChampionPlayerName, "Details", "Player", new {id = championChange.PreviousChampionPlayerId}, new {})
+			            @Html.ActionLink(championChange.PreviousChampionPlayerName, "Details", "Player", new {id = championChange.PreviousChampionPlayerId}, new { title = "View Player details"})
 			        }
 			    </td>
-				<td>@Html.ActionLink(championChange.NewChampionPlayerName, "Details", "Player", new { id = championChange.NewChampionPlayerId }, new { })</td>
-                <td>@Html.ActionLink(championChange.GameName, "Details", "GameDefinition", new { id = championChange.GameDefinitionId }, new { })</td>
+				<td>@Html.ActionLink(championChange.NewChampionPlayerName, "Details", "Player", new { id = championChange.NewChampionPlayerId }, new { title = "View Player details"})</td>
+                <td>@Html.ActionLink(championChange.GameName, "Details", "GameDefinition", new { id = championChange.GameDefinitionId }, new { title = "View Game Definition details" })</td>
 			    <td>@championChange.DateCreated.ToShortDateString()</td>
 			</tr>
 		}
