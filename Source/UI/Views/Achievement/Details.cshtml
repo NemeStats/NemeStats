@@ -19,8 +19,8 @@
 @if (Model.HasAnyLevelUnlocked)
 {
     <h2 class="page-header">
-        @Model.AchievementName achievement unlocked for <a href="@Url.Action(MVC.Player.Details(Model.PlayerId, null))">@Model.PlayerName</a> !
-        <a class="btn btn-primary btn-xs" href="@Url.Action(MVC.Achievement.Index())">view all</a>
+        @Model.AchievementName achievement unlocked for <a href="@Url.Action(MVC.Player.Details(Model.PlayerId, null))" title="View Player details">@Model.PlayerName</a> !
+        <a class="btn btn-primary btn-xs" href="@Url.Action(MVC.Achievement.Index())" title="View all Achievements">View all</a>
     </h2>
     levelClass = Model.AchievementLevel.ToString().ToLower();
 }
@@ -28,7 +28,7 @@ else
 {
     <h2 class="page-header">
         @Model.AchievementName Achievement
-        <a class="btn btn-primary btn-xs" href="@Url.Action(MVC.Achievement.Index())">view all</a>
+        <a class="btn btn-primary btn-xs" href="@Url.Action(MVC.Achievement.Index())" title="View all Achievements">View all</a>
     </h2>
     levelClass = Model.LevelThresholds.First().Key.ToString().ToLower();
 }
@@ -71,7 +71,7 @@ else
             <div class="col-md-9">
                 @if (Model.HasAnyLevelUnlocked)
                 {
-                    <h5>Current progress for <a href="@Url.Action(MVC.Player.Details(Model.PlayerId, null))">@Model.PlayerName</a>:</h5>
+                    <h5>Current progress for <a href="@Url.Action(MVC.Player.Details(Model.PlayerId, null))" title="View Player details">@Model.PlayerName</a>:</h5>
                 }
                 else
                 {
@@ -123,7 +123,7 @@ else
                                     {
                                         if (!string.IsNullOrEmpty(game.BoardGameGeekInfo.ThumbnailImageUrl))
                                         {
-                                            <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details, MVC.GameDefinition.Name, new {id = game.Id})">
+                                            <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details, MVC.GameDefinition.Name, new {id = game.Id})" title = "View Game Definition details">
                                                 <img class="bgg-thumbnail" src="@game.BoardGameGeekInfo.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
                                             </a>
                                         }
@@ -138,7 +138,7 @@ else
                                 </td>
                                 <td class="name-col" data-name="@game.Name">
                                     <b>
-                                        @Html.ActionLink(game.Name, "Details", "GameDefinition", new { id = game.Id }, new { @class = "name" })
+                                        @Html.ActionLink(game.Name, "Details", "GameDefinition", new { id = game.Id }, new { @class = "name", title = "View Game Definition details" })
                                     </b>
                                 </td>
 
@@ -188,15 +188,15 @@ else
                                         @if (!string.IsNullOrEmpty(gameResultViewModel.ThumbnailImageUrl))
                                         {
                                             <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details, MVC.GameDefinition.Name, new {id = gameResultViewModel.GameDefinitionId})">
-                                                <img class="bgg-thumbnail" src="@gameResultViewModel.ThumbnailImageUrl" alt="@gameResultViewModel.GameDefinitionName" title="@gameResultViewModel.GameDefinitionName" />
+                                                <img class="bgg-thumbnail" src="@gameResultViewModel.ThumbnailImageUrl" alt="@gameResultViewModel.GameDefinitionName" title="View details for @gameResultViewModel.GameDefinitionName" />
                                             </a>
                                         }
                                     </td>
                                     <td class="name-col" data-name="@gameResultViewModel.GameDefinitionName">
-                                        @Html.ActionLink(gameResultViewModel.GameDefinitionName, "Details", "GameDefinition", new { id = gameResultViewModel.GameDefinitionId }, new { })
+                                        @Html.ActionLink(gameResultViewModel.GameDefinitionName, "Details", "GameDefinition", new { id = gameResultViewModel.GameDefinitionId }, new { title = "View Game Definition details" })
                                     </td>
                                     <td class="date-col" data-date="@gameResultViewModel.DatePlayed.ToFileTimeUtc()">
-                                        @Html.ActionLink(gameResultViewModel.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new { id = gameResultViewModel.PlayedGameId }, new { })
+                                        @Html.ActionLink(gameResultViewModel.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new { id = gameResultViewModel.PlayedGameId }, new { title = "View Played Game details" })
                                     </td>
 
                                 </tr>

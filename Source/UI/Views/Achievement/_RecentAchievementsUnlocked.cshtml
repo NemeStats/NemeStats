@@ -24,7 +24,7 @@
             <tr data-position="@position">
                 @{ position++; }
                 <td>
-                    <a href="@Url.Action(MVC.Achievement.Details(playerAchievement.AchievementId, null))">
+                    <a href="@Url.Action(MVC.Achievement.Details(playerAchievement.AchievementId, null))" title="View Achievement details">
                         <span class="achievement medium @playerAchievement.AchievementLevel.ToString().ToLower()">
                             <span class="circle">
                                 <span class="content">
@@ -36,16 +36,16 @@
                     </a>
                 </td>
                 <td>
-                    @Html.ActionLink(playerAchievement.PlayerName, "Details", "Player", new { id = playerAchievement.PlayerId }, new { })
+                    @Html.ActionLink(playerAchievement.PlayerName, "Details", "Player", new { id = playerAchievement.PlayerId }, new { title = "View Player details" })
                 </td>
                 @if(showGamingGroup)
                 {
                     <td>
-                        @Html.ActionLink(playerAchievement.GamingGroupName, "Details", "GamingGroup", new { id = playerAchievement.GamingGroupId }, new { })
+                        @Html.ActionLink(playerAchievement.GamingGroupName, "Details", "GamingGroup", new { id = playerAchievement.GamingGroupId }, new { title = "View Gaming Group details" })
                     </td>
                 }
                 <td>
-                    <a href="@Url.Action(MVC.Achievement.PlayerAchievement(playerAchievement.AchievementId, playerAchievement.PlayerId))">@playerAchievement.AchievementLastUpdateDate.ToShortDateString()</a>
+                    <a href="@Url.Action(MVC.Achievement.PlayerAchievement(playerAchievement.AchievementId, playerAchievement.PlayerId))" title="View this Player's Achievement">@playerAchievement.AchievementLastUpdateDate.ToShortDateString()</a>
                 </td>
             </tr>
             }
