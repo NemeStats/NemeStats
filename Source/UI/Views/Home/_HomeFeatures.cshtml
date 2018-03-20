@@ -14,7 +14,7 @@
                     <div class="col-sm-6">
                         <ul>
                             <li>Create <b>multiple Gaming Groups</b></li>
-                            <li>Earn <b><a href="@Url.Action(MVC.Home.AboutBadgesAndAchievements())">Achievements and Badges</a></b> as well as <a href="@Url.Action(MVC.Home.AboutNemePoints())">NemePoints</a></li>
+                            <li>Earn <b><a href="@Url.Action(MVC.Home.AboutBadgesAndAchievements())">Achievements and Badges</a></b> as well as <a href="@Url.Action(MVC.Home.AboutNemePoints())" title="View info on how NemePoints are calculated">NemePoints</a></li>
                             <li><b>Export</b> your data</li>
                         </ul>
                     </div>
@@ -32,21 +32,21 @@
                         <div class="col-sm-6">
                             <ul>
                                 <li>
-                                    <b><a href="https://www.boardgamegeek.com/" target="_blank;">BoardGameGeek</a></b> integration
+                                    <b><a href="https://www.boardgamegeek.com/" target="_blank;" title="Visit boardgamegeek.com">BoardGameGeek</a></b> integration
                                 </li>
                             </ul>
                             <div class="imgs">
-                                <a href="https://www.boardgamegeek.com/" target="_blank;"><img src="~/Content/Images/Home/boardgamegeek.png" /></a>
+                                <a href="https://www.boardgamegeek.com/" target="_blank;" title="Visit boardgamegeek.com"><img src="~/Content/Images/Home/boardgamegeek.png" alt="BoardGameGeek"/></a>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <ul>
                                 <li>
-                                    <b><a href="https://itunes.apple.com/us/app/board-game-stats/id892542000" target="_blank;">Board Game Stats</a></b> on iOS
+                                    <b><a href="https://itunes.apple.com/us/app/board-game-stats/id892542000" target="_blank;" title="View the Board Game Stats iOS app on the App Store">Board Game Stats</a></b> on iOS
                                 </li>
                             </ul>
                             <div class="imgs">
-                                <a href="https://itunes.apple.com/us/app/board-game-stats/id892542000" target="_blank;"><img src="~/Content/Images/Home/BGStats.png"/></a>
+                                <a href="https://itunes.apple.com/us/app/board-game-stats/id892542000" target="_blank;" title="View the Board Game Stats iOS app on the App Store"><img src="~/Content/Images/Home/BGStats.png" alt="Board Game Stats"/></a>
                             </div>
                         </div>
                     </div>
@@ -65,12 +65,12 @@
                             <ul>
                                 <li>Completely <b>free</b></li>
                                 <li><b>Without</b> advertisements</li>
-                                <li>Open to feedback on <b><a href="https://nemestats-slack-invitation.herokuapp.com/" target="_blank;">Slack</a></b> and <a href="http://nemestats.idea.informer.com/proj/?mod=one" target="blank">idea.informer</a></li>
+                                <li>Open to feedback on <b><a href="https://nemestats-slack-invitation.herokuapp.com/" target="_blank;" title="Join the NemeStats Workspace on Slack">Slack</a></b> and <a href="http://nemestats.idea.informer.com/proj/?mod=one" target="blank">idea.informer</a></li>
                             </ul>
                         </div>
                         <div class="col-sm-6">
                             <ul>
-                                <li><b>Open source</b> and on <b><a href="https://github.com/NemeStats/NemeStats" target="_blank;">GitHub</a></b></li>
+                                <li><b>Open source</b> and on <b><a href="https://github.com/NemeStats/NemeStats" target="_blank;" title="Visit the NemeStats GitHub project site on GitHub">GitHub</a></b></li>
                                 <li>Actively developed on</li>
                                 <li>Looking for contributors</li>
                             </ul>
@@ -96,11 +96,11 @@
             <div class="modal-body">
                 <p>
                     <b>NemeStats</b> (pronounced "Nem-eh-stats") is a <b>completely free, mobile-friendly</b> website for tracking the results of board games.
-                    Just <a href="@Url.Action(MVC.Account.Register())">register</a> and you'll automatically have a new Gaming Group created for you. Then set up the Players and Games you want to track, and you are all set to start logging plays!
+                    Just <a href="@Url.Action(MVC.Account.Register())" title="Register a new NemeStats account">register</a> and you'll automatically have a new Gaming Group created for you. Then set up the Players and Games you want to track, and you are all set to start logging plays!
                 </p>
                 <p>
                     NemeStats adds a meta layer of fun to your gaming. As you record your games you'll get interesting statistics like <b>number of games played, win/loss percentages, average number of Players per game, longest win streak</b>, etc. You can also earn <b>badges</b> for things like becoming a Champion of a game, becoming someone's Nemesis or Minion, etc. NemeStats also has a
-                    <a href="@Url.Action(MVC.Home.AboutNemePoints())">NemePoints scoring system</a> which awards Players points based on their rank in the game, the number of Players in the game, as well as the difficulty and duration of the game.
+                    <a href="@Url.Action(MVC.Home.AboutNemePoints())" title="Learn more about NemePoints">NemePoints scoring system</a> which awards Players points based on their rank in the game, the number of Players in the game, as well as the difficulty and duration of the game.
                 </p>
                 <p>
                     Other features include:
@@ -110,12 +110,12 @@
                     <li>Stats by Player, Game, date range, and within Gaming Groups</li>
                     <li>The ability to create multiple Gaming Groups (e.g. for home vs. work) and invite other Players to your Gaming Group</li>
                     <li>The capability to export all of your plays in case you want to do your own stats</li>
-                    <li>A full-featured <a href="http://docs.nemestatsapiversion2.apiary.io/" target="_blank;">REST API documented on Apiary.io</a> in case you are interested in pulling data from or pushing data to NemeStats yourself.</li>
+                    <li>A full-featured <a href="http://docs.nemestatsapiversion2.apiary.io/" target="_blank;" title="View REST API documentation on Apiary">REST API documented on Apiary.io</a> in case you are interested in pulling data from or pushing data to NemeStats yourself.</li>
                     <li>
-                        <a href="http://boardgamegeek.com/">BoardGameGeek</a> integration
+                        <a href="http://boardgamegeek.com/" title="Visit boardgamegeek.com">BoardGameGeek</a> integration
                     </li>
                     <li>
-                        <a href="https://www.bgstatsapp.com/">Board Game Stats</a> integration
+                        <a href="https://www.bgstatsapp.com/" title="Visit bgstatsapp.com">Board Game Stats</a> integration
                     </li>
                 </ul>
             </div>
@@ -133,8 +133,8 @@
                 <h3 class="modal-title">BoardGameGeek & Board Game Stats iOS App integration</h3>
             </div>
             <div class="modal-body">
-                <b>NemeStats</b> is fully integrated with <b><a href="https://www.boardgamegeek.com/" target="_blank;">BoardGameGeek</a></b> and the iOS App <b><a href="https://itunes.apple.com/us/app/board-game-stats/id892542000" target="_blank;">Board Game Stats</a></b>.
-                <h4><a href="https://www.boardgamegeek.com/" target="_blank;"><img src="~/Content/Images/Home/boardgamegeek.png" style="width: 65px;" /></a> BoardGameGeek Integration</h4>
+                <b>NemeStats</b> is fully integrated with <b><a href="https://www.boardgamegeek.com/" target="_blank;" title="Visit boardgamegeek.com">BoardGameGeek</a></b> and the iOS App <b><a href="https://itunes.apple.com/us/app/board-game-stats/id892542000" target="_blank;" title="View the Board Game Stats iOS app on the App Store">Board Game Stats</a></b>.
+                <h4><a href="https://www.boardgamegeek.com/" target="_blank;" title="Visit boardgamegeek.com"><img src="~/Content/Images/Home/boardgamegeek.png" style="width: 65px;" alt="BoardGameGeek"/></a> BoardGameGeek Integration</h4>
                 <p>
                     If you already have an account with BoardGameGeek you can <b>import your existing geek list</b> directly into the site to get started quickly. BoardGameGeek has also graciously allowed us to
                     <b>display images of board games</b>, search for board games to add to your gaming Group, and it also provides some <b>basic statistics</b> about games which we include in our points calculation.
@@ -150,7 +150,7 @@
                 <p>*Note: If you login to NemeStats using Google, you will need to create a password first so you have a way of authenticating in Board Game Stats. Just click your username in the header while logged
                     in to NemeStats and you can set a password from there. </p>
                 <p>
-                    <a href="https://itunes.apple.com/us/app/board-game-stats/id892542000" target="_blank;"><img src="~/Content/Images/Home/AppStore.png" /></a>
+                    <a href="https://itunes.apple.com/us/app/board-game-stats/id892542000" target="_blank;" title="View the Board Game Stats iOS app on the App Store"><img src="~/Content/Images/Home/AppStore.png" alt="iOS App Store"/></a>
                 </p>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Awesome!</button>
@@ -170,7 +170,7 @@
                 <p><b>NemeStats</b> will always be <b>Open Source, no cost, and completely ad-free!</b></p>
                 <p>We built NemeStats because we <span class="fa fa-heart"></span> board games and want to provide a fun experience for other gamers. Please share your feedback with us via <a href="http://nemestats.idea.informer.com/proj/?mod=one" target="blank">idea.informer</a>, email, or join our <b><a href="https://nemestats-slack-invitation.herokuapp.com/" target="_blank;"><span class="fa fa-slack"></span> Slack</a></b> channel to join in the discussion.</p>
 
-                <p>In addition to feedback, we are always looking for new contributors -- especially if you are a developer, UX designer, or have marketing skills. You can find our <b><a href="https://github.com/NemeStats/NemeStats" target="_blank;"><span class="fa fa-github"></span> GitHub</a></b> repository here.</p>
+                <p>In addition to feedback, we are always looking for new contributors -- especially if you are a developer, UX designer, or have marketing skills. You can find our <b><a href="https://github.com/NemeStats/NemeStats" target="_blank;" title="View the NemeStats GitHub project site"><span class="fa fa-github"></span> GitHub</a></b> repository here.</p>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Nice!</button>
                 </div>

@@ -52,7 +52,7 @@
         <div class="col-md-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    Trending Games (Last @HomeController.NUMBER_OF_DAYS_OF_TRENDING_GAMES Days) @Html.ActionLink(" - View More", MVC.GameDefinition.ShowTrendingGames())
+                    Trending Games (Last @HomeController.NUMBER_OF_DAYS_OF_TRENDING_GAMES Days) @Html.ActionLink(" - View More", MVC.GameDefinition.ShowTrendingGames(), new { title = "View more trending games"})
                     <div id="topGlobalGameDefinitionsVote" class="fl-right"></div>
                     <div class="fl-clear"></div>
                 </div>
@@ -65,7 +65,7 @@
         <div class="col-md-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    @HomeController.NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW Recent Games @Html.ActionLink(" - View More", MVC.PlayedGame.ShowRecentlyPlayedGames())
+                    @HomeController.NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW Recent Games @Html.ActionLink(" - View More", MVC.PlayedGame.ShowRecentlyPlayedGames(), new { title = "View more recently played games"})
                     <div id="recentGamesVote" class="fl-right"></div>
                     <div class="fl-clear"></div>
                 </div>
@@ -79,7 +79,7 @@
         <div class="col-md-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    Top @HomeController.NUMBER_OF_TOP_GAMES_TO_SHOW Games on NemeStats @Html.ActionLink(" - View More", MVC.GameDefinition.TopGames())
+                    Top @HomeController.NUMBER_OF_TOP_GAMES_TO_SHOW Games on NemeStats @Html.ActionLink(" - View More", MVC.GameDefinition.TopGames(), new { title = "View more of the top Games"})
                     <div id="topGamesVote" class="fl-right"></div>
                     <div class="fl-clear"></div>
                 </div>
@@ -91,7 +91,7 @@
         <div class="col-md-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    Top @HomeController.NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW Gaming Groups @Html.ActionLink(" - View More", MVC.GamingGroup.GetTopGamingGroups())
+                    Top @HomeController.NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW Gaming Groups @Html.ActionLink(" - View More", MVC.GamingGroup.GetTopGamingGroups(), new { title = "View more of the top Gaming Groups"})
                     <div id="gamingGroupsVote" class="fl-right"></div>
                     <div class="fl-clear"></div>
                 </div>
