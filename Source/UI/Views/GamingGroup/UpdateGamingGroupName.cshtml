@@ -1,8 +1,0 @@
-﻿@model UI.Models.GamingGroup.
-@{
-    ViewBag.Title = "Edit Gaming Group " + @Model.GamingGroupName;
-    Layout = MVC.Shared.Views._BaseLayout;
-}
-
-<h2 class="page-header">Edit</h2>
-@Html.TextBoxFor(model => model.GamingGroupName, new { @class = "form-control" })

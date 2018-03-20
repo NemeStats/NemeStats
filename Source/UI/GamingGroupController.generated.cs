@@ -318,7 +318,6 @@ namespace UI.Controllers
                 public readonly string Details = "Details";
                 public readonly string Edit = "Edit";
                 public readonly string TopGamingGroups = "TopGamingGroups";
-                public readonly string UpdateGamingGroupName = "UpdateGamingGroupName";
             }
             public readonly string _GamingGroupPublicDetailsPartial = "~/Views/GamingGroup/_GamingGroupPublicDetailsPartial.cshtml";
             public readonly string _GamingGroupRecentChanges = "~/Views/GamingGroup/_GamingGroupRecentChanges.cshtml";
@@ -327,7 +326,6 @@ namespace UI.Controllers
             public readonly string Details = "~/Views/GamingGroup/Details.cshtml";
             public readonly string Edit = "~/Views/GamingGroup/Edit.cshtml";
             public readonly string TopGamingGroups = "~/Views/GamingGroup/TopGamingGroups.cshtml";
-            public readonly string UpdateGamingGroupName = "~/Views/GamingGroup/UpdateGamingGroupName.cshtml";
         }
     }
 
