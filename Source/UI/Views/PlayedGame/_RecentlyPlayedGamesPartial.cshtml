@@ -33,7 +33,7 @@
                             </a>
                         }
                     </td>
-                    <td>@Html.ActionLink(publicGame.GameDefinitionName, "Details", "GameDefinition", new {id = publicGame.GameDefinitionId}, new { title = "View details of @publicGame.GameDefinitionName" })</td>
+                    <td>@Html.ActionLink(publicGame.GameDefinitionName, "Details", "GameDefinition", new {id = publicGame.GameDefinitionId}, new { title = $"View details of {publicGame.GameDefinitionName}" })</td>
                 }
 
                 @switch (publicGame.WinnerType)

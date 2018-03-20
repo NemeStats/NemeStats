@@ -8,7 +8,7 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <a href="@Url.Action(MVC.PlayedGame.ActionNames.Details,MVC.PlayedGame.Name,new {id = Model.LastGamingGroupPlayedGame.PlayedGameId})">Last group game played</a>
+                    <a href="@Url.Action(MVC.PlayedGame.ActionNames.Details,MVC.PlayedGame.Name,new {id = Model.LastGamingGroupPlayedGame.PlayedGameId})" title="View Played Game details">View last group game</a>
                 </div>
                 <div class="panel-body last-game-played">
                     <div class="col-sm-4">
@@ -60,7 +60,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading"><span class="fa-stack neme-points-ico" data-toggle="popover" data-placement="top" data-content="Total NemePoints earned by playing games" data-original-title="" title=""><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x letter"></i></span></div>
                         <div class="panel-body stat-value">
-                            @Html.ActionLink(Model.NemePointsSummary.TotalNemePoints.ToString(), "Details", "Player", new { id = Model.PlayerId }, new { title = "View Player details" })
+                            @Html.ActionLink(Model.NemePointsSummary.TotalNemePoints.ToString(), "Details", "Player", new { id = Model.PlayerId }, new { title = "View my Player details for more statistics" })
                         </div>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">Games Played</div>
                         <div class="panel-body stat-value">
-                            @Html.ActionLink(@Model.TotalGamesPlayed.ToString(), "Details", "Player", new { id = Model.PlayerId }, new { title = "View Player details" })
+                            @Html.ActionLink(@Model.TotalGamesPlayed.ToString(), "Details", "Player", new { id = Model.PlayerId }, new { title = "View my Player details for more statistics" })
                         </div>
                     </div>
                 </div>
@@ -76,7 +76,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">Games Won</div>
                         <div class="panel-body stat-value">
-                            @Html.ActionLink(@Model.TotalGamesWon.ToString(), "Details", "Player", new { id = Model.PlayerId }, new { title = "View Player details" })
+                            @Html.ActionLink(@Model.TotalGamesWon.ToString(), "Details", "Player", new { id = Model.PlayerId }, new { title = "View my Player details for more statistics" })
                         </div>
                     </div>
                 </div>
