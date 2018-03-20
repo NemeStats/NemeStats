@@ -251,18 +251,18 @@
                             <div class="action-buttons">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <a id="btn-gotogaminggroup" href="@Url.Action(MVC.GamingGroup.Index())" class="btn btn-primary"><span class="fa fa-arrow-left fa-lg"></span> View my Gaming Group</a>
+                                        <a id="btn-gotogaminggroup" href="@Url.Action(MVC.GamingGroup.Index())" class="btn btn-primary" title="View Gaming Group details"><span class="fa fa-arrow-left fa-lg"></span> View my Gaming Group</a>
                                     </div>
                                     <div class="col-md-6">
-                                        <button id="btn-gotorecentlycreatedplayedgame" class="btn btn-primary" v-on:click="gotoRecentlyPlayedGame"><span class="fa fa-share fa-lg"></span>View this played game</button>
+                                        <button id="btn-gotorecentlycreatedplayedgame" class="btn btn-primary" v-on:click="gotoRecentlyPlayedGame" title="View Played Game details"><span class="fa fa-share fa-lg"></span>View this Played Game</button>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <button id="btn-gotocreateother" class="btn btn-default" v-on:click="reload"><span class="fa fa-plus-circle fa-lg"></span> Record another played game</button>
+                                        <button id="btn-gotocreateother" class="btn btn-default" v-on:click="reload" title="Record a new Played Game"><span class="fa fa-plus-circle fa-lg"></span> Record another Played Game</button>
                                     </div>
                                     <div class="col-md-6">
-                                        <button id="btn-tweetrecentplayedgame" class="btn btn-twitter" v-on:click="postTweet"><span class="fa fa-twitter fa-lg"></span> Post on Twitter!</button>
+                                        <button id="btn-tweetrecentplayedgame" class="btn btn-twitter" v-on:click="postTweet" title="Post a link to this Played Game on Twitter"><span class="fa fa-twitter fa-lg"></span> Post on Twitter!</button>
                                     </div>
                                 </div>
                             </div>

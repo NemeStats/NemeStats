@@ -75,21 +75,21 @@
 
                         if (!string.IsNullOrEmpty(Model.ThumbnailImageUrl))
                         {
-                            <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details,MVC.GameDefinition.Name,new {id=Model.GameDefinitionId})">
-                                <img class="bgg-thumbnail" src="@Model.ThumbnailImageUrl" alt="@Model.GameDefinitionName" title="@Model.GameDefinitionName" />
+                            <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details,MVC.GameDefinition.Name,new {id=Model.GameDefinitionId})" title="View details for @Model.GameDefinitionName">
+                                <img class="bgg-thumbnail" src="@Model.ThumbnailImageUrl" alt="View details for @Model.GameDefinitionName" />
                             </a>
                         }
                         else
                         {
-                            <a href="@Model.BoardGameGeekUri.AbsoluteUri" target="_blank;">
-                                <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                            <a href="@Model.BoardGameGeekUri.AbsoluteUri" target="_blank;" title="View on BoardGameGeek.com">
+                                <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" />
                             </a>
                         }
                     }
                     else
                     {
 
-                        @Html.ActionLink(Model.GameDefinitionName, "Details", "GameDefinition", new { id = Model.GameDefinitionId }, new { })
+                        @Html.ActionLink(Model.GameDefinitionName, "Details", "GameDefinition", new { id = Model.GameDefinitionId }, new { title = "View Game Definition details" })
 
                     }
                 </div>
@@ -107,7 +107,7 @@
                     <b>Gaming Group</b>
                 </div>
                 <div class="col-sm-9">
-                    @Html.ActionLink(@Model.GamingGroupName, "Details", "GamingGroup", new { id = @Model.GamingGroupId }, new { })
+                    @Html.ActionLink(@Model.GamingGroupName, "Details", "GamingGroup", new { id = @Model.GamingGroupId }, new { title = "View Gaming Group details"})
                 </div>
             </div>
             @if (!string.IsNullOrEmpty(Model.Notes))
@@ -128,7 +128,7 @@
                 <br />
                 <div class="row">
                     <div class="col-sm-9 col-sm-offset-3">
-                        <a href="@Url.Action(MVC.PlayedGame.ActionNames.Delete,MVC.PlayedGame.Name, new {id = Model.PlayedGameId})" class="btn btn-sm btn-danger"><span class="fa fa-trash"></span> Delete</a>
+                        <a href="@Url.Action(MVC.PlayedGame.ActionNames.Delete,MVC.PlayedGame.Name, new {id = Model.PlayedGameId})" class="btn btn-sm btn-danger" title="Delete Played Game"><span class="fa fa-trash"></span> Delete</a>
                     </div>
                 </div>}
         </div>
@@ -150,7 +150,7 @@
                 @if (Model.UserCanEdit)
                 {
                     <div class="col-md-6">
-                        <a href="@Url.Action(MVC.PlayedGame.ActionNames.Edit,MVC.PlayedGame.Name,new {id=Model.PlayedGameId})" class="btn btn-sm btn-primary"><span class="fa fa-pencil"></span> Edit</a>
+                        <a href="@Url.Action(MVC.PlayedGame.ActionNames.Edit,MVC.PlayedGame.Name,new {id=Model.PlayedGameId})" class="btn btn-sm btn-primary" title="Edit Played Game"><span class="fa fa-pencil"></span> Edit</a>
                     </div>
                 }
             </div>

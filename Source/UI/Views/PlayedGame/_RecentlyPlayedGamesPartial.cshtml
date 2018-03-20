@@ -28,12 +28,12 @@
                     <td class="bgg-link-col">
                         @if (!string.IsNullOrEmpty(publicGame.ThumbnailImageUrl))
                         {
-                            <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details, MVC.GameDefinition.Name, new {id = publicGame.GameDefinitionId})">
-                                <img class="bgg-thumbnail" src="@publicGame.ThumbnailImageUrl" alt="@publicGame.GameDefinitionName" title="@publicGame.GameDefinitionName"/>
+                            <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details, MVC.GameDefinition.Name, new {id = publicGame.GameDefinitionId})" title="View details of @publicGame.GameDefinitionName">
+                                <img class="bgg-thumbnail" src="@publicGame.ThumbnailImageUrl" alt="@publicGame.GameDefinitionName" />
                             </a>
                         }
                     </td>
-                    <td>@Html.ActionLink(publicGame.GameDefinitionName, "Details", "GameDefinition", new {id = publicGame.GameDefinitionId}, new {})</td>
+                    <td>@Html.ActionLink(publicGame.GameDefinitionName, "Details", "GameDefinition", new {id = publicGame.GameDefinitionId}, new { title = "View details of @publicGame.GameDefinitionName" })</td>
                 }
 
                 @switch (publicGame.WinnerType)
@@ -45,11 +45,11 @@
                         <td class="gameResult-teamLoss">EVERYONE LOST</td>
                         break;
                     default:
-                        <td>@Html.ActionLink(publicGame.WinningPlayer.Name, "Details", "Player", new {id = publicGame.WinningPlayer.Id}, new {})</td>
+                        <td>@Html.ActionLink(publicGame.WinningPlayer.Name, "Details", "Player", new {id = publicGame.WinningPlayer.Id}, new { title = "View Player details"})</td>
                         break;
                 }
-                <td>@Html.ActionLink(publicGame.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new {id = publicGame.PlayedGameId}, new {})</td>
-                <td>@Html.ActionLink(publicGame.GamingGroupName, "Details", "GamingGroup", new {id = publicGame.GamingGroupId}, new {})</td>
+                <td>@Html.ActionLink(publicGame.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new {id = publicGame.PlayedGameId}, new { title = "View Played Game details"})</td>
+                <td>@Html.ActionLink(publicGame.GamingGroupName, "Details", "GamingGroup", new {id = publicGame.GamingGroupId}, new { title = "View Gaming Group details"})</td>
             </tr>
             }
         </table>

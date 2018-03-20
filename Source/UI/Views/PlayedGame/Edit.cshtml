@@ -26,7 +26,7 @@
 </div>
 
 <div id="createdPlayedGameBack">
-	@Html.ActionLink("Back To List", "Index", "GamingGroup", null, null, UI.Controllers.GamingGroupController.SECTION_ANCHOR_RECENT_GAMES, null, null)
+	@Html.ActionLink("Back To List", "Index", "GamingGroup", null, null, UI.Controllers.GamingGroupController.SECTION_ANCHOR_RECENT_GAMES, null, new { title = "Return to Gaming Group details"})
 </div>
 @section Scripts{
     @Scripts.Render("~/bundles/moment")

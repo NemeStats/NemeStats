@@ -16,7 +16,7 @@
             <div class="well">
                 <div class="row">
                     <div class="col-md-6">
-                        <a href="@Url.Action(MVC.PlayedGame.ActionNames.Create, MVC.PlayedGame.Name, new {})" class="btn btn-primary" id="gtm-recordplayedgamebutton-fromplayedgames">
+                        <a href="@Url.Action(MVC.PlayedGame.ActionNames.Create, MVC.PlayedGame.Name, new {})" class="btn btn-primary" id="gtm-recordplayedgamebutton-fromplayedgames" title="Record a new Played Game">
                             <span class="fa fa-plus-circle"></span>&nbsp;Record Played Game
                         </a>
                     </div>
@@ -31,7 +31,8 @@
                                        data-content="Export all of your played games to Microsoft Excel (.xlsx)">
                                         <i class="fa fa-download"></i>&nbsp;Export to excel
                                     </a>
-                                    <a href="@Url.Action(MVC.PlayedGame.Search())" id="playedGamesExcelDownload" class="btn btn-default">
+                                    <a href="@Url.Action(MVC.PlayedGame.Search())" id="playedGamesExcelDownload" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="left"
+                                       data-content="Perform an advanced search over Played Games in this Gaming Group">
                                         <i class="fa fa-search"></i>&nbsp;Advanced search
                                     </a>
                                 </div>
@@ -39,8 +40,6 @@
                         }
 
                     </div>
-
-
                 </div>
             </div>
         }
@@ -87,7 +86,7 @@
                             </td>
                             <td class="name-col">
                                 <b>
-                                    @Html.ActionLink(playedGameDetailsViewModel.GameDefinitionName, MVC.GameDefinition.ActionNames.Details, MVC.GameDefinition.Name, new { id = playedGameDetailsViewModel.GameDefinitionId }, new { })
+                                    @Html.ActionLink(playedGameDetailsViewModel.GameDefinitionName, MVC.GameDefinition.ActionNames.Details, MVC.GameDefinition.Name, new { id = playedGameDetailsViewModel.GameDefinitionId }, new { title = "View Game Definition details" })
                                 </b>
                             </td>
                             <td>
@@ -100,15 +99,15 @@
                                 }
                             </td>
                             <td>
-                                <a href="@Url.Action("Details", "PlayedGame", new {id = playedGameDetailsViewModel.PlayedGameId})" title="Details">
+                                <a href="@Url.Action("Details", "PlayedGame", new {id = playedGameDetailsViewModel.PlayedGameId})" title="View Played Game details">
                                     <i class="fa fa-book fa-2x"></i>
                                 </a>
                                 @if (playedGameDetailsViewModel.UserCanEdit)
                                 {
-                                    <a href="@Url.Action("Edit", "PlayedGame", new {id = playedGameDetailsViewModel.PlayedGameId})" title="Edit">
+                                    <a href="@Url.Action("Edit", "PlayedGame", new {id = playedGameDetailsViewModel.PlayedGameId})" title="Edit Played Game">
                                         <i class="fa fa-pencil fa-2x"></i>
                                     </a>
-                                    <a href="@Url.Action("Delete", "PlayedGame", new {id = playedGameDetailsViewModel.PlayedGameId})" title="Delete">
+                                    <a href="@Url.Action("Delete", "PlayedGame", new {id = playedGameDetailsViewModel.PlayedGameId})" title="Delete Played Game">
                                         <i class="fa fa-trash-o fa-2x"></i>
                                     </a>
                                 }

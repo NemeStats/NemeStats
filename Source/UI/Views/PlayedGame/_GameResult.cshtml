@@ -14,7 +14,7 @@
             <b>
                 @Rank()
 
-                @Html.ActionLink(Model.PlayerName, "Details", "Player", new { id = Model.PlayerId }, new { })
+                @Html.ActionLink(Model.PlayerName, "Details", "Player", new { id = Model.PlayerId }, new { title = "View Player details" })
                 
                 @if (Model.PointsScored.HasValue && Model.ShowPointsScored)
                 {
