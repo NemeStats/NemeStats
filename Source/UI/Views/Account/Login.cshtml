@@ -32,9 +32,9 @@
 </div>
 <div class="row">
     <div class="col-md-8">
-        <em>@Html.ActionLink("Register", "Register", new RouteValueDictionary(), new { title = "Create a new NemeStats account" }) if you don't have a local account.</em>
+        <em>@Html.ActionLink("Register", "Register", new { }, new { title = "Create a new NemeStats account" }) if you don't have a local account.</em>
         <p>
-            @Html.ActionLink("Forget password?", "ForgotPassword", new RouteValueDictionary(), new { title = "Reset your password by entering your username" })
+            @Html.ActionLink("Forget password?", "ForgotPassword", new { }, new { title = "Reset your password by entering your username" })
         </p>
     </div>
 </div>
