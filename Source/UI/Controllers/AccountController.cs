@@ -302,7 +302,6 @@ namespace UI.Controllers
         [ValidateAntiForgeryToken]
         public virtual async Task<ActionResult> ChangeEmailAddress(ChangeEmailViewModel model)
         {
-            var parentViewModel = GetBaseManageAccountViewModel();
             if (!ModelState.IsValid)
             {
                 return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
