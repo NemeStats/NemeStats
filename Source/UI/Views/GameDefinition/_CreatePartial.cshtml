@@ -36,7 +36,7 @@
 
                 <div class="pulleable">
                     <div class="pulleable">
-                        <button class="btn btn-default" data-toggle="collapse" href="#setBGGUserName">Configure BGG user to import your games<img src="~/Content/Images/bgg_small.png"/></button>
+                        <button class="btn btn-default" data-toggle="collapse" href="#setBGGUserName">Configure BGG user to import your games<img src="~/Content/Images/bgg_small.png" alt="Set your BoardGameGeek username"/></button>
                     </div>
                     <div class="collapse pulleable voffset4" id="setBGGUserName">@Html.Partial(MVC.Account.Views.BoardGameGeekIntegration, new BoardGameGeekIntegrationModel())</div>
                 </div>
@@ -44,7 +44,9 @@
             else
             {
                 <form v-on:submit="importbgggames" method="POST" action="@Url.Action(MVC.GameDefinition.ImportFromBGG())">
-                    <button class="btn btn-default btn-sm pulleable" id="gtm-import-games-from-bgg" data-user="@Model.BGGUserName"><span class="fa fa-download"></span> Import from BGG <img src="~/Content/Images/bgg_small.png" /></button>
+                    <button class="btn btn-default btn-sm pulleable" id="gtm-import-games-from-bgg" data-user="@Model.BGGUserName" title="Import games from your BoardGameGeek account">
+                        <span class="fa fa-download"></span> Import from BGG <img src="~/Content/Images/bgg_small.png" alt="Import games from your BoardGameGeek account"/>
+                    </button>
                 </form>
             }
 
