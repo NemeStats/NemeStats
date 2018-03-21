@@ -181,7 +181,7 @@ namespace UI.Controllers
         public virtual ActionResult ImportFromBGG(ApplicationUser currentUser)
         {
             var gamesImported = _boardGameGeekGamesImporter.ImportBoardGameGeekGames(currentUser);
-
+            //TODO if the import process errors out this currently returns null and provides an incorrect message
             if (gamesImported == null)
             {
                 SetToastMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, "It appears as though you don't have any games in your BoardGameGeek collection :_(", "info");
