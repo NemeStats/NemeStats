@@ -1,5 +1,4 @@
 ﻿using BusinessLogic.Logic.Players;
-using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using System.Linq;
 using System.Net;
@@ -13,13 +12,13 @@ namespace UI.Areas.Api.Controllers
 {
     public class PlayersController : ApiControllerBase
     {
-        private readonly IPlayerSaver playerSaver;
-        private readonly IPlayerRetriever playerRetriever;
+        private readonly IPlayerSaver _playerSaver;
+        private readonly IPlayerRetriever _playerRetriever;
 
         public PlayersController(IPlayerSaver playerSaver, IPlayerRetriever playerRetriever)
         {
-            this.playerSaver = playerSaver;
-            this.playerRetriever = playerRetriever;
+            _playerSaver = playerSaver;
+            _playerRetriever = playerRetriever;
         }
 
         [ApiModelValidation]
@@ -36,7 +35,7 @@ namespace UI.Areas.Api.Controllers
         [HttpGet]
         public virtual HttpResponseMessage GetPlayers([FromUri] int gamingGroupId)
         {
-            var results = playerRetriever.GetAllPlayers(gamingGroupId);
+            var results = _playerRetriever.GetAllPlayers(gamingGroupId);
 
             var playerSearchResultsMessage = new PlayersSearchResultsMessage
             {
@@ -74,7 +73,7 @@ namespace UI.Areas.Api.Controllers
                 GamingGroupId = newPlayerMessage.GamingGroupId
             };
 
-            var actualNewlyCreatedPlayer = playerSaver.CreatePlayer(requestedPlayer, CurrentUser);
+            var actualNewlyCreatedPlayer = _playerSaver.CreatePlayer(requestedPlayer, CurrentUser);
 
             var newlyCreatedPlayerMessage = new NewlyCreatedPlayerMessage
             {
@@ -113,7 +112,7 @@ namespace UI.Areas.Api.Controllers
                 Name = updatePlayerMessage.PlayerName
             };
 
-            playerSaver.UpdatePlayer(requestedPlayer, CurrentUser);
+            _playerSaver.UpdatePlayer(requestedPlayer, CurrentUser);
 
             return Request.CreateResponse(HttpStatusCode.NoContent);
         }
