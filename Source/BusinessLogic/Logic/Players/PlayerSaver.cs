@@ -73,9 +73,9 @@ namespace BusinessLogic.Logic.Players
 
         private void ThrowPlayerAlreadyExistsExceptionIfPlayerExistsWithThisName(string playerName, int gamingGroupId)
         {
-            var existingPlayerWithThisName = _dataContext.GetQueryable<Player>().FirstOrDefault(
-                                                                                                       p => p.GamingGroupId == gamingGroupId
-                                                                                                            && p.Name == playerName);
+            var existingPlayerWithThisName = _dataContext.GetQueryable<Player>()
+                .FirstOrDefault(p => p.GamingGroupId == gamingGroupId
+                                     && p.Name == playerName);
 
             if (existingPlayerWithThisName != null)
             {
@@ -161,11 +161,13 @@ namespace BusinessLogic.Logic.Players
 
         private void ValidatePlayerWithThisNameDoesntAlreadyExist(Player player, int gamingGroupId)
         {
-            if (player.AlreadyInDatabase())
+            var playerWithNameAlreadyExists = _dataContext.GetQueryable<Player>()
+                .Any(x => x.Name == player.Name && x.Id != player.Id);
+
+            if (playerWithNameAlreadyExists)
             {
-                return;
+                ThrowPlayerAlreadyExistsExceptionIfPlayerExistsWithThisName(player.Name, gamingGroupId);
             }
-            ThrowPlayerAlreadyExistsExceptionIfPlayerExistsWithThisName(player.Name, gamingGroupId);
         }
 
         private void RecalculateNemeses(Player player, ApplicationUser currentUser)

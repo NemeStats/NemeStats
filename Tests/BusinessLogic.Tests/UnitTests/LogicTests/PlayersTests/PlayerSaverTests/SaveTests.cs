@@ -215,9 +215,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
 
         [Test]
         public void ItThrowsAPlayerAlreadyExistsExceptionIfAttemptingToSaveAPlayerWithANameThatAlreadyExists()
-        {    
+        {
+            var player = new Player
+            {
+                Name = _playerThatAlreadyExists.Name
+            };
             var exception = Assert.Throws<PlayerAlreadyExistsException>(
-                () => _autoMocker.ClassUnderTest.Save(_playerThatAlreadyExists, _currentUser));
+                () => _autoMocker.ClassUnderTest.Save(player, _currentUser));
 
             Assert.AreEqual(_idOfPlayerThatAlreadyExists, exception.ExistingPlayerId);
         }

@@ -268,10 +268,17 @@ namespace UI.Controllers
                     Name = player.Name,
                 };
 
-                playerSaver.UpdatePlayer(requestedPlayer, currentUser);
-
-                return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
-                                          + "#" + GamingGroupController.SECTION_ANCHOR_PLAYERS);
+                try
+                {
+                    playerSaver.UpdatePlayer(requestedPlayer, currentUser);
+                    return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
+                                              + "#" + GamingGroupController.SECTION_ANCHOR_PLAYERS);
+                }
+                catch (PlayerAlreadyExistsException)
+                {
+                    ModelState.AddModelError(string.Empty,
+                        $@"A Player with name '{requestedPlayer.Name}' already exists in this Gaming Group. Choose another.");
+                }
             }
 
             var playerEditViewModel = playerEditViewModelBuilder.Build(player);

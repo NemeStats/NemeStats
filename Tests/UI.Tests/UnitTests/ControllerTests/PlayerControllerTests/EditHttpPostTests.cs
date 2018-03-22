@@ -20,11 +20,13 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System.Linq;
 using System.Web.Mvc;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using UI.Controllers;
 using UI.Models.Players;
 using BusinessLogic.Logic.Players;
+using Shouldly;
 using UI.Transformations.PlayerTransformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
@@ -46,45 +48,60 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         [Test]
         public void ItRedirectsToTheGamingGroupIndexAndPlayersSectionAfterSaving()
         {
-            string baseUrl = "base url";
-            string expectedUrl = baseUrl + "#" + GamingGroupController.SECTION_ANCHOR_PLAYERS;
+            var baseUrl = "base url";
+            var expectedUrl = baseUrl + "#" + GamingGroupController.SECTION_ANCHOR_PLAYERS;
             autoMocker.ClassUnderTest.Url.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
                     .Return(baseUrl);
-            Player player = new Player()
+            var player = new Player()
             {
                 Name = "player name"
             };
 
-            RedirectResult redirectResult = autoMocker.ClassUnderTest.Edit(player, currentUser) as RedirectResult;
+            var redirectResult = autoMocker.ClassUnderTest.Edit(player, currentUser) as RedirectResult;
 
             Assert.AreEqual(expectedUrl, redirectResult.Url);
         }
 
         [Test]
-        public void ItRemainsOnTheEditViewIfValidationFails()
+        public void ItRemainsOnTheEditViewAndKeepsThePlayerIfValidationFails()
         {
             autoMocker.ClassUnderTest.ModelState.AddModelError("key", "message");
 
-            ViewResult result = autoMocker.ClassUnderTest.Edit(new Player(), currentUser) as ViewResult;
+            var result = autoMocker.ClassUnderTest.Edit(new Player(), currentUser) as ViewResult;
 
             Assert.AreEqual(MVC.Player.Views.Edit, result.ViewName);
+            Assert.AreEqual(expectedViewModel, result.Model);
         }
 
         [Test]
-        public void ItPutsThePlayerOnTheViewIfValidationFails()
+        public void ItStaysOnTheSameViewAndGivesAValidationErrorIfThePlayerNameIsAlreadyTaken()
         {
-            Player player = new Player();
-            autoMocker.ClassUnderTest.ModelState.AddModelError("key", "message");
+            //--arrange
+            var expectedException = new PlayerAlreadyExistsException("some name", 1);
+            autoMocker.Get<IPlayerSaver>().Expect(mock =>
+                    mock.UpdatePlayer(Arg<UpdatePlayerRequest>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+                .Throw(expectedException);
+            var player = new Player
+            {
+                Name = "bubba"
+            };
 
-            ViewResult result = autoMocker.ClassUnderTest.Edit(player, currentUser) as ViewResult;
+            //--act
+            var result = autoMocker.ClassUnderTest.Edit(player, currentUser) as ViewResult;
 
+            //--assert
+            Assert.AreEqual(MVC.Player.Views.Edit, result.ViewName);
             Assert.AreEqual(expectedViewModel, result.Model);
+            autoMocker.ClassUnderTest.ModelState.ContainsKey(string.Empty).ShouldBeTrue();
+            var modelErrorsForKey = autoMocker.ClassUnderTest.ModelState[string.Empty].Errors;
+            modelErrorsForKey.Count.ShouldBe(1);
+            modelErrorsForKey[0].ErrorMessage.ShouldBe($"A Player with name '{player.Name}' already exists in this Gaming Group. Choose another.");
         }
 
         [Test]
         public void ItSavesThePlayer()
         {
-            Player player = new Player()
+            var player = new Player()
             {
                 Name = "player name"
             };

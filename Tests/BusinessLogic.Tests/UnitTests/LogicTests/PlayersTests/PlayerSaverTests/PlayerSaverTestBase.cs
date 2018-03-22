@@ -28,26 +28,23 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
                 CurrentGamingGroupId = 12
             };
 
+            _idOfPlayerThatAlreadyExists = 9;
+
             _playerThatAlreadyExists = new Player
             {
-                Name = "the new player name"
+                Id = _idOfPlayerThatAlreadyExists,
+                Name = "name of existing player",
+                GamingGroupId = _currentUser.CurrentGamingGroupId.Value
             };
-            _idOfPlayerThatAlreadyExists = 9;
             _players = new List<Player>
             {
-                new Player
-                {
-                    Id = _idOfPlayerThatAlreadyExists,
-                    Name = _playerThatAlreadyExists.Name,
-                    GamingGroupId = _currentUser.CurrentGamingGroupId.Value
-                },
+                _playerThatAlreadyExists,
                 new Player
                 {
                     Id = 2
                 }
             };
             _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>())
-                .Repeat.Once()
                 .Return(_players.AsQueryable());
         }
     }
