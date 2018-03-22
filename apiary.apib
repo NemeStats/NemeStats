@@ -48,6 +48,7 @@ accepting decimal places in pointsScored
 * 2016-10-28 Fixed major design issue with previous change and eliminated "preserveExistingAuthenticationToken" entirely in favor of a new optional field "uniqueDeviceId" so you can create a separate auth token per device.
 * 2016-11-07 Added support for PUT /PlayedGames/ for editing existing Played Games.
 * 2017-09-19 Removed linkedPlayerId from documentation of the GET /Users endpoint since it was never implemented.
+* 2018-03-22 Added the active flag to the Gaming Groups returned in the GET /Users/{userId} endpoint so you can tell which ones are and are not active.
 
 ### General Information
 
@@ -183,7 +184,7 @@ sent to the email address of the new User.
                 }
 
 ## Get User Information [GET /Users/{userId}] 
-Retrieve basic information for a given User. This service is secured so that only an X-Auth-Token for the requested User
+Retrieve basic information for a given User, including their active and inactive Gaming Groups. This service is secured so that only an X-Auth-Token for the requested User
 will return a valid response.
 
 + Parameters
@@ -203,13 +204,15 @@ will return a valid response.
                         {
                             "gamingGroupId" : "209",
                             "gamingGroupName" : "sparklepants's Gaming Group",
-                            "gamingGroupPublicDescription" : "This group was created to record games we play as a family on the weekends."
+                            "gamingGroupPublicDescription" : "This group was created to record games we play as a family on the weekends.",
+                            "active" : true
                         },
                         {
                             "gamingGroupId" : "225",
                             "gamingGroupName" : "Weekend Warriors",
                             "gamingGroupPublicDescription" : "We are the Weekend Warriors and we like to play Magic the Gathering, Dominion, Star Realms, and other deck-building games. We play on the weekends at Dominic's Gaming House in downtown Mumbai. Email us at dgh@mailinator.com for details.",
-                            "gamingGroupPublicUrl" : "https://dghmumbai.com"
+                            "gamingGroupPublicUrl" : "https://dghmumbai.com",
+                            "active" : false
                         }
                         ],
                     "players" : [
