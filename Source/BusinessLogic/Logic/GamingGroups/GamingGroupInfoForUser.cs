@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using BusinessLogic.Models;
+﻿using BusinessLogic.Models;
 
 namespace BusinessLogic.Logic.GamingGroups
 {
