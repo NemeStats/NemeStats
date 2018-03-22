@@ -49,6 +49,10 @@ accepting decimal places in pointsScored
 * 2016-11-07 Added support for PUT /PlayedGames/ for editing existing Played Games.
 * 2017-09-19 Removed linkedPlayerId from documentation of the GET /Users endpoint since it was never implemented.
 * 2018-03-22 Added the active flag to the Gaming Groups returned in the GET /Users/{userId} endpoint so you can tell which ones are and are not active.
+* 2018-03-22 Added an optional "playerEmailAddress" field to the POST /Players endpoint so you can optionally invite another User to register and be associated with that player.
+Since this presents a 2nd opportunity for a 409 conflict ("duplicate Player Name" and "existing Player already has this email"), a subErrorCode is being introduced to the API so that clients
+can more easily distinguish between different kinds of error responses that share the same HTTP status code. This should be better than checking for specific
+content being returned in the message.
 
 ### General Information
 
@@ -66,7 +70,7 @@ Here is an example of a versioned endpoint:
   An example would be GET /api/v2/PlayedGames/&gamingGroupId=1 (returns all of the Played Game resources with
   Gaming Group Id '1')
 * Resource names are plural (e.g. GamingGroups instead of GamingGroup)
-* Properties in request and response objects are camel-cased (e.g. playerId instead of PlayerId or playerid)
+* Properties in request and response objects are camel-cased (e.g. playerId instead of PlayerId or playerid or player_id)
 * For GET requests, additional parameters or filters will be passed in via query string (e.g.`/api/v2/Playedgames/?gamingGroupId=123&startDate=2015-02-03`)
 * For services that require authentication (namely ones that allow data to be changed via POST/PUT/DELETE), a header for "X-Auth-Token" will need to be sent on the request to ensure that the consumer has the appropriate access.
 * All dates will be in the ISO-8601 format ([wikipedia entry](http://en.wikipedia.org/wiki/ISO_8601)). In most cases this will just be the date portion in UTC (yyyy-MM-dd) with no time information included. For example: 2015-03-20
@@ -77,6 +81,9 @@ Here is an example of a versioned endpoint:
   * For services that require authorization (i.e. those that require an X-Auth-Token header), 
   the service will return an HTTP 400 Bad Request response if the token is missing and an HTTP 401 Not Authorized response if the token is there, but is no longer valid.
   * HTTP 500 will be returned whenever there is an error on the server
+  * In some cases where the same endpoint can return multiple error conditions with the same HTTP status code, a best effort will be made to distinguish the errors using a "subErrorCode" that is unique to each endpoint.
+  For example, if there are two different scenarios where a 409 Conflict will be returned, there should be a "subErrorCode" = 1 in one case, and a "subErrorCode" = 2 in the other.
+  This should help the client distinguish between the two scenarios without having to rely on the (potentially fickle) error message.
   * Any other HTTP response codes will be explicitly documented in the respective service
 
 # Data Structures
@@ -796,6 +803,7 @@ This service will create a new Player in the specified Gaming Group (per the gam
 + Attributes
     + playerName (string, required) - The name of the Player in this Gaming Group.
     + gamingGroupId (number, optional) - The NemeStats unique identifier for the Gaming Group where the Player will be created. If no gamingGroupId is specified, the Player will be created under the default Gaming Group of the currently logged in User.
+    + playerEmailAddress (string, optional) - You may provide an email address for the new Player if you'd like to automatically send them an invitation to join your Gaming Group as a registered user.
 
 
 + Request Valid Request (application/json)
@@ -805,7 +813,9 @@ This service will create a new Player in the specified Gaming Group (per the gam
     + Body
     
                 {
-                  "playerName" : "Some Sweet Player Name That Is Unique In This Gaming Group"
+                  "playerName" : "Some Sweet Player Name That Is Unique In This Gaming Group",
+                  "gamingGroupId" : 51,
+                  "playerEmailAddress" : "friend.who.wants.to.record.games.too@mailinator.com"
                 }
 
 + Response 200 (application/json)
@@ -825,10 +835,30 @@ This service will create a new Player in the specified Gaming Group (per the gam
                 }               
 
                 
++ Response 409 (application/json) 
+
+                {
+                    "message" : "A Player with name 'Some Player Name That Already Exists In The Gaming Group' already exists in this Gaming Group. The existing playerId is '15490'.",
+                    "subErrorCode" : 1
+                }
+                
++ Request Invalid Request Where Email Address Is Already Associated With Another Player In That Gaming Group(application/json)
+    + Headers
+            
+            X-Auth-Token: some token
+    + Body
+    
+                {
+                  "playerName" : "Some Player Name",
+                  "gamingGroupId" : 51,
+                  "playerEmailAddress" : "friend.who.wants.to.record.games.too@mailinator.com"
+                }               
+                
 + Response 409 (application/json)
 
                 {
-                    "message" : "A Player with name 'Some Player Name That Already Exists In The Gaming Group' already exists in this Gaming Group. The existing playerId is '15490'."
+                    "message" : "A User with email address 'friend.who.wants.to.record.games.too@mailinator.com' is already associated with the Player 'P-Dawg'. The existing playerId is '15490'.",
+                    "subErrorCode" : 2
                 }
                 
 + Response 400 (application/json)
