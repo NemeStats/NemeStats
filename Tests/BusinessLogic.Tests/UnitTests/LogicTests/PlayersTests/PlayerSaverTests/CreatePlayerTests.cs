@@ -8,6 +8,7 @@ using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Shouldly;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
 {
@@ -55,6 +56,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
             var actualException = Assert.Throws<UserHasNoGamingGroupException>(() => _autoMocker.ClassUnderTest.CreatePlayer(_createPlayerRequest, _currentUser));
 
             Assert.AreEqual(expectedException.Message, actualException.Message);
+        }
+
+        [Test]
+        public void ItThrowsAPlayerWithThisEmailAlreadyExistsExceptionIfAPlayerAlreadyHasTheSpecifiedEmailInTheGamingGroup()
+        {
+            //--arrange
+            _createPlayerRequest.PlayerEmailAddress = _playerWithRegisteredUser.User.Email;
+            var expectedException = new PlayerWithThisEmailAlreadyExistsException(_createPlayerRequest.PlayerEmailAddress, _playerWithRegisteredUser.Name, _playerWithRegisteredUser.Id);
+
+            //--act
+            var actualException = Assert.Throws<PlayerWithThisEmailAlreadyExistsException>(() => _autoMocker.ClassUnderTest.CreatePlayer(_createPlayerRequest, _currentUser));
+
+            //--assert
+            actualException.Message.ShouldBe(expectedException.Message);
         }
 
         [Test]

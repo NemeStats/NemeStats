@@ -3,8 +3,10 @@ using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
+using NemeStats.TestingHelpers.NemeStatsTestingExtensions;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Shouldly;
 using UI.Areas.Api.Controllers;
 using UI.Areas.Api.Models;
 
@@ -36,16 +38,19 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayersControl
             var newPlayerMessage = new NewPlayerMessage
             {
                 PlayerName = "some player name",
-                GamingGroupId = _expectedGamingGroupId
+                GamingGroupId = _expectedGamingGroupId,
+                PlayerEmailAddress = "some email address"
             };
 
             _autoMocker.ClassUnderTest.SaveNewPlayer(newPlayerMessage, _expectedGamingGroupId);
 
-            _autoMocker.Get<IPlayerSaver>().AssertWasCalled(
-                mock => mock.CreatePlayer(Arg<CreatePlayerRequest>.Matches(player => player.Name == newPlayerMessage.PlayerName
-                && player.GamingGroupId == _expectedGamingGroupId),
-                    Arg<ApplicationUser>.Is.Anything,
-                    Arg<bool>.Is.Equal(false)));
+            var args = _autoMocker.Get<IPlayerSaver>().GetArgumentsForCallsMadeOn(
+                mock => mock.CreatePlayer(Arg<CreatePlayerRequest>.Is.Anything, Arg<ApplicationUser>.Is.Anything,
+                    Arg<bool>.Is.Anything));
+            var firstCall = args.AssertFirstCallIsType<CreatePlayerRequest>();
+            firstCall.Name.ShouldBe(newPlayerMessage.PlayerName);
+            firstCall.GamingGroupId.ShouldBe(newPlayerMessage.GamingGroupId);
+            firstCall.PlayerEmailAddress.ShouldBe(newPlayerMessage.PlayerEmailAddress);
         }
 
         [Test]

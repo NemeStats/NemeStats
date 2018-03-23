@@ -43,17 +43,15 @@ namespace BusinessLogic.Logic.Players
         
         public Player CreatePlayer(CreatePlayerRequest createPlayerRequest, ApplicationUser applicationUser, bool linkCurrentUserToThisPlayer = false)
         {
-            if (createPlayerRequest == null)
-            {
-                throw new ArgumentNullException(nameof(createPlayerRequest));
-            }
+            ValidateRequestIsNotNull(createPlayerRequest);
             ValidatePlayerNameIsNotNullOrWhiteSpace(createPlayerRequest.Name);
-            if (!applicationUser.CurrentGamingGroupId.HasValue)
-            {
-                throw new UserHasNoGamingGroupException(applicationUser.Id);
-            }
+            ValidateCurrentUserHasACurrentGamingGroup(applicationUser);
+
             int gamingGroupId = createPlayerRequest.GamingGroupId ?? applicationUser.CurrentGamingGroupId.Value;
-            ThrowPlayerAlreadyExistsExceptionIfPlayerExistsWithThisName(createPlayerRequest.Name, gamingGroupId);
+            ValidatePlayerDoesntExistWithThisName(createPlayerRequest.Name, gamingGroupId);
+
+            ValidateUserNotAlreadyRegisteredWithThisEmail(
+                gamingGroupId, createPlayerRequest.PlayerEmailAddress);
 
             var newPlayer = new Player
             {
@@ -71,7 +69,24 @@ namespace BusinessLogic.Logic.Players
             return newPlayer;
         }
 
-        private void ThrowPlayerAlreadyExistsExceptionIfPlayerExistsWithThisName(string playerName, int gamingGroupId)
+
+        private void ValidateRequestIsNotNull(CreatePlayerRequest createPlayerRequest)
+        {
+            if (createPlayerRequest == null)
+            {
+                throw new ArgumentNullException(nameof(createPlayerRequest));
+            }
+        }
+
+        private void ValidateCurrentUserHasACurrentGamingGroup(ApplicationUser applicationUser)
+        {
+            if (!applicationUser.CurrentGamingGroupId.HasValue)
+            {
+                throw new UserHasNoGamingGroupException(applicationUser.Id);
+            }
+        }
+
+        private void ValidatePlayerDoesntExistWithThisName(string playerName, int gamingGroupId)
         {
             var existingPlayerWithThisName = _dataContext.GetQueryable<Player>()
                 .FirstOrDefault(p => p.GamingGroupId == gamingGroupId
@@ -80,6 +95,23 @@ namespace BusinessLogic.Logic.Players
             if (existingPlayerWithThisName != null)
             {
                 throw new PlayerAlreadyExistsException(playerName, existingPlayerWithThisName.Id);
+            }
+        }
+
+        private void ValidateUserNotAlreadyRegisteredWithThisEmail(int gamingGroupId, string emailAddress)
+        {
+            if (string.IsNullOrWhiteSpace(emailAddress))
+            {
+                return;
+            }
+            var existingPlayer = _dataContext.GetQueryable<Player>()
+                .FirstOrDefault(p => p.GamingGroupId == gamingGroupId
+                                     && p.ApplicationUserId != null 
+                                     && p.User.Email == emailAddress);
+
+            if (existingPlayer != null)
+            {
+                throw new PlayerWithThisEmailAlreadyExistsException(emailAddress, existingPlayer.Name, existingPlayer.Id);
             }
         }
 
@@ -166,7 +198,7 @@ namespace BusinessLogic.Logic.Players
 
             if (playerWithNameAlreadyExists)
             {
-                ThrowPlayerAlreadyExistsExceptionIfPlayerExistsWithThisName(player.Name, gamingGroupId);
+                ValidatePlayerDoesntExistWithThisName(player.Name, gamingGroupId);
             }
         }
 

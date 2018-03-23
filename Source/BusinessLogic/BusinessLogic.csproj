@@ -228,6 +228,7 @@
     <Compile Include="Exceptions\InvalidSourceException.cs" />
     <Compile Include="Exceptions\PlayerAlreadyExistsException.cs" />
     <Compile Include="Exceptions\PlayerNotInGamingGroupException.cs" />
+    <Compile Include="Exceptions\PlayerWithThisEmailAlreadyExistsException.cs" />
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
     <Compile Include="Exceptions\UserHasNoGamingGroupException.cs" />
     <Compile Include="Export\ExcelGenerator.cs" />

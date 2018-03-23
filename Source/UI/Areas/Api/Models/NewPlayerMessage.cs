@@ -8,5 +8,6 @@ namespace UI.Areas.Api.Models
         public string PlayerName { get; set; }
 
         public int? GamingGroupId { get; set; }
+        public string PlayerEmailAddress { get; set; }
     }
 }

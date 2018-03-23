@@ -70,7 +70,8 @@ namespace UI.Areas.Api.Controllers
             var requestedPlayer = new CreatePlayerRequest
             {
                 Name = newPlayerMessage.PlayerName,
-                GamingGroupId = newPlayerMessage.GamingGroupId
+                GamingGroupId = newPlayerMessage.GamingGroupId,
+                PlayerEmailAddress = newPlayerMessage.PlayerEmailAddress
             };
 
             var actualNewlyCreatedPlayer = _playerSaver.CreatePlayer(requestedPlayer, CurrentUser);

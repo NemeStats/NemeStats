@@ -16,6 +16,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
         protected ApplicationUser _currentUser;
         protected List<Player> _players;
         protected Player _playerThatAlreadyExists;
+        protected Player _playerWithRegisteredUser;
+
         protected int _idOfPlayerThatAlreadyExists;
 
         [SetUp]
@@ -36,9 +38,21 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
                 Name = "name of existing player",
                 GamingGroupId = _currentUser.CurrentGamingGroupId.Value
             };
+            _playerWithRegisteredUser = new Player
+            {
+                Name = "player with existing registered user",
+                Id = 55,
+                GamingGroupId = _currentUser.CurrentGamingGroupId.Value,
+                ApplicationUserId = "some value",
+                User = new ApplicationUser
+                {
+                    Email = "some email address",
+                }
+            };
             _players = new List<Player>
             {
                 _playerThatAlreadyExists,
+                _playerWithRegisteredUser,
                 new Player
                 {
                     Id = 2
