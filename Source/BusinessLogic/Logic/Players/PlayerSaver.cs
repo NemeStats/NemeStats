@@ -33,12 +33,14 @@ namespace BusinessLogic.Logic.Players
         private readonly IDataContext _dataContext;
         private readonly INemeStatsEventTracker _eventTracker;
         private readonly INemesisRecalculator _nemesisRecalculator;
+        private readonly IPlayerInviter _playerInviter;
 
-        public PlayerSaver(IDataContext dataContext, INemeStatsEventTracker eventTracker, INemesisRecalculator nemesisRecalculator)
+        public PlayerSaver(IDataContext dataContext, INemeStatsEventTracker eventTracker, INemesisRecalculator nemesisRecalculator, IPlayerInviter playerInviter)
         {
             _dataContext = dataContext;
             _eventTracker = eventTracker;
             _nemesisRecalculator = nemesisRecalculator;
+            _playerInviter = playerInviter;
         }
         
         public Player CreatePlayer(CreatePlayerRequest createPlayerRequest, ApplicationUser applicationUser, bool linkCurrentUserToThisPlayer = false)
@@ -46,6 +48,8 @@ namespace BusinessLogic.Logic.Players
             ValidateRequestIsNotNull(createPlayerRequest);
             ValidatePlayerNameIsNotNullOrWhiteSpace(createPlayerRequest.Name);
             ValidateCurrentUserHasACurrentGamingGroup(applicationUser);
+            ValidateRequestedEmailIsntSetAtTheSameTimeAsAttemptingToLinktoCurrentPlayer(createPlayerRequest,
+                linkCurrentUserToThisPlayer);
 
             int gamingGroupId = createPlayerRequest.GamingGroupId ?? applicationUser.CurrentGamingGroupId.Value;
             ValidatePlayerDoesntExistWithThisName(createPlayerRequest.Name, gamingGroupId);
@@ -62,13 +66,14 @@ namespace BusinessLogic.Logic.Players
             };
 
             newPlayer = _dataContext.Save(newPlayer, applicationUser);
+
+
             _dataContext.CommitAllChanges();
 
             new Task(() => _eventTracker.TrackPlayerCreation(applicationUser)).Start();
 
             return newPlayer;
         }
-
 
         private void ValidateRequestIsNotNull(CreatePlayerRequest createPlayerRequest)
         {
@@ -83,6 +88,16 @@ namespace BusinessLogic.Logic.Players
             if (!applicationUser.CurrentGamingGroupId.HasValue)
             {
                 throw new UserHasNoGamingGroupException(applicationUser.Id);
+            }
+        }
+
+        private void ValidateRequestedEmailIsntSetAtTheSameTimeAsAttemptingToLinktoCurrentPlayer(CreatePlayerRequest createPlayerRequest, bool linkCurrentUserToThisPlayer)
+        {
+            if (!string.IsNullOrWhiteSpace(createPlayerRequest.PlayerEmailAddress)
+                && linkCurrentUserToThisPlayer)
+            {
+                throw new ArgumentException(
+                    "You cannot specify an email address for the new Player while simultaneously requesting to associate the Player with the current user.");
             }
         }
 

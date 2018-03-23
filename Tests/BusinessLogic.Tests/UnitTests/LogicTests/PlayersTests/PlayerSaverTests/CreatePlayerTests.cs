@@ -59,6 +59,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
         }
 
         [Test]
+        public void ItThrowsAnArgumentExceptionIfBothAnEmailAddressIsEnteredAndTheFlagIsSetToAssociateThePlayerWithTheCurrentUser()
+        {
+            //--arrange
+            _createPlayerRequest.PlayerEmailAddress = "some email";
+            var expectedException = new ArgumentException("You cannot specify an email address for the new Player while simultaneously requesting to associate the Player with the current user.");
+
+            //--act
+            var actualException = Assert.Throws<ArgumentException>(() => _autoMocker.ClassUnderTest.CreatePlayer(_createPlayerRequest, _currentUser, true));
+
+            //--assert
+            actualException.Message.ShouldBe(expectedException.Message);
+        }
+
+        [Test]
         public void ItThrowsAPlayerWithThisEmailAlreadyExistsExceptionIfAPlayerAlreadyHasTheSpecifiedEmailInTheGamingGroup()
         {
             //--arrange
