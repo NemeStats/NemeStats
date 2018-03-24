@@ -10,5 +10,10 @@ namespace BusinessLogic.Exceptions
         {
             StatusCode = statusCode;
         }
+
+        /// <summary>
+        /// Used to further distinguish between multiple possible instances of the same HTTP Status code
+        /// </summary>
+        public int? ErrorSubCode { get; set; }
     }
 }

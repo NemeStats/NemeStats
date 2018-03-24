@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
@@ -7,6 +8,7 @@ using NemeStats.TestingHelpers.NemeStatsTestingExtensions;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
+using StructureMap.AutoMocking;
 using UI.Areas.Api.Controllers;
 using UI.Areas.Api.Models;
 
@@ -82,6 +84,38 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayersControl
             var newlyCreatedPlayerMessage = content.Value as NewlyCreatedPlayerMessage;
             Assert.That(newlyCreatedPlayerMessage.PlayerId, Is.EqualTo(_expectedPlayer.Id));
             Assert.That(newlyCreatedPlayerMessage.GamingGroupId, Is.EqualTo(_expectedGamingGroupId));
+        }
+
+        [Test]
+        public void It_Throws_Returns_A_SubErrorCode_Of_1_If_The_Player_Already_Exists()
+        {
+            //--arrange
+            _autoMocker = new RhinoAutoMocker<PlayersController>();
+            _autoMocker.Get<IPlayerSaver>().Expect(mock =>
+                    mock.CreatePlayer(Arg<CreatePlayerRequest>.Is.Anything, Arg<ApplicationUser>.Is.Anything, Arg<bool>.Is.Anything))
+                .Throw(new PlayerAlreadyExistsException("some name", 1));
+
+            //--act
+            var exception = Assert.Throws<PlayerAlreadyExistsException>(() => _autoMocker.ClassUnderTest.SaveNewPlayer(new NewPlayerMessage(), _expectedGamingGroupId));
+
+            //--assert
+            exception.ErrorSubCode.ShouldBe(1);
+        }
+
+        [Test]
+        public void It_Throws_Returns_A_SubErrorCode_Of_2_If_Another_User_Already_Has_This_Email()
+        {
+            //--arrange
+            _autoMocker = new RhinoAutoMocker<PlayersController>();
+            _autoMocker.Get<IPlayerSaver>().Expect(mock =>
+                    mock.CreatePlayer(Arg<CreatePlayerRequest>.Is.Anything, Arg<ApplicationUser>.Is.Anything, Arg<bool>.Is.Anything))
+                .Throw(new PlayerWithThisEmailAlreadyExistsException("email", "some name", 1));
+
+            //--act
+            var exception = Assert.Throws<PlayerWithThisEmailAlreadyExistsException>(() => _autoMocker.ClassUnderTest.SaveNewPlayer(new NewPlayerMessage(), _expectedGamingGroupId));
+
+            //--assert
+            exception.ErrorSubCode.ShouldBe(2);
         }
     }
 }

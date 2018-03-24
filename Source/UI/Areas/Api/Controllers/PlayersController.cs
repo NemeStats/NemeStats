@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using BusinessLogic.Exceptions;
+using BusinessLogic.Models;
 using UI.Areas.Api.Models;
 using UI.Attributes;
 using VersionedRestApi;
@@ -74,12 +76,26 @@ namespace UI.Areas.Api.Controllers
                 PlayerEmailAddress = newPlayerMessage.PlayerEmailAddress
             };
 
-            var actualNewlyCreatedPlayer = _playerSaver.CreatePlayer(requestedPlayer, CurrentUser);
+            Player newPlayer;
+            try
+            {
+                newPlayer = _playerSaver.CreatePlayer(requestedPlayer, CurrentUser);
+            }
+            catch (PlayerAlreadyExistsException exception)
+            {
+                exception.ErrorSubCode = 1;
+                throw;
+            }
+            catch (PlayerWithThisEmailAlreadyExistsException exception)
+            {
+                exception.ErrorSubCode = 2;
+                throw;
+            }
 
             var newlyCreatedPlayerMessage = new NewlyCreatedPlayerMessage
             {
-                PlayerId = actualNewlyCreatedPlayer.Id,
-                GamingGroupId = actualNewlyCreatedPlayer.GamingGroupId
+                PlayerId = newPlayer.Id,
+                GamingGroupId = newPlayer.GamingGroupId
             };
 
             return Request.CreateResponse(HttpStatusCode.OK, newlyCreatedPlayerMessage);
