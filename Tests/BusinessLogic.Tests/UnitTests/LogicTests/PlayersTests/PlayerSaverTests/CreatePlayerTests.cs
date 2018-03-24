@@ -3,11 +3,14 @@ using System.Threading;
 using BusinessLogic.DataAccess;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Exceptions;
+using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
+using NemeStats.TestingHelpers.NemeStatsTestingExtensions;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Shouldly;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
 {
@@ -15,6 +18,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
     public class CreatePlayerTests : PlayerSaverTestBase
     {
         private CreatePlayerRequest _createPlayerRequest;
+        private Player _expectedSavedPlayer;
 
         [SetUp]
         public void SetUp()
@@ -23,6 +27,15 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
             {
                 Name = "player name"
             };
+
+            _expectedSavedPlayer = new Player
+            {
+                Name = _createPlayerRequest.Name,
+                Id = 89
+            };
+            _autoMocker.Get<IDataContext>()
+                .Expect(mock => mock.Save(Arg<Player>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+                .Return(_expectedSavedPlayer);
         }
 
         [Test]
@@ -58,6 +71,34 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
         }
 
         [Test]
+        public void ItThrowsAnArgumentExceptionIfBothAnEmailAddressIsEnteredAndTheFlagIsSetToAssociateThePlayerWithTheCurrentUser()
+        {
+            //--arrange
+            _createPlayerRequest.PlayerEmailAddress = "some email";
+            var expectedException = new ArgumentException("You cannot specify an email address for the new Player while simultaneously requesting to associate the Player with the current user.");
+
+            //--act
+            var actualException = Assert.Throws<ArgumentException>(() => _autoMocker.ClassUnderTest.CreatePlayer(_createPlayerRequest, _currentUser, true));
+
+            //--assert
+            actualException.Message.ShouldBe(expectedException.Message);
+        }
+
+        [Test]
+        public void ItThrowsAPlayerWithThisEmailAlreadyExistsExceptionIfAPlayerAlreadyHasTheSpecifiedEmailInTheGamingGroup()
+        {
+            //--arrange
+            _createPlayerRequest.PlayerEmailAddress = _playerWithRegisteredUser.User.Email;
+            var expectedException = new PlayerWithThisEmailAlreadyExistsException(_createPlayerRequest.PlayerEmailAddress, _playerWithRegisteredUser.Name, _playerWithRegisteredUser.Id);
+
+            //--act
+            var actualException = Assert.Throws<PlayerWithThisEmailAlreadyExistsException>(() => _autoMocker.ClassUnderTest.CreatePlayer(_createPlayerRequest, _currentUser));
+
+            //--assert
+            actualException.Message.ShouldBe(expectedException.Message);
+        }
+
+        [Test]
         public void ItSetsThePlayerName()
         {
             _autoMocker.ClassUnderTest.CreatePlayer(_createPlayerRequest, _currentUser);
@@ -87,6 +128,28 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
             _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
                 Arg<Player>.Matches(player => player.ApplicationUserId == _currentUser.Id),
                 Arg<ApplicationUser>.Is.Anything));
+        }
+
+        [Test]
+        public void It_InvitesAnotherUserIfTheEmailAddressWasSpecified()
+        {
+            //--arrange
+            _createPlayerRequest.PlayerEmailAddress = "some email";
+
+            //--act
+            _autoMocker.ClassUnderTest.CreatePlayer(_createPlayerRequest, _currentUser);
+
+            //--assert
+            var args = _autoMocker.Get<IPlayerInviter>().GetArgumentsForCallsMadeOn(mock =>
+                mock.InvitePlayer(Arg<PlayerInvitation>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
+            var actualPlayerInvitation = args.AssertFirstCallIsType<PlayerInvitation>();
+            actualPlayerInvitation.CustomEmailMessage.ShouldBeNull();
+            actualPlayerInvitation.EmailSubject.ShouldBe("NemeStats Invitation from " + _currentUser.UserName);
+            actualPlayerInvitation.InvitedPlayerEmail.ShouldBe(_createPlayerRequest.PlayerEmailAddress);
+            actualPlayerInvitation.InvitedPlayerId.ShouldBe(_expectedSavedPlayer.Id);
+
+            var actualApplicationUser = args.AssertFirstCallIsType<ApplicationUser>(1);
+            actualApplicationUser.ShouldBeSameAs(_currentUser);
         }
 
         [Test]

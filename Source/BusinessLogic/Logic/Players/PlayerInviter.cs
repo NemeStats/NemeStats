@@ -30,19 +30,16 @@ namespace BusinessLogic.Logic.Players
     public class PlayerInviter : IPlayerInviter
     {
         internal const string APP_SETTING_URL_ROOT = "urlRoot";
-        internal const string EMAIL_MESSAGE_INVITE_PLAYER = "Hi There! You've been invited by {0} to join the \"{1}\" gaming group on {2}. {5}"
-                                  + "{0} says: {3} {5} "
-                                  + "To join this Gaming Group click on this link: {2}/Account/ConsumeInvitation/{4}";
 
-        private readonly IDataContext dataContext;
-        private readonly IIdentityMessageService emailService;
-        private readonly IConfigurationManager configurationManager;
+        private readonly IDataContext _dataContext;
+        private readonly IIdentityMessageService _emailService;
+        private readonly IConfigurationManager _configurationManager;
 
         public PlayerInviter(IDataContext dataContext, IIdentityMessageService emailService, IConfigurationManager configurationManager)
         {
-            this.dataContext = dataContext;
-            this.emailService = emailService;
-            this.configurationManager = configurationManager;
+            _dataContext = dataContext;
+            _emailService = emailService;
+            _configurationManager = configurationManager;
         }
 
         public void InvitePlayer(PlayerInvitation playerInvitation, ApplicationUser currentUser)
@@ -51,9 +48,9 @@ namespace BusinessLogic.Logic.Players
             {
                 throw new UserHasNoGamingGroupException(currentUser.Id);
             }
-            GamingGroup gamingGroup = dataContext.FindById<GamingGroup>(currentUser.CurrentGamingGroupId);
+            GamingGroup gamingGroup = _dataContext.FindById<GamingGroup>(currentUser.CurrentGamingGroupId);
 
-            string existingUserId = (from ApplicationUser user in dataContext.GetQueryable<ApplicationUser>()
+            string existingUserId = (from ApplicationUser user in _dataContext.GetQueryable<ApplicationUser>()
                                      where user.Email == playerInvitation.InvitedPlayerEmail
                                      select user.Id).FirstOrDefault();       
             
@@ -67,19 +64,25 @@ namespace BusinessLogic.Logic.Players
                 RegisteredUserId = existingUserId
             };
 
-            GamingGroupInvitation savedGamingGroupInvitation = dataContext.Save<GamingGroupInvitation>(gamingGroupInvitation, currentUser);
+            GamingGroupInvitation savedGamingGroupInvitation = _dataContext.Save(gamingGroupInvitation, currentUser);
             //commit so we can get the Id back
-            dataContext.CommitAllChanges();
+            _dataContext.CommitAllChanges();
 
-            string urlRoot = configurationManager.AppSettings[APP_SETTING_URL_ROOT];
+            string urlRoot = _configurationManager.AppSettings[APP_SETTING_URL_ROOT];
 
-            string messageBody = string.Format(PlayerInviter.EMAIL_MESSAGE_INVITE_PLAYER,
-                                                currentUser.UserName,
-                                                gamingGroup.Name,
-                                                urlRoot,
-                                                playerInvitation.CustomEmailMessage,
-                                                savedGamingGroupInvitation.Id,
-                                                "<br/><br/>");
+            var customMessage = string.Empty;
+            if (!string.IsNullOrWhiteSpace(playerInvitation.CustomEmailMessage))
+            {
+                customMessage = $"{currentUser.UserName} says: {playerInvitation.CustomEmailMessage}";
+            }
+
+            var messageBody = $@"Well hello there! You've been invited by '{currentUser.UserName}' to join the NemeStats Gaming Group called '{gamingGroup.Name}'! 
+                To join this Gaming Group, click on the following link: {urlRoot}/Account/ConsumeInvitation/{savedGamingGroupInvitation.Id} <br/><br/>
+
+                {customMessage} <br/><br/>
+
+                If you believe you've received this in error just disregard the email.";
+
             var message = new IdentityMessage
             {
                 Body = messageBody,
@@ -87,7 +90,7 @@ namespace BusinessLogic.Logic.Players
                 Subject = playerInvitation.EmailSubject
             };
             
-            emailService.SendAsync(message);
+            _emailService.SendAsync(message);
         }
     }
 }

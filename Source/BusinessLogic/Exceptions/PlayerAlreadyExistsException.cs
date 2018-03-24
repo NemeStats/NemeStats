@@ -28,7 +28,6 @@ namespace BusinessLogic.Exceptions
             : base(string.Format(EXCEPTION_MESSAGE, playerName, existingPlayerId))
         {
             ExistingPlayerId = existingPlayerId;
-            
         }
     }
 }

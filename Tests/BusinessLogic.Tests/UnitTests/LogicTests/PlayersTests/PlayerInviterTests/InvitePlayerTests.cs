@@ -27,6 +27,7 @@ using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
+using NemeStats.TestingHelpers.NemeStatsTestingExtensions;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
@@ -79,7 +80,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerInviterTes
             _dataContextMock.Expect(mock => mock.FindById<GamingGroup>(_currentUser.CurrentGamingGroupId))
                            .Return(_gamingGroup);
 
-            List<ApplicationUser> applicationUsers = new List<ApplicationUser>
+            var applicationUsers = new List<ApplicationUser>
             {
                 new ApplicationUser
                 {
@@ -142,21 +143,33 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerInviterTes
         }
 
         [Test]
-        public void It_Emails_The_User()
+        public void It_Emails_The_User_Including_The_Users_Custom_Comment()
         {
-            string expectedBody = string.Format(PlayerInviter.EMAIL_MESSAGE_INVITE_PLAYER,
-                                                _currentUser.UserName,
-                                                _gamingGroup.Name,
-                                                _rootUrl,
-                                                _playerInvitation.CustomEmailMessage,
-                                                _gamingGroupInvitation.Id,
-                                                "<br/><br/>");
+            _playerInviter.InvitePlayer(_playerInvitation, _currentUser);
+
+            var args = _emailServiceMock.GetArgumentsForCallsMadeOn(mock => mock.SendAsync(Arg<IdentityMessage>.Is.Anything));
+            var actualIdentityMessage = args.AssertFirstCallIsType<IdentityMessage>();
+            actualIdentityMessage.Subject.ShouldBe(_playerInvitation.EmailSubject);
+            //--too painful to get it to line up character for character
+            actualIdentityMessage.Body.ShouldContain($"Well hello there! You've been invited by '{ _currentUser.UserName}' to join the NemeStats Gaming Group called '{ _gamingGroup.Name}'!");
+            actualIdentityMessage.Body.ShouldContain($"To join this Gaming Group, click on the following link: {_rootUrl}/Account/ConsumeInvitation/{_gamingGroupInvitation.Id} <br/><br/>");
+            actualIdentityMessage.Body.ShouldContain($"{ _currentUser.UserName} says: { _playerInvitation.CustomEmailMessage} <br/><br/>");
+            actualIdentityMessage.Body.ShouldContain("If you believe you've received this in error just disregard the email.");
+            actualIdentityMessage.Destination.ShouldBe(_playerInvitation.InvitedPlayerEmail);
+        }
+
+        [Test]
+        public void It_Emails_The_User_With_A_Different_Message_When_There_Isnt_A_Custom_Message()
+        {
+            _playerInvitation.CustomEmailMessage = null;
 
             _playerInviter.InvitePlayer(_playerInvitation, _currentUser);
 
-            _emailServiceMock.AssertWasCalled(mock => mock.SendAsync(Arg<IdentityMessage>.Matches(
-                message => message.Subject == _playerInvitation.EmailSubject
-                && message.Body == expectedBody)));
+            var args = _emailServiceMock.GetArgumentsForCallsMadeOn(mock => mock.SendAsync(Arg<IdentityMessage>.Is.Anything));
+            var actualIdentityMessage = args.AssertFirstCallIsType<IdentityMessage>();
+            actualIdentityMessage.Subject.ShouldBe(_playerInvitation.EmailSubject);
+            //--simple way to test, albeit not the most thorough
+            actualIdentityMessage.Body.ShouldNotContain("says: ");
         }
     }
 }

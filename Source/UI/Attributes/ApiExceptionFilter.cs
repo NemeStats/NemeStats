@@ -13,7 +13,7 @@ namespace UI.Attributes
             var exception = context.Exception as ApiFriendlyException;
             if (exception != null)
             {
-                context.Response = context.Request.CreateResponse(exception.StatusCode, new GenericErrorMessage(exception.Message));
+                context.Response = context.Request.CreateResponse(exception.StatusCode, new GenericErrorMessage(exception.Message, exception.ErrorSubCode));
             }else
             {
                 context.Response = context.Request.CreateResponse(HttpStatusCode.InternalServerError, 

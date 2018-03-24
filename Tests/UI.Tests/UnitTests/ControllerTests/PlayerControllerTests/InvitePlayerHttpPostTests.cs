@@ -16,14 +16,12 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using System.Linq;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using UI.Models.Players;
 using BusinessLogic.Logic.Players;
-using System.Web.Mvc;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {

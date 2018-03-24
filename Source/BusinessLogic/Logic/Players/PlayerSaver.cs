@@ -33,27 +33,29 @@ namespace BusinessLogic.Logic.Players
         private readonly IDataContext _dataContext;
         private readonly INemeStatsEventTracker _eventTracker;
         private readonly INemesisRecalculator _nemesisRecalculator;
+        private readonly IPlayerInviter _playerInviter;
 
-        public PlayerSaver(IDataContext dataContext, INemeStatsEventTracker eventTracker, INemesisRecalculator nemesisRecalculator)
+        public PlayerSaver(IDataContext dataContext, INemeStatsEventTracker eventTracker, INemesisRecalculator nemesisRecalculator, IPlayerInviter playerInviter)
         {
             _dataContext = dataContext;
             _eventTracker = eventTracker;
             _nemesisRecalculator = nemesisRecalculator;
+            _playerInviter = playerInviter;
         }
         
         public Player CreatePlayer(CreatePlayerRequest createPlayerRequest, ApplicationUser applicationUser, bool linkCurrentUserToThisPlayer = false)
         {
-            if (createPlayerRequest == null)
-            {
-                throw new ArgumentNullException(nameof(createPlayerRequest));
-            }
+            ValidateRequestIsNotNull(createPlayerRequest);
             ValidatePlayerNameIsNotNullOrWhiteSpace(createPlayerRequest.Name);
-            if (!applicationUser.CurrentGamingGroupId.HasValue)
-            {
-                throw new UserHasNoGamingGroupException(applicationUser.Id);
-            }
+            ValidateCurrentUserHasACurrentGamingGroup(applicationUser);
+            ValidateRequestedEmailIsntSetAtTheSameTimeAsAttemptingToLinktoCurrentPlayer(createPlayerRequest,
+                linkCurrentUserToThisPlayer);
+
             int gamingGroupId = createPlayerRequest.GamingGroupId ?? applicationUser.CurrentGamingGroupId.Value;
-            ThrowPlayerAlreadyExistsExceptionIfPlayerExistsWithThisName(createPlayerRequest.Name, gamingGroupId);
+            ValidatePlayerDoesntExistWithThisName(createPlayerRequest.Name, gamingGroupId);
+
+            ValidateUserNotAlreadyRegisteredWithThisEmail(
+                gamingGroupId, createPlayerRequest.PlayerEmailAddress);
 
             var newPlayer = new Player
             {
@@ -64,6 +66,18 @@ namespace BusinessLogic.Logic.Players
             };
 
             newPlayer = _dataContext.Save(newPlayer, applicationUser);
+
+            if (!string.IsNullOrWhiteSpace(createPlayerRequest.PlayerEmailAddress))
+            {
+                var playerInvitation = new PlayerInvitation
+                {
+                    EmailSubject = $"NemeStats Invitation from {applicationUser.UserName}",
+                    InvitedPlayerEmail = createPlayerRequest.PlayerEmailAddress,
+                    InvitedPlayerId = newPlayer.Id
+                };
+                _playerInviter.InvitePlayer(playerInvitation, applicationUser);
+            }
+
             _dataContext.CommitAllChanges();
 
             new Task(() => _eventTracker.TrackPlayerCreation(applicationUser)).Start();
@@ -71,7 +85,33 @@ namespace BusinessLogic.Logic.Players
             return newPlayer;
         }
 
-        private void ThrowPlayerAlreadyExistsExceptionIfPlayerExistsWithThisName(string playerName, int gamingGroupId)
+        private void ValidateRequestIsNotNull(CreatePlayerRequest createPlayerRequest)
+        {
+            if (createPlayerRequest == null)
+            {
+                throw new ArgumentNullException(nameof(createPlayerRequest));
+            }
+        }
+
+        private void ValidateCurrentUserHasACurrentGamingGroup(ApplicationUser applicationUser)
+        {
+            if (!applicationUser.CurrentGamingGroupId.HasValue)
+            {
+                throw new UserHasNoGamingGroupException(applicationUser.Id);
+            }
+        }
+
+        private void ValidateRequestedEmailIsntSetAtTheSameTimeAsAttemptingToLinktoCurrentPlayer(CreatePlayerRequest createPlayerRequest, bool linkCurrentUserToThisPlayer)
+        {
+            if (!string.IsNullOrWhiteSpace(createPlayerRequest.PlayerEmailAddress)
+                && linkCurrentUserToThisPlayer)
+            {
+                throw new ArgumentException(
+                    "You cannot specify an email address for the new Player while simultaneously requesting to associate the Player with the current user.");
+            }
+        }
+
+        private void ValidatePlayerDoesntExistWithThisName(string playerName, int gamingGroupId)
         {
             var existingPlayerWithThisName = _dataContext.GetQueryable<Player>()
                 .FirstOrDefault(p => p.GamingGroupId == gamingGroupId
@@ -80,6 +120,23 @@ namespace BusinessLogic.Logic.Players
             if (existingPlayerWithThisName != null)
             {
                 throw new PlayerAlreadyExistsException(playerName, existingPlayerWithThisName.Id);
+            }
+        }
+
+        private void ValidateUserNotAlreadyRegisteredWithThisEmail(int gamingGroupId, string emailAddress)
+        {
+            if (string.IsNullOrWhiteSpace(emailAddress))
+            {
+                return;
+            }
+            var existingPlayer = _dataContext.GetQueryable<Player>()
+                .FirstOrDefault(p => p.GamingGroupId == gamingGroupId
+                                     && p.ApplicationUserId != null 
+                                     && p.User.Email == emailAddress);
+
+            if (existingPlayer != null)
+            {
+                throw new PlayerWithThisEmailAlreadyExistsException(emailAddress, existingPlayer.Name, existingPlayer.Id);
             }
         }
 
@@ -166,7 +223,7 @@ namespace BusinessLogic.Logic.Players
 
             if (playerWithNameAlreadyExists)
             {
-                ThrowPlayerAlreadyExistsExceptionIfPlayerExistsWithThisName(player.Name, gamingGroupId);
+                ValidatePlayerDoesntExistWithThisName(player.Name, gamingGroupId);
             }
         }
 

@@ -9,24 +9,23 @@ using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using UI.Areas.Api.Models;
 using UI.Attributes;
-using UI.Transformations;
 using VersionedRestApi;
 
 namespace UI.Areas.Api.Controllers
 {
     public class UsersController : ApiControllerBase
     {
-        private readonly IUserRegisterer userRegisterer;
-        private readonly IAuthTokenGenerator authTokenGenerator;
-        private readonly IUserRetriever userRetriever;
-        private readonly ITransformer transformer;
+        private readonly IUserRegisterer _userRegisterer;
+        private readonly IAuthTokenGenerator _authTokenGenerator;
+        private readonly IUserRetriever _userRetriever;
+        private readonly ITransformer _transformer;
 
         public UsersController(IUserRegisterer userRegisterer, IAuthTokenGenerator authTokenGenerator, IUserRetriever userRetriever, ITransformer transformer)
         {
-            this.userRegisterer = userRegisterer;
-            this.authTokenGenerator = authTokenGenerator;
-            this.userRetriever = userRetriever;
-            this.transformer = transformer;
+            _userRegisterer = userRegisterer;
+            _authTokenGenerator = authTokenGenerator;
+            _userRetriever = userRetriever;
+            _transformer = transformer;
         }
 
         [ApiRoute("Users/")]
@@ -35,11 +34,11 @@ namespace UI.Areas.Api.Controllers
         {
             var newUser = Mapper.Map<NewUserMessage, NewUser>(newUserMessage);
 
-		    var registerNewUserResult = await this.userRegisterer.RegisterUser(newUser);
+		    var registerNewUserResult = await _userRegisterer.RegisterUser(newUser);
 
             if (registerNewUserResult.Result.Succeeded)
             {
-                var authToken = authTokenGenerator.GenerateAuthToken(registerNewUserResult.NewlyRegisteredUser.UserId, newUserMessage.UniqueDeviceId);
+                var authToken = _authTokenGenerator.GenerateAuthToken(registerNewUserResult.NewlyRegisteredUser.UserId, newUserMessage.UniqueDeviceId);
                 var newlyRegisteredUserMessage = Mapper.Map<NewlyRegisteredUser, NewlyRegisteredUserMessage>(registerNewUserResult.NewlyRegisteredUser);
                 newlyRegisteredUserMessage.AuthenticationToken = authToken.AuthenticationTokenString;
                 newlyRegisteredUserMessage.AuthenticationTokenExpirationDateTime =
@@ -55,8 +54,8 @@ namespace UI.Areas.Api.Controllers
         [ApiAuthentication]
         public virtual HttpResponseMessage GetUserInformation(string userId)
         {
-            var userInformation = userRetriever.RetrieveUserInformation(CurrentUser);
-            var userInformationMessage = this.transformer.Transform<UserInformationMessage>(userInformation);
+            var userInformation = _userRetriever.RetrieveUserInformation(CurrentUser);
+            var userInformationMessage = _transformer.Transform<UserInformationMessage>(userInformation);
             return Request.CreateResponse(HttpStatusCode.OK, userInformationMessage);
         }
     }

@@ -1,10 +1,11 @@
 ﻿using BusinessLogic.Logic.Players;
-using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using BusinessLogic.Exceptions;
+using BusinessLogic.Models;
 using UI.Areas.Api.Models;
 using UI.Attributes;
 using VersionedRestApi;
@@ -13,13 +14,13 @@ namespace UI.Areas.Api.Controllers
 {
     public class PlayersController : ApiControllerBase
     {
-        private readonly IPlayerSaver playerSaver;
-        private readonly IPlayerRetriever playerRetriever;
+        private readonly IPlayerSaver _playerSaver;
+        private readonly IPlayerRetriever _playerRetriever;
 
         public PlayersController(IPlayerSaver playerSaver, IPlayerRetriever playerRetriever)
         {
-            this.playerSaver = playerSaver;
-            this.playerRetriever = playerRetriever;
+            _playerSaver = playerSaver;
+            _playerRetriever = playerRetriever;
         }
 
         [ApiModelValidation]
@@ -36,7 +37,7 @@ namespace UI.Areas.Api.Controllers
         [HttpGet]
         public virtual HttpResponseMessage GetPlayers([FromUri] int gamingGroupId)
         {
-            var results = playerRetriever.GetAllPlayers(gamingGroupId);
+            var results = _playerRetriever.GetAllPlayers(gamingGroupId);
 
             var playerSearchResultsMessage = new PlayersSearchResultsMessage
             {
@@ -71,15 +72,30 @@ namespace UI.Areas.Api.Controllers
             var requestedPlayer = new CreatePlayerRequest
             {
                 Name = newPlayerMessage.PlayerName,
-                GamingGroupId = newPlayerMessage.GamingGroupId
+                GamingGroupId = newPlayerMessage.GamingGroupId,
+                PlayerEmailAddress = newPlayerMessage.PlayerEmailAddress
             };
 
-            var actualNewlyCreatedPlayer = playerSaver.CreatePlayer(requestedPlayer, CurrentUser);
+            Player newPlayer;
+            try
+            {
+                newPlayer = _playerSaver.CreatePlayer(requestedPlayer, CurrentUser);
+            }
+            catch (PlayerAlreadyExistsException exception)
+            {
+                exception.ErrorSubCode = 1;
+                throw;
+            }
+            catch (PlayerWithThisEmailAlreadyExistsException exception)
+            {
+                exception.ErrorSubCode = 2;
+                throw;
+            }
 
             var newlyCreatedPlayerMessage = new NewlyCreatedPlayerMessage
             {
-                PlayerId = actualNewlyCreatedPlayer.Id,
-                GamingGroupId = actualNewlyCreatedPlayer.GamingGroupId
+                PlayerId = newPlayer.Id,
+                GamingGroupId = newPlayer.GamingGroupId
             };
 
             return Request.CreateResponse(HttpStatusCode.OK, newlyCreatedPlayerMessage);
@@ -113,7 +129,7 @@ namespace UI.Areas.Api.Controllers
                 Name = updatePlayerMessage.PlayerName
             };
 
-            playerSaver.UpdatePlayer(requestedPlayer, CurrentUser);
+            _playerSaver.UpdatePlayer(requestedPlayer, CurrentUser);
 
             return Request.CreateResponse(HttpStatusCode.NoContent);
         }
