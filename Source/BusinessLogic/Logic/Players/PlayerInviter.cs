@@ -30,7 +30,7 @@ namespace BusinessLogic.Logic.Players
     public class PlayerInviter : IPlayerInviter
     {
         internal const string APP_SETTING_URL_ROOT = "urlRoot";
-        internal const string EMAIL_MESSAGE_INVITE_PLAYER = "Hi There! You've been invited by {0} to join the \"{1}\" gaming group on {2}. {5}"
+        internal const string EMAIL_MESSAGE_INVITE_PLAYER = "Hi There! You've been invited by {0} to join the \"{1}\" Gaming Group on {2}. {5}"
                                   + "{0} says: {3} {5} "
                                   + "To join this Gaming Group click on this link: {2}/Account/ConsumeInvitation/{4}";
 
@@ -67,7 +67,7 @@ namespace BusinessLogic.Logic.Players
                 RegisteredUserId = existingUserId
             };
 
-            GamingGroupInvitation savedGamingGroupInvitation = dataContext.Save<GamingGroupInvitation>(gamingGroupInvitation, currentUser);
+            GamingGroupInvitation savedGamingGroupInvitation = dataContext.Save(gamingGroupInvitation, currentUser);
             //commit so we can get the Id back
             dataContext.CommitAllChanges();
 
