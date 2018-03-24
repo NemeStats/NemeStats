@@ -30,9 +30,6 @@ namespace BusinessLogic.Logic.Players
     public class PlayerInviter : IPlayerInviter
     {
         internal const string APP_SETTING_URL_ROOT = "urlRoot";
-        internal const string EMAIL_MESSAGE_INVITE_PLAYER = "Hi There! You've been invited by {0} to join the \"{1}\" Gaming Group on {2}. {5}"
-                                  + "{0} says: {3} {5} "
-                                  + "To join this Gaming Group click on this link: {2}/Account/ConsumeInvitation/{4}";
 
         private readonly IDataContext dataContext;
         private readonly IIdentityMessageService emailService;
@@ -73,13 +70,19 @@ namespace BusinessLogic.Logic.Players
 
             string urlRoot = configurationManager.AppSettings[APP_SETTING_URL_ROOT];
 
-            string messageBody = string.Format(PlayerInviter.EMAIL_MESSAGE_INVITE_PLAYER,
-                                                currentUser.UserName,
-                                                gamingGroup.Name,
-                                                urlRoot,
-                                                playerInvitation.CustomEmailMessage,
-                                                savedGamingGroupInvitation.Id,
-                                                "<br/><br/>");
+            var customMessage = string.Empty;
+            if (!string.IsNullOrWhiteSpace(playerInvitation.CustomEmailMessage))
+            {
+                customMessage = $"{currentUser.UserName} says: {playerInvitation.CustomEmailMessage}";
+            }
+
+            var messageBody = $@"Well hello there! You've been invited by '{currentUser.UserName}' to join the NemeStats Gaming Group called '{gamingGroup.Name}'! 
+                To join this Gaming Group, click on the following link: {urlRoot}/Account/ConsumeInvitation/{savedGamingGroupInvitation.Id} <br/><br/>
+
+                {customMessage} <br/><br/>
+
+                If you believe you've received this in error just disregard the email.";
+
             var message = new IdentityMessage
             {
                 Body = messageBody,

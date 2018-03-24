@@ -3,9 +3,11 @@ using System.Threading;
 using BusinessLogic.DataAccess;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Exceptions;
+using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
+using NemeStats.TestingHelpers.NemeStatsTestingExtensions;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
@@ -16,6 +18,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
     public class CreatePlayerTests : PlayerSaverTestBase
     {
         private CreatePlayerRequest _createPlayerRequest;
+        private Player _expectedSavedPlayer;
 
         [SetUp]
         public void SetUp()
@@ -24,6 +27,15 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
             {
                 Name = "player name"
             };
+
+            _expectedSavedPlayer = new Player
+            {
+                Name = _createPlayerRequest.Name,
+                Id = 89
+            };
+            _autoMocker.Get<IDataContext>()
+                .Expect(mock => mock.Save(Arg<Player>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+                .Return(_expectedSavedPlayer);
         }
 
         [Test]
@@ -116,6 +128,28 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
             _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
                 Arg<Player>.Matches(player => player.ApplicationUserId == _currentUser.Id),
                 Arg<ApplicationUser>.Is.Anything));
+        }
+
+        [Test]
+        public void It_InvitesAnotherUserIfTheEmailAddressWasSpecified()
+        {
+            //--arrange
+            _createPlayerRequest.PlayerEmailAddress = "some email";
+
+            //--act
+            _autoMocker.ClassUnderTest.CreatePlayer(_createPlayerRequest, _currentUser);
+
+            //--assert
+            var args = _autoMocker.Get<IPlayerInviter>().GetArgumentsForCallsMadeOn(mock =>
+                mock.InvitePlayer(Arg<PlayerInvitation>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
+            var actualPlayerInvitation = args.AssertFirstCallIsType<PlayerInvitation>();
+            actualPlayerInvitation.CustomEmailMessage.ShouldBeNull();
+            actualPlayerInvitation.EmailSubject.ShouldBe("NemeStats Invitation from " + _currentUser.UserName);
+            actualPlayerInvitation.InvitedPlayerEmail.ShouldBe(_createPlayerRequest.PlayerEmailAddress);
+            actualPlayerInvitation.InvitedPlayerId.ShouldBe(_expectedSavedPlayer.Id);
+
+            var actualApplicationUser = args.AssertFirstCallIsType<ApplicationUser>(1);
+            actualApplicationUser.ShouldBeSameAs(_currentUser);
         }
 
         [Test]

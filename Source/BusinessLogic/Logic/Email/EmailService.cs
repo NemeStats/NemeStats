@@ -18,8 +18,6 @@
 using Microsoft.AspNet.Identity;
 using SendGrid;
 using System.Configuration;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using SendGrid.Helpers.Mail;
 
@@ -29,11 +27,6 @@ namespace BusinessLogic.Logic.Email
     {
         public Task SendAsync(IdentityMessage message)
         {
-            return configSendGridasync(message);
-        }
-
-        private Task configSendGridasync(IdentityMessage message)
-        {
             var myMessage = new SendGridMessage();
             myMessage.AddTo(message.Destination);
             myMessage.From = new EmailAddress("nemestats@gmail.com", "NemeStats");
@@ -41,16 +34,9 @@ namespace BusinessLogic.Logic.Email
             myMessage.HtmlContent = message.Body;
             myMessage.PlainTextContent = message.Body;
 
-            //TODO REMOVE THIS?
-            //var credentials = new NetworkCredential(
-            //           ConfigurationManager.AppSettings["emailServiceUserName"],
-            //           ConfigurationManager.AppSettings["emailServicePassword"]
-            //           );
-
             var apiKey = ConfigurationManager.AppSettings["sendgridApiKey"];
             var sendGridClient = new SendGridClient(apiKey);
 
-            // Send the email.
             return sendGridClient.SendEmailAsync(myMessage);
         }
     }

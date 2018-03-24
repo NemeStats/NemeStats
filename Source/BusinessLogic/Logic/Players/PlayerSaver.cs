@@ -67,6 +67,16 @@ namespace BusinessLogic.Logic.Players
 
             newPlayer = _dataContext.Save(newPlayer, applicationUser);
 
+            if (!string.IsNullOrWhiteSpace(createPlayerRequest.PlayerEmailAddress))
+            {
+                var playerInvitation = new PlayerInvitation
+                {
+                    EmailSubject = $"NemeStats Invitation from {applicationUser.UserName}",
+                    InvitedPlayerEmail = createPlayerRequest.PlayerEmailAddress,
+                    InvitedPlayerId = newPlayer.Id
+                };
+                _playerInviter.InvitePlayer(playerInvitation, applicationUser);
+            }
 
             _dataContext.CommitAllChanges();
 
