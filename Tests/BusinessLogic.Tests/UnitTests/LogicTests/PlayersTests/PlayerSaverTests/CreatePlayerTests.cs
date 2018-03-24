@@ -96,8 +96,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
 
             //--assert
             actualException.Message.ShouldBe(expectedException.Message);
-            //--this is the 2nd 409 conflict from this operation
-            actualException.ErrorSubCode.ShouldBe(2);
         }
 
         [Test]
