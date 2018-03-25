@@ -35,20 +35,20 @@ namespace BusinessLogic.Logic.Champions
 
         public ChampionRecalculator(IDataContext dataContext, IChampionRepository championRepository)
         {
-            this._dataContext = dataContext;
-            this._championRepository = championRepository;
+            _dataContext = dataContext;
+            _championRepository = championRepository;
         }
 
         public void RecalculateAllChampions()
         {
-            ApplicationUser applicationUser = new ApplicationUser();
+            var applicationUser = new ApplicationUser();
 
-            List<GameDefinition> gameDefinitions =
+            var gameDefinitions =
                 _dataContext.GetQueryable<GameDefinition>()
                     .Where(definition => definition.Active)
                     .ToList();
 
-            foreach (GameDefinition gameDefinition in gameDefinitions)
+            foreach (var gameDefinition in gameDefinitions)
             {
                 applicationUser.CurrentGamingGroupId = gameDefinition.GamingGroupId;
                 RecalculateChampion(gameDefinition.Id, applicationUser, _dataContext);
@@ -57,9 +57,9 @@ namespace BusinessLogic.Logic.Champions
 
         public virtual Champion RecalculateChampion(int gameDefinitionId, ApplicationUser applicationUser, IDataContext toClearExistingChampion, bool allowedToClearExistingChampion = true)
         {
-            GameDefinition gameDefinition = _dataContext.FindById<GameDefinition>(gameDefinitionId);
+            var gameDefinition = _dataContext.FindById<GameDefinition>(gameDefinitionId);
 
-            ChampionData championData = _championRepository.GetChampionData(gameDefinitionId);
+            var championData = _championRepository.GetChampionData(gameDefinitionId);
 
             if (championData is NullChampionData)
             {
@@ -71,12 +71,12 @@ namespace BusinessLogic.Logic.Champions
                 return new NullChampion();
             }
 
-            Champion existingChampion =
+            var existingChampion =
                 _dataContext.GetQueryable<Champion>()
                     .Include(champion => champion.GameDefinition)
                 .FirstOrDefault(champion => champion.GameDefinitionId == gameDefinitionId && champion.GameDefinition.ChampionId == champion.Id);
 
-            Champion newChampion = new Champion
+            var newChampion = new Champion
             {
                 WinPercentage = championData.WinPercentage,
                 NumberOfGames = championData.NumberOfGames,
@@ -120,7 +120,7 @@ namespace BusinessLogic.Logic.Champions
                 existingChampion.WinPercentage = newChampion.WinPercentage;
                 existingChampion.NumberOfGames = newChampion.NumberOfGames;
                 existingChampion.NumberOfWins = newChampion.NumberOfWins;
-                Champion returnChampion = _dataContext.Save(existingChampion, applicationUser);
+                var returnChampion = _dataContext.Save(existingChampion, applicationUser);
                 _dataContext.CommitAllChanges();
                 return returnChampion;
             }
