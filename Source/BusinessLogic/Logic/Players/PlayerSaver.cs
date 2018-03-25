@@ -25,6 +25,7 @@ using BusinessLogic.Models.User;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using BusinessLogic.Logic.Champions;
 
 namespace BusinessLogic.Logic.Players
 {
@@ -34,13 +35,16 @@ namespace BusinessLogic.Logic.Players
         private readonly INemeStatsEventTracker _eventTracker;
         private readonly INemesisRecalculator _nemesisRecalculator;
         private readonly IPlayerInviter _playerInviter;
+        private readonly IChampionRecalculator _championRecalculator;
 
-        public PlayerSaver(IDataContext dataContext, INemeStatsEventTracker eventTracker, INemesisRecalculator nemesisRecalculator, IPlayerInviter playerInviter)
+        public PlayerSaver(IDataContext dataContext, INemeStatsEventTracker eventTracker, INemesisRecalculator nemesisRecalculator, 
+            IPlayerInviter playerInviter, IChampionRecalculator championRecalculator)
         {
             _dataContext = dataContext;
             _eventTracker = eventTracker;
             _nemesisRecalculator = nemesisRecalculator;
             _playerInviter = playerInviter;
+            _championRecalculator = championRecalculator;
         }
         
         public Player CreatePlayer(CreatePlayerRequest createPlayerRequest, ApplicationUser applicationUser, bool linkCurrentUserToThisPlayer = false)
@@ -146,14 +150,14 @@ namespace BusinessLogic.Logic.Players
 
             var somethingChanged = false;
 
-            if (updatePlayerRequest.Active.HasValue)
+            if (updatePlayerRequest.Active.HasValue && updatePlayerRequest.Active != player.Active)
             {
                 player.Active = updatePlayerRequest.Active.Value;
 
                 somethingChanged = true;
             }
 
-            if (!string.IsNullOrWhiteSpace(updatePlayerRequest.Name))
+            if (!string.IsNullOrWhiteSpace(updatePlayerRequest.Name) && updatePlayerRequest.Name.Trim() != player.Name)
             {
                 player.Name = updatePlayerRequest.Name.Trim();
 
@@ -186,6 +190,8 @@ namespace BusinessLogic.Logic.Players
                 if (!player.Active)
                 {
                     RecalculateNemeses(player, applicationUser);
+
+                    RecalculateChampions(player, applicationUser);
                 }
             }
 
@@ -219,11 +225,13 @@ namespace BusinessLogic.Logic.Players
         private void ValidatePlayerWithThisNameDoesntAlreadyExist(Player player, int gamingGroupId)
         {
             var playerWithNameAlreadyExists = _dataContext.GetQueryable<Player>()
-                .Any(x => x.Name == player.Name && x.Id != player.Id);
+                .FirstOrDefault(x => x.Name == player.Name 
+                          && x.GamingGroupId == gamingGroupId 
+                          && x.Id != player.Id);
 
-            if (playerWithNameAlreadyExists)
+            if (playerWithNameAlreadyExists != null)
             {
-                ValidatePlayerDoesntExistWithThisName(player.Name, gamingGroupId);
+                throw new PlayerAlreadyExistsException(player.Name, playerWithNameAlreadyExists.Id);
             }
         }
 
@@ -238,6 +246,15 @@ namespace BusinessLogic.Logic.Players
             {
                 _nemesisRecalculator.RecalculateNemesis(playerId, currentUser, _dataContext);
             }
+        }
+
+        private void RecalculateChampions(Player player, ApplicationUser applicationUser)
+        {
+            var championedGameDefinitionIds = _dataContext.GetQueryable<GameDefinition>()
+                .Where(x => x.Champion.PlayerId == player.Id).Select(x => x.Id).ToList();
+
+            championedGameDefinitionIds.ForEach(gameDefinitionId =>
+                _championRecalculator.RecalculateChampion(gameDefinitionId, applicationUser, _dataContext));
         }
     }
 }
