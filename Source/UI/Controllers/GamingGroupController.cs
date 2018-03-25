@@ -312,7 +312,7 @@ namespace UI.Controllers
         {
             if (string.IsNullOrWhiteSpace(gamingGroupName))
             {
-                return MakeRedirectResultToManageAccountPageGamingGroupsTab();
+                return MakeRedirectResultToManageAccountPageGamingGroupsTab(AccountController.ManageMessageId.EmptyGamingGroupName);
             }
             _gamingGroupSaver.CreateNewGamingGroup(gamingGroupName.Trim(), TransactionSource.WebApplication, currentUser);
 
@@ -349,7 +349,7 @@ namespace UI.Controllers
             {
                 _gamingGroupSaver.UpdatePublicGamingGroupDetails(request, currentUser);
                 
-                return MakeRedirectResultToManageAccountPageGamingGroupsTab();
+                return MakeRedirectResultToManageAccountPageGamingGroupsTab(AccountController.ManageMessageId.GamingGroupSaved);
             }
 
             return Edit(request.GamingGroupId, currentUser);
@@ -367,7 +367,7 @@ namespace UI.Controllers
 
         [NonAction]
         internal virtual RedirectResult MakeRedirectResultToManageAccountPageGamingGroupsTab(
-            AccountController.ManageMessageId? message = AccountController.ManageMessageId.EmptyGamingGroupName)
+            AccountController.ManageMessageId? message = null)
         {
             return new RedirectResult(Url.Action(MVC.Account.ActionNames.Manage, MVC.Account.Name,
                                           new { message }) + "#" + AccountController.GAMING_GROUPS_TAB_HASH_SUFFIX);

@@ -4,6 +4,7 @@ using BusinessLogic.Models.GamingGroups;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
+using UI.Controllers;
 
 namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 {
@@ -13,7 +14,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         public void It_Updates_Gaming_Group_Public_Details_And_Redirects_Back_To_Gaming_Group_Listing()
         {
             var expectedResult = new RedirectResult("some url");
-            autoMocker.ClassUnderTest.Expect(mock => mock.MakeRedirectResultToManageAccountPageGamingGroupsTab())
+            autoMocker.ClassUnderTest.Expect(mock => mock.MakeRedirectResultToManageAccountPageGamingGroupsTab(AccountController.ManageMessageId.GamingGroupSaved))
                 .Return(expectedResult);
             var request = new GamingGroupEditRequest();
 
