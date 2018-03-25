@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using BusinessLogic.Logic.Champions;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
 {
@@ -185,11 +186,71 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
                 .Repeat.Any()
                 .Return(minionPlayers);
 
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>())
+                .Return(new List<GameDefinition>().AsQueryable());
+
             _autoMocker.ClassUnderTest.Save(player, _currentUser);
             
             _autoMocker.Get<INemesisRecalculator>().AssertWasCalled(mock => mock.RecalculateNemesis(activeMinion1.Id, _currentUser, _autoMocker.Get<IDataContext>()));
             _autoMocker.Get<INemesisRecalculator>().AssertWasCalled(mock => mock.RecalculateNemesis(activeMinion2.Id, _currentUser, _autoMocker.Get<IDataContext>()));
             _autoMocker.Get<INemesisRecalculator>().AssertWasNotCalled(mock => mock.RecalculateNemesis(inactiveMinion.Id, _currentUser, _autoMocker.Get<IDataContext>()));
+        }
+
+        [Test]
+        public void ItRecalculatesTheChampionsOfThePlayersChampionedGamesIfThePlayerIsGoingInactive()
+        {
+            var player = MockRepository.GeneratePartialMock<Player>();
+            player.Active = false;
+            player.Name = "some name";
+            player.Id = 151516;
+            player.Expect(mock => mock.AlreadyInDatabase())
+                .Return(true);
+
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>())
+                .Repeat.Any()
+                .Return(new List<Player>().AsQueryable());
+
+            var gameDefinitionId1 = 10;
+            var gameDefinitionId2 = 11;
+            var gameDefinitionIdNotForPlayer = 99;
+
+            var gameDefinitions = new List<GameDefinition>
+            {
+                new GameDefinition
+                {
+                    Id = gameDefinitionId1,
+                    Champion = new Champion
+                    {
+                        PlayerId = player.Id
+                    }
+                },
+                new GameDefinition
+                {
+                    Id = gameDefinitionId2,
+                    Champion = new Champion
+                    {
+                        PlayerId = player.Id
+                    }
+                },
+                //--this one should not get picked up
+                new GameDefinition
+                {
+                    Id = gameDefinitionIdNotForPlayer,
+                    Champion = new Champion
+                    {
+                        PlayerId = -1
+                    }
+                }
+            }.AsQueryable();
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>())
+                .Return(gameDefinitions);
+
+            _autoMocker.ClassUnderTest.Save(player, _currentUser);
+
+            _autoMocker.Get<IChampionRecalculator>().AssertWasCalled(mock => mock.RecalculateChampion(gameDefinitionId1, _currentUser, _autoMocker.Get<IDataContext>()));
+            _autoMocker.Get<IChampionRecalculator>().AssertWasCalled(mock => mock.RecalculateChampion(gameDefinitionId2, _currentUser, _autoMocker.Get<IDataContext>()));
+
+            _autoMocker.Get<IChampionRecalculator>().AssertWasNotCalled(mock => mock.RecalculateChampion(gameDefinitionIdNotForPlayer, _currentUser, _autoMocker.Get<IDataContext>()));
         }
 
         [Test]
