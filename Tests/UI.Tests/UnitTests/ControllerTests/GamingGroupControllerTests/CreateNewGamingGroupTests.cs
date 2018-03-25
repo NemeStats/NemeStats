@@ -22,6 +22,7 @@ using BusinessLogic.Logic.GamingGroups;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
+using UI.Controllers;
 
 namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 {
@@ -31,7 +32,8 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         public void It_Redirects_Back_To_The_Manage_Account_Page_If_The_Gaming_Group_Name_Isnt_Set()
         {
             var expectedResult = new RedirectResult("some url");
-            autoMocker.ClassUnderTest.Expect(mock => mock.MakeRedirectResultToManageAccountPageGamingGroupsTab()).Return(expectedResult);
+            autoMocker.ClassUnderTest.Expect(mock => mock.MakeRedirectResultToManageAccountPageGamingGroupsTab(AccountController.ManageMessageId.EmptyGamingGroupName))
+                .Return(expectedResult);
 
             var result = autoMocker.ClassUnderTest.CreateNewGamingGroup(string.Empty, currentUser) as RedirectResult;
 
