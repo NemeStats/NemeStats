@@ -7,6 +7,11 @@ namespace BusinessLogic.Migrations
     {
         public override void Up()
         {
+            //--this goofy index was pulled from Azure and includes the GameDefinition.Description and Name columns, so it has to be killed for this change to happen.
+            Sql(@"IF EXISTS(SELECT *
+                          FROM sys.indexes
+            WHERE NAME = 'nci_wi_GameDefinition_23D2FF4B197873582C56FBD68C2F7E70')
+            DROP INDEX nci_wi_GameDefinition_23D2FF4B197873582C56FBD68C2F7E70 ON dbo.GameDefinition");
             AlterColumn("dbo.BoardGameGeekGameCategory", "CategoryName", c => c.String(maxLength: 255));
             AlterColumn("dbo.BoardGameGeekGameDefinition", "Name", c => c.String(maxLength: 255));
             AlterColumn("dbo.BoardGameGeekGameDefinition", "Thumbnail", c => c.String(maxLength: 255));
