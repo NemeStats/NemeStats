@@ -33,6 +33,7 @@ namespace BusinessLogic.Models
 
         [MaxLength(255), Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public override string Id { get; set; }
+        [StringLength(1000)]
         public string FeatureDescription { get; set; }
         public int NumberOfUpvotes { get; set; }
         public int NumberOfDownvotes { get; set; }

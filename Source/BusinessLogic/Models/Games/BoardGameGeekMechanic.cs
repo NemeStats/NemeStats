@@ -14,6 +14,7 @@ namespace BusinessLogic.Models.Games
         [Index("IX_BOARDGAMEGEEKMECHANICID", 1, IsUnique = true)]
         public int BoardGameGeekGameMechanicId { get; set; }
 
+        [StringLength(255)]
         public string MechanicName { get; set; }
 
         public virtual IList<BoardGameGeekGameDefinition> Games { get; set; }

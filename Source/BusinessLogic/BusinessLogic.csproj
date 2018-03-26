@@ -325,6 +325,10 @@
     <Compile Include="Migrations\201803070243504_AddTpoGamesEverVotableFeature.Designer.cs">
       <DependentUpon>201803070243504_AddTpoGamesEverVotableFeature.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803251947595_SetMaxLengths.cs" />
+    <Compile Include="Migrations\201803251947595_SetMaxLengths.Designer.cs">
+      <DependentUpon>201803251947595_SetMaxLengths.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Champions\GetRecentChampionChangesFilter.cs" />
     <Compile Include="Models\Champions\ChampionChange.cs" />
     <Compile Include="Models\GamingGroups\RecentGamingGroupChanges.cs" />
@@ -1163,6 +1167,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803070243504_AddTpoGamesEverVotableFeature.resx">
       <DependentUpon>201803070243504_AddTpoGamesEverVotableFeature.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803251947595_SetMaxLengths.resx">
+      <DependentUpon>201803251947595_SetMaxLengths.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

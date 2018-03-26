@@ -22,6 +22,7 @@ using BusinessLogic.DataAccess;
 using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessLogic.Models
@@ -34,9 +35,12 @@ namespace BusinessLogic.Models
 		}
 
 		public override int Id { get; set; }
-		public string Name { get; set; }
-		public string PublicDescription { get; set; }
-		public string PublicGamingGroupWebsite { get; set; }
+	    [StringLength(255)]
+        public string Name { get; set; }
+	    [StringLength(2000)]
+        public string PublicDescription { get; set; }
+	    [StringLength(255)]
+        public string PublicGamingGroupWebsite { get; set; }
 
         //--This is necessary so that the GamingGroup itself can be a secured entity
         [NotMapped]

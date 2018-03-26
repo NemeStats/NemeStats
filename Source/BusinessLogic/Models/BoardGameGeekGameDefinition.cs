@@ -18,8 +18,11 @@ namespace BusinessLogic.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public override int Id { get; set; }
+        [StringLength(255)]
         public string Name { get; set; }
+        [StringLength(255)]
         public string Thumbnail { get; set; }
+        [StringLength(255)]
         public string Image { get; set; }
         public virtual IList<GameDefinition> GameDefinitions { get; set; } = new List<GameDefinition>();
         public int? MaxPlayers { get; set; }
@@ -27,6 +30,7 @@ namespace BusinessLogic.Models
         public int? MaxPlayTime { get; set; }
         public int? MinPlayTime { get; set; }
         public decimal? AverageWeight { get; set; }
+
         public string Description { get; set; }
         public int? YearPublished { get; set; }
         public bool IsExpansion { get; set; }

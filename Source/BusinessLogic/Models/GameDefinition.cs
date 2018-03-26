@@ -40,6 +40,8 @@ namespace BusinessLogic.Models
         [Index("IX_ID_AND_NAME", 2, IsUnique = true)]
         [Required]
         public string Name { get; set; }
+        //--The max length value as of 2018-03-25 was 2200, so setting this to 3000 so it's not max (for the sake of SQL optimization)
+        [StringLength(3000)]
         public string Description { get; set; }
         public bool Active { get; set; }
         public DateTime DateCreated { get; set; }

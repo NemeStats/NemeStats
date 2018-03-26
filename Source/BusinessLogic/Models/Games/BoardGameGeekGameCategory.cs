@@ -15,6 +15,7 @@ namespace BusinessLogic.Models.Games
         [Index("IX_BOARDGAMEGEEKCATEGORYID", 1, IsUnique = true)]
         public int BoardGameGeekGameCategoryId { get; set; }
 
+        [StringLength(255)]
         public string CategoryName { get; set; }
 
         public virtual IList<BoardGameGeekGameDefinition> Games { get; set; }
