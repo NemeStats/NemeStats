@@ -131,6 +131,17 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
                     {
                         GamingGroupId = 2
                     }
+                },
+                Players = new List<PlayerInfoForUserMessage>
+                {
+                    new PlayerInfoForUserMessage
+                    {
+                        PlayerId = 10
+                    },
+                    new PlayerInfoForUserMessage
+                    {
+                        PlayerId = 20
+                    }
                 }
             };
             _autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<UserInformationMessage>(expectedUserInformation))
@@ -143,12 +154,20 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
             var content = actualResponse.Content as ObjectContent<UserInformationMessage>;
             var actualUserInformationMessage = content.Value as UserInformationMessage;
             Assert.That(actualUserInformationMessage, Is.SameAs(expectedUserInformationMessage));
+
             Assert.That(actualUserInformationMessage.GamingGroups[0].NemeStatsUrl,
                 Is.EqualTo(AbsoluteUrlBuilder.GetGamingGroupDetailsUrl(actualUserInformationMessage.GamingGroups[0]
                     .GamingGroupId)));
             Assert.That(actualUserInformationMessage.GamingGroups[1].NemeStatsUrl,
                 Is.EqualTo(AbsoluteUrlBuilder.GetGamingGroupDetailsUrl(actualUserInformationMessage.GamingGroups[1]
                     .GamingGroupId)));
+
+            Assert.That(actualUserInformationMessage.Players[0].NemeStatsUrl,
+                Is.EqualTo(AbsoluteUrlBuilder.GetPlayerDetailsUrl(actualUserInformationMessage.Players[0]
+                    .PlayerId)));
+            Assert.That(actualUserInformationMessage.Players[1].NemeStatsUrl,
+                Is.EqualTo(AbsoluteUrlBuilder.GetPlayerDetailsUrl(actualUserInformationMessage.Players[1]
+                    .PlayerId)));
         }
     }
 }

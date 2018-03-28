@@ -15,5 +15,10 @@ namespace UI.HtmlHelpers
         {
             return $"{_baseUrl}/{ MVC.GamingGroup.Name}/{ MVC.GamingGroup.ActionNames.Details}/{gamingGroupId}";
         }
+
+        public static string GetPlayerDetailsUrl(int playerId)
+        {
+            return $"{_baseUrl}/{ MVC.Player.Name}/{ MVC.Player.ActionNames.Details}/{playerId}";
+        }
     }
 }

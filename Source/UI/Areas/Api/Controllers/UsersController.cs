@@ -58,7 +58,10 @@ namespace UI.Areas.Api.Controllers
         {
             var userInformation = _userRetriever.RetrieveUserInformation(CurrentUser);
             var userInformationMessage = _transformer.Transform<UserInformationMessage>(userInformation);
+
             userInformationMessage.GamingGroups.ForEach(x => x.NemeStatsUrl = AbsoluteUrlBuilder.GetGamingGroupDetailsUrl(x.GamingGroupId));
+            userInformationMessage.Players.ForEach(x => x.NemeStatsUrl = AbsoluteUrlBuilder.GetPlayerDetailsUrl(x.PlayerId));
+
             return Request.CreateResponse(HttpStatusCode.OK, userInformationMessage);
         }
     }
