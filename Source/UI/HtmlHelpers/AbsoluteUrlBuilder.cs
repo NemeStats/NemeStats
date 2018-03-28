@@ -25,5 +25,10 @@ namespace UI.HtmlHelpers
         {
             return $"{_baseUrl}/{ MVC.PlayedGame.Name}/{ MVC.PlayedGame.ActionNames.Details}/{playedGameId}";
         }
+
+        public static string GetGameDefinitionUrl(int gameDefinitionId)
+        {
+            return $"{_baseUrl}/{ MVC.GameDefinition.Name}/{ MVC.GameDefinition.ActionNames.Details}/{gameDefinitionId}";
+        }
     }
 }

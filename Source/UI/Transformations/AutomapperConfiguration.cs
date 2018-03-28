@@ -71,13 +71,16 @@ namespace UI.Transformations
             Mapper.CreateMap<PlayedGameApplicationLinkage, ApplicationLinkage>(MemberList.Destination);
             Mapper.CreateMap<PlayedGameSearchResult, PlayedGameSearchResultMessage>(MemberList.Destination)
                   .ForSourceMember(x => x.PlayerGameResults, opt => opt.Ignore())
+                  .ForMember(x => x.NemeStatsUrl, opt => opt.Ignore())
                   .ForMember(x => x.DateLastUpdated, opt => opt.MapFrom(src => src.DateLastUpdated.ToString("yyyy-MM-dd")))
                   .ForMember(x => x.DatePlayed, opt => opt.MapFrom(src => src.DatePlayed.ToString("yyyy-MM-dd")));
             Mapper.CreateMap<PlayerResult, PlayerGameResultMessage>(MemberList.Destination)
                   .ForMember(x => x.TotalNemeStatsPointsAwarded, opt => opt.MapFrom(src => src.TotalPoints));
             Mapper.CreateMap<PlayerGameSummary, PlayerGameSummaryViewModel>(MemberList.Source);
-            Mapper.CreateMap<PlayerInfoForUser, PlayerInfoForUserMessage>(MemberList.Destination);
-            Mapper.CreateMap<GamingGroupInfoForUser, GamingGroupInfoForUserMessage>(MemberList.Destination);
+            Mapper.CreateMap<PlayerInfoForUser, PlayerInfoForUserMessage>(MemberList.Destination)
+                .ForMember(x => x.NemeStatsUrl, opt => opt.Ignore());
+            Mapper.CreateMap<GamingGroupInfoForUser, GamingGroupInfoForUserMessage>(MemberList.Destination)
+                .ForMember(x => x.NemeStatsUrl, opt => opt.Ignore());
             Mapper.CreateMap<UserInformation, UserInformationMessage>(MemberList.Destination);
             Mapper.CreateMap<PlayerWinRecord, PlayerSummaryViewModel>(MemberList.Destination)
                   .ForMember(x => x.SpecialBadgeTypes, opt => opt.MapFrom(src => src.MapSpecialBadges()))
