@@ -53,6 +53,8 @@ accepting decimal places in pointsScored
 Since this presents a 2nd opportunity for a 409 conflict ("duplicate Player Name" and "existing Player already has this email"), a subErrorCode is being introduced to the API so that clients
 can more easily distinguish between different kinds of error responses that share the same HTTP status code. This should be better than checking for specific
 content being returned in the message.
+* 2018--3-28 Added "nemeStatsUrl" field(s) to the responses of GET /Users, GET /Players, GET /PlayedGames, and GET /GameDefinitions so that client's have an easier 
+way of providing linkage back to NemeStats should they so choose.
 
 ### General Information
 
@@ -212,26 +214,30 @@ will return a valid response.
                             "gamingGroupId" : "209",
                             "gamingGroupName" : "sparklepants's Gaming Group",
                             "gamingGroupPublicDescription" : "This group was created to record games we play as a family on the weekends.",
-                            "active" : true
+                            "active" : true,
+                            "nemeStatsUrl" : "https://nemestats.com/GamingGroup/Details/209"
                         },
                         {
                             "gamingGroupId" : "225",
                             "gamingGroupName" : "Weekend Warriors",
                             "gamingGroupPublicDescription" : "We are the Weekend Warriors and we like to play Magic the Gathering, Dominion, Star Realms, and other deck-building games. We play on the weekends at Dominic's Gaming House in downtown Mumbai. Email us at dgh@mailinator.com for details.",
                             "gamingGroupPublicUrl" : "https://dghmumbai.com",
-                            "active" : false
+                            "active" : false,
+                            "nemeStatsUrl" : "https://nemestats.com/GamingGroup/Details/225"
                         }
                         ],
                     "players" : [
                     {
                       "playerId": 1569,
                       "playerName": "sparklepants",
-                      "gamingGroupId": 209
+                      "gamingGroupId": 209,
+                      "nemeStatsUrl" : "https://nemestats.com/Player/Details/1569"
                     },
                     {
                       "playerId": 1995,
                       "playerName": "sparklepants",
-                      "gamingGroupId": 225
+                      "gamingGroupId": 225,
+                      "nemeStatsUrl" : "https://nemestats.com/Player/Details/1995"
                     }
                 }
 
@@ -629,7 +635,8 @@ via the required gamingGroupId query string parameter.
                         "notes":"Dave Staw ran away with this one!",
                         "boardGameGeekObjectId":40692,
                         "datePlayed":"2015-04-04",
-                        "dateLastUpdated":"2015-04-24"
+                        "dateLastUpdated":"2015-04-24",
+                        "https://nemestats.com/PlayedGame/Details/16785"
                     },
                     {  
                         "playerGameResults":[  
@@ -677,7 +684,8 @@ via the required gamingGroupId query string parameter.
                         "gamingGroupName":"RIDGID Board Gamers",
                         "boardGameGeekObjectId":150376,
                         "datePlayed":"2015-03-06T00:00:00",
-                        "dateLastUpdated":"2015-03-06T18:11:17.33"
+                        "dateLastUpdated":"2015-03-06T18:11:17.33",
+                        "https://nemestats.com/PlayedGame/Details/16098"
                     }
                 ]
             }
@@ -756,31 +764,36 @@ Retrieve a list of all Players in the given Gaming Group.
                             "playerName" : "Anna Viko",
                             "playerId" : 789,
                             "active" : "true",
-                            "currentNemesisPlayerId" : 456
+                            "currentNemesisPlayerId" : 456,
+                            "nemeStatsUrl" : "https://nemestats.com/Player/Details/789"
                         },
                         {
                             "playerName" : "Chris Konnel",
                             "playerId" : 456,
                             "active" : "true",
-                            "currentNemesisPlayerId" : 456
+                            "currentNemesisPlayerId" : 456,
+                            "nemeStatsUrl" : "https://nemestats.com/Player/Details/456"
                         },
                         {
                             "playerName" : "The Destroyer",
                             "playerId" : 111,
                             "active" : "true",
-                            "currentNemesisPlayerId" : null
+                            "currentNemesisPlayerId" : null,
+                            "nemeStatsUrl" : "https://nemestats.com/Player/Details/111"
                         },
                         {
                             "playerName" : "Herb",
                             "playerId" : 112,
                             "active" : "true",
-                            "currentNemesisPlayerId" : 789
+                            "currentNemesisPlayerId" : 789,
+                            "nemeStatsUrl" : "https://nemestats.com/Player/Details/112"
                         },
                         {
                             "playerName" : "Marvin",
                             "playerId" : 745,
                             "active" : "false",
-                            "currentNemesisPlayerId" : null
+                            "currentNemesisPlayerId" : null,
+                            "nemeStatsUrl" : "https://nemestats.com/Player/Details/745"
                         }
                     ]
                 }
@@ -966,18 +979,21 @@ Retrieve a list of all Game Definitions in the given Gaming Group.
                         "gameDefinitionName" : "Zombicide",
                         "gameDefinitionId" : 711,
                         "boardGameGeekObjectId" : 113924,
-                        "active " : "true"
+                        "active " : "true",
+                        "nemeStatsUrl" : "https://nemestats.com/GameDefinition/Details/711"
                     },
                     {
                         "gameDefinitionName" : "Candy Land",
                         "gameDefinitionId" : 12,
-                        "active " : "true"
+                        "active " : "true",
+                        "nemeStatsUrl" : "https://nemestats.com/GameDefinition/Details/711"
                     },
                     {
                         "gameDefinitionName" : "Small World",
                         "gameDefinitionId" : 789,
                         "boardGameGeekObjectId" : 40692,
-                        "active " : false
+                        "active " : false,
+                        "nemeStatsUrl" : "https://nemestats.com/GameDefinition/Details/711"
                     }
                 }
 
