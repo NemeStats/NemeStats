@@ -6,6 +6,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using UI.Areas.Api.Controllers;
 using UI.Areas.Api.Models;
+using UI.HtmlHelpers;
 
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayersControllerTests
 {
@@ -40,6 +41,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayersControl
             Assert.That(player.PlayerName, Is.EqualTo(expectedPlayer.Name));
             Assert.That(player.Active, Is.EqualTo(expectedPlayer.Active));
             Assert.That(player.CurrentNemesisPlayerId, Is.EqualTo(expectedPlayer.NemesisId));
+            Assert.That(player.NemeStatsUrl, Is.EqualTo(AbsoluteUrlBuilder.GetPlayerDetailsUrl(player.PlayerId)));
         }
     }
 }

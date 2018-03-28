@@ -21,7 +21,7 @@ namespace UI.HtmlHelpers
             return $"{_baseUrl}/{ MVC.Player.Name}/{ MVC.Player.ActionNames.Details}/{playerId}";
         }
 
-        public static string GetPlayedGameDetails(int playedGameId)
+        public static string GetPlayedGameDetailsUrl(int playedGameId)
         {
             return $"{_baseUrl}/{ MVC.PlayedGame.Name}/{ MVC.PlayedGame.ActionNames.Details}/{playedGameId}";
         }

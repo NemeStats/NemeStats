@@ -7,5 +7,6 @@ namespace UI.Areas.Api.Models
         public string PlayerName { get; set; }
         public bool Active { get; set; }
         public int? CurrentNemesisPlayerId { get; set; }
+        public string NemeStatsUrl { get; set; }
     }
 }
