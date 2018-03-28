@@ -1,15 +1,12 @@
 ﻿using System.Net;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.PlayedGames;
-using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System.Net.Http;
 using UI.Areas.Api.Controllers;
 using UI.Areas.Api.Models;
-using UI.Transformations;
 
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesControllerTests
 {

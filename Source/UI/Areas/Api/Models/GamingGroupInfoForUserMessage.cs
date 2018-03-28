@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace UI.Areas.Api.Models
+﻿namespace UI.Areas.Api.Models
 {
     public class GamingGroupInfoForUserMessage
     {
@@ -9,5 +7,6 @@ namespace UI.Areas.Api.Models
         public string GamingGroupPublicUrl { get; set; }
         public string GamingGroupPublicDescription { get; set; }
         public bool Active { get; set; }
+        public string NemeStatsUrl { get; set; }
     }
 }

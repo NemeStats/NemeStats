@@ -8,6 +8,7 @@ using BusinessLogic.Exceptions;
 using BusinessLogic.Models;
 using UI.Areas.Api.Models;
 using UI.Attributes;
+using UI.HtmlHelpers;
 using VersionedRestApi;
 
 namespace UI.Areas.Api.Controllers
@@ -46,7 +47,8 @@ namespace UI.Areas.Api.Controllers
                     Active = player.Active,
                     PlayerId = player.Id,
                     CurrentNemesisPlayerId = player.NemesisId,
-                    PlayerName = player.Name
+                    PlayerName = player.Name,
+                    NemeStatsUrl = AbsoluteUrlBuilder.GetPlayerDetailsUrl(player.Id)
                 }).ToList()
             };
 

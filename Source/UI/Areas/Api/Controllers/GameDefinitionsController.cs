@@ -25,6 +25,7 @@ using UI.Areas.Api.Models;
 using UI.Attributes;
 using VersionedRestApi;
 using BusinessLogic.Models.Games;
+using UI.HtmlHelpers;
 
 namespace UI.Areas.Api.Controllers
 {
@@ -64,7 +65,8 @@ namespace UI.Areas.Api.Controllers
                     Active = result.Active,
                     BoardGameGeekGameDefinitionId = result.BoardGameGeekGameDefinitionId,
                     GameDefinitionId = result.Id,
-                    GameDefinitionName = result.Name
+                    GameDefinitionName = result.Name,
+                    NemeStatsUrl = AbsoluteUrlBuilder.GetGameDefinitionUrl(result.Id)
                 }).ToList()
             };
 

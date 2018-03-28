@@ -13,6 +13,7 @@ using BusinessLogic.Models.Games;
 using BusinessLogic.Models.PlayedGames;
 using UI.Areas.Api.Models;
 using UI.Attributes;
+using UI.HtmlHelpers;
 using VersionedRestApi;
 
 namespace UI.Areas.Api.Controllers
@@ -128,6 +129,8 @@ namespace UI.Areas.Api.Controllers
             {
                 PlayedGames = searchResults.Select(Mapper.Map<PlayedGameSearchResultMessage>).ToList()
             };
+
+            playedGamesSearchResultMessage.PlayedGames.ForEach(x => x.NemeStatsUrl = AbsoluteUrlBuilder.GetPlayedGameDetailsUrl(x.PlayedGameId));
 
             return Request.CreateResponse(HttpStatusCode.OK, playedGamesSearchResultMessage);
         }

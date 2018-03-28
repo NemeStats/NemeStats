@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using BusinessLogic.Logic.PlayedGames;
+﻿using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
