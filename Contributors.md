@@ -9,24 +9,8 @@ If you would like contribute to the NemeStats code base please follow the steps 
 
 * Pull down source code (e.g. ```git clone https://github.com/NemeStats/NemeStats.git``` in the directory where you want the NemeStats folder to get created).
 * Make sure you have a SQL instance running that you have dbo access to. NemeStats uses Entity Framework Code First migrations to create and update the database.
-* Run the GetStarted.ps1 PowerShell script in the root folder. You can enter your connection string from here, or use the default connection to .\SQLExpress using integrated windows authentication. This script will create a file called PrivateAppSettings.config in the root of the UI project. This file will contain settings that are sensitive and/or specific to your environment. This file is ignored in .gitignore so that it should never be checked in. Most notably, this file will contain the connection string to your SQL instance where the NerdScorekeeper database runs.
-* You'll have to create a file in the root of your UI project called PrivateAppSettings.config (e.g. ```/NemeStats/Source/UI/PrivateAppSettings.config```) that has settings for keys that we don't want checked into source control. If you are serious about contributing something, we can send you this file to include locally. Note: without a valid emailServiceUserName and emailServicePassword, emails sent when running the site locally will blow up (e.g. during the registration process). If you are just playing around then below is a version that should let you at least run the project.
-PrivateAppSettings.config example settings
+* Run the GetStarted.ps1 PowerShell script in the root folder. You can enter your connection string from here, or use the default connection to .\SQLExpress using integrated windows authentication. This script will create a file called PrivateAppSettings.config in the root of the UI project. This file will contain settings that are sensitive and/or specific to your environment. This file is ignored in .gitignore so that it should never be checked in. Most notably, this file will contain the connection string to your SQL instance where the NerdScorekeeper database runs. If you want to be able to send emails during your testing (e.g. when inviting another Player to your Gaming Group), email us at nemestats@gmail.com and we'll give you a sendGridApiKey to add to your PrivateAppSettings.config.
 
-```xml
-<appSettings>
-  <add key="Database.ConnectionString" value="Data Source=.\SQLEXPRESS;Initial Catalog=NerdScorekeeper;Integrated Security=True" />
-  <add key="Rollbar.AccessToken" value="f7d858b2d08a47b98f9ab19f9e27516c" />
-  <add key="Rollbar.Environment" value="development" />
-  <add key="UniversalAnalytics.TrackingId" value="UA-52982625-4" />
-  <add key="GoogleTagManager.TrackingId" value="GTM-5RBDXK" />
-  <add key="googleAppId" value="260011030385-4651b4m7fsn28tc9vj13remofgji8m3l.apps.googleusercontent.com" />
-  <add key="googleClientSecret" value="rEWsFL0AKxKODzJpNR6X4A2f" />
-  <add key="emailServiceUserName" value="not provided -- emails wont send when running this locally" />
-  <add key="emailServicePassword" value="not provided -- emails wont send when running this locally" />
-  <add key="emailConfirmationCallbackUrl" value="https://localhost:44300/Account/ConfirmEmail" />
-  <add key="authTokenSalt" value="A3BCDF34-BA8C-4A02-92CA-AAACDF7993F3"/>
-</appSettings>
 ```
 * Make sure you have an instance of SQL Server or SQL Express running locally, then go to package manager console and run "update-database -ProjectName BusinessLogic". This should create your database and apply all of the migrations to get it current. If it doesn't create the database then just create a local database called "Nerdscorekeeper" and then try running the command again.
 
