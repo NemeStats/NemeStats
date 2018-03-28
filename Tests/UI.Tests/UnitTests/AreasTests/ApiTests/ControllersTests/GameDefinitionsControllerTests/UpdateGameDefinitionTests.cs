@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Models.User;
