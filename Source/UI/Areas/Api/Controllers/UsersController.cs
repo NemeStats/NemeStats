@@ -7,8 +7,10 @@ using AutoMapper;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
+using Microsoft.Ajax.Utilities;
 using UI.Areas.Api.Models;
 using UI.Attributes;
+using UI.HtmlHelpers;
 using VersionedRestApi;
 
 namespace UI.Areas.Api.Controllers
@@ -56,6 +58,7 @@ namespace UI.Areas.Api.Controllers
         {
             var userInformation = _userRetriever.RetrieveUserInformation(CurrentUser);
             var userInformationMessage = _transformer.Transform<UserInformationMessage>(userInformation);
+            userInformationMessage.GamingGroups.ForEach(x => x.NemeStatsUrl = AbsoluteUrlBuilder.GetGamingGroupDetailsUrl(x.GamingGroupId));
             return Request.CreateResponse(HttpStatusCode.OK, userInformationMessage);
         }
     }
