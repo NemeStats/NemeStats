@@ -85,6 +85,7 @@ namespace UI.Controllers
             public readonly string About = "About";
             public readonly string AboutNemePoints = "AboutNemePoints";
             public readonly string AboutBadgesAndAchievements = "AboutBadgesAndAchievements";
+            public readonly string PrivacyNotice = "PrivacyNotice";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -97,6 +98,7 @@ namespace UI.Controllers
             public const string About = "About";
             public const string AboutNemePoints = "AboutNemePoints";
             public const string AboutBadgesAndAchievements = "AboutBadgesAndAchievements";
+            public const string PrivacyNotice = "PrivacyNotice";
         }
 
 
@@ -123,12 +125,14 @@ namespace UI.Controllers
                 public readonly string AboutBadgesAndAchievements = "AboutBadgesAndAchievements";
                 public readonly string AboutNemePoints = "AboutNemePoints";
                 public readonly string Index = "Index";
+                public readonly string PrivacyNotice = "PrivacyNotice";
             }
             public readonly string _HomeFeatures = "~/Views/Home/_HomeFeatures.cshtml";
             public readonly string About = "~/Views/Home/About.cshtml";
             public readonly string AboutBadgesAndAchievements = "~/Views/Home/AboutBadgesAndAchievements.cshtml";
             public readonly string AboutNemePoints = "~/Views/Home/AboutNemePoints.cshtml";
             public readonly string Index = "~/Views/Home/Index.cshtml";
+            public readonly string PrivacyNotice = "~/Views/Home/PrivacyNotice.cshtml";
         }
     }
 
@@ -212,6 +216,17 @@ namespace UI.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AboutBadgesAndAchievements);
             AboutBadgesAndAchievementsOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void PrivacyNoticeOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult PrivacyNotice()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.PrivacyNotice);
+            PrivacyNoticeOverride(callInfo);
             return callInfo;
         }
 

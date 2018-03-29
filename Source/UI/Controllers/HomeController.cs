@@ -141,5 +141,10 @@ namespace UI.Controllers
         {
             return View();
         }
+
+        public virtual ActionResult PrivacyNotice()
+        {
+            return View();
+        }
     }
 }
