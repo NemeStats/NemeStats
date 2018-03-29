@@ -906,6 +906,7 @@
     <Content Include="Views\GameDefinition\TopGamesEver.cshtml" />
     <Content Include="Views\GamingGroup\_GamingGroupRecentChanges.cshtml" />
     <Content Include="Views\GameDefinition\_RecentChampionChangesPartial.cshtml" />
+    <Content Include="Views\Home\PrivacyNotice.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Api\Views\Shared\" />
