@@ -5,5 +5,6 @@ namespace UI.Areas.Api.Models
     {
         public int PlayedGameId { get; set; }
         public int GamingGroupId { get; set; }
+        public string NemeStatsUrl { get; set; }
     }
 }

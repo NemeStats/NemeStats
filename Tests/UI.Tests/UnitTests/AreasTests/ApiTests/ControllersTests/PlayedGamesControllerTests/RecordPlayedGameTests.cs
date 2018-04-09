@@ -10,6 +10,7 @@ using NemeStats.TestingHelpers.NemeStatsTestingExtensions;
 using Shouldly;
 using UI.Areas.Api.Controllers;
 using UI.Areas.Api.Models;
+using UI.HtmlHelpers;
 
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesControllerTests
 {
@@ -60,6 +61,8 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
         [Test]
         public void ItReturnsThePlayedGameIdAndGamingGroupIdOfTheNewlyCreatedPlayedGame()
         {
+            var expectedNemeStatsUrl = AbsoluteUrlBuilder.GetPlayedGameDetailsUrl(EXPECTED_PLAYED_GAME_ID);
+
             var actualResponse = _autoMocker.ClassUnderTest.RecordPlayedGame(_playedGameMessage, EXPECTED_GAMING_GROUP_ID);
 
             Assert.That(actualResponse.Content, Is.TypeOf(typeof(ObjectContent<NewlyRecordedPlayedGameMessage>)));
@@ -67,6 +70,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
             var newlyRecordedPlayedGameMessage = content.Value as NewlyRecordedPlayedGameMessage;
             Assert.That(newlyRecordedPlayedGameMessage.PlayedGameId, Is.EqualTo(EXPECTED_PLAYED_GAME_ID));
             Assert.That(newlyRecordedPlayedGameMessage.GamingGroupId, Is.EqualTo(EXPECTED_GAMING_GROUP_ID));
+            Assert.That(newlyRecordedPlayedGameMessage.NemeStatsUrl, Is.EqualTo(expectedNemeStatsUrl));
         }
     }
 }

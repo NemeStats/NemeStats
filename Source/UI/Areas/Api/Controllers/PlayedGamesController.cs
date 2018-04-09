@@ -157,7 +157,8 @@ namespace UI.Areas.Api.Controllers
             var newlyRecordedPlayedGameMessage = new NewlyRecordedPlayedGameMessage
             {
                 PlayedGameId = playedGame.Id,
-                GamingGroupId = playedGame.GamingGroupId
+                GamingGroupId = playedGame.GamingGroupId,
+                NemeStatsUrl = AbsoluteUrlBuilder.GetPlayedGameDetailsUrl(playedGame.Id)
             };
 
             return Request.CreateResponse(HttpStatusCode.OK, newlyRecordedPlayedGameMessage);
