@@ -97,7 +97,8 @@ namespace UI.Areas.Api.Controllers
             var newlyCreatedPlayerMessage = new NewlyCreatedPlayerMessage
             {
                 PlayerId = newPlayer.Id,
-                GamingGroupId = newPlayer.GamingGroupId
+                GamingGroupId = newPlayer.GamingGroupId,
+                NemeStatsUrl = AbsoluteUrlBuilder.GetPlayerDetailsUrl(newPlayer.Id)
             };
 
             return Request.CreateResponse(HttpStatusCode.OK, newlyCreatedPlayerMessage);

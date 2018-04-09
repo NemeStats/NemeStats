@@ -11,6 +11,7 @@ using Shouldly;
 using StructureMap.AutoMocking;
 using UI.Areas.Api.Controllers;
 using UI.Areas.Api.Models;
+using UI.HtmlHelpers;
 
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayersControllerTests
 {
@@ -77,6 +78,8 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayersControl
         [Test]
         public void ItReturnsThePlayerIdAndGamingGroupOfTheNewlyCreatedPlayer()
         {
+            var expectedNemeStatsUrl = AbsoluteUrlBuilder.GetPlayerDetailsUrl(_expectedPlayer.Id);
+
             var actualResponse = _autoMocker.ClassUnderTest.SaveNewPlayer(new NewPlayerMessage(), _expectedGamingGroupId);
 
             Assert.That(actualResponse.Content, Is.TypeOf(typeof(ObjectContent<NewlyCreatedPlayerMessage>)));
@@ -84,6 +87,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayersControl
             var newlyCreatedPlayerMessage = content.Value as NewlyCreatedPlayerMessage;
             Assert.That(newlyCreatedPlayerMessage.PlayerId, Is.EqualTo(_expectedPlayer.Id));
             Assert.That(newlyCreatedPlayerMessage.GamingGroupId, Is.EqualTo(_expectedGamingGroupId));
+            Assert.That(newlyCreatedPlayerMessage.NemeStatsUrl, Is.EqualTo(expectedNemeStatsUrl));
         }
 
         [Test]
