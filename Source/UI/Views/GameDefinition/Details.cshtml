@@ -11,7 +11,15 @@
 
 <div id="gamedefinition-details">
     <h2 class="page-header">
-        @Html.DisplayFor(model => model.BoardGameGeekInfo.GameName) on @Html.ActionLink(Model.GamingGroupName, MVC.GamingGroup.ActionNames.Details, MVC.GamingGroup.Name, new { id = @Model.GamingGroupId }, new { title = "View Gaming Group details" })
+        @if (Model.BoardGameGeekInfo == null)
+        {
+            @Model.GameDefinitionName
+        }
+        else
+        {
+            @Html.DisplayFor(model => model.BoardGameGeekInfo.GameName)
+        }
+        on @Html.ActionLink(Model.GamingGroupName, MVC.GamingGroup.ActionNames.Details, MVC.GamingGroup.Name, new {id = @Model.GamingGroupId}, new {title = "View Gaming Group details"})
         @if (Model.UserCanEdit)
         {
             <a href="@Url.Action(MVC.GameDefinition.ActionNames.Edit, MVC.GameDefinition.Name, new {id = Model.GameDefinitionId})" class="btn btn-xs btn-default" title="Edit Game Definition">
@@ -19,6 +27,8 @@
             </a>
         }
     </h2>
+    @*TODO Figure out how to call this out <div class="validation-summary-errors">(game not linked to BoardGameGeek)</div>*@
+
     @if (Model.BoardGameGeekInfo != null)
     {
         <div class="row">
