@@ -1,4 +1,8 @@
 User-agent: *
+
+Disallow: /PlayedGame/Details/
+Disallow: /Player/Details/
+Disallow: /achievements/*/player/
 Allow: /
 
 Sitemap: https://nemestats.com/sitemaps/sitemapindex.xml
