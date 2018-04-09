@@ -17,7 +17,6 @@
 #endregion
 
 using BusinessLogic.DataAccess;
-using BusinessLogic.EventTracking;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using BusinessLogic.Logic.BoardGameGeek;
@@ -30,17 +29,15 @@ namespace BusinessLogic.Logic.GameDefinitions
             = "gameDefinition.Name cannot be null or whitespace.";
 
         private readonly IDataContext _dataContext;
-        private readonly INemeStatsEventTracker _eventTracker;
         private readonly IBoardGameGeekGameDefinitionCreator _boardGameGeekGameDefinitionCreator;
 
-        public GameDefinitionSaver(IDataContext dataContext, INemeStatsEventTracker eventTracker, IBoardGameGeekGameDefinitionCreator boardGameGeekGameDefinitionAttacher)
+        public GameDefinitionSaver(IDataContext dataContext, IBoardGameGeekGameDefinitionCreator boardGameGeekGameDefinitionAttacher)
         {
             _dataContext = dataContext;
-            _eventTracker = eventTracker;
             _boardGameGeekGameDefinitionCreator = boardGameGeekGameDefinitionAttacher;
         }
 
-        private BoardGameGeekGameDefinition CreateBoardGameGeekGameDefinition(int? boardGameGeekGameDefinitionId, ApplicationUser currentUser)
+        private BoardGameGeekGameDefinition CreateBoardGameGeekGameDefinition(int? boardGameGeekGameDefinitionId)
         {
             BoardGameGeekGameDefinition newBoardGameGeekGameDefinition = null;
             if (boardGameGeekGameDefinitionId.HasValue)
@@ -84,8 +81,7 @@ namespace BusinessLogic.Logic.GameDefinitions
             }
 
             var newlyCreatedBoardGameGeekGameDefinition = CreateBoardGameGeekGameDefinition(
-                boardGameGeekGameDefinitionId.Value,
-                currentUser);
+                boardGameGeekGameDefinitionId.Value);
             if (newlyCreatedBoardGameGeekGameDefinition != null)
             {
                 gameDefinition.BoardGameGeekGameDefinitionId = newlyCreatedBoardGameGeekGameDefinition.Id;
