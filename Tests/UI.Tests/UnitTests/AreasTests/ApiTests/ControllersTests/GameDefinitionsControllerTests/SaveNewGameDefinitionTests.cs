@@ -7,6 +7,7 @@ using Rhino.Mocks;
 using UI.Areas.Api.Controllers;
 using UI.Areas.Api.Models;
 using BusinessLogic.Models.Games;
+using UI.HtmlHelpers;
 
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.GameDefinitionsControllerTests
 {
@@ -32,11 +33,13 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.GameDefinition
         [Test]
         public void ItReturnsANewlyCreatedGameDefinitionMessage()
         {
+            var expectedUrl = AbsoluteUrlBuilder.GetGameDefinitionUrl(_expectedGameDefinition.Id);
             var actualResults = _autoMocker.ClassUnderTest.SaveNewGameDefinition(new NewGameDefinitionMessage(), _expectedGamingGroupId);
 
             var actualData = AssertThatApiAction.ReturnsThisTypeWithThisStatusCode<NewlyCreatedGameDefinitionMessage>(actualResults, HttpStatusCode.OK);
             Assert.That(actualData.GameDefinitionId, Is.EqualTo(_expectedGameDefinition.Id));
             Assert.That(actualData.GamingGroupId, Is.EqualTo(_expectedGamingGroupId));
+            Assert.That(actualData.NemeStatsUrl, Is.EqualTo(expectedUrl));
         }
 
         [Test]

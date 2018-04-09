@@ -101,8 +101,9 @@ namespace UI.Areas.Api.Controllers
             var newlyCreatedGameDefinitionMessage = new NewlyCreatedGameDefinitionMessage
             {
                 GameDefinitionId = newGameDefinition.Id,
-                GamingGroupId = newGameDefinition.GamingGroupId
-            };
+                GamingGroupId = newGameDefinition.GamingGroupId,
+                NemeStatsUrl = AbsoluteUrlBuilder.GetGameDefinitionUrl(newGameDefinition.Id)
+        };
 
             return Request.CreateResponse(HttpStatusCode.OK, newlyCreatedGameDefinitionMessage);
         }
