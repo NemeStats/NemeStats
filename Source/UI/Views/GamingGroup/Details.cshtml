@@ -4,6 +4,7 @@
 @{
     ViewBag.Title = Model.PublicDetailsView.GamingGroupName;
     ViewBag.Description = $"View stats, recent plays, and other details about the Gaming Group '{Model.PublicDetailsView.GamingGroupName}' on NemeStats.";
+    ViewBag.RelCanonical = AbsoluteUrlBuilder.GetGamingGroupDetailsUrl(Model.PublicDetailsView.GamingGroupId);
     Layout = MVC.Shared.Views._BaseLayout;
 }
 
