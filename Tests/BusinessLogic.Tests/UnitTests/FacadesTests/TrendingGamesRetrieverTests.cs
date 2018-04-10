@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Facades;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.Utilities;
@@ -25,7 +26,7 @@ namespace BusinessLogic.Tests.UnitTests.FacadesTests
             //--arrange
             var expectedResults = new List<TrendingGame>();
             var trendingGamesRequest = new TrendingGamesRequest(1, 2);
-            _autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetTrendingGames(trendingGamesRequest.NumberOfTrendingGamesToShow, trendingGamesRequest.NumberOfDaysOfTrendingGames))
+            _autoMocker.Get<IGameDefinitionRepository>().Expect(mock => mock.GetTrendingGames(trendingGamesRequest.NumberOfTrendingGamesToShow, trendingGamesRequest.NumberOfDaysOfTrendingGames))
               .Return(expectedResults);
 
             //--act

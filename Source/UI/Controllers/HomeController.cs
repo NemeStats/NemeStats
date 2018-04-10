@@ -47,7 +47,7 @@ namespace UI.Controllers
         public const int NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW = 5;
         public const int NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW = 15;
         public const int NUMBER_OF_DAYS_OF_TRENDING_GAMES = 90;
-        public const int A_LOT_OF_DAYS = 100000;
+        public const int A_LOT_OF_DAYS = 10000;
         public const int NUMBER_OF_TRENDING_GAMES_TO_SHOW = 5;
         public const int NUMBER_OF_TOP_GAMES_TO_SHOW = 5;
 

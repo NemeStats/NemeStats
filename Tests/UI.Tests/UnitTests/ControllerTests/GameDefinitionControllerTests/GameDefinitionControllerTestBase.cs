@@ -18,13 +18,10 @@
 
 #endregion LICENSE
 
-using BusinessLogic.Logic.GameDefinitions;
-using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using StructureMap.AutoMocking;
-using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -42,16 +39,12 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         protected ApplicationUser currentUser;
         protected HttpRequestBase asyncRequestMock;
         protected ITransformer transformer;
-        protected List<TrendingGame> trendingGames;
 
         [SetUp]
         public virtual void SetUp()
         {
             autoMocker = new RhinoAutoMocker<GameDefinitionController>();
-            autoMocker.Get<IGameDefinitionRetriever>()
-                .Expect(mock => mock.GetTrendingGames(GameDefinitionController.NUMBER_OF_TRENDING_GAMES_TO_SHOW,
-                    GameDefinitionController.NUMBER_OF_DAYS_OF_TRENDING_GAMES))
-                    .Return(trendingGames);
+         
             AutomapperConfiguration.Configure();
             urlHelperMock = MockRepository.GenerateMock<UrlHelper>();
             autoMocker.ClassUnderTest.Url = urlHelperMock;

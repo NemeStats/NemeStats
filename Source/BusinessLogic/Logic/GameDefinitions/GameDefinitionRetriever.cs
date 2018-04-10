@@ -330,27 +330,5 @@ namespace BusinessLogic.Logic.GameDefinitions
                                   Name = gameDefiniton.Name
                               }).ToList();
         }
-
-        public List<TrendingGame> GetTrendingGames(int maxNumberOfGames, int numberOfDaysOfTrendingGames)
-        {
-            //--this particular query is expensive and times out a lot. Until we can come up with a better query just increase the timeout.
-            _dataContext.SetCommandTimeout(45);
-            var startDate = DateTime.Now.Date.AddDays(-1 * numberOfDaysOfTrendingGames);
-            return (from result in _dataContext.GetQueryable<BoardGameGeekGameDefinition>()
-                    select new TrendingGame
-                    {
-                        BoardGameGeekGameDefinitionId = result.Id,
-                        Name = result.Name,
-                        GamesPlayed = result.GameDefinitions.SelectMany(x => x.PlayedGames.Where(playedGame => playedGame.DatePlayed >= startDate)).Count(),
-                        ThumbnailImageUrl = result.Thumbnail,
-                        GamingGroupsPlayingThisGame = result.GameDefinitions.Count(
-                            gameDefinition => gameDefinition.PlayedGames.Any(playedGame => playedGame.DatePlayed >= startDate))
-                    })
-                    .OrderByDescending(x => x.GamingGroupsPlayingThisGame)
-                    .ThenByDescending(x => x.GamesPlayed)
-                    .Take(maxNumberOfGames)
-                    .ToList();
-        }
-
     }
 }

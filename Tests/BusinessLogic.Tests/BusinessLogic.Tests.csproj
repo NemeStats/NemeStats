@@ -335,7 +335,6 @@
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\BoardGameGeekGameDefinitionCreatorTests\CreateBoardGameGeekGameDefinitionTests.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\CreateGameDefinitionComponentTests\ExecuteTests.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GetAllGameDefinitionNamesTests.cs" />
-    <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GetTrendingGamesTests.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionSaverTests\GameDefinitionSaverTestBase.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionSaverTests\UpdateGameDefinitionTests.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupDeleterTests\DeleteGamingGroupTests.cs" />

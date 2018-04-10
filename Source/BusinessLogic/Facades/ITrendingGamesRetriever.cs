@@ -5,6 +5,6 @@ namespace BusinessLogic.Facades
 {
     public interface ITrendingGamesRetriever
     {
-        List<TrendingGame> GetResults(TrendingGamesRequest trendingGamesRequest);
+        IList<TrendingGame> GetResults(TrendingGamesRequest trendingGamesRequest);
     }
 }

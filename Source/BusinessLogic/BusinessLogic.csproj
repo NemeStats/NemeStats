@@ -180,7 +180,9 @@
     <Compile Include="DataAccess\NemeStatsDbContext.cs" />
     <Compile Include="DataAccess\NemeStatsInitializer.cs" />
     <Compile Include="DataAccess\Repositories\ChampionRepository.cs" />
+    <Compile Include="DataAccess\Repositories\GameDefinitionRepository.cs" />
     <Compile Include="DataAccess\Repositories\IChampionRepository.cs" />
+    <Compile Include="DataAccess\Repositories\IGameDefinitionRepository.cs" />
     <Compile Include="DataAccess\SecuredEntityWithTechnicalKey.cs" />
     <Compile Include="DataAccess\Security\GenericSecuredEntityValidator.cs" />
     <Compile Include="DataAccess\Security\IGenericSecuredEntityValidator.cs" />
