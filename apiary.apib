@@ -55,6 +55,7 @@ can more easily distinguish between different kinds of error responses that shar
 content being returned in the message.
 * 2018-3-28 Added "nemeStatsUrl" field(s) to the responses of GET /Users, GET /Players, GET /PlayedGames, and GET /GameDefinitions so that client's have an easier 
 way of providing linkage back to NemeStats should they so choose.
+* 2018-04-09 Added "nemeStatsUrl" to POST /PlayedGames, POST /Players, and POST /GameDefinitions
 
 ### General Information
 
@@ -389,7 +390,8 @@ This service will record a new Played Game under the specified Gaming Group (per
 
                 {
                   "playedGameId" : 31995,
-                  "gamingGroupId" : 9818
+                  "gamingGroupId" : 9818,
+                  "nemeStatsUrl" : "https://nemestats.com/PlayedGame/Details/31995"
                 }
 
 + Response 400 (application/json)
@@ -636,7 +638,7 @@ via the required gamingGroupId query string parameter.
                         "boardGameGeekObjectId":40692,
                         "datePlayed":"2015-04-04",
                         "dateLastUpdated":"2015-04-24",
-                        "https://nemestats.com/PlayedGame/Details/16785"
+                        "nemeStatsUrl" : "https://nemestats.com/PlayedGame/Details/16785"
                     },
                     {  
                         "playerGameResults":[  
@@ -834,7 +836,9 @@ This service will create a new Player in the specified Gaming Group (per the gam
 + Response 200 (application/json)
 
                 {
-                  "playerId" : 105156
+                  "playerId" : 105156,
+                  "gamingGroupId" : 51,
+                  "nemeStatsUrl" : "https://nemestats.com/Player/Details/105156"
                 }
 
 + Request Invalid Request Where Player Already Exists (application/json)
@@ -1034,7 +1038,8 @@ This service will create a new Game Definition in the specified Gaming Group (pe
 
                 {
                   "gameDefinitionId" : 105156,
-                  "gamingGroupId" : 195
+                  "gamingGroupId" : 195,
+                  "nemeStatsUrl" : "https://nemestats.com/GameDefinition/Details/105156"
                 }
                 
 + Response 409 (application/json)
