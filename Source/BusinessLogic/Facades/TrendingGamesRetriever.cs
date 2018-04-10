@@ -1,26 +1,26 @@
 ﻿using System.Collections.Generic;
 using BusinessLogic.Caching;
-using BusinessLogic.Logic.GameDefinitions;
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.Utilities;
 using BusinessLogic.Models.Games;
 
 namespace BusinessLogic.Facades
 {
-    public class TrendingGamesRetriever : Cacheable<TrendingGamesRequest, List<TrendingGame>>, ITrendingGamesRetriever
+    public class TrendingGamesRetriever : Cacheable<TrendingGamesRequest, IList<TrendingGame>>, ITrendingGamesRetriever
     {
-        private readonly IGameDefinitionRetriever _gameDefinitionRetriever;
+        private readonly IGameDefinitionRepository _gameDefinitionRepository;
 
         public TrendingGamesRetriever(
-            IGameDefinitionRetriever gameDefinitionRetriever,
+            IGameDefinitionRepository gameDefinitionRepository,
             IDateUtilities dateUtilities, 
             ICacheService cacheService) : base(dateUtilities, cacheService)
         {
-            _gameDefinitionRetriever = gameDefinitionRetriever;
+            _gameDefinitionRepository = gameDefinitionRepository;
         }
 
-        public override List<TrendingGame> GetFromSource(TrendingGamesRequest trendingGamesRequest)
+        public override IList<TrendingGame> GetFromSource(TrendingGamesRequest trendingGamesRequest)
         {
-            return _gameDefinitionRetriever.GetTrendingGames(trendingGamesRequest.NumberOfTrendingGamesToShow, trendingGamesRequest.NumberOfDaysOfTrendingGames);
+            return _gameDefinitionRepository.GetTrendingGames(trendingGamesRequest.NumberOfTrendingGamesToShow, trendingGamesRequest.NumberOfDaysOfTrendingGames);
         }
     }
 }

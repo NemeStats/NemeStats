@@ -29,11 +29,9 @@ namespace BusinessLogic.Logic.GameDefinitions
         IList<GameDefinitionSummary> GetAllGameDefinitions(int gamingGroupId, IDateRangeFilter dateRangeFilter = null);
         GameDefinitionSummary GetGameDefinitionDetails(int id, int numberOfPlayedGamesToRetrieve);
         IList<GameDefinitionName> GetAllGameDefinitionNames(int gamingGroupId, string nameQuery = null);
-        List<TrendingGame> GetTrendingGames(int maxNumberOfGames, int numberOfDaysOfTrendingGames);
         List<GameDefinitionSummary> GetGameDefinitionSummaries(List<int> gameDefinitionIds);
         IPagedList<GameDefinitionDisplayInfo> GetMostPlayedGames(GetMostPlayedGamesQuery query);
         IPagedList<GameDefinitionDisplayInfo> GetRecentGames(GetRecentPlayedGamesQuery query);
-
         GameDefinitionDisplayInfo GetGameDefinitionDisplayInfo(int id);
     }
 }
