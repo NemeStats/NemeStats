@@ -11,7 +11,6 @@ If you would like contribute to the NemeStats code base please follow the steps 
 * Make sure you have a SQL instance running that you have dbo access to. NemeStats uses Entity Framework Code First migrations to create and update the database.
 * Run the GetStarted.ps1 PowerShell script in the root folder. You can enter your connection string from here, or use the default connection to .\SQLExpress using integrated windows authentication. This script will create a file called PrivateAppSettings.config in the root of the UI project. This file will contain settings that are sensitive and/or specific to your environment. This file is ignored in .gitignore so that it should never be checked in. Most notably, this file will contain the connection string to your SQL instance where the NerdScorekeeper database runs. If you want to be able to send emails during your testing (e.g. when inviting another Player to your Gaming Group), email us at nemestats@gmail.com and we'll give you a sendGridApiKey to add to your PrivateAppSettings.config.
 
-```
 * Make sure you have an instance of SQL Server or SQL Express running locally, then go to package manager console and run "update-database -ProjectName BusinessLogic". This should create your database and apply all of the migrations to get it current. If it doesn't create the database then just create a local database called "Nerdscorekeeper" and then try running the command again.
 
 #### JavaScript guidelines
