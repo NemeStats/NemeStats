@@ -255,8 +255,8 @@
       <HintPath>..\..\packages\T4MVCExtensions.3.16.5\lib\net40\T4MVCExtensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="UniversalAnalyticsHttpWrapper, Version=1.2.0.30201, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\UniversalAnalyticsMeasurementProtocolWrapper.1.4.4\lib\net40\UniversalAnalyticsHttpWrapper.dll</HintPath>
+    <Reference Include="UniversalAnalyticsHttpWrapper, Version=1.5.0.13802, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\UniversalAnalyticsMeasurementProtocolWrapper.1.5.0-rc\lib\net40\UniversalAnalyticsHttpWrapper.dll</HintPath>
     </Reference>
     <Reference Include="VersionedRestApi, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\VersionedRestApi.1.0.0.2\lib\net45\VersionedRestApi.dll</HintPath>

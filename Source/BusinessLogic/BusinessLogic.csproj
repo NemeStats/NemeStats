@@ -154,8 +154,8 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="UniversalAnalyticsHttpWrapper, Version=1.2.0.30201, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\UniversalAnalyticsMeasurementProtocolWrapper.1.4.4\lib\net40\UniversalAnalyticsHttpWrapper.dll</HintPath>
+    <Reference Include="UniversalAnalyticsHttpWrapper, Version=1.5.0.13802, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\UniversalAnalyticsMeasurementProtocolWrapper.1.5.0-rc\lib\net40\UniversalAnalyticsHttpWrapper.dll</HintPath>
     </Reference>
     <Reference Include="X.PagedList, Version=1.24.1.31653, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\..\packages\X.PagedList.1.24.1.320\lib\net451\X.PagedList.dll</HintPath>

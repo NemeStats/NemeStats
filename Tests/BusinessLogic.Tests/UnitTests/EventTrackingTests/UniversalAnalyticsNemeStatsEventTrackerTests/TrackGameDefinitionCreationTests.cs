@@ -34,7 +34,8 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
-                Arg<string>.Is.Anything))
+                Arg<string>.Is.Anything,
+                Arg<bool>.Is.Anything))
                 .Return(analyticsEvent);
 
             tracker.TrackGameDefinitionCreation(currentUser, "game definition");
@@ -51,7 +52,8 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
-                Arg<string>.Is.Anything))
+                Arg<string>.Is.Anything,
+                Arg<bool>.Is.Anything))
                 .Return(analyticsEvent);
 
             tracker.TrackGameDefinitionCreation(currentUser, "game definition");
@@ -68,7 +70,8 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Equal(EventActionEnum.Created.ToString()),
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
-                Arg<string>.Is.Anything))
+                Arg<string>.Is.Anything,
+                Arg<bool>.Is.Anything))
                 .Return(analyticsEvent);
 
             tracker.TrackGameDefinitionCreation(currentUser, "game definition");
@@ -86,7 +89,8 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Equal(gameDefinitionName),
                 Arg<string>.Is.Anything, 
-                Arg<string>.Is.Anything))
+                Arg<string>.Is.Anything,
+                Arg<bool>.Is.Anything))
                 .Return(analyticsEvent);
 
             tracker.TrackGameDefinitionCreation(currentUser, gameDefinitionName);

@@ -35,7 +35,8 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything, 
-                Arg<string>.Is.Anything))
+                Arg<string>.Is.Anything,
+                Arg<bool>.Is.Anything))
                 .Return(analyticsEvent);
 
             tracker.TrackUserRegistration(TransactionSource.RestApi);
@@ -52,7 +53,8 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything, 
-                Arg<string>.Is.Anything))
+                Arg<string>.Is.Anything,
+                Arg<bool>.Is.Anything))
                 .Return(analyticsEvent);
 
             tracker.TrackUserRegistration(TransactionSource.RestApi);
@@ -69,7 +71,8 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Equal(EventActionEnum.Created.ToString()),
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything, 
-                Arg<string>.Is.Anything))
+                Arg<string>.Is.Anything,
+                Arg<bool>.Is.Anything))
                 .Return(analyticsEvent);
 
             tracker.TrackUserRegistration(TransactionSource.RestApi);
@@ -86,7 +89,8 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Equal(TransactionSource.RestApi.ToString()),
                 Arg<string>.Is.Anything, 
-                Arg<string>.Is.Anything))
+                Arg<string>.Is.Anything,
+                Arg<bool>.Is.Anything))
                 .Return(analyticsEvent);
 
             tracker.TrackUserRegistration(TransactionSource.RestApi);
