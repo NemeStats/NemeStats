@@ -15,14 +15,13 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
 using BusinessLogic.EventTracking;
 using BusinessLogic.Logic;
-using BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNemeStatsEventTrackerTests;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System.Linq;
 
-namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.PlayedGameTrackerTests
+namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNemeStatsEventTrackerTests
 {
     [TestFixture]
     public class TrackPlayedGameTests : UniversalAnalyticsNemeStatsEventTrackerTestBase
