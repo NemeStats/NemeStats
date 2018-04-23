@@ -59,7 +59,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
                     GamingGroup = new GamingGroup(),
                     GamingGroupId = EXPECTED_GAMING_GROUP_ID,
                     GameDefinitionId = EXPECTED_GAME_DEFINITION_ID,
-                    ApplicationLinkages = new List<PlayedGameApplicationLinkage>()
+                    ApplicationLinkages = new List<PlayedGameApplicationLinkage>(),
                 },
                 new PlayedGame
                 {
@@ -85,7 +85,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
                     GameDefinition = new GameDefinition(),
                     GamingGroup = new GamingGroup(),
                     GamingGroupId = 135353,
-                    ApplicationLinkages = expectedLinkagesForAprilGame
+                    ApplicationLinkages = expectedLinkagesForAprilGame,
                 }
             };
 
@@ -114,7 +114,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
                     Name = "some game definition name",
                     BoardGameGeekGameDefinitionId = 4
                 },
-                ApplicationLinkages = new List<PlayedGameApplicationLinkage>()
+                ApplicationLinkages = new List<PlayedGameApplicationLinkage>(),
+                WinnerType = WinnerTypes.TeamLoss
             };
 
             var playerGameResult = new PlayerGameResult
@@ -156,6 +157,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
             Assert.That(results.GamingGroupId, Is.EqualTo(playedGame.GamingGroupId));
             Assert.That(results.GamingGroupName, Is.EqualTo(playedGame.GamingGroup.Name));
             Assert.That(results.Notes, Is.EqualTo(playedGame.Notes));
+            Assert.That(results.WinnerType, Is.EqualTo(playedGame.WinnerType));
+
             var actualPlayerResult = results.PlayerGameResults[0];
             var expectedPlayerGameResult = playedGame.PlayerGameResults[0];
             Assert.That(actualPlayerResult.GameRank, Is.EqualTo(expectedPlayerGameResult.GameRank));
