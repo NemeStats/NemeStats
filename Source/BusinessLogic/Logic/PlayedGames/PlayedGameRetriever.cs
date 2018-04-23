@@ -156,6 +156,7 @@ namespace BusinessLogic.Logic.PlayedGames
                     Notes = playedGame.Notes,
                     DatePlayed = playedGame.DatePlayed,
                     DateLastUpdated = playedGame.DateCreated,
+                    WinnerType = playedGame.WinnerType,
                     ApplicationLinkages = playedGame.ApplicationLinkages.Select(x => new ApplicationLinkage
                     {
                         ApplicationName = x.ApplicationName,

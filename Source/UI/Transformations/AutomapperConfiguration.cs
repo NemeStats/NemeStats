@@ -70,10 +70,12 @@ namespace UI.Transformations
             Mapper.CreateMap<NewlyRegisteredUser, NewlyRegisteredUserMessage>(MemberList.Source);
             Mapper.CreateMap<PlayedGameApplicationLinkage, ApplicationLinkage>(MemberList.Destination);
             Mapper.CreateMap<PlayedGameSearchResult, PlayedGameSearchResultMessage>(MemberList.Destination)
-                  .ForSourceMember(x => x.PlayerGameResults, opt => opt.Ignore())
-                  .ForMember(x => x.NemeStatsUrl, opt => opt.Ignore())
-                  .ForMember(x => x.DateLastUpdated, opt => opt.MapFrom(src => src.DateLastUpdated.ToString("yyyy-MM-dd")))
-                  .ForMember(x => x.DatePlayed, opt => opt.MapFrom(src => src.DatePlayed.ToString("yyyy-MM-dd")));
+                .ForSourceMember(x => x.PlayerGameResults, opt => opt.Ignore())
+                .ForMember(x => x.NemeStatsUrl, opt => opt.Ignore())
+                .ForMember(x => x.DateLastUpdated,
+                    opt => opt.MapFrom(src => src.DateLastUpdated.ToString("yyyy-MM-dd")))
+                .ForMember(x => x.DatePlayed, opt => opt.MapFrom(src => src.DatePlayed.ToString("yyyy-MM-dd")))
+                .ForMember(x => x.WinnerType, opt => opt.MapFrom(src => src.WinnerType.ToString()));
             Mapper.CreateMap<PlayerResult, PlayerGameResultMessage>(MemberList.Destination)
                   .ForMember(x => x.TotalNemeStatsPointsAwarded, opt => opt.MapFrom(src => src.TotalPoints));
             Mapper.CreateMap<PlayerGameSummary, PlayerGameSummaryViewModel>(MemberList.Source);

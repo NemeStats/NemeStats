@@ -16,5 +16,6 @@ namespace UI.Areas.Api.Models
         public List<PlayerGameResultMessage> PlayerGameResults { get; set; }
         public List<ApplicationLinkageMessage> ApplicationLinkages { get; set; }
         public string NemeStatsUrl { get; set; }
+        public string WinnerType { get; set; }
     }
 }

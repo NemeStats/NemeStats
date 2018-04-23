@@ -15,14 +15,14 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
 using BusinessLogic.EventTracking;
 using BusinessLogic.Logic;
-using BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNemeStatsEventTrackerTests;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System.Linq;
+using UniversalAnalyticsHttpWrapper;
 
-namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.PlayedGameTrackerTests
+namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNemeStatsEventTrackerTests
 {
     [TestFixture]
     public class TrackPlayedGameTests : UniversalAnalyticsNemeStatsEventTrackerTestBase
@@ -30,51 +30,54 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.PlayedGameTrackerTest
         [Test]
         public void ItSetsTheAnonymousClientId()
         {
-            eventFactoryMock.Expect(mock => mock.MakeUniversalAnalyticsEvent(
+            _autoMocker.Get<IUniversalAnalyticsEventFactory>().Expect(mock => mock.MakeUniversalAnalyticsEvent(
                 Arg<string>.Is.Equal(currentUser.AnonymousClientId),
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
-                Arg<string>.Is.Anything))
+                Arg<string>.Is.Anything,
+                Arg<bool>.Is.Anything))
                 .Return(analyticsEvent);
 
-            tracker.TrackPlayedGame(currentUser, TransactionSource.WebApplication);
+            _autoMocker.ClassUnderTest.TrackPlayedGame(currentUser, TransactionSource.WebApplication);
 
-            eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
+            _autoMocker.Get<IEventTracker>().AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }
 
         [Test]
         public void ItSetsTheEventCategoryToPlayedGames()
         {
-            eventFactoryMock.Expect(mock => mock.MakeUniversalAnalyticsEvent(
+            _autoMocker.Get<IUniversalAnalyticsEventFactory>().Expect(mock => mock.MakeUniversalAnalyticsEvent(
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Equal(EventCategoryEnum.PlayedGames.ToString()),
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
-                Arg<string>.Is.Anything))
+                Arg<string>.Is.Anything,
+                Arg<bool>.Is.Anything))
                 .Return(analyticsEvent);
-            tracker.TrackPlayedGame(currentUser, TransactionSource.WebApplication);
+            _autoMocker.ClassUnderTest.TrackPlayedGame(currentUser, TransactionSource.WebApplication);
 
-            eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
+            _autoMocker.Get<IEventTracker>().AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }
 
         [Test]
         public void ItSetsTheEventActionToCreated()
         {
-            eventFactoryMock.Expect(mock => mock.MakeUniversalAnalyticsEvent(
+            _autoMocker.Get<IUniversalAnalyticsEventFactory>().Expect(mock => mock.MakeUniversalAnalyticsEvent(
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Equal(EventActionEnum.Created.ToString()),
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
-                Arg<string>.Is.Anything))
+                Arg<string>.Is.Anything,
+                Arg<bool>.Is.Anything))
                 .Return(analyticsEvent);
 
-            tracker.TrackPlayedGame(currentUser, TransactionSource.WebApplication);
+            _autoMocker.ClassUnderTest.TrackPlayedGame(currentUser, TransactionSource.WebApplication);
 
-            eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
+            _autoMocker.Get<IEventTracker>().AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }
 
         [Test]
@@ -82,18 +85,42 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.PlayedGameTrackerTest
         {
             TransactionSource transactionSource = TransactionSource.RestApi;
             
-            eventFactoryMock.Expect(mock => mock.MakeUniversalAnalyticsEvent(
+            _autoMocker.Get<IUniversalAnalyticsEventFactory>().Expect(mock => mock.MakeUniversalAnalyticsEvent(
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Equal(transactionSource.ToString()),
                 Arg<string>.Is.Anything,
-                Arg<string>.Is.Anything))
+                Arg<string>.Is.Anything,
+                Arg<bool>.Is.Anything))
                 .Return(analyticsEvent);
 
-            tracker.TrackPlayedGame(currentUser, transactionSource);
+            _autoMocker.ClassUnderTest.TrackPlayedGame(currentUser, transactionSource);
 
-            eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
+            _autoMocker.Get<IEventTracker>().AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
+        }
+
+        [Test]
+        public void ItSetsTheNonInteractionFlag()
+        {
+            TransactionSource transactionSource = TransactionSource.RestApi;
+
+            _autoMocker.ClassUnderTest.Expect(mock => mock.IsNonInteractionEvent(transactionSource))
+                .Return(true);
+
+            _autoMocker.Get<IUniversalAnalyticsEventFactory>().Expect(mock => mock.MakeUniversalAnalyticsEvent(
+                    Arg<string>.Is.Anything,
+                    Arg<string>.Is.Anything,
+                    Arg<string>.Is.Anything,
+                    Arg<string>.Is.Anything,
+                    Arg<string>.Is.Anything,
+                    Arg<string>.Is.Anything,
+                    Arg<bool>.Is.Equal(true)))
+                .Return(analyticsEvent);
+
+            _autoMocker.ClassUnderTest.TrackPlayedGame(currentUser, transactionSource);
+
+            _autoMocker.Get<IEventTracker>().AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }
     }
 }
