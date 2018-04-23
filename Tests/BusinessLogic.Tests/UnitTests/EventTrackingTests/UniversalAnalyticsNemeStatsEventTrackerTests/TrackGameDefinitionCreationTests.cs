@@ -18,7 +18,7 @@
 using BusinessLogic.EventTracking;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System.Linq;
+using UniversalAnalyticsHttpWrapper;
 
 namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNemeStatsEventTrackerTests
 {
@@ -28,7 +28,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
         [Test]
         public void ItSetsTheAnonymousClientId()
         {
-            eventFactoryMock.Expect(mock => mock.MakeUniversalAnalyticsEvent(
+            _autoMocker.Get<IUniversalAnalyticsEventFactory>().Expect(mock => mock.MakeUniversalAnalyticsEvent(
                 Arg<string>.Is.Equal(currentUser.AnonymousClientId),
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
@@ -38,15 +38,15 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<bool>.Is.Anything))
                 .Return(analyticsEvent);
 
-            tracker.TrackGameDefinitionCreation(currentUser, "game definition");
-
-            eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
+            _autoMocker.ClassUnderTest.TrackGameDefinitionCreation(currentUser, "game definition");
+            
+            _autoMocker.Get<IEventTracker>().AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }
 
         [Test]
         public void ItSetsTheEventCategoryToGameDefinition()
         {
-            eventFactoryMock.Expect(mock => mock.MakeUniversalAnalyticsEvent(
+            _autoMocker.Get<IUniversalAnalyticsEventFactory>().Expect(mock => mock.MakeUniversalAnalyticsEvent(
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Equal(EventCategoryEnum.GameDefinitions.ToString()),
                 Arg<string>.Is.Anything,
@@ -56,15 +56,15 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<bool>.Is.Anything))
                 .Return(analyticsEvent);
 
-            tracker.TrackGameDefinitionCreation(currentUser, "game definition");
+            _autoMocker.ClassUnderTest.TrackGameDefinitionCreation(currentUser, "game definition");
 
-            eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
+            _autoMocker.Get<IEventTracker>().AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }
 
         [Test]
         public void ItSetsTheEventActionToCreated()
         {
-            eventFactoryMock.Expect(mock => mock.MakeUniversalAnalyticsEvent(
+            _autoMocker.Get<IUniversalAnalyticsEventFactory>().Expect(mock => mock.MakeUniversalAnalyticsEvent(
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Equal(EventActionEnum.Created.ToString()),
@@ -74,16 +74,16 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<bool>.Is.Anything))
                 .Return(analyticsEvent);
 
-            tracker.TrackGameDefinitionCreation(currentUser, "game definition");
+            _autoMocker.ClassUnderTest.TrackGameDefinitionCreation(currentUser, "game definition");
 
-            eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
+            _autoMocker.Get<IEventTracker>().AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }
 
         [Test]
         public void ItSetsTheEventLabelToTheNameOfTheGameDefinition()
         {
             string gameDefinitionName = "game definition name";
-            eventFactoryMock.Expect(mock => mock.MakeUniversalAnalyticsEvent(
+            _autoMocker.Get<IUniversalAnalyticsEventFactory>().Expect(mock => mock.MakeUniversalAnalyticsEvent(
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
@@ -93,9 +93,9 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<bool>.Is.Anything))
                 .Return(analyticsEvent);
 
-            tracker.TrackGameDefinitionCreation(currentUser, gameDefinitionName);
+            _autoMocker.ClassUnderTest.TrackGameDefinitionCreation(currentUser, gameDefinitionName);
 
-            eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
+            _autoMocker.Get<IEventTracker>().AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }
     }
 }

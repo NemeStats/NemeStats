@@ -20,6 +20,7 @@ using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Linq;
+using StructureMap.AutoMocking;
 using UniversalAnalyticsHttpWrapper;
 
 namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNemeStatsEventTrackerTests
@@ -27,21 +28,19 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
     [TestFixture]
     public class UniversalAnalyticsNemeStatsEventTrackerTestBase
     {
-        protected IEventTracker eventTrackerMock;
-        protected IUniversalAnalyticsEventFactory eventFactoryMock;
+        protected RhinoAutoMocker<UniversalAnalyticsNemeStatsEventTracker> _autoMocker;
         protected IUniversalAnalyticsEvent analyticsEvent;
-        protected UniversalAnalyticsNemeStatsEventTracker tracker;
         protected ApplicationUser currentUser;
 
         [SetUp]
         public void SetUp()
         {
-            eventTrackerMock = MockRepository.GenerateMock<IEventTracker>();
-            eventFactoryMock = MockRepository.GenerateMock<IUniversalAnalyticsEventFactory>();
+            _autoMocker = new RhinoAutoMocker<UniversalAnalyticsNemeStatsEventTracker>();
+            _autoMocker.PartialMockTheClassUnderTest();
+            
             analyticsEvent = MockRepository.GenerateMock<IUniversalAnalyticsEvent>();
 
-            tracker = new UniversalAnalyticsNemeStatsEventTracker(eventTrackerMock, eventFactoryMock);
-            currentUser = new ApplicationUser()
+            currentUser = new ApplicationUser
             {
                 AnonymousClientId = "anonymous id"
             };

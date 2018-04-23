@@ -48,9 +48,15 @@ namespace BusinessLogic.EventTracking
                 currentUser.AnonymousClientId,
                 EventCategoryEnum.PlayedGames.ToString(),
                 EventActionEnum.Created.ToString(),
-                transactionSource.ToString());
+                transactionSource.ToString(), 
+                nonInteractionEvent: IsNonInteractionEvent(TransactionSource.RestApi));
 
             eventTracker.TrackEvent(universalAnalyticsEvent);
+        }
+
+        internal virtual bool IsNonInteractionEvent(TransactionSource transactionSource)
+        {
+            return transactionSource == TransactionSource.RestApi;
         }
 
         public void TrackUserRegistration(TransactionSource registrationSource)
@@ -59,7 +65,8 @@ namespace BusinessLogic.EventTracking
                 DEFAULT_ANONYMOUS_CLIENT_ID,
                 EventCategoryEnum.Users.ToString(),
                 EventActionEnum.Created.ToString(),
-                registrationSource.ToString());
+                registrationSource.ToString(),
+                nonInteractionEvent: IsNonInteractionEvent(TransactionSource.RestApi));
 
             eventTracker.TrackEvent(universalAnalyticsEvent);
         }
@@ -81,7 +88,8 @@ namespace BusinessLogic.EventTracking
                   currentUser.AnonymousClientId,
                   EventCategoryEnum.GameDefinitions.ToString(),
                   EventActionEnum.Created.ToString(),
-                  gameDefinitionName);
+                  gameDefinitionName,
+                nonInteractionEvent: IsNonInteractionEvent(TransactionSource.RestApi));
 
             eventTracker.TrackEvent(universalAnalyticsEvent);
         }
@@ -92,7 +100,8 @@ namespace BusinessLogic.EventTracking
                   currentUser.AnonymousClientId,
                   EventCategoryEnum.Players.ToString(),
                   EventActionEnum.Created.ToString(),
-                  DEFAULT_EVENT_LABEL);
+                  DEFAULT_EVENT_LABEL,
+                  nonInteractionEvent: IsNonInteractionEvent(TransactionSource.RestApi));
 
             eventTracker.TrackEvent(universalAnalyticsEvent);
         }
@@ -103,7 +112,8 @@ namespace BusinessLogic.EventTracking
                              currentUser.AnonymousClientId,
                              EventCategoryEnum.GamingGroups.ToString(),
                              EventActionEnum.Updated.ToString(),
-                             DEFAULT_EVENT_LABEL);
+                             DEFAULT_EVENT_LABEL,
+                             nonInteractionEvent: IsNonInteractionEvent(TransactionSource.RestApi));
 
             eventTracker.TrackEvent(universalAnalyticsEvent);
         }
