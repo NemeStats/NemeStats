@@ -295,14 +295,6 @@ Views.GamingGroup.GamingGroupView.prototype = {
                 success: function (html) {
                     $("#" + divIdForRenderingResults).html(html);
 
-                    var gameDefinition = new window.Views.GameDefinition.CreateGameDefinitionPartial();
-                    gameDefinition.init();
-                    gameDefinition.configureViewModel();
-
-                    var gameDefinitions = new window.Views.GameDefinition.GameDefinitions();
-                    gameDefinitions.init();
-                    gameDefinition.onDefinitionCreated = $.proxy(gameDefinitions.onGameCreated, gameDefinitions);
-
                     var layout = new Views.Shared.Layout();
                     layout.initializePopoversAndTooltips(parent);
 
