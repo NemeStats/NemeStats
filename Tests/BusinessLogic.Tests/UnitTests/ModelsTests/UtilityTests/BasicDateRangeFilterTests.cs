@@ -84,8 +84,7 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.UtilityTests
             [Test]
             public void ItReturnsTrueIfThereAreNoValidationIssues()
             {
-                string errorMessage;
-                bool isValid = filter.IsValid(out errorMessage);
+                bool isValid = filter.IsValid(out var errorMessage);
 
                 Assert.That(isValid, Is.EqualTo(true));
                 Assert.That(errorMessage, Is.Null);
@@ -94,12 +93,11 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.UtilityTests
             [Test]
             public void ItReturnsFalseAndGivesAnErrorMessageIfTheFromDateIsAfterTheToDate()
             {
-                string errorMessage;
                 DateTime toDate = DateTime.Now.AddDays(-5);
                 filter.ToDate = toDate;
                 filter.FromDate = filter.ToDate.AddDays(1);
 
-                bool isValid = filter.IsValid(out errorMessage);
+                bool isValid = filter.IsValid(out var errorMessage);
 
                 Assert.That(isValid, Is.EqualTo(false));
                 Assert.That(errorMessage, Is.EqualTo("The 'From Date' cannot be greater than the 'To Date'."));
@@ -108,25 +106,22 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.UtilityTests
             [Test]
             public void ItReturnsFalseAndGivesAnErrorMessageIfTheFromDateIsInTheFuture()
             {
-                string errorMessage;
                 filter.FromDate = DateTime.UtcNow.AddDays(2);
 
-                bool isValid = filter.IsValid(out errorMessage);
+                bool isValid = filter.IsValid(out var errorMessage);
 
                 Assert.That(isValid, Is.EqualTo(false));
                 Assert.That(errorMessage, Is.EqualTo("The 'From Date' cannot be in the future."));
             }
 
             [Test]
-            public void ItReturnsFalseAndGivesAnErrorMessageIfTheToDateIsInTheFuture()
+            public void ItReturnsTrueIfTheToDateIsInTheFuture()
             {
-                string errorMessage;
                 filter.ToDate = DateTime.UtcNow.AddDays(2);
 
-                bool isValid = filter.IsValid(out errorMessage);
+                bool isValid = filter.IsValid(out var errorMessage);
 
-                Assert.That(isValid, Is.EqualTo(false));
-                Assert.That(errorMessage, Is.EqualTo("The 'Ending Date' cannot be in the future."));
+                Assert.That(isValid, Is.EqualTo(true));
             }
         }
     }
