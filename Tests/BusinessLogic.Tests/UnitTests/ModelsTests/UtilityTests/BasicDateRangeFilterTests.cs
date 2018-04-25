@@ -84,7 +84,8 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.UtilityTests
             [Test]
             public void ItReturnsTrueIfThereAreNoValidationIssues()
             {
-                bool isValid = filter.IsValid(out var errorMessage);
+                string errorMessage;
+                bool isValid = filter.IsValid(out errorMessage);
 
                 Assert.That(isValid, Is.EqualTo(true));
                 Assert.That(errorMessage, Is.Null);
@@ -96,8 +97,9 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.UtilityTests
                 DateTime toDate = DateTime.Now.AddDays(-5);
                 filter.ToDate = toDate;
                 filter.FromDate = filter.ToDate.AddDays(1);
+                string errorMessage;
 
-                bool isValid = filter.IsValid(out var errorMessage);
+                bool isValid = filter.IsValid(out errorMessage);
 
                 Assert.That(isValid, Is.EqualTo(false));
                 Assert.That(errorMessage, Is.EqualTo("The 'From Date' cannot be greater than the 'To Date'."));
@@ -107,8 +109,9 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.UtilityTests
             public void ItReturnsFalseAndGivesAnErrorMessageIfTheFromDateIsInTheFuture()
             {
                 filter.FromDate = DateTime.UtcNow.AddDays(2);
+                string errorMessage;
 
-                bool isValid = filter.IsValid(out var errorMessage);
+                bool isValid = filter.IsValid(out errorMessage);
 
                 Assert.That(isValid, Is.EqualTo(false));
                 Assert.That(errorMessage, Is.EqualTo("The 'From Date' cannot be in the future."));
@@ -118,8 +121,9 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.UtilityTests
             public void ItReturnsTrueIfTheToDateIsInTheFuture()
             {
                 filter.ToDate = DateTime.UtcNow.AddDays(2);
+                string errorMessage;
 
-                bool isValid = filter.IsValid(out var errorMessage);
+                bool isValid = filter.IsValid(out errorMessage);
 
                 Assert.That(isValid, Is.EqualTo(true));
             }
