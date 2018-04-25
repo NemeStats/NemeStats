@@ -32,7 +32,6 @@ Views.GamingGroup.GamingGroupView = function () {
     this._googleAnalytics = null;
     this._playersTabLoaded = false;
     this._gamesTabLoaded = false;
-    this._playedGamesTabLoaded = false;
     this._statsTabLoaded = false;
     this._recentTabLoaded = false;
     this._tabEnum = {
@@ -282,34 +281,22 @@ Views.GamingGroup.GamingGroupView.prototype = {
         var toDate = $toDatePicker.val();
         parent.updateUrl(parent._tabEnum.PLAYS, fromDate, toDate);
 
-        if (!parent._playedGamesTabLoaded) {
-            $.ajax({
-                url: parent._getGamingGroupPlayedGamesServiceAddress,
-                data: {
-                    "id": gamingGroupId,
-                    "Iso8601FromDate": fromDate,
-                    "Iso8601ToDate": toDate
-                },
-                cache: false,
-                type: "GET",
-                success: function (html) {
-                    $("#" + divIdForRenderingResults).html(html);
+        $.ajax({
+            url: parent._getGamingGroupPlayedGamesServiceAddress,
+            data: {
+                "id": gamingGroupId,
+                "Iso8601FromDate": fromDate,
+                "Iso8601ToDate": toDate
+            },
+            cache: false,
+            type: "GET",
+            success: function (html) {
+                $("#" + divIdForRenderingResults).html(html);
 
-                    var gameDefinition = new window.Views.GameDefinition.CreateGameDefinitionPartial();
-                    gameDefinition.init();
-                    gameDefinition.configureViewModel();
-
-                    var gameDefinitions = new window.Views.GameDefinition.GameDefinitions();
-                    gameDefinitions.init();
-                    gameDefinition.onDefinitionCreated = $.proxy(gameDefinitions.onGameCreated, gameDefinitions);
-
-                    var layout = new Views.Shared.Layout();
-                    layout.initializePopoversAndTooltips(parent);
-
-                    parent._playedGamesTabLoaded = true;
-                }
-            });
-        }
+                var layout = new Views.Shared.Layout();
+                layout.initializePopoversAndTooltips(parent);
+            }
+        });
     },
     getStats: function (gamingGroupId, $fromDatePicker, $toDatePicker, divIdForRenderingResults, parent) {
         var fromDate = $fromDatePicker.val();
@@ -448,7 +435,6 @@ Views.GamingGroup.GamingGroupView.prototype = {
     reloadCurrentTabAndResetOthers: function ($playersTab, $gamesTab, $playedGamesTab, $statsTab, $fromDatePicker, $toDatePicker, settings, parent) {
         parent._playersTabLoaded = false;
         parent._gamesTabLoaded = false;
-        parent._playedGamesTabLoaded = false;
         parent._statsTabLoaded = false;
 
         var tabEnum = parent.getCurrentTab(parent);

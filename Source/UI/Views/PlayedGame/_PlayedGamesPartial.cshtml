@@ -26,7 +26,7 @@
                         {
                             <div class="pull-right">
                                 <div class="btn-group btn-group-sm">
-                                    @{ var fileRequestUrl = "/api/v1/GamingGroups/" + Model.GamingGroupId.Value + "/PlayedGamesExcel"; }
+                                    @{ var fileRequestUrl = "/api/v2/PlayedGamesExcel/?gamingGroupId=" + Model.GamingGroupId.Value; }
                                     <a href="@fileRequestUrl" id="playedGamesExcelDownload" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="top"
                                        data-content="Export all of your played games to Microsoft Excel (.xlsx)">
                                         <i class="fa fa-download"></i>&nbsp;Export to excel
