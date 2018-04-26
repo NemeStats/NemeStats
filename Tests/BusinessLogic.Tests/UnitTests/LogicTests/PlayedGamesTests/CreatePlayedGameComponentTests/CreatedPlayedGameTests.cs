@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using System;
 using System.Collections.Generic;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
@@ -101,6 +102,19 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
             actualException.Message.ShouldBe(expectedException.Message);
         }
 
+        [Test]
+        public void It_Validates_The_Date_Played()
+        {
+            //--arrange
+            var newGame = CreateValidNewlyCompletedGame();
+            newGame.DatePlayed = DateTime.UtcNow.AddDays(2);
+
+            //--act
+            _autoMocker.ClassUnderTest.Execute(newGame, _currentUser, _dataContext);
+
+            //--assert
+            _autoMocker.Get<IPlayedGameSaver>().AssertWasCalled(mock => mock.ValidateDatePlayed(newGame.DatePlayed));
+        }
 
         [Test]
         public void It_Validates_The_User_Has_Access_To_The_Specified_Gaming_Group_Id()

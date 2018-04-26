@@ -28,7 +28,6 @@ using System.Data.Entity;
 using System.Linq;
 using BusinessLogic.Events;
 using BusinessLogic.Events.HandlerFactory;
-using BusinessLogic.Events.Interfaces;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Models.PlayedGames;
 
@@ -124,6 +123,15 @@ namespace BusinessLogic.Logic.PlayedGames
                 CreatedByApplicationUserId = applicationUserId
             };
             return playedGame;
+        }
+
+        public virtual void ValidateDatePlayed(DateTime datePlayed)
+        {
+            var timespan = datePlayed.Date - DateTime.UtcNow.Date;
+            if (timespan.Days >= 2)
+            {
+                throw new InvalidPlayedGameDateException(datePlayed);
+            }
         }
 
         public virtual void CreateApplicationLinkages(IList<ApplicationLinkage> applicationLinkages, int playedGameId, IDataContext dataContext)

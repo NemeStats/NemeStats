@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using System;
 using System.Collections.Generic;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
@@ -36,5 +37,6 @@ namespace BusinessLogic.Logic.PlayedGames
         List<PlayerGameResult> MakePlayerGameResults(SaveableGameBase savedGame, int? boardGameGeekGameDefinitionId, IDataContext dataContext);
 
         PlayedGame TransformNewlyCompletedGameIntoPlayedGame(SaveableGameBase savedGame, int gamingGroupId, string applicationUserId, List<PlayerGameResult> playerGameResults);
+        void ValidateDatePlayed(DateTime datePlayed);
     }
 }

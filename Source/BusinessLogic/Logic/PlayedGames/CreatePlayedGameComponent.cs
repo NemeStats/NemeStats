@@ -38,6 +38,8 @@ namespace BusinessLogic.Logic.PlayedGames
                 throw new UserHasNoGamingGroupException(currentUser.Id);    
             }
 
+            _playedGameSaver.ValidateDatePlayed(newlyCompletedGame.DatePlayed);
+
             if (newlyCompletedGame.GamingGroupId.HasValue && newlyCompletedGame.GamingGroupId != currentUser.CurrentGamingGroupId)
             {
                 _securedEntityValidator.RetrieveAndValidateAccess<GamingGroup>(newlyCompletedGame.GamingGroupId.Value, currentUser);
