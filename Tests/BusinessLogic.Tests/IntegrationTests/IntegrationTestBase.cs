@@ -290,13 +290,6 @@ namespace BusinessLogic.Tests.IntegrationTests
             playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, _dataContext);
             testPlayedGames.Add(playedGame);
 
-            //--this played game is future dated to a valid date on the Thai Buddhist calendar. Board Game Stats is allowing games like this to pass through... Tried to pick two players that wouldn't hurt
-            // other integration tests
-            players = new List<Player> { testPlayer2, testPlayer5 };
-            playerRanks = new List<int> { 1, 2 };
-            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, createPlayedGameComponent, _dataContext, datePlayed: DateTime.UtcNow.AddYears(543));
-            testPlayedGames.Add(playedGame);
-
             players = new List<Player> { testPlayer9UndefeatedWith5Games, testPlayer7WithOtherGamingGroupId };
             playerRanks = new List<int> { 1, 2 };
             //--this last one should pause to finish all of the post-update processing
