@@ -186,6 +186,25 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
         }
 
         [Test]
+        public void It_Validates_The_Date_Played()
+        {
+            //--arrange
+            SetupExpectationsForExistingPlayedGame();
+
+            var updatedGame = new UpdatedGame
+            {
+                PlayedGameId = _existingPlayedGameId,
+                GameDefinitionId = _existingGameDefinitionId
+            };
+
+            //--act
+            AutoMocker.ClassUnderTest.UpdatePlayedGame(updatedGame, TransactionSource.RestApi, CurrentUser);
+
+            //--assert
+            AutoMocker.ClassUnderTest.AssertWasCalled(mock => mock.ValidateDatePlayed(updatedGame.DatePlayed));
+        }
+
+        [Test]
         public void It_Validates_Access_To_The_New_Game_Definition()
         {
             //--arrange

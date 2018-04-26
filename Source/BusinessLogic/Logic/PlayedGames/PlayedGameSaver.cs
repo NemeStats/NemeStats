@@ -149,6 +149,9 @@ namespace BusinessLogic.Logic.PlayedGames
 
         public PlayedGame UpdatePlayedGame(UpdatedGame updatedGame, TransactionSource transactionSource, ApplicationUser currentUser)
         {
+            ValidateDatePlayed(updatedGame.DatePlayed);
+
+            //TODO most of these should just validateAccess instead of retrieving
             if (updatedGame.GamingGroupId.HasValue)
             {
                 _securedEntityValidator.RetrieveAndValidateAccess<GamingGroup>(updatedGame.GamingGroupId.Value, currentUser);
