@@ -19,9 +19,6 @@
 using System;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
-using BusinessLogic.EventTracking;
-using BusinessLogic.Logic.Champions;
-using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.Points;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
@@ -48,9 +45,6 @@ namespace BusinessLogic.Logic.PlayedGames
 
         public PlayedGameSaver(
             IDataContext applicationDataContext,
-            INemeStatsEventTracker playedGameTracker,
-            INemesisRecalculator nemesisRecalculator,
-            IChampionRecalculator championRecalculator,
             ISecuredEntityValidator securedEntityValidator,
             IPointsCalculator pointsCalculator,
             IApplicationLinker applicationLinker, 
