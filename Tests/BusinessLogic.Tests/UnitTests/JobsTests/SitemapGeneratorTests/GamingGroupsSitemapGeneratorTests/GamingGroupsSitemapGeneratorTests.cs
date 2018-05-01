@@ -88,7 +88,7 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.GamingGr
         public class When_Last_Game_Played_Within_Last_30_Days : GamingGroupsSitemapGeneratorTests
         {
             [Test]
-            public void It_Sets_The_Priority_To_Point_Six_And_Change_Frequency_To_Weekly()
+            public void It_Sets_The_Priority_To_Point_Four_And_Change_Frequency_To_Weekly()
             {
                 //--arrange
 
@@ -99,7 +99,7 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.GamingGr
                 _autoMocker.Get<IGamingGroupRetriever>().Received().GetGamingGroupsSitemapInfo();
                 _autoMocker.Get<ISitemapGenerator>().Received(1).GenerateSitemaps(
                     Arg.Is<List<Url>>(x => x.Any(y => y.ChangeFrequency == ChangeFrequency.Weekly 
-                        && y.Priority == .6
+                        && y.Priority == .4
                         && y.TimeStamp.Date == _sitemapInfoForGamingGroupWithRecentPlay.DateLastGamePlayed.Date)),
                     Arg.Any<DirectoryInfo>(),
                     Arg.Any<string>());
@@ -109,7 +109,7 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.GamingGr
         public class When_Last_Game_Played_Older_Than_30_Days : GamingGroupsSitemapGeneratorTests
         {
             [Test]
-            public void It_Sets_The_Priority_To_Point_Five_And_Change_Frequency_To_Monthly()
+            public void It_Sets_The_Priority_To_Point_Three_And_Change_Frequency_To_Monthly()
             {
                 //--arrange
 
@@ -120,7 +120,7 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.GamingGr
                 _autoMocker.Get<IGamingGroupRetriever>().Received().GetGamingGroupsSitemapInfo();
                 _autoMocker.Get<ISitemapGenerator>().Received(1).GenerateSitemaps(
                     Arg.Is<List<Url>>(x => x.Any(y => y.ChangeFrequency == ChangeFrequency.Monthly 
-                        && y.Priority == .5 
+                        && y.Priority == .3 
                         && y.TimeStamp.Date == _sitemapInfoForGamingGroupWithNoRecentPlays.DateLastGamePlayed.Date)),
                     Arg.Any<DirectoryInfo>(),
                     Arg.Any<string>());
@@ -130,7 +130,7 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.GamingGr
         public class When_There_Are_No_Played_Games : GamingGroupsSitemapGeneratorTests
         {
             [Test]
-            public void It_Sets_The_Priority_To_Point_Three_And_Change_Frequency_To_Yearly_And_Last_Mod_Date_To_Gaming_Group_Created_Date()
+            public void It_Sets_The_Priority_To_Point_One_And_Change_Frequency_To_Yearly_And_Last_Mod_Date_To_Gaming_Group_Created_Date()
             {
                 //--arrange
 
@@ -141,7 +141,7 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.GamingGr
                 _autoMocker.Get<IGamingGroupRetriever>().Received().GetGamingGroupsSitemapInfo();
                 _autoMocker.Get<ISitemapGenerator>().Received(1).GenerateSitemaps(
                     Arg.Is<List<Url>>(x => x.Any(y => y.ChangeFrequency == ChangeFrequency.Yearly 
-                        && y.Priority == .3 
+                        && y.Priority == .1 
                         && y.TimeStamp.Date == _sitemapInfoForGamingGroupWithNoPlays.DateCreated.Date)),
                     Arg.Any<DirectoryInfo>(),
                     Arg.Any<string>());

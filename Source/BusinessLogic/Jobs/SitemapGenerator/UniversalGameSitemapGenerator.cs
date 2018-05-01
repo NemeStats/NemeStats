@@ -29,7 +29,7 @@ namespace BusinessLogic.Jobs.SitemapGenerator
                 {
                     ChangeFrequency = hasPlayWithinLastThirtyDays ? ChangeFrequency.Weekly : ChangeFrequency.Monthly,
                     Location = $"https://nemestats.com/UniversalGame/Details/{sitemapInfo.BoardGameGeekGameDefinitionId}",
-                    Priority = hasPlayWithinLastThirtyDays ? .8 : .7,
+                    Priority = hasPlayWithinLastThirtyDays ? .7 : .6,
                     TimeStamp = sitemapInfo.DateLastGamePlayed == DateTime.MinValue ? sitemapInfo.DateCreated : sitemapInfo.DateLastGamePlayed
                 };
             }).ToList();

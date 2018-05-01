@@ -120,7 +120,7 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.Universa
         public class When_Last_Game_Played_Within_Last_30_Days : BuildUniversalGamesSitemapsTests
         {
             [Test]
-            public void It_Sets_The_Priority_To_Point_Eight_And_Change_Frequency_To_Weekly()
+            public void It_Sets_The_Priority_To_Point_Seven_And_Change_Frequency_To_Weekly()
             {
                 //--arrange
 
@@ -130,7 +130,7 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.Universa
                 //--assert
                 _autoMocker.Get<IUniversalGameRetriever>().Received().GetAllActiveBoardGameGeekGameDefinitionSitemapInfos();
                 _autoMocker.Get<ISitemapGenerator>().Received(1).GenerateSitemaps(
-                    Arg.Is<List<Url>>(x => x.Any(y => y.ChangeFrequency == ChangeFrequency.Weekly && y.Priority == .8)),
+                    Arg.Is<List<Url>>(x => x.Any(y => y.ChangeFrequency == ChangeFrequency.Weekly && y.Priority == .7)),
                     Arg.Any<DirectoryInfo>(),
                     Arg.Any<string>());
             }
@@ -139,7 +139,7 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.Universa
         public class When_Last_Game_Played_Older_Than_30_Days : BuildUniversalGamesSitemapsTests
         {
             [Test]
-            public void It_Sets_The_Priority_To_Point_Seven_And_Change_Frequency_To_Monthly()
+            public void It_Sets_The_Priority_To_Point_Six_And_Change_Frequency_To_Monthly()
             {
                 //--arrange
 
@@ -149,7 +149,7 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.Universa
                 //--assert
                 _autoMocker.Get<IUniversalGameRetriever>().Received().GetAllActiveBoardGameGeekGameDefinitionSitemapInfos();
                 _autoMocker.Get<ISitemapGenerator>().Received(1).GenerateSitemaps(
-                    Arg.Is<List<Url>>(x => x.Any(y => y.ChangeFrequency == ChangeFrequency.Monthly && y.Priority == .7)),
+                    Arg.Is<List<Url>>(x => x.Any(y => y.ChangeFrequency == ChangeFrequency.Monthly && y.Priority == .6)),
                     Arg.Any<DirectoryInfo>(),
                     Arg.Any<string>());
             }

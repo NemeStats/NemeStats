@@ -31,19 +31,19 @@ namespace BusinessLogic.Jobs.SitemapGenerator
 
                 if (sitemapInfo.DateLastGamePlayed == DateTime.MinValue)
                 {
-                    url.Priority = .3;
+                    url.Priority = .1;
                     url.ChangeFrequency = ChangeFrequency.Yearly;
                     url.TimeStamp = sitemapInfo.DateCreated;
                 }
                 else if (sitemapInfo.DateLastGamePlayed < DateTime.UtcNow.Date.AddDays(-30))
                 {
-                    url.Priority = .5;
+                    url.Priority = .3;
                     url.ChangeFrequency = ChangeFrequency.Monthly;
                     url.TimeStamp = sitemapInfo.DateLastGamePlayed;
                 }
                 else
                 {
-                    url.Priority = .6;
+                    url.Priority = .4;
                     url.ChangeFrequency = ChangeFrequency.Weekly;
                     url.TimeStamp = sitemapInfo.DateLastGamePlayed;
                 }
