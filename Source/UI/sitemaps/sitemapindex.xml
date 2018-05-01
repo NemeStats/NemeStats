@@ -2,14 +2,14 @@
 <sitemapindex xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
     <loc>https://nemestats.com/sitemaps/staticpagessitemap-001.xml</loc>
-    <lastmod>2018-03-06</lastmod>
+    <lastmod>2018-05-01</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://nemestats.com/sitemaps/universalgamessitemap-001.xml</loc>
-    <lastmod>2018-03-06</lastmod>
+    <lastmod>2018-05-01</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://nemestats.com/sitemaps/gaminggroupssitemap-001.xml</loc>
-    <lastmod>2018-03-06</lastmod>
+    <lastmod>2018-05-01</lastmod>
   </sitemap>
 </sitemapindex>
