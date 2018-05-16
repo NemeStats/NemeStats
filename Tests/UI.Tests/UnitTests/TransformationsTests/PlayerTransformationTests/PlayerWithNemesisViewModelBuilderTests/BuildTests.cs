@@ -180,6 +180,19 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         }
 
         [Test]
+        public void ItCopiesTheRegisteredUserEmailAddress()
+        {
+            //--arrange
+            playerWithNemesis.RegisterdUserEmailAddress = "some email";
+
+            //--act
+            var actualViewModel = builder.Build(playerWithNemesis, currentUser);
+
+            //--assert
+            Assert.AreEqual(playerWithNemesis.RegisterdUserEmailAddress, actualViewModel.RegisteredUserEmailAddress);
+        }
+
+        [Test]
         public void ItCalculatesAveragePoints()
         {
             PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, currentUser);

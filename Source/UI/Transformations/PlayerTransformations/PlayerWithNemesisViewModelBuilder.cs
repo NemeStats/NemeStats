@@ -40,6 +40,7 @@ namespace UI.Transformations.PlayerTransformations
                 PlayerName = playerWithNemesis.PlayerName,
                 PlayerActive = playerWithNemesis.PlayerActive,
                 PlayerRegistered = playerWithNemesis.PlayerRegistered,
+                RegisteredUserEmailAddress = playerWithNemesis.RegisterdUserEmailAddress,
                 UserCanEdit = (currentUser != null && playerWithNemesis.GamingGroupId == currentUser.CurrentGamingGroupId),
                 NemesisPlayerId = playerWithNemesis.NemesisPlayerId,
                 NemesisPlayerName = playerWithNemesis.NemesisPlayerName,

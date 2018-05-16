@@ -82,6 +82,7 @@ namespace BusinessLogic.Logic.Players
                                           PlayerName = player.Name,
                                           PlayerActive = player.Active,
                                           PlayerRegistered = !string.IsNullOrEmpty(player.ApplicationUserId),
+                                          RegisterdUserEmailAddress = player.User.Email,
                                           NemesisPlayerId = player.Nemesis.NemesisPlayerId,
                                           NemesisPlayerName = player.Nemesis.NemesisPlayer.Name,
                                           PreviousNemesisPlayerId =  player.PreviousNemesis.NemesisPlayerId,
