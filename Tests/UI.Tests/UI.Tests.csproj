@@ -321,6 +321,7 @@
     <Compile Include="UnitTests\AttributesTests\FiltersTests\UserContextAttributeTests\OnActionExecutingTests.cs" />
     <Compile Include="UnitTests\HtmlHelperTests\MyHelpersTests\GameResultsTests.cs" />
     <Compile Include="UnitTests\HtmlHelperTests\UIHelpersTests\NemePointsIcoTests.cs" />
+    <Compile Include="UnitTests\HtmlHelperTests\UIHelpersTests\RenderGravatarTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\AutomapperConfigurationTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\GameDefinitionSummaryViewModelBuilderTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\GameDefinitionDetailsViewModelBuilderTests.cs" />

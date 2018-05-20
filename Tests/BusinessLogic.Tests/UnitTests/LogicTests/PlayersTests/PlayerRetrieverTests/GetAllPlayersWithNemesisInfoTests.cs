@@ -27,6 +27,7 @@ using StructureMap.AutoMocking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverTests
 {
@@ -101,7 +102,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                     {
                         NemesisPlayer = new Player()
                     },
-                    ChampionedGames = new List<Champion>()
+                    ChampionedGames = new List<Champion>(),
+                    User = new ApplicationUser()
                 }
             }.AsQueryable();
             autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>())
@@ -165,6 +167,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                     {
                         NemesisPlayer = new Player()
                     },
+                    User = new ApplicationUser(),
                     ChampionedGames = new List<Champion>()
                 }
             }.AsQueryable();
