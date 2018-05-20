@@ -47,5 +47,16 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             model[0].ShouldBeSameAs(expectedResult1);
             model[1].ShouldBeSameAs(expectedResult2);
         }
+
+        [Test]
+        public void It_Indicates_Whether_There_Are_Any_Players_With_Gravatars()
+        {
+            //--arrange
+
+            //--act
+
+            //--assert
+
+        }
     }
 }

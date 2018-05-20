@@ -6,8 +6,6 @@
     @{
         Layout = null;
         bool userCanEdit = (bool?) ViewData["canEdit"] == true;
-        var hasAtLeastOneGravatar = Model.Any(x => !string.IsNullOrEmpty(x.RegisteredUserEmailAddress));
-        var showGravatars = userCanEdit && hasAtLeastOneGravatar;
     }
 
     <div class="playersList">
@@ -34,10 +32,7 @@
                         </caption>
                         <thead class="player-table-head">
                         <tr>
-                            @if(showGravatars)
-                            {
-                                <th class="col-md-1"></th>
-                            }
+                            <th class="col-md-1"></th>
                             <th class="col-md-2">
                                 <span class="sort" data-sort="player-name-col">Player Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                             </th>
@@ -88,10 +83,7 @@
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    @if(showGravatars)
-                                    {
-                                        <td>@Html.RenderGravatar(item.RegisteredUserEmailAddress)</td>
-                                    }
+                                    <td>@Html.RenderGravatar(item.RegisteredUserEmailAddress)</td>
                                     <td class="player-name-col" data-name="@item.PlayerName">
                                         <b>@Html.ActionLink(item.PlayerName, MVC.Player.Details(item.PlayerId, null), new {title = "View Player details"})</b>
                                     </td>
