@@ -25,5 +25,6 @@ namespace BusinessLogic.Models.Players
         public int VersusPlayerId { get; set; }
         public string VersusPlayerName { get; set; }
         public bool VersusPlayerActive { get; set; }
+        public string RegisteredUserEmailAddress { get; set; }
     }
 }

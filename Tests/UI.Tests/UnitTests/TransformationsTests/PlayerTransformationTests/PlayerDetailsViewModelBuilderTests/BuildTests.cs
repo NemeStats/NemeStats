@@ -113,7 +113,8 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                 OpposingPlayerId = 1,
                 OpposingPlayerActive = false,
                 NumberOfGamesWonVersusThisPlayer = 10,
-                NumberOfGamesLostVersusThisPlayer = 10
+                NumberOfGamesLostVersusThisPlayer = 10,
+                RegisteredUserEmailAddress = "normaluser@email.com"
             };
 
             playerWithNoGamesPlayed = new PlayerVersusPlayerStatistics
@@ -625,6 +626,14 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
 
             Assert.That(actualPlayer.PlayerName,
                 Is.EqualTo(expectedPlayerName));
+        }
+
+        [Test]
+        public void ItPopulatesTheRegisteredUserEmailAddressOfThePlayerVersusPlayerRecords()
+        {
+            Assert.That(playerDetailsViewModel.PlayerVersusPlayers.PlayerSummaries.Any(opposingPlayer => 
+                opposingPlayer.PlayerId == normalPlayer.OpposingPlayerId
+                && opposingPlayer.RegisteredUserEmailAddress == normalPlayer.RegisteredUserEmailAddress));
         }
 
         [Test]

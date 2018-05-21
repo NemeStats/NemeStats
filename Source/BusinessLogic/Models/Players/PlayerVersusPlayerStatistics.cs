@@ -9,5 +9,6 @@ namespace BusinessLogic.Models.Players
         public bool OpposingPlayerActive { get; set; }
         public int NumberOfGamesWonVersusThisPlayer { get; set; }
         public int NumberOfGamesLostVersusThisPlayer { get; set; }
+        public string RegisteredUserEmailAddress { get; set; }
     }
 }

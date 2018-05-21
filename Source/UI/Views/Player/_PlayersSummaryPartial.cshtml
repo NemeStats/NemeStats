@@ -1,4 +1,5 @@
-﻿@model UI.Models.Players.PlayersSummaryViewModel
+﻿@using UI.HtmlHelpers
+@model UI.Models.Players.PlayersSummaryViewModel
 
 @{
     Layout = null;
@@ -20,7 +21,8 @@
             </caption>
             <thead>
             <tr>
-                <th></th>
+                <th style="width:30px"></th>
+                <th style="width:30px"></th>
                 <th>
                     <span class="sort" data-sort="name-col">Player Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                 </th>
@@ -44,6 +46,7 @@
                             </i>
                         }
                     </td>
+                    <td>@Html.RenderGravatar(playerSummary.RegisteredUserEmailAddress)</td>
                     <td class="name-col" data-name="@playerSummary.PlayerName">
                         @Html.ActionLink(playerSummary.PlayerName, "Details", "Player", new {id = playerSummary.PlayerId}, new { title = "View Player details" })
                     </td>

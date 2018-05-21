@@ -124,6 +124,7 @@ namespace UI.Transformations.PlayerTransformations
                 {
                     PlayerName = PlayerNameBuilder.BuildPlayerName(playerVersusPlayerStatistics.OpposingPlayerName, playerVersusPlayerStatistics.OpposingPlayerActive),
                     PlayerId = playerVersusPlayerStatistics.OpposingPlayerId,
+                    RegisteredUserEmailAddress = playerVersusPlayerStatistics.RegisteredUserEmailAddress,
                     GamesWon = playerVersusPlayerStatistics.NumberOfGamesWonVersusThisPlayer,
                     GamesLost = playerVersusPlayerStatistics.NumberOfGamesLostVersusThisPlayer,
                     WinPercentage = (int)winPercentage

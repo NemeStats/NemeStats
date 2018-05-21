@@ -32,15 +32,17 @@ namespace BusinessLogic.DataAccess.Repositories
 
         private const string SQL_GET_WIN_LOSS_GAMES_COUNT =
             @"SELECT SUM(NumberOfGamesLost) AS NumberOfGamesLost, SUM(NumberOfGamesWon) AS NumberOfGamesWon, 
-                PlayerId as VersusPlayerId, PlayerName AS VersusPlayerName, PlayerActive AS VersusPlayerActive
+                PlayerId as VersusPlayerId, PlayerName AS VersusPlayerName, PlayerActive AS VersusPlayerActive,
+				AspNetUsers.Email AS RegisteredUserEmailAddress
             FROM
             (
-	            SELECT COUNT(*) AS NumberOfGamesLost, 0 AS NumberOfGamesWon, PlayerId, PlayerName, PlayerActive
+	            SELECT COUNT(*) AS NumberOfGamesLost, 0 AS NumberOfGamesWon, PlayerId, PlayerName, PlayerActive, ApplicationUserId
 	              FROM
 	              (
 		              SELECT OtherResults.PlayerId
 					  ,Player.Name AS PlayerName
                       ,Player.Active AS PlayerActive
+					  ,ApplicationUserId
 		              ,OtherResults.PlayedGameId
 		              ,OtherResults.GameRank
 		              , PlayedGame.GameDefinitionId
@@ -56,14 +58,15 @@ namespace BusinessLogic.DataAccess.Repositories
 			            )
                         AND EXISTS (SELECT 1 FROM Player WHERE Player.Id = OtherResults.PlayerId)
 	               ) AS LostGames
-	               GROUP BY PlayerId, PlayerName, PlayerActive
+	               GROUP BY PlayerId, PlayerName, PlayerActive, ApplicationUserId
 	               UNION
-	               SELECT 0 AS NumberOfgamesLost, COUNT(*) AS NumberOfGamesWon, PlayerId, PlayerName, PlayerActive
+	               SELECT 0 AS NumberOfgamesLost, COUNT(*) AS NumberOfGamesWon, PlayerId, PlayerName, PlayerActive, ApplicationUserId
 	              FROM
 	              (
 		              SELECT OtherResults.PlayerId
 					  ,Player.Name AS PlayerName
                       ,Player.Active AS PlayerActive
+					  ,ApplicationUserId
 		              ,OtherResults.PlayedGameId
 		              ,OtherResults.GameRank
 		              , PlayedGame.GameDefinitionId
@@ -79,9 +82,10 @@ namespace BusinessLogic.DataAccess.Repositories
 			            ) 
                         AND EXISTS (SELECT 1 FROM Player WHERE Player.Id = OtherResults.PlayerId)
 	               ) AS WonGames
-	               GROUP BY PlayerId, PlayerName, PlayerActive
+	               GROUP BY PlayerId, PlayerName, PlayerActive, ApplicationUserId
             ) AS X
-            GROUP BY PlayerId, PlayerName, PlayerActive";
+			LEFT JOIN AspNetUsers ON X.ApplicationUserId = AspNetUsers.Id
+            GROUP BY PlayerId, PlayerName, PlayerActive, Email";
 
         public NemesisData GetNemesisData(int playerId, IDataContext dataContext)
         {
@@ -150,7 +154,8 @@ namespace BusinessLogic.DataAccess.Repositories
                 NumberOfGamesWonVersusThisPlayer = winLossStats.NumberOfGamesWon,
                 OpposingPlayerId = winLossStats.VersusPlayerId,
                 OpposingPlayerName = winLossStats.VersusPlayerName,
-                OpposingPlayerActive = winLossStats.VersusPlayerActive
+                OpposingPlayerActive = winLossStats.VersusPlayerActive,
+                RegisteredUserEmailAddress = winLossStats.RegisteredUserEmailAddress
             }).ToList();
         }
 
