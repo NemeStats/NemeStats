@@ -7,81 +7,85 @@
 }
 
 <div id="player-details">
-    <h2 class="page-header">
-        @Html.DisplayFor(model => model.PlayerName) on @Html.ActionLink(Model.GamingGroupName, MVC.GamingGroup.ActionNames.Details, MVC.GamingGroup.Name, new {id = Model.GamingGroupId}, new {})
-        @if (Model.UserCanEdit)
+<h2 class="page-header">
+    @Html.DisplayFor(model => model.PlayerName) on @Html.ActionLink(Model.GamingGroupName, MVC.GamingGroup.ActionNames.Details, MVC.GamingGroup.Name, new {id = Model.GamingGroupId}, new {})
+    @if (Model.UserCanEdit)
+    {
+        <a href="@Url.Action(MVC.Player.ActionNames.Edit, MVC.Player.Name, new {id = Model.PlayerId})" class="btn btn-xs btn-default" title = "Edit Player">
+            <span class="fa fa-pencil"></span>&nbsp;Edit
+        </a>
+
+        if (!Model.PlayerRegistered)
         {
-            <a href="@Url.Action(MVC.Player.ActionNames.Edit, MVC.Player.Name, new {id = Model.PlayerId})" class="btn btn-xs btn-default" title = "Edit Player">
-                <span class="fa fa-pencil"></span>&nbsp;Edit
+            <a href="@Url.Action(MVC.Player.InvitePlayer().AddRouteValue("id", Model.PlayerId))" id="invitePlayer" class="btn btn-xs btn-default" title = "Go to the Player invitation page so you can invite them to this Gaming Group">
+                <i class="fa fa-envelope"></i>&nbsp;Invite Player
             </a>
-
-            if (!Model.PlayerRegistered)
-            {
-                <a href="@Url.Action(MVC.Player.InvitePlayer().AddRouteValue("id", Model.PlayerId))" id="invitePlayer" class="btn btn-xs btn-default" title = "Go to the Player invitation page so you can invite them to this Gaming Group">
-                    <i class="fa fa-envelope"></i>&nbsp;Invite Player
-                </a>
-            }
         }
-    </h2>
+    }
+</h2>
 
-    <div class="row">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h4>Player Info</h4>
-            </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-2">
-                        <strong>
-                            Name
-                        </strong>
+<div class="row">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4>Player Info</h4>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-2 col-sm-2">@Html.RenderGravatar(Model.RegisteredUserEmailAddress, 80)</div>
+                <div class="col-md-6 col-sm-10">
+                    <div class="row">
+                        <div class="col-md-5 col-sm-4">
+                            <strong>
+                                Name
+                            </strong>
+                        </div>
+                        <div class="col-md-5 col-sm-6">
+                            @Html.DisplayFor(model => model.PlayerName)
+                        </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-5 col-sm-4">
+                            <strong>
+                                @Html.DisplayNameFor(model => model.PlayerRegistered)
+                            </strong>
+                        </div>
 
-                    <div class="col-md-2">
-                        @Html.DisplayFor(model => model.PlayerName)
+                        <div class="col-md-5 col-sm-6">
+                            @Html.DisplayFor(model => model.PlayerRegistered)
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2">
-                        <strong>
-                            @Html.DisplayNameFor(model => model.PlayerRegistered)
-                        </strong>
-                    </div>
+                    <div class="row">
+                        <div class="col-md-5 col-sm-4">
+                            <strong>
+                                @Html.DisplayNameFor(model => model.Active)
+                            </strong>
+                        </div>
 
-                    <div class="col-md-2">
-                        @Html.DisplayFor(model => model.PlayerRegistered)
+                        <div class="col-md-5 col-sm-6">
+                            @Html.DisplayFor(model => model.Active)
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2">
-                        <strong>
-                            @Html.DisplayNameFor(model => model.Active)
-                        </strong>
-                    </div>
-
-                    <div class="col-md-2">
-                        @Html.DisplayFor(model => model.Active)
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2">
-                        <strong>
-                            Gaming Group
-                        </strong>
-                    </div>
-                    <div class="col-sm-3">
-                        @Html.ActionLink(@Model.GamingGroupName, "Details", "GamingGroup", new
-                        {
-                        id = @Model.GamingGroupId
-                        }, new
-                        {
-                            title = "View Gaming Group details"
-                        })
+                    <div class="row">
+                        <div class="col-md-5 col-sm-4">
+                            <strong>
+                                Gaming Group
+                            </strong>
+                        </div>
+                        <div class="col-md-5 col-sm-6">
+                            @Html.ActionLink(@Model.GamingGroupName, "Details", "GamingGroup", new
+                            {
+                                id = @Model.GamingGroupId
+                            }, new
+                            {
+                                title = "View Gaming Group details"
+                            })
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
     @if (Model.PlayerAchievements.Any())
     {
     @Achievements()

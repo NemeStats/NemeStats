@@ -172,6 +172,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             {
                 Id = playerId,
                 ApplicationUserId = currentUser.Id,
+                RegisteredUserEmailAddress = "someemail@email.com",
                 Active = true,
                 Name = "Skipper",
                 LongestWinningStreak = 39,
@@ -364,6 +365,12 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             playerDetailsViewModel = _autoMocker.ClassUnderTest.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
 
             Assert.AreEqual(false, playerDetailsViewModel.PlayerRegistered);
+        }
+
+        [Test]
+        public void ItCopiesTheRegisteredUserEmailAddress()
+        {
+            Assert.AreEqual(playerDetails.RegisteredUserEmailAddress, playerDetailsViewModel.RegisteredUserEmailAddress);
         }
 
         [Test]

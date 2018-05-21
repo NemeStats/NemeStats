@@ -67,6 +67,7 @@ namespace UI.Transformations.PlayerTransformations
                 PlayerId = playerDetails.Id,
                 PlayerName = playerDetails.Name,
                 PlayerRegistered = playerDetails.ApplicationUserId != null,
+                RegisteredUserEmailAddress = playerDetails.RegisteredUserEmailAddress,
                 Active = playerDetails.Active,
                 GamingGroupName = playerDetails.GamingGroupName,
                 GamingGroupId = playerDetails.GamingGroupId,

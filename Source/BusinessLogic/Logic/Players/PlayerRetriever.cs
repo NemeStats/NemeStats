@@ -177,6 +177,8 @@ namespace BusinessLogic.Logic.Players
 
             var playerStatistics = GetPlayerStatistics(playerId);
 
+            var email = GetRegisteredUserEmailAddress(returnPlayer);
+
             var playerGameResults = GetPlayerGameResultsWithPlayedGameAndGameDefinition(playerId, numberOfRecentGamesToRetrieve);
 
             var minions = GetMinions(returnPlayer.Id);
@@ -201,6 +203,7 @@ namespace BusinessLogic.Logic.Players
             {
                 Active = returnPlayer.Active,
                 ApplicationUserId = returnPlayer.ApplicationUserId,
+                RegisteredUserEmailAddress = email,
                 Id = returnPlayer.Id,
                 Name = returnPlayer.Name,
                 GamingGroupId = returnPlayer.GamingGroupId,
@@ -222,6 +225,19 @@ namespace BusinessLogic.Logic.Players
             return playerDetails;
         }
 
+        private string GetRegisteredUserEmailAddress(Player returnPlayer)
+        {
+            string email = null;
+            if (!string.IsNullOrWhiteSpace(returnPlayer.ApplicationUserId))
+            {
+                email = _dataContext.GetQueryable<ApplicationUser>()
+                    .Where(x => x.Id == returnPlayer.ApplicationUserId)
+                    .Select(x => x.Email)
+                    .FirstOrDefault();
+            }
+
+            return email;
+        }
 
         private static void ValidatePlayerWasFound(int playerId, Player returnPlayer)
         {
