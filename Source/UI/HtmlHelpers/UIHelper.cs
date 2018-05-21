@@ -54,7 +54,7 @@ namespace UI.HtmlHelpers
             return new HtmlString("");
         }
 
-        public static HtmlString RenderGravatar(this HtmlHelper htmlHelper, string emailAddress)
+        public static HtmlString RenderGravatar(this HtmlHelper htmlHelper, string emailAddress, int pixelDimensions = 30)
         {
             if (string.IsNullOrWhiteSpace(emailAddress))
             {
@@ -62,7 +62,7 @@ namespace UI.HtmlHelpers
             }
             var hashedEmail = HashEmailForGravatar(emailAddress);
             var gravatarAltText = $"Gravatar for {emailAddress}";
-            return new MvcHtmlString($"<img src=\"https://www.gravatar.com/avatar/{hashedEmail}?s=30\" alt=\"{gravatarAltText}\" title=\"{gravatarAltText}\"/>");
+            return new MvcHtmlString($"<img src=\"https://www.gravatar.com/avatar/{hashedEmail}?s={pixelDimensions}\" alt=\"{gravatarAltText}\" title=\"{gravatarAltText}\"/>");
         }
 
         public static string HashEmailForGravatar(string email)
