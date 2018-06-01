@@ -30,6 +30,7 @@ using BusinessLogic.Logic;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.Points;
+using Shouldly;
 using StructureMap.AutoMocking;
 using UI.Models.Achievements;
 using UI.Models.Badges;
@@ -173,7 +174,6 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             {
                 Id = _playerId,
                 ApplicationUserId = _currentUser.Id,
-                RegisteredUserEmailAddress = "someemail@email.com",
                 Active = true,
                 Name = "Skipper",
                 LongestWinningStreak = 39,
@@ -390,9 +390,29 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         }
 
         [Test]
-        public void ItCopiesTheRegisteredUserEmailAddress()
+        public void It_Sets_The_RegisteredUserEmailAddress_If_It_Is_In_The_Dictionary()
         {
-            Assert.AreEqual(_playerDetails.RegisteredUserEmailAddress, _playerDetailsViewModel.RegisteredUserEmailAddress);
+            //--arrange
+            _playerDetails.Id = _expectedPlayerIdToRegisteredEmailDictionary.Keys.First();
+
+            //--act
+            _playerDetailsViewModel = _autoMocker.ClassUnderTest.Build(_playerDetails, _expectedPlayerIdToRegisteredEmailDictionary, _twitterMinionBraggingUrl, _currentUser);
+
+            //--assert
+            _playerDetailsViewModel.RegisteredUserEmailAddress.ShouldBe(_expectedPlayerIdToRegisteredEmailDictionary[_playerDetails.Id]);
+        }
+
+        [Test]
+        public void It_Doesnt_Set_The_RegisteredUserEmailAddress_If_It_Is_Not_In_The_Dictionary()
+        {
+            //--arrange
+            var emptyDictionary = new Dictionary<int, string>();
+
+            //--act
+            _playerDetailsViewModel = _autoMocker.ClassUnderTest.Build(_playerDetails, emptyDictionary, _twitterMinionBraggingUrl, _currentUser);
+
+            //--assert
+            _playerDetailsViewModel.RegisteredUserEmailAddress.ShouldBeNull();
         }
 
         [Test]

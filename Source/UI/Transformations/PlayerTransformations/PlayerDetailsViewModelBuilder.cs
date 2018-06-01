@@ -69,12 +69,15 @@ namespace UI.Transformations.PlayerTransformations
             Validate(playerDetails);
             ValidatePlayerIdToRegisteredUserEmailAddressDictionary(playerIdToRegisteredUserEmailAddressDictionary);
 
+            var currentUserEmail = playerIdToRegisteredUserEmailAddressDictionary.ContainsKey(playerDetails.Id)
+                ? playerIdToRegisteredUserEmailAddressDictionary[playerDetails.Id]
+                : null;
             var playerDetailsViewModel = new PlayerDetailsViewModel
             {
                 PlayerId = playerDetails.Id,
                 PlayerName = playerDetails.Name,
                 PlayerRegistered = playerDetails.ApplicationUserId != null,
-                RegisteredUserEmailAddress = playerDetails.RegisteredUserEmailAddress,
+                RegisteredUserEmailAddress = currentUserEmail,
                 Active = playerDetails.Active,
                 GamingGroupName = playerDetails.GamingGroupName,
                 GamingGroupId = playerDetails.GamingGroupId,

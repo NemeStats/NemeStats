@@ -219,7 +219,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             playerDetails.Active.ShouldBe(_player.Active);
             playerDetails.GamingGroupName.ShouldBe(_player.GamingGroup.Name);
             playerDetails.ApplicationUserId.ShouldBe(_player.ApplicationUserId);
-            playerDetails.RegisteredUserEmailAddress.ShouldBe(_expectedEmail);
             playerDetails.Id.ShouldBe(_player.Id);
             playerDetails.Name.ShouldBe(_player.Name);
         }

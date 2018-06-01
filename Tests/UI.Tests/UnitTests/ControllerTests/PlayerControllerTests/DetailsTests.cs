@@ -114,7 +114,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         }
 
         [Test]
-        public void It_Sets_The_Registered_Users_Email_Addresses()
+        public void It_Sets_The_Registered_Users_Email_Addresses_Including_The_Main_Player()
         {
             //--arrange
             var expectedPlayerId1 = 50;
@@ -156,14 +156,15 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                     mock.GetRegisteredUserEmailAddresses(Arg<IList<int>>.Is.Anything,
                         Arg<ApplicationUser>.Is.Anything));
             var playerIds = args.AssertFirstCallIsType<IList<int>>();
-            playerIds.Count.ShouldBe(2);
+            playerIds.Count.ShouldBe(3);
             playerIds.ShouldContain(expectedPlayerId1);
             playerIds.ShouldContain(expectedPlayerId2);
+            playerIds.ShouldContain(_playerId);
 
             var applicationUser = args.AssertCallIsType<ApplicationUser>(0, 1);
             applicationUser.ShouldBeSameAs(currentUser);
 
-            //--the fact that .Build is called with this dictionary as a parameter is implicity tested elsehwere. This isn't great, but not worth refactoring for now
+            //--the fact that .Build is called with this dictionary as a parameter is implicity tested elsewhere. This isn't great, but not worth refactoring for now
         }
 
         [Test]

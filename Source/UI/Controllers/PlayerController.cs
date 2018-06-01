@@ -98,6 +98,8 @@ namespace UI.Controllers
             var fullUrl = Url.Action(MVC.Player.ActionNames.Details, MVC.Player.Name, new { id }, Request.Url.Scheme) + "#minions";
 
             var playerIds = player.PlayerVersusPlayersStatistics.Select(x => x.OpposingPlayerId).ToList();
+            //--include the current player so we can attempt to get their email address as well
+            playerIds.Add(id);
             var playerIdToRegisteredUserEmailAddressDictionary =
                 playerRetriever.GetRegisteredUserEmailAddresses(playerIds, currentUser);
             var playerDetailsViewModel = playerDetailsViewModelBuilder.Build(player, playerIdToRegisteredUserEmailAddressDictionary, fullUrl, currentUser);
