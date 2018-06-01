@@ -96,7 +96,11 @@ namespace UI.Controllers
             var player = playerRetriever.GetPlayerDetails(id, NUMBER_OF_RECENT_GAMES_TO_RETRIEVE);
             
             var fullUrl = Url.Action(MVC.Player.ActionNames.Details, MVC.Player.Name, new { id }, Request.Url.Scheme) + "#minions";
-            var playerDetailsViewModel = playerDetailsViewModelBuilder.Build(player, fullUrl, currentUser);
+
+            var playerIds = player.PlayerVersusPlayersStatistics.Select(x => x.OpposingPlayerId).ToList();
+            var playerIdToRegisteredUserEmailAddressDictionary =
+                playerRetriever.GetRegisteredUserEmailAddresses(playerIds, currentUser);
+            var playerDetailsViewModel = playerDetailsViewModelBuilder.Build(player, playerIdToRegisteredUserEmailAddressDictionary, fullUrl, currentUser);
 
             ViewBag.RecentGamesMessage = showingXResultsMessageBuilder.BuildMessage(
                 NUMBER_OF_RECENT_GAMES_TO_RETRIEVE,

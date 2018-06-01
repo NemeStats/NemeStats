@@ -60,6 +60,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         private GameDefinition gameDefinitionThatIsFormerlyChampionedByCurrentPlayer;
         private readonly int gameDefinitionIdThatIsBothCurrentlyAndFormerlyChampionedByCurrentPlayer = 1001;
         private GameDefinition gameDefinitionThatIsBothCurrentlyAndFormerlyChampionedByCurrentPlayer;
+        private Dictionary<int, string> _expectedPlayerIdToRegisteredEmailDictionary;
 
         [SetUp]
         public void TestFixtureSetUp()
@@ -113,8 +114,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                 OpposingPlayerId = 1,
                 OpposingPlayerActive = false,
                 NumberOfGamesWonVersusThisPlayer = 10,
-                NumberOfGamesLostVersusThisPlayer = 10,
-                RegisteredUserEmailAddress = "normaluser@email.com"
+                NumberOfGamesLostVersusThisPlayer = 10
             };
 
             playerWithNoGamesPlayed = new PlayerVersusPlayerStatistics
@@ -263,14 +263,22 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                     .Return(new PlayerAchievementSummaryViewModel());
             }
 
-            playerDetailsViewModel = _autoMocker.ClassUnderTest.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
+            _expectedPlayerIdToRegisteredEmailDictionary = new Dictionary<int, string>
+            {
+                {
+                    normalPlayer.OpposingPlayerId,
+                    "normalplayeremail@email.com"
+                }
+            };
+
+            playerDetailsViewModel = _autoMocker.ClassUnderTest.Build(playerDetails, _expectedPlayerIdToRegisteredEmailDictionary, twitterMinionBraggingUrl, currentUser);
         }
 
         [Test]
         public void PlayerDetailsCannotBeNull()
         {
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                    _autoMocker.ClassUnderTest.Build(null, twitterMinionBraggingUrl, currentUser));
+                    _autoMocker.ClassUnderTest.Build(null, _expectedPlayerIdToRegisteredEmailDictionary, twitterMinionBraggingUrl, currentUser));
 
             Assert.AreEqual("playerDetails", exception.ParamName);
         }
@@ -279,7 +287,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         public void ItRequiresPlayerGameResults()
         {
             var exception = Assert.Throws<ArgumentException>(() =>
-                    _autoMocker.ClassUnderTest.Build(new PlayerDetails(), twitterMinionBraggingUrl, currentUser));
+                    _autoMocker.ClassUnderTest.Build(new PlayerDetails(), _expectedPlayerIdToRegisteredEmailDictionary, twitterMinionBraggingUrl, currentUser));
 
             Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL, exception.Message);
         }
@@ -289,9 +297,22 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         {
             var playerDetailsWithNoStatistics = new PlayerDetails() { PlayerGameResults = new List<PlayerGameResult>() };
             var exception = Assert.Throws<ArgumentException>(() =>
-                    _autoMocker.ClassUnderTest.Build(playerDetailsWithNoStatistics, twitterMinionBraggingUrl, currentUser));
+                    _autoMocker.ClassUnderTest.Build(playerDetailsWithNoStatistics, _expectedPlayerIdToRegisteredEmailDictionary, twitterMinionBraggingUrl, currentUser));
 
             Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_PLAYER_STATISTICS_CANNOT_BE_NULL, exception.Message);
+        }
+
+        [Test]
+        public void ItRequiresThePlayerIdToRegisteredUserEmailDictionary()
+        {
+            //--arrange
+
+            //--act
+            var exception = Assert.Throws<ArgumentException>(() =>
+                _autoMocker.ClassUnderTest.Build(playerDetails, null, twitterMinionBraggingUrl, currentUser));
+
+            //--assert
+            Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_DICTIONARY_CANNOT_BE_NULL, exception.Message);
         }
 
         [Test]
@@ -301,7 +322,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             playerDetailsWithNoMinions.PlayerStats = new PlayerStatistics();
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                    _autoMocker.ClassUnderTest.Build(playerDetailsWithNoMinions, twitterMinionBraggingUrl, currentUser));
+                    _autoMocker.ClassUnderTest.Build(playerDetailsWithNoMinions, _expectedPlayerIdToRegisteredEmailDictionary, twitterMinionBraggingUrl, currentUser));
 
             Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_MINIONS_CANNOT_BE_NULL, exception.Message);
         }
@@ -318,7 +339,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             };
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                    _autoMocker.ClassUnderTest.Build(playerDetailsWithNoChampionedGames, twitterMinionBraggingUrl, currentUser));
+                    _autoMocker.ClassUnderTest.Build(playerDetailsWithNoChampionedGames, _expectedPlayerIdToRegisteredEmailDictionary, twitterMinionBraggingUrl, currentUser));
 
             Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_CHAMPIONED_GAMES_CANNOT_BE_NULL, exception.Message);
         }
@@ -335,7 +356,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             };
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                    _autoMocker.ClassUnderTest.Build(playerDetailsWithNoChampionedGames, twitterMinionBraggingUrl, currentUser));
+                    _autoMocker.ClassUnderTest.Build(playerDetailsWithNoChampionedGames, _expectedPlayerIdToRegisteredEmailDictionary, twitterMinionBraggingUrl, currentUser));
 
             Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_FORMERCHAMPIONED_GAMES_CANNOT_BE_NULL, exception.Message);
         }
@@ -363,7 +384,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         public void ItSetsThePlayerRegisteredFlagToFalseIfThereIsNoApplicationUserIdOnThePlayer()
         {
             playerDetails.ApplicationUserId = null;
-            playerDetailsViewModel = _autoMocker.ClassUnderTest.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
+            playerDetailsViewModel = _autoMocker.ClassUnderTest.Build(playerDetails, _expectedPlayerIdToRegisteredEmailDictionary, twitterMinionBraggingUrl, currentUser);
 
             Assert.AreEqual(false, playerDetailsViewModel.PlayerRegistered);
         }
@@ -437,7 +458,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         {
             playerDetails.PlayerStats.TotalGames = 0;
 
-            playerDetailsViewModel = _autoMocker.ClassUnderTest.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
+            playerDetailsViewModel = _autoMocker.ClassUnderTest.Build(playerDetails, _expectedPlayerIdToRegisteredEmailDictionary, twitterMinionBraggingUrl, currentUser);
 
             Assert.AreEqual(0, playerDetailsViewModel.AveragePointsPerGame);
         }
@@ -462,7 +483,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         {
             playerDetails.PlayerStats.AveragePlayersPerGame = 0;
 
-            var viewModel = _autoMocker.ClassUnderTest.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
+            var viewModel = _autoMocker.ClassUnderTest.Build(playerDetails, _expectedPlayerIdToRegisteredEmailDictionary, twitterMinionBraggingUrl, currentUser);
 
             Assert.AreEqual(0, viewModel.AveragePointsPerPlayer);
         }
@@ -523,7 +544,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void TheUserCanEditViewModelIfTheyShareGamingGroups()
         {
-            var viewModel = _autoMocker.ClassUnderTest.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
+            var viewModel = _autoMocker.ClassUnderTest.Build(playerDetails, _expectedPlayerIdToRegisteredEmailDictionary, twitterMinionBraggingUrl, currentUser);
 
             Assert.True(viewModel.UserCanEdit);
         }
@@ -532,7 +553,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         public void TheUserCanNotEditViewModelIfTheyDoNotShareGamingGroups()
         {
             currentUser.CurrentGamingGroupId = -1;
-            var viewModel = _autoMocker.ClassUnderTest.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
+            var viewModel = _autoMocker.ClassUnderTest.Build(playerDetails, _expectedPlayerIdToRegisteredEmailDictionary, twitterMinionBraggingUrl, currentUser);
 
             Assert.False(viewModel.UserCanEdit);
         }
@@ -540,7 +561,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void TheUserCanNotEditViewModelIfTheUserIsUnknown()
         {
-            var viewModel = _autoMocker.ClassUnderTest.Build(playerDetails, twitterMinionBraggingUrl, null);
+            var viewModel = _autoMocker.ClassUnderTest.Build(playerDetails, _expectedPlayerIdToRegisteredEmailDictionary, twitterMinionBraggingUrl, null);
 
             Assert.False(viewModel.UserCanEdit);
         }
@@ -558,7 +579,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             }
 
             //--act
-            var viewModel = _autoMocker.ClassUnderTest.Build(playerDetails, twitterMinionBraggingUrl, null);
+            var viewModel = _autoMocker.ClassUnderTest.Build(playerDetails, _expectedPlayerIdToRegisteredEmailDictionary, twitterMinionBraggingUrl, null);
 
             //--assert
             Assert.That(viewModel.PlayerGameSummaries.Count, Is.EqualTo(playerDetails.PlayerGameSummaries.Count));
@@ -600,7 +621,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         public void ItDoesNotSetTheTwitterBraggingUrlIfTCurrentUserIsNotThePlayerBeingTransformed()
         {
             currentUser.Id = "some different user id";
-            var viewModel = _autoMocker.ClassUnderTest.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
+            var viewModel = _autoMocker.ClassUnderTest.Build(playerDetails, _expectedPlayerIdToRegisteredEmailDictionary, twitterMinionBraggingUrl, currentUser);
 
             Assert.That(null, Is.EqualTo(viewModel.MinionBraggingTweetUrl));
         }
@@ -633,7 +654,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         {
             Assert.That(playerDetailsViewModel.PlayerVersusPlayers.PlayerSummaries.Any(opposingPlayer => 
                 opposingPlayer.PlayerId == normalPlayer.OpposingPlayerId
-                && opposingPlayer.RegisteredUserEmailAddress == normalPlayer.RegisteredUserEmailAddress));
+                && opposingPlayer.RegisteredUserEmailAddress == _expectedPlayerIdToRegisteredEmailDictionary[opposingPlayer.PlayerId]));
         }
 
         [Test]

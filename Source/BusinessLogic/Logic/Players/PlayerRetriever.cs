@@ -496,5 +496,22 @@ namespace BusinessLogic.Logic.Players
 
             return result;
         }
+
+        public Dictionary<int, string> GetRegisteredUserEmailAddresses(IList<int> playerIds, ApplicationUser currentUser)
+        {
+            var currentUserGamingGroupIds = _dataContext.GetQueryable<UserGamingGroup>()
+                .Where(x => x.ApplicationUserId == currentUser.Id)
+                .Select(x => x.GamingGroupId)
+                .ToList();
+            return _dataContext.GetQueryable<Player>()
+                .Where(x => currentUserGamingGroupIds.Contains(x.GamingGroupId)
+                            && playerIds.Contains(x.Id)
+                            && x.ApplicationUserId != null)
+                .Select(x => new
+                {
+                    x.Id,
+                    x.User.Email
+                }).ToDictionary(z => z.Id, z => z.Email);
+        }
     }
 }

@@ -15,15 +15,20 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using System.Collections.Generic;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
-using System.Linq;
 using UI.Models.Players;
 
 namespace UI.Transformations.PlayerTransformations
 {
     public interface IPlayerDetailsViewModelBuilder
     {
-        PlayerDetailsViewModel Build(PlayerDetails playerDetails, string urlToMinionsAnchor, ApplicationUser currentUser = null);
+        PlayerDetailsViewModel Build(
+            PlayerDetails playerDetails, 
+            Dictionary<int, string> playerIdToRegisteredUserEmailAddressDictionary, 
+            string urlToMinionsAnchor, 
+            ApplicationUser currentUser = null);
     }
 }
