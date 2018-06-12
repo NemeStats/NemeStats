@@ -179,18 +179,17 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             Assert.AreEqual(expected, actualViewModel.NemePointsSummary);
         }
 
-        //TODO don't have this field on playerWithNemesis?
         [Test]
-        public void ItCopiesTheRegisteredUserEmailAddress()
+        public void ItSetsTheRegisteredUserEmailAddress()
         {
             //--arrange
-            playerWithNemesis.RegisterdUserEmailAddress = "some email";
+            string email = "someemail@email.com";
 
             //--act
-            var actualViewModel = builder.Build(playerWithNemesis, null, currentUser);
+            var actualViewModel = builder.Build(playerWithNemesis, email, currentUser);
 
             //--assert
-            Assert.AreEqual(playerWithNemesis.RegisterdUserEmailAddress, actualViewModel.RegisteredUserEmailAddress);
+            Assert.AreEqual(email, actualViewModel.RegisteredUserEmailAddress);
         }
 
         [Test]

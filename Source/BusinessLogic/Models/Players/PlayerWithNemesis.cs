@@ -39,6 +39,5 @@ namespace BusinessLogic.Models.Players
         public bool PlayerActive { get; set; }
         public NemePointsSummary NemePointsSummary { get; set; }
         public Dictionary<AchievementLevel,int> AchievementsPerLevel { get; set; } = new Dictionary<AchievementLevel, int>();
-        public string RegisterdUserEmailAddress { get; set; }
     }
 }
