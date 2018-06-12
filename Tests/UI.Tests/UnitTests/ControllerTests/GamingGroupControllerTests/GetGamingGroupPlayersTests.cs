@@ -4,6 +4,7 @@ using BusinessLogic.Logic.Players;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using BusinessLogic.Models.Utility;
+using NemeStats.TestingHelpers.NemeStatsTestingExtensions;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
@@ -20,19 +21,24 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         {
             //--arrange
             var gamingGroupId = 1;
-            var currentUser = new ApplicationUser();
             var dateRangeFilter = new BasicDateRangeFilter();
             var expectedResults = new List<PlayerWithNemesis>
             {
                 new PlayerWithNemesis(),
                 new PlayerWithNemesis()
             };
-            var expectedResult1 = new PlayerWithNemesisViewModel();
-            var expectedResult2 = new PlayerWithNemesisViewModel();
 
             autoMocker.Get<IPlayerRetriever>().Expect(mock => mock.GetAllPlayersWithNemesisInfo(gamingGroupId, dateRangeFilter)).Return(expectedResults);
-            autoMocker.Get<IPlayerWithNemesisViewModelBuilder>().Expect(mock => mock.Build(expectedResults[0], currentUser)).Return(expectedResult1);
-            autoMocker.Get<IPlayerWithNemesisViewModelBuilder>().Expect(mock => mock.Build(expectedResults[1], currentUser)).Return(expectedResult2);
+            autoMocker.Get<IPlayerRetriever>().Expect(mock =>
+                    mock.GetRegisteredUserEmailAddresses(
+                        Arg<List<int>>.Is.Anything, 
+                        Arg<ApplicationUser>.Is.Anything))
+                .Return(new Dictionary<int, string>());
+
+            var expectedResult1 = new PlayerWithNemesisViewModel();
+            var expectedResult2 = new PlayerWithNemesisViewModel();
+            autoMocker.Get<IPlayerWithNemesisViewModelBuilder>().Expect(mock => mock.Build(expectedResults[0], null, currentUser)).Return(expectedResult1);
+            autoMocker.Get<IPlayerWithNemesisViewModelBuilder>().Expect(mock => mock.Build(expectedResults[1], null, currentUser)).Return(expectedResult2);
 
             //--act
             var result = autoMocker.ClassUnderTest.GetGamingGroupPlayers(gamingGroupId, currentUser, dateRangeFilter);
@@ -53,10 +59,57 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         {
             //--arrange
 
+            var gamingGroupId = 1;
+            var expectedPlayerIdWithoutEmail = 1;
+            var expectedPlayerIdWithEmail = 2;
+            var expectedResults = new List<PlayerWithNemesis>
+            {
+                new PlayerWithNemesis
+                {
+                    PlayerId = expectedPlayerIdWithEmail
+                },
+                new PlayerWithNemesis
+                {
+                    PlayerId = expectedPlayerIdWithoutEmail
+                }
+            };
+
+            autoMocker.Get<IPlayerRetriever>().Expect(mock => mock.GetAllPlayersWithNemesisInfo(gamingGroupId, null)).Return(expectedResults);
+
+            var expectedEmail = "email@email.com";
+            var playerToRegisteredEmailDictionary = new Dictionary<int, string>
+            {
+                { 2, expectedEmail }
+            };
+            autoMocker.Get<IPlayerRetriever>().Expect(mock =>
+                    mock.GetRegisteredUserEmailAddresses(
+                        Arg<List<int>>.Is.Anything,
+                        Arg<ApplicationUser>.Is.Anything))
+                .Return(playerToRegisteredEmailDictionary);
+
+            autoMocker.Get<IPlayerWithNemesisViewModelBuilder>().Expect(mock => mock.Build(null, null, null)).IgnoreArguments().Return(new PlayerWithNemesisViewModel());
+
+
             //--act
+            autoMocker.ClassUnderTest.GetGamingGroupPlayers(gamingGroupId, currentUser);
 
             //--assert
+            var args = autoMocker.Get<IPlayerRetriever>().GetArgumentsForCallsMadeOn(mock =>
+                mock.GetRegisteredUserEmailAddresses(
+                    Arg<List<int>>.Is.Anything,
+                    Arg<ApplicationUser>.Is.Anything));
+            var playerIds = args.AssertFirstCallIsType<List<int>>(0);
+            playerIds.Count.ShouldBe(2);
+            playerIds.ShouldContain(expectedPlayerIdWithEmail);
+            playerIds.ShouldContain(expectedPlayerIdWithoutEmail);
 
+            var actualUser = args.AssertFirstCallIsType<ApplicationUser>(1);
+            actualUser.ShouldBeSameAs(currentUser);
+
+            var argsForViewModelBuilder = autoMocker.Get<IPlayerWithNemesisViewModelBuilder>()
+                .GetArgumentsForCallsMadeOn(mock => mock.Build(null, null, null));
+            var actualEmail = argsForViewModelBuilder.AssertFirstCallIsType<string>(1);
+            actualEmail.ShouldBe(expectedEmail);
         }
     }
 }

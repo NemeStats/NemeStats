@@ -66,7 +66,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItThrowsAnArgumentNullExceptionIfThePlayerIsNull()
         {
-            Exception actualException = Assert.Throws<ArgumentNullException>(() => builder.Build(null, currentUser));
+            Exception actualException = Assert.Throws<ArgumentNullException>(() => builder.Build(null, null, currentUser));
 
             Assert.AreEqual(new ArgumentNullException("player").Message, actualException.Message);
         }
@@ -74,7 +74,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItCopiesThePlayerId()
         {
-            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, currentUser);
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, null, currentUser);
 
             Assert.AreEqual(playerWithNemesis.PlayerId, actualViewModel.PlayerId);
         }
@@ -82,7 +82,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItCopiesThePlayerNameForActivePlayers()
         {
-            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, currentUser);
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, null, currentUser);
 
             Assert.AreEqual(playerWithNemesis.PlayerName, actualViewModel.PlayerName);
         }
@@ -93,7 +93,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             playerWithNemesis.PlayerActive = false;
             string expectedPlayerName = playerWithNemesis.PlayerName + " (INACTIVE)";
 
-            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, currentUser);
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, null, currentUser);
 
             Assert.AreEqual(expectedPlayerName, actualViewModel.PlayerName);
         }
@@ -101,7 +101,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItSetsThePlayerRegisteredFlagToTrueIfThePlayerHasAnApplicationUserId()
         {
-            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, currentUser);
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, null, currentUser);
 
             Assert.AreEqual(true, actualViewModel.PlayerRegistered);
         }
@@ -109,7 +109,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItCopiesThePlayerRegisteredFlag()
         {
-            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, currentUser);
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, null, currentUser);
 
             Assert.AreEqual(playerWithNemesis.PlayerRegistered, actualViewModel.PlayerRegistered);
         }
@@ -117,7 +117,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItCopiesTheNemesisPlayerId()
         {
-            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, currentUser);
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, null, currentUser);
 
             Assert.AreEqual(playerWithNemesis.NemesisPlayerId, actualViewModel.NemesisPlayerId);
         }
@@ -125,7 +125,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItCopiesTheNemesisPlayerName()
         {
-            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, currentUser);
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, null, currentUser);
 
             Assert.AreEqual(playerWithNemesis.NemesisPlayerName, actualViewModel.NemesisPlayerName);
         }
@@ -133,7 +133,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItCopiesThePlayerActiveFlag()
         {
-            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, currentUser);
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, null, currentUser);
 
             Assert.AreEqual(playerWithNemesis.PlayerActive, actualViewModel.PlayerActive);
         }
@@ -141,7 +141,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItCopiesThePreviousNemesisPlayerId()
         {
-            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, currentUser);
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, null, currentUser);
 
             Assert.AreEqual(playerWithNemesis.PreviousNemesisPlayerId, actualViewModel.PreviousNemesisPlayerId);
         }
@@ -149,7 +149,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItCopiesThePreviousNemesisPlayerName()
         {
-            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, currentUser);
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, null, currentUser);
 
             Assert.AreEqual(playerWithNemesis.PreviousNemesisPlayerName, actualViewModel.PreviousNemesisPlayerName);
         }
@@ -157,7 +157,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItCopiesTheNumberOfPlayedGames()
         {
-            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, currentUser);
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, null, currentUser);
 
             Assert.AreEqual(playerWithNemesis.GamesWon + playerWithNemesis.GamesLost, actualViewModel.NumberOfPlayedGames);
         }
@@ -165,7 +165,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItSetsTheOverallWinPercentage()
         {
-            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, currentUser);
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, null, currentUser);
 
             Assert.AreEqual(50, actualViewModel.OverallWinPercentage);
         }
@@ -173,12 +173,13 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItCopiesTheNemePointsSummary()
         {
-            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, currentUser);
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, null, currentUser);
 
             var expected = new NemePointsSummaryViewModel(playerWithNemesis.NemePointsSummary);
             Assert.AreEqual(expected, actualViewModel.NemePointsSummary);
         }
 
+        //TODO don't have this field on playerWithNemesis?
         [Test]
         public void ItCopiesTheRegisteredUserEmailAddress()
         {
@@ -186,7 +187,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             playerWithNemesis.RegisterdUserEmailAddress = "some email";
 
             //--act
-            var actualViewModel = builder.Build(playerWithNemesis, currentUser);
+            var actualViewModel = builder.Build(playerWithNemesis, null, currentUser);
 
             //--assert
             Assert.AreEqual(playerWithNemesis.RegisterdUserEmailAddress, actualViewModel.RegisteredUserEmailAddress);
@@ -195,7 +196,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItCalculatesAveragePoints()
         {
-            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, currentUser);
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, null, currentUser);
 
             var avgPoints = (float) playerWithNemesis.NemePointsSummary.TotalPoints /
                             (float) (playerWithNemesis.GamesWon + playerWithNemesis.GamesLost);
@@ -205,7 +206,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void TheUserHasChampionBadges()
         {
-            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, currentUser);
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, null, currentUser);
 
             Assert.AreEqual(playerWithNemesis.TotalChampionedGames, actualViewModel.TotalChampionedGames);
         }
@@ -213,7 +214,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void TheUserCanEditViewModelIfTheyShareGamingGroups()
         {
-            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, currentUser);
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, null, currentUser);
 
             Assert.True(actualViewModel.UserCanEdit);
         }
@@ -222,7 +223,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         public void TheUserCanNotEditViewModelIfTheyDoNotShareGamingGroups()
         {
             currentUser.CurrentGamingGroupId = -1;
-            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, currentUser);
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, null, currentUser);
 
             Assert.False(actualViewModel.UserCanEdit);
         }
@@ -230,7 +231,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void TheUserCanNotEditViewModelIfTheUserIsUnknown()
         {
-            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, null);
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(playerWithNemesis, null, null);
 
             Assert.False(actualViewModel.UserCanEdit);
         }

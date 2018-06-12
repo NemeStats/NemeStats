@@ -23,6 +23,6 @@ namespace UI.Transformations.PlayerTransformations
 {
     public interface IPlayerWithNemesisViewModelBuilder
     {
-        PlayerWithNemesisViewModel Build(PlayerWithNemesis playerWithNemesis, ApplicationUser currentUser);
+        PlayerWithNemesisViewModel Build(PlayerWithNemesis playerWithNemesis, string registeredUserEmail, ApplicationUser currentUser);
     }
 }
