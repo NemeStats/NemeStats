@@ -63,36 +63,20 @@ namespace UI.Transformations
                 BoardGameGeekInfo = boardGameGeekInfoViewModel
             };
 
-            if (gameDefinitionSummary.PlayedGames == null)
-            {
-                viewModel.PlayedGames = new List<PlayedGameDetailsViewModel>();
-            }
-            else
-            {
-                viewModel.PlayedGames = (from playedGame in gameDefinitionSummary.PlayedGames
-                                         select _playedGameDetailsViewModelBuilder.Build(playedGame, currentUser,true))
-                                   .ToList();
-            }
+            SetPlayedGames(gameDefinitionSummary, currentUser, viewModel);
 
-            if (!(gameDefinitionSummary.Champion is NullChampion))
-            {
-                viewModel.ChampionName = PlayerNameBuilder.BuildPlayerName(
-                                                                           gameDefinitionSummary.Champion.Player.Name,
-                                                                           gameDefinitionSummary.Champion.Player.Active);
-                viewModel.ChampionPlayerId = gameDefinitionSummary.Champion.Player.Id;
-                viewModel.WinPercentage = gameDefinitionSummary.Champion.WinPercentage;
-                viewModel.NumberOfGamesPlayed = gameDefinitionSummary.Champion.NumberOfGames;
-                viewModel.NumberOfWins = gameDefinitionSummary.Champion.NumberOfWins;
-            }
+            SetChampionStuff(gameDefinitionSummary, viewModel);
 
-            if (!(gameDefinitionSummary.PreviousChampion is NullChampion))
-            {
-                viewModel.PreviousChampionName = PlayerNameBuilder.BuildPlayerName(
-                    gameDefinitionSummary.PreviousChampion.Player.Name,
-                    gameDefinitionSummary.PreviousChampion.Player.Active);
-                viewModel.PreviousChampionPlayerId = gameDefinitionSummary.PreviousChampion.Player.Id;
-            }
+            SetPreviousChampionStuff(gameDefinitionSummary, viewModel);
 
+            SetPlayersStuff(gameDefinitionSummary, playerIdToRegisteredUserEmailDictionary, viewModel);
+
+            return viewModel;
+        }
+
+        private void SetPlayersStuff(GameDefinitionSummary gameDefinitionSummary,
+            Dictionary<int, string> playerIdToRegisteredUserEmailDictionary, GameDefinitionDetailsViewModel viewModel)
+        {
             var gameDefinitionPlayersSummary = new List<GameDefinitionPlayerSummaryViewModel>();
             foreach (var playerWinRecord in gameDefinitionSummary.PlayerWinRecords)
             {
@@ -102,12 +86,53 @@ namespace UI.Transformations
                     transformedResult.RegisteredUserEmailAddress =
                         playerIdToRegisteredUserEmailDictionary[playerWinRecord.PlayerId];
                 }
+
                 gameDefinitionPlayersSummary.Add(transformedResult);
             }
 
             viewModel.GameDefinitionPlayersSummary = gameDefinitionPlayersSummary;
+        }
 
-            return viewModel;
+        private static void SetPreviousChampionStuff(GameDefinitionSummary gameDefinitionSummary,
+            GameDefinitionDetailsViewModel viewModel)
+        {
+            if (!(gameDefinitionSummary.PreviousChampion is NullChampion))
+            {
+                viewModel.PreviousChampionName = PlayerNameBuilder.BuildPlayerName(
+                    gameDefinitionSummary.PreviousChampion.Player.Name,
+                    gameDefinitionSummary.PreviousChampion.Player.Active);
+                viewModel.PreviousChampionPlayerId = gameDefinitionSummary.PreviousChampion.Player.Id;
+            }
+        }
+
+        private static void SetChampionStuff(GameDefinitionSummary gameDefinitionSummary,
+            GameDefinitionDetailsViewModel viewModel)
+        {
+            if (!(gameDefinitionSummary.Champion is NullChampion))
+            {
+                viewModel.ChampionName = PlayerNameBuilder.BuildPlayerName(
+                    gameDefinitionSummary.Champion.Player.Name,
+                    gameDefinitionSummary.Champion.Player.Active);
+                viewModel.ChampionPlayerId = gameDefinitionSummary.Champion.Player.Id;
+                viewModel.WinPercentage = gameDefinitionSummary.Champion.WinPercentage;
+                viewModel.NumberOfGamesPlayed = gameDefinitionSummary.Champion.NumberOfGames;
+                viewModel.NumberOfWins = gameDefinitionSummary.Champion.NumberOfWins;
+            }
+        }
+
+        private void SetPlayedGames(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser,
+            GameDefinitionDetailsViewModel viewModel)
+        {
+            if (gameDefinitionSummary.PlayedGames == null)
+            {
+                viewModel.PlayedGames = new List<PlayedGameDetailsViewModel>();
+            }
+            else
+            {
+                viewModel.PlayedGames = (from playedGame in gameDefinitionSummary.PlayedGames
+                        select _playedGameDetailsViewModelBuilder.Build(playedGame, currentUser, true))
+                    .ToList();
+            }
         }
     }
 }
