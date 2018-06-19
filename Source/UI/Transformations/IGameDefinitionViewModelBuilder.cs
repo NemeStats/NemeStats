@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using System.Collections.Generic;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using UI.Models.GameDefinitionModels;
@@ -24,6 +25,6 @@ namespace UI.Transformations
 {
     public interface IGameDefinitionDetailsViewModelBuilder
     {
-        GameDefinitionDetailsViewModel Build(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser);
+        GameDefinitionDetailsViewModel Build(GameDefinitionSummary gameDefinitionSummary, Dictionary<int, string> playerIdToRegisteredUserEmailDictionary, ApplicationUser currentUser);
     }
 }

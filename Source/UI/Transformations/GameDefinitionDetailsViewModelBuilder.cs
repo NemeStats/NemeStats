@@ -19,13 +19,10 @@
 using System.Collections.Generic;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
-using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using System.Linq;
 using BusinessLogic.Logic;
-using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Logic.Players;
-using BusinessLogic.Logic.Points;
 using UI.Models.GameDefinitionModels;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
@@ -42,10 +39,12 @@ namespace UI.Transformations
         {
             _playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
             _transformer = transformer;
-
         }
 
-        public GameDefinitionDetailsViewModel Build(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser)
+        public GameDefinitionDetailsViewModel Build(
+            GameDefinitionSummary gameDefinitionSummary, 
+            Dictionary<int, string> playerIdToRegisteredUserEmailDictionary,
+            ApplicationUser currentUser)
         {
             BoardGameGeekInfoViewModel boardGameGeekInfoViewModel = null;
             if (gameDefinitionSummary.BoardGameGeekGameDefinitionId.HasValue)
@@ -94,13 +93,21 @@ namespace UI.Transformations
                 viewModel.PreviousChampionPlayerId = gameDefinitionSummary.PreviousChampion.Player.Id;
             }
 
-            viewModel.GameDefinitionPlayersSummary = gameDefinitionSummary.PlayerWinRecords
-                    .Select(_transformer.Transform<GameDefinitionPlayerSummaryViewModel>)
-                    .ToList();
+            var gameDefinitionPlayersSummary = new List<GameDefinitionPlayerSummaryViewModel>();
+            foreach (var playerWinRecord in gameDefinitionSummary.PlayerWinRecords)
+            {
+                var transformedResult = _transformer.Transform<GameDefinitionPlayerSummaryViewModel>(playerWinRecord);
+                if (playerIdToRegisteredUserEmailDictionary.ContainsKey(playerWinRecord.PlayerId))
+                {
+                    transformedResult.RegisteredUserEmailAddress =
+                        playerIdToRegisteredUserEmailDictionary[playerWinRecord.PlayerId];
+                }
+                gameDefinitionPlayersSummary.Add(transformedResult);
+            }
+
+            viewModel.GameDefinitionPlayersSummary = gameDefinitionPlayersSummary;
 
             return viewModel;
         }
     }
-
-
 }

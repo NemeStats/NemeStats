@@ -33,6 +33,6 @@ namespace BusinessLogic.Logic.Players
         Player GetPlayerForCurrentUser(string applicationUserId, int gamingGroupId);
         PlayersToCreateModel GetPlayersToCreate(string currentUserId, int currentGamingGroupId);
         PlayersToCreateModel GetPlayersForEditingPlayedGame(int playedGameId, ApplicationUser currentUser);
-        Dictionary<int, string> GetRegisteredUserEmailAddresses(IList<int> isAnything, ApplicationUser currentUser);
+        Dictionary<int, string> GetRegisteredUserEmailAddresses(IList<int> playerIds, ApplicationUser currentUser);
     }
 }

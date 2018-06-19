@@ -23,6 +23,7 @@
                 </caption>
                 <thead class="player-table-head">
                 <tr>
+                    <th class="col-md-1"></th>
                     <th class="col-md-1 badges-head"></th>
                     <th class="col-md-2">
                         <span class="sort" data-sort="name">Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
@@ -36,7 +37,7 @@
                     <th class="col-md-2 avgpoints-head">
                         <span class="sort" data-sort="avgpoints-col">Avg. @Html.NemePointsIco(tooltip: "NemePoints") Per Game <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                     </th>
-                    <th class="col-md-5 wonpercentage-head">
+                    <th class="col-md-4 wonpercentage-head">
                         <span class="sort" data-sort="percentage-won">% Won <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                     </th>
                 </tr>
@@ -44,8 +45,8 @@
                 <tbody class="list">
                 @foreach (var playerSummary in Model)
                 {
-
                     <tr>
+                        <td>@Html.RenderGravatar(playerSummary.RegisteredUserEmailAddress)</td>
                         <td class="badges-col">
                             @foreach (var badge in playerSummary.SpecialBadgeTypes)
                             {
@@ -65,8 +66,8 @@
                         </td>
                         <td class="total-points" data-nemepoints="@playerSummary.NemePointsSummary.TotalNemePoints">
                             <span data-toggle="popover" data-html="true" data-templateselector="#@playerSummary.PlayerId" data-title="NemePoints breakdown">
-                                    @playerSummary.NemePointsSummary.TotalNemePoints
-                                </span>
+                                @playerSummary.NemePointsSummary.TotalNemePoints
+                            </span>
                         </td>
                         <td class="plays-col">@playerSummary.TotalGamesPlayed</td>
                         <td class="avgpoints-col">@playerSummary.AveragePointsPerGame.ToString("N2")</td>
