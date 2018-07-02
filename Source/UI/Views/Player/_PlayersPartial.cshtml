@@ -32,21 +32,21 @@
                         </caption>
                         <thead class="player-table-head">
                         <tr>
-                            <th class="col-md-1"></th>
+                            <th class="col-md-1"><span class="gravatar-header">Gravatar</span></th>
                             <th class="col-md-2">
-                                <span class="sort" data-sort="player-name-col">Player Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                                <span class="sort" data-sort="player-name-col"><span class="flip-scroll-hidden">Player </span>Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                             </th>
                             <th class="col-md-1">
                                 <span class="sort desc" data-sort="total-nemepoints-col">@Html.NemePointsIco() <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                             </th>
                             <th class="col-md-1">
-                                <span class="sort" data-sort="played-games-col">Played Games <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                                <span class="sort" data-sort="played-games-col">Plays <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                             </th>
                             <th class="col-md-1">
-                                <span class="sort" data-sort="avg-nemepoints-col">Avg. @Html.NemePointsIco(tooltip: "NemePoints") per game <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                                <span class="sort" data-sort="avg-nemepoints-col">Avg. @Html.NemePointsIco(tooltip: "NemePoints") <span class="flip-scroll-hidden">per game</span> <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                             </th>
                             <th class="col-md-1">
-                                <span class="sort" data-sort="overall-win-col">Overall Win % <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                                <span class="sort" data-sort="overall-win-col"><span class="flip-scroll-hidden">Overall </span>Win % <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                             </th>
                             <th class="col-md-1">
                                 <span class="sort" data-sort="championed-games-col">
@@ -83,7 +83,7 @@
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    <td>@Html.RenderGravatar(item.RegisteredUserEmailAddress)</td>
+                                    <td class="gravatar-col">@Html.RenderGravatar(item.RegisteredUserEmailAddress)</td>
                                     <td class="player-name-col" data-name="@item.PlayerName">
                                         <b>@Html.ActionLink(item.PlayerName, MVC.Player.Details(item.PlayerId, null), new {title = "View Player details"})</b>
                                     </td>

@@ -109,6 +109,8 @@
     border-right: 0; }
   .flip-scroll th:last-child, .flip-scroll td:last-child {
     border-bottom: 1px solid #babcbf; }
+  span.flip-scroll-hidden {
+    display: none; }
   /* sort out borders */ }
 
 /*$header-background-color: #2C3E50;*/
@@ -866,6 +868,9 @@ button > i.fa {
 
 .game-player-statistics th {
   text-align: center; }
+
+table tbody tr td.edit-col {
+  padding: 1px; }
 
 /*$header-background-color: #2C3E50;*/
 .badges-col {
@@ -3782,5 +3787,22 @@ button > i.fa {
 .slideOutUp {
   -webkit-animation-name: slideOutUp;
   animation-name: slideOutUp; }
+
+/*$header-background-color: #2C3E50;*/
+table tbody tr td.gravatar-col {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0px; }
+
+table thead tr th span.gravatar-header {
+  display: none; }
+
+@media (max-width: 991px) {
+  .flip-scroll table tbody tr td.gravatar-col {
+    height: 37px;
+    text-align: center;
+    vertical-align: top; }
+  .flip-scroll table thead tr th span.gravatar-header {
+    display: inline; } }
 
 /*# sourceMappingURL=nemestats.css.map */
