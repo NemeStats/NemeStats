@@ -3,6 +3,7 @@
 
 @{
     Layout = null;
+    var showGravatars = Model.PlayerSummaries.Any(x => !string.IsNullOrWhiteSpace(x.RegisteredUserEmailAddress));
 }
 
 <div class="panel panel-primary player-statistics">
@@ -22,7 +23,10 @@
             <thead>
             <tr>
                 <th></th>
-                <th></th>
+                @if (showGravatars)
+                {
+                    <th></th>
+                }
                 <th>
                     <span class="sort" data-sort="name-col">Player Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                 </th>
@@ -46,8 +50,11 @@
                             </i>
                         }
                     </td>
-                    <td class="gravatar-col">@Html.RenderGravatar(playerSummary.RegisteredUserEmailAddress)</td>
-                    <td class="name-col" data-name="@playerSummary.PlayerName">
+                    @if (showGravatars)
+                    {
+                        <td class="gravatar-col">@Html.RenderGravatar(playerSummary.RegisteredUserEmailAddress)</td>
+                    }
+                    <td class="player-name-col" data-name="@playerSummary.PlayerName">
                         @Html.ActionLink(playerSummary.PlayerName, "Details", "Player", new {id = playerSummary.PlayerId}, new { title = "View Player details" })
                     </td>
                     <td class="winloss-col" data-winloss="@(playerSummary.GamesWon - playerSummary.GamesLost)">

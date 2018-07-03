@@ -109,8 +109,6 @@
     border-right: 0; }
   .flip-scroll th:last-child, .flip-scroll td:last-child {
     border-bottom: 1px solid #babcbf; }
-  span.flip-scroll-hidden {
-    display: none; }
   /* sort out borders */ }
 
 /*$header-background-color: #2C3E50;*/
@@ -610,7 +608,15 @@ button > i.fa {
   .leftItem {
     display: inline-block;
     max-width: 90px;
-    overflow: hidden; } }
+    overflow: hidden; }
+  span.hide-when-small {
+    display: none; }
+  span.show-when-small-only {
+    display: inline; } }
+
+@media (min-width: 992px) {
+  span.show-when-small-only {
+    display: none; } }
 
 @media (min-width: 992px) and (max-width: 1199px) {
   .navbar-right li {
@@ -628,10 +634,6 @@ button > i.fa {
 @media (max-width: 767px) {
   .navbar-right li {
     max-width: none; } }
-
-.game-player-statistics .flip-scroll tr {
-  width: 120px;
-  text-align: center; }
 
 @media only screen and (max-width: 991px) {
   .flip-scroll .badges-head {
@@ -654,7 +656,8 @@ button > i.fa {
     height: 73px;
     padding-top: 40px; }
   .flip-scroll .badges-col {
-    height: 37px; }
+    height: 37px;
+    text-align: center; }
   .flip-scroll .avgpoints-col {
     height: 50px; }
   .flip-scroll .name-col {
@@ -666,8 +669,6 @@ button > i.fa {
       word-break: break-word; }
   .flip-scroll .edit-col {
     height: 52px;
-    text-align: center; }
-  .flip-scroll .plays-col {
     text-align: center; }
   .flip-scroll .nemesis-col {
     height: 70px; }
@@ -682,7 +683,10 @@ button > i.fa {
       max-width: 200px; }
   .flip-scroll .achievement-head {
     height: 56px;
-    line-height: 42px; } }
+    line-height: 42px; }
+  .flip-scroll .game-player-statistics tr {
+    width: 120px;
+    text-align: center; } }
 
 /*$header-background-color: #2C3E50;*/
 .btn.btn-google {
@@ -866,17 +870,18 @@ button > i.fa {
     .progress .progress-bar span {
       margin-left: 5px; }
 
-.game-player-statistics th {
-  text-align: center; }
-
 table tbody tr td.edit-col {
   padding: 1px; }
 
+.player-name-col {
+  width: 135px; }
+
 /*$header-background-color: #2C3E50;*/
-table tbody tr td.badges-col {
-  text-align: right;
-  width: 30px;
-  vertical-align: middle; }
+@media (min-width: 991px) {
+  table tbody tr td.badges-col {
+    text-align: right;
+    width: 30px;
+    vertical-align: middle; } }
 
 .neme-points-ico {
   color: #354458;
@@ -3791,11 +3796,12 @@ table tbody tr td.badges-col {
   animation-name: slideOutUp; }
 
 /*$header-background-color: #2C3E50;*/
-table tbody tr td.gravatar-col {
-  text-align: right;
-  vertical-align: middle;
-  padding: 0px;
-  width: 30px; }
+@media (min-width: 991px) {
+  table tbody tr td.gravatar-col {
+    text-align: right;
+    vertical-align: middle;
+    padding: 0px;
+    width: 30px; } }
 
 table thead tr th span.gravatar-header {
   display: none; }

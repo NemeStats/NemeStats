@@ -4,6 +4,8 @@
 
 @{
     Layout = null;
+
+    var showGravatars = @Model.Any(x => !string.IsNullOrWhiteSpace(x.RegisteredUserEmailAddress));
 }
 
 <div class="panel panel-primary game-player-statistics">
@@ -23,21 +25,24 @@
                 </caption>
                 <thead class="player-table-head">
                 <tr>
-                    <th class="col-md-1"></th>
-                    <th class="col-md-1 badges-head"></th>
-                    <th class="col-md-2">
+                    <th class="badges-head"><span class="show-when-small-only">Badges</span></th>
+                    @if (showGravatars)
+                    {
+                        <th><span class="show-when-small-only">Gravatar</span></th>
+                    }
+                    <th>
                         <span class="sort" data-sort="name">Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                     </th>
-                    <th class="col-md-1">
+                    <th>
                         <span class="sort desc" data-sort="total-points">@Html.NemePointsIco() <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                     </th>
-                    <th class="col-md-1">
+                    <th>
                         <span class="sort" data-sort="plays-col">Total Games <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                     </th>
-                    <th class="col-md-2 avgpoints-head">
+                    <th class="avgpoints-head">
                         <span class="sort" data-sort="avgpoints-col">Avg. @Html.NemePointsIco(tooltip: "NemePoints") Per Game <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                     </th>
-                    <th class="col-md-4 wonpercentage-head">
+                    <th class="wonpercentage-head">
                         <span class="sort" data-sort="percentage-won">% Won <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                     </th>
                 </tr>
@@ -46,7 +51,6 @@
                 @foreach (var playerSummary in Model)
                 {
                     <tr>
-                        <td>@Html.RenderGravatar(playerSummary.RegisteredUserEmailAddress)</td>
                         <td class="badges-col">
                             @foreach (var badge in playerSummary.SpecialBadgeTypes)
                             {
@@ -55,7 +59,12 @@
                                 </i>
                             }
                         </td>
-                        <td class="name" data-name="@playerSummary.PlayerName">
+                        @if (showGravatars)
+                        {
+                            <td class="gravatar-col">@Html.RenderGravatar(playerSummary.RegisteredUserEmailAddress)</td>
+                        }
+
+                        <td class="name player-name-col" data-name="@playerSummary.PlayerName">
                             @Html.ActionLink(playerSummary.PlayerName, "Details", "Player", new
                             {
                                 id = playerSummary.PlayerId

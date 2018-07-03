@@ -79,13 +79,11 @@
     }
 }
 
-.game-player-statistics {
-    th {
-        text-align: center;
-    }
-}
-
 table tbody tr td.edit-col{
     padding: 1px;
+}
+
+.player-name-col {
+    width: $player-name-width;
 }
 
