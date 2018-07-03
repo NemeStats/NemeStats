@@ -1,9 +1,11 @@
 ﻿@import "nemestats-variables.scss";
 
-table tbody tr td.badges-col {
-    text-align: right;
-    width: $badges-width;
-    vertical-align: middle;
+@media (min-width: $screen-sm-max) {
+    table tbody tr td.badges-col {
+        text-align: right;
+        width: $badges-width;
+        vertical-align: middle;
+    }
 }
 
 .neme-points-ico {
@@ -14,7 +16,7 @@ table tbody tr td.badges-col {
         color: white;
         font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-        &:before{
+        &:before {
             content: "N";
         }
     }
