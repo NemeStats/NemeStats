@@ -96,3 +96,9 @@
 .date-header {
     width: $date-width;
 }
+
+.keyvaluetable {
+    th {
+        width: $keyvaluetablecolumn-width;
+    }
+}
