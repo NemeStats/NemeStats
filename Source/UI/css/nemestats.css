@@ -640,8 +640,6 @@ button > i.fa {
     height: 100px; }
   .flip-scroll .edit-head {
     height: 52px; }
-  .flip-scroll .avgpoints-head {
-    height: 50px; }
   .flip-scroll .name-head {
     height: 70px; }
   .flip-scroll .nemesis-head {
@@ -873,21 +871,6 @@ table tbody tr td.edit-col {
 
 .playername-head {
   width: 135px; }
-
-.percentagewon-head {
-  width: 65px; }
-
-.overallwin-head {
-  width: 65px; }
-
-.totalpoints-head {
-  width: 65px; }
-
-.totalplays-head {
-  width: 65px; }
-
-.avgpoints-head {
-  width: 65px; }
 
 .wonpercentage-head {
   width: 65px; }
