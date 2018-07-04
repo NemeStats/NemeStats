@@ -25,6 +25,10 @@
 			        {
 			            @Html.ActionLink(championChange.PreviousChampionPlayerName, "Details", "Player", new {id = championChange.PreviousChampionPlayerId}, new { title = "View Player details"})
 			        }
+			        else
+			        {
+                        <span>&nbsp;</span>
+			        }
 			    </td>
 				<td>@Html.ActionLink(championChange.NewChampionPlayerName, "Details", "Player", new { id = championChange.NewChampionPlayerId }, new { title = "View Player details"})</td>
                 <td>@Html.ActionLink(championChange.GameName, "Details", "GameDefinition", new { id = championChange.GameDefinitionId }, new { title = "View Game Definition details" })</td>
