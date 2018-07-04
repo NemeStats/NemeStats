@@ -10,20 +10,6 @@
         max-width: 90px;
         overflow: hidden;
     }
-
-    span.hide-when-small {
-        display: none;
-    }
-
-    span.show-when-small-only {
-        display: inline;
-    }
-}
-
-@media (min-width: $screen-md-min) {
-    span.show-when-small-only {
-        display: none;
-    }
 }
 
 @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {

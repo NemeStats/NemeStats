@@ -608,15 +608,7 @@ button > i.fa {
   .leftItem {
     display: inline-block;
     max-width: 90px;
-    overflow: hidden; }
-  span.hide-when-small {
-    display: none; }
-  span.show-when-small-only {
-    display: inline; } }
-
-@media (min-width: 992px) {
-  span.show-when-small-only {
-    display: none; } }
+    overflow: hidden; } }
 
 @media (min-width: 992px) and (max-width: 1199px) {
   .navbar-right li {
@@ -882,12 +874,25 @@ table tbody tr td.edit-col {
 .overall-win-col {
   width: 65px; }
 
+.totalpoints-col {
+  width: 65px; }
+
+.plays-col {
+  width: 65px; }
+
+.avgpoints-col {
+  width: 65px; }
+
+.wonpercentage-head {
+  width: 65px; }
+
 /*$header-background-color: #2C3E50;*/
 @media (min-width: 991px) {
   table tbody tr td.badges-col {
     text-align: right;
     width: 30px;
-    vertical-align: middle; } }
+    vertical-align: middle;
+    padding: 4px; } }
 
 .neme-points-ico {
   color: #354458;

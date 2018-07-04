@@ -25,16 +25,16 @@
                 </caption>
                 <thead class="player-table-head">
                 <tr>
-                    <th class="badges-head"><span class="show-when-small-only">Badges</span></th>
+                    <th class="badges-head"><span class="visible-xs-inline visible-sm-inline">Badges</span></th>
                     @if (showGravatars)
                     {
-                        <th><span class="show-when-small-only">Gravatar</span></th>
+                        <th><span class="visible-xs-inline visible-sm-inline">Gravatar</span></th>
                     }
                     <th>
-                        <span class="sort" data-sort="name">Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                        <span class="sort" data-sort="game-name">Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                     </th>
                     <th>
-                        <span class="sort desc" data-sort="total-points">@Html.NemePointsIco() <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                        <span class="sort desc" data-sort="totalpoints-col">@Html.NemePointsIco() <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                     </th>
                     <th>
                         <span class="sort" data-sort="plays-col">Total Games <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
@@ -42,6 +42,7 @@
                     <th class="avgpoints-head">
                         <span class="sort" data-sort="avgpoints-col">Avg. @Html.NemePointsIco(tooltip: "NemePoints") Per Game <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                     </th>
+                    <th>Wins / Losses</th>
                     <th class="wonpercentage-head">
                         <span class="sort" data-sort="percentage-won">% Won <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                     </th>
@@ -73,7 +74,7 @@
                                 title = "View Player details"
                             })
                         </td>
-                        <td class="total-points" data-nemepoints="@playerSummary.NemePointsSummary.TotalNemePoints">
+                        <td class="totalpoints-col" data-nemepoints="@playerSummary.NemePointsSummary.TotalNemePoints">
                             <span data-toggle="popover" data-html="true" data-templateselector="#@playerSummary.PlayerId" data-title="NemePoints breakdown">
                                 @playerSummary.NemePointsSummary.TotalNemePoints
                             </span>

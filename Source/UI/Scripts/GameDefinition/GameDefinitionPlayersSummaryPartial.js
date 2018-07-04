@@ -9,7 +9,7 @@ Views.GameDefinition.GameDefinitionPlayersSummaryPartial = function () {
 //Implementation
 Views.GameDefinition.GameDefinitionPlayersSummaryPartial.prototype = {
     initListJs: function () {
-        var valueNames = [{ name: 'name', attr: 'data-name' }, { name: 'total-points', attr: 'data-nemepoints' }, 'plays-col', 'avgpoints-col', { name: 'percentage-won', attr: 'data-winpercentage' }];
+        var valueNames = [{ name: 'game-name', attr: 'data-name' }, { name: 'totalpoints-col', attr: 'data-nemepoints' }, 'plays-col', 'avgpoints-col', { name: 'percentage-won', attr: 'data-winpercentage' }];
         var tableId = "gameplayerssummary";
 
 
