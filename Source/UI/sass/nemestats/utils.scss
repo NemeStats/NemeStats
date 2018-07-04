@@ -88,3 +88,11 @@
 .clickable {
     cursor: pointer;
 }
+
+.skinny-header {
+    width: $skinnymetric-width;
+}
+
+.date-header {
+    width: $date-width;
+}

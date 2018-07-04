@@ -221,3 +221,7 @@ $gold-text-color: darken($gold-achievement-color,15%);
         content: "N";
     }
 }
+
+.achievement-head{
+    width: $achievementhead-width;
+}
