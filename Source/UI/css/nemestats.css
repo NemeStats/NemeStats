@@ -876,6 +876,12 @@ table tbody tr td.edit-col {
 .player-name-col {
   width: 135px; }
 
+.percentagewon-col {
+  width: 65px; }
+
+.overall-win-col {
+  width: 65px; }
+
 /*$header-background-color: #2C3E50;*/
 @media (min-width: 991px) {
   table tbody tr td.badges-col {
