@@ -1042,6 +1042,9 @@ table tbody tr td.edit-col {
   margin-left: auto;
   margin-right: auto; }
 
+.keyvaluetable-headercolumn {
+  width: 180px; }
+
 .bgguser-integration img {
   margin-right: 10px; }
 
