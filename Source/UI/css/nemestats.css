@@ -57,8 +57,9 @@
 .clickable {
   cursor: pointer; }
 
-.skinny-header {
-  width: 65px; }
+@media only screen and (min-width: 992px) {
+  .skinny-header {
+    width: 65px; } }
 
 .date-header {
   width: 130px; }
@@ -647,7 +648,6 @@ button > i.fa {
     height: 70px; }
   .flip-scroll .nemesis-head {
     height: 70px;
-    width: 100px;
     padding-right: 0; }
   .flip-scroll .result-head {
     height: 190px; }
@@ -872,11 +872,11 @@ button > i.fa {
 table tbody tr td.edit-col {
   padding: 1px; }
 
-.playername-head {
-  width: 135px; }
-
-.wonpercentage-head {
-  width: 65px; }
+@media only screen and (min-width: 992px) {
+  .playername-head {
+    width: 135px; }
+  .wonpercentage-head {
+    width: 65px; } }
 
 /*$header-background-color: #2C3E50;*/
 @media (min-width: 991px) {

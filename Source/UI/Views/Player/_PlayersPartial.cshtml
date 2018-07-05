@@ -31,46 +31,46 @@
                                 <input type="text" class="form-control search" placeholder="type player name, nemesis, points...">
                             </div>
                         </caption>
-                        <thead class="player-table-head">
+                        <thead>
                         <tr>
                             
                             @if (showGravatars)
                             {
-                                <th class="col-md-1"><span class="gravatar-header">Gravatar</span></th>
+                                <th class="gravatar-header"><span class="gravatar-header">Gravatar</span></th>
                             }
-                            <th class="col-md-2">
-                                <span class="sort" data-sort="player-name-col"><span class="flip-scroll-hidden">Player </span>Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                            <th class="playername-head">
+                                <span class="sort" data-sort="player-name-col"><span class="hidden-sm hidden-xs">Player </span>Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                             </th>
-                            <th class="col-md-1">
+                            <th class="skinny-header">
                                 <span class="sort desc" data-sort="total-nemepoints-col">@Html.NemePointsIco() <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                             </th>
-                            <th class="col-md-1">
+                            <th class="skinny-header">
                                 <span class="sort" data-sort="played-games-col">Plays <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                             </th>
-                            <th class="col-md-1">
-                                <span class="sort" data-sort="avg-nemepoints-col">Avg. @Html.NemePointsIco(tooltip: "NemePoints") <span class="flip-scroll-hidden">per game</span> <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                            <th class="skinny-header">
+                                <span class="sort" data-sort="avg-nemepoints-col">Avg. @Html.NemePointsIco(tooltip: "NemePoints") <span class="hidden-xs hidden-sm">per game</span> <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                             </th>
-                            <th class="col-md-1 skinny-header">
-                                <span class="sort" data-sort="overall-win-col"><span class="flip-scroll-hidden">Overall </span>Win % <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                            <th class="skinny-header">
+                                <span class="sort" data-sort="overall-win-col"><span class="hidden-xs hidden-sm">Overall </span>Win % <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                             </th>
-                            <th class="col-md-1">
+                            <th class="skinny-header">
                                 <span class="sort" data-sort="championed-games-col">
                                     <i class="fa fa-trophy" data-toggle="popover" data-placement="top" data-content="Total games Championed by this Player"></i> <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span>
                                 </span>
                             </th>
-                            <th class="col-md-1">
+                            <th class="skinny-header">
                                 <span class="sort" data-sort="achievements-col">
-                                    Achievements <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span>
+                                <span class="hidden-xs hidden-sm">Achievements</span><span class="visible-xs-inline visible-sm-inline">Achv.</span> <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span>
                                 </span>
                             </th>
-                            <th class="col-md-2 nemesis-head">
+                            <th class="nemesis-head">
                                 <span class="sort" data-sort="nemesis-col">
                                     <i class="ns-icon-nemesis" data-toggle="popover" data-placement="top"
                                        data-content="@NemesisBadgeViewModel.POPOVER_TEXT"></i>
                                     <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span>
                                 </span>
                             </th>
-                            <th class="col-md-1">
+                            <th class="skinny-header">
                                 @if (userCanEdit)
                                 {
                                     @:Registered
@@ -78,7 +78,7 @@
                             </th>
                             @if (userCanEdit)
                             {
-                                <th class="col-md-1 edit-head">
+                                <th class="edit-head">
 
                                 </th>
                             }

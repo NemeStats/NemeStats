@@ -89,16 +89,18 @@
     cursor: pointer;
 }
 
-.skinny-header {
-    width: $skinnymetric-width;
-}
-
-.date-header {
-    width: $date-width;
-}
-
-.keyvaluetable {
-    th {
-        width: $keyvaluetablecolumn-width;
+@media only screen and (min-width: $screen-md-min) {
+    .skinny-header {
+        width: $skinnymetric-width;
     }
 }
+
+    .date-header {
+        width: $date-width;
+    }
+
+    .keyvaluetable {
+        th {
+            width: $keyvaluetablecolumn-width;
+        }
+    }
