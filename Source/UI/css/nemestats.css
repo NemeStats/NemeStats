@@ -263,8 +263,10 @@ body {
   padding-left: 15px;
   padding-right: 15px;
   padding-bottom: 20px;
-  margin-bottom: 100px;
   min-height: 700px; }
+  @media (min-width: 992px) {
+    .body-content {
+      margin-bottom: 100px; } }
 
 footer {
   height: 100px;

@@ -11,7 +11,10 @@ body {
     padding-left: 15px;
     padding-right: 15px;
     padding-bottom: 20px;
-    margin-bottom: $footer-height;
+
+    @media (min-width: $screen-md-min) {
+        margin-bottom: $footer-height;
+    }
     min-height: 700px;
 }
 
