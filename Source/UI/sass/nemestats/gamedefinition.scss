@@ -130,6 +130,8 @@
     }
 }
 
-.gamename-head {
-    width: $gamename-width;
+@media only screen and (min-width: $screen-md-min) {
+    .gamename-head {
+        width: $gamename-width;
+    }
 }

@@ -222,6 +222,8 @@ $gold-text-color: darken($gold-achievement-color,15%);
     }
 }
 
-.achievement-head{
-    width: $achievementhead-width;
+@media only screen and (min-width: $screen-md-min) {
+    .achievement-head {
+        width: $achievementhead-width;
+    }
 }

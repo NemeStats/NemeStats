@@ -1004,8 +1004,9 @@ table tbody tr td.edit-col {
           background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
           background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent); }
 
-.gamename-head {
-  width: 135px; }
+@media only screen and (min-width: 992px) {
+  .gamename-head {
+    width: 135px; } }
 
 /*$header-background-color: #2C3E50;*/
 .filter {
@@ -1185,8 +1186,9 @@ table tbody tr td.edit-col {
   .nemepoints-achievement:before {
     content: "N"; }
 
-.achievement-head {
-  width: 225px; }
+@media only screen and (min-width: 992px) {
+  .achievement-head {
+    width: 225px; } }
 
 /*$header-background-color: #2C3E50;*/
 #record-played-game .steps {
