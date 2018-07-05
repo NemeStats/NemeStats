@@ -123,10 +123,12 @@
 
 /*$header-background-color: #2C3E50;*/
 .home-body-container {
-  margin-bottom: 100px;
   background-color: #fff;
   width: 100%;
   padding: 0 20px; }
+  @media (min-width: 992px) {
+    .home-body-container {
+      margin-bottom: 100px; } }
   .home-body-container .panel-heading {
     font-size: 26px; }
 

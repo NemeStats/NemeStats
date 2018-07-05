@@ -1,7 +1,9 @@
 ﻿@import "nemestats-variables.scss";
 
-.home-body-container{
-    margin-bottom: $footer-height;
+.home-body-container {
+    @media (min-width: $screen-md-min) {
+        margin-bottom: $footer-height;
+    }
 
     background-color: #fff;
     width: 100%;
@@ -11,9 +13,9 @@
         font-size: $font-size-h3;
     }
 }
+
 .home-container {
     background-color: #eee;
-
 
     .home-banner {
         background: url(/Content/Images/Home/Banner.jpg) no-repeat center center;
@@ -61,7 +63,7 @@
                         margin-top: 10px;
                     }
 
-                    .panel-heading{
+                    .panel-heading {
                         font-size: 14px;
                     }
 
