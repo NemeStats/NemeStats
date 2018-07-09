@@ -96,7 +96,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
                 .GetArgumentsForCallsMadeOn(mock => mock.Build(Arg<GameDefinitionSummary>.Is.Anything, Arg<Dictionary<int, string>>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
             var actualGameDefinitionSummary = args.AssertFirstCallIsType<GameDefinitionSummary>();
             actualGameDefinitionSummary.ShouldBeSameAs(_expectedGameDefinitionSummary);
-            var actualApplicationUser = args.AssertFirstCallIsType<ApplicationUser>(1);
+            var actualApplicationUser = args.AssertFirstCallIsType<ApplicationUser>(2);
             actualApplicationUser.ShouldBeSameAs(currentUser);
             var actualGameDefinitionViewModel = (GameDefinitionDetailsViewModel)viewResult.ViewData.Model;
             Assert.AreEqual(_expectedViewModel, actualGameDefinitionViewModel);
