@@ -1,4 +1,6 @@
-﻿@mixin voffset($value) {
+﻿@import "nemestats-variables.scss";
+
+@mixin voffset($value) {
     margin-top: 5px*$value;
 }
 
@@ -89,7 +91,7 @@
     cursor: pointer;
 }
 
-@media only screen and (min-width: $screen-md-min) {
+@media only screen and (min-width: $nonflipscroll-minwidth) {
     .skinny-header {
         width: $skinnymetric-width;
     }

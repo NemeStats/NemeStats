@@ -222,7 +222,7 @@ $gold-text-color: darken($gold-achievement-color,15%);
     }
 }
 
-@media only screen and (min-width: $screen-md-min) {
+@media only screen and (min-width: $nonflipscroll-minwidth) {
     .achievement-head {
         width: $achievementhead-width;
     }

@@ -1,4 +1,5 @@
 /*$header-background-color: #2C3E50;*/
+/*$header-background-color: #2C3E50;*/
 .voffset1 {
   margin-top: 5px; }
 
@@ -1038,6 +1039,10 @@ table tbody tr td.edit-col {
   margin-top: 200px;
   margin-left: auto;
   margin-right: auto; }
+
+@media only screen and (min-width: 992px) {
+  .gaminggroup-head {
+    width: 220px; } }
 
 .bgguser-integration img {
   margin-right: 10px; }

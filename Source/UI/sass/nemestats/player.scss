@@ -83,7 +83,7 @@ table tbody tr td.edit-col{
     padding: 1px;
 }
 
-@media only screen and (min-width: $screen-md-min) {
+@media only screen and (min-width: $nonflipscroll-minwidth) {
     .playername-head {
         width: $player-name-width;
     }
