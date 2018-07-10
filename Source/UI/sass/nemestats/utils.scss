@@ -1,4 +1,6 @@
-﻿@mixin voffset($value) {
+﻿@import "nemestats-variables.scss";
+
+@mixin voffset($value) {
     margin-top: 5px*$value;
 }
 
@@ -88,3 +90,19 @@
 .clickable {
     cursor: pointer;
 }
+
+@media only screen and (min-width: $nonflipscroll-minwidth) {
+    .skinny-header {
+        width: $skinnymetric-width;
+    }
+}
+
+    .date-header {
+        width: $date-width;
+    }
+
+    .keyvaluetable {
+        th {
+            width: $keyvaluetablecolumn-width;
+        }
+    }

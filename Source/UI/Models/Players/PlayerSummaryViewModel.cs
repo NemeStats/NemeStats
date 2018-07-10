@@ -18,5 +18,6 @@ namespace UI.Models.Players
         public int LostPercentage => 100 - WinPercentage;
 
         public IList<IBadgeBaseViewModel> SpecialBadgeTypes { get; set; }
+        public string RegisteredUserEmailAddress { get; set; }
     }
 }

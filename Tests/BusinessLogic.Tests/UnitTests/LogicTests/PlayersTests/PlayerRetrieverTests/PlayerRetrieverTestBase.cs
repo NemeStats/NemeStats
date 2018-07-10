@@ -28,6 +28,7 @@ using StructureMap.AutoMocking;
 using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.Models.Achievements;
+using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverTests
 {
@@ -101,7 +102,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                     PreviousNemesis = new Nemesis
                     {
                         NemesisPlayer = new Player()
-                    }
+                    },
+                    User = new ApplicationUser()
                 },
                 new Player(){ GamingGroupId = gamingGroupId, Name = "3", PlayerGameResults = new List<PlayerGameResult>(), ChampionedGames = new List<Champion>(),
                     Nemesis = new Nemesis
@@ -111,7 +113,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                     PreviousNemesis = new Nemesis
                     {
                         NemesisPlayer = new Player()
-                    } },
+                    },
+                    User = new ApplicationUser()
+                },
                 new Player(){ GamingGroupId = -1, Name = "not in gaming group", PlayerGameResults = new List<PlayerGameResult>(), ChampionedGames = new List<Champion>(),
                     Nemesis = new Nemesis
                     {
@@ -120,7 +124,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                     PreviousNemesis = new Nemesis
                     {
                         NemesisPlayer = new Player()
-                    } },
+                    },
+                    User = new ApplicationUser()
+                },
                 new Player()
                 {
                     Id = playerId,
@@ -138,7 +144,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                     PreviousNemesis = new Nemesis
                     {
                         NemesisPlayer = new Player()
-                    }
+                    },
+                    User = new ApplicationUser()
                 },
                 new Player()
                 {
@@ -152,7 +159,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                     PreviousNemesis = new Nemesis
                     {
                         NemesisPlayer = new Player()
-                    }
+                    },
+                    User = new ApplicationUser()
                 }
             };
             players[3].NemesisId = 1;

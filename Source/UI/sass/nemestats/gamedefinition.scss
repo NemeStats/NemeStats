@@ -129,3 +129,9 @@
         }
     }
 }
+
+@media only screen and (min-width: $nonflipscroll-minwidth) {
+    .gamename-head {
+        width: $gamename-width;
+    }
+}

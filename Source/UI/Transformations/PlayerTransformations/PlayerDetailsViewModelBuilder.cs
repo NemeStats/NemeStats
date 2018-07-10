@@ -43,6 +43,9 @@ namespace UI.Transformations.PlayerTransformations
         internal const string EXCEPTION_CHAMPIONED_GAMES_CANNOT_BE_NULL = "PlayerDetails.ChampionedGames cannot be null.";
         internal const string EXCEPTION_FORMERCHAMPIONED_GAMES_CANNOT_BE_NULL = "PlayerDetails.FormerChampionedGames cannot be null.";
 
+        internal const string EXCEPTION_DICTIONARY_CANNOT_BE_NULL =
+            "playerIdToRegisteredUserEmailAddressDictionary cannot be null.";
+
         private readonly IGameResultViewModelBuilder _gameResultViewModelBuilder;
         private readonly IMinionViewModelBuilder _minionViewModelBuilder;
         private readonly ITransformer _transformer;
@@ -57,16 +60,24 @@ namespace UI.Transformations.PlayerTransformations
             _minionViewModelBuilder = minionViewModelBuilder;
             _transformer = transformer;
         }
-
-        public PlayerDetailsViewModel Build(PlayerDetails playerDetails, string urlForMinionBragging, ApplicationUser currentUser = null)
+        public PlayerDetailsViewModel Build(
+            PlayerDetails playerDetails, 
+            Dictionary<int, string> playerIdToRegisteredUserEmailAddressDictionary, 
+            string urlForMinionBragging, 
+            ApplicationUser currentUser = null)
         {
             Validate(playerDetails);
+            ValidatePlayerIdToRegisteredUserEmailAddressDictionary(playerIdToRegisteredUserEmailAddressDictionary);
 
+            var currentUserEmail = playerIdToRegisteredUserEmailAddressDictionary.ContainsKey(playerDetails.Id)
+                ? playerIdToRegisteredUserEmailAddressDictionary[playerDetails.Id]
+                : null;
             var playerDetailsViewModel = new PlayerDetailsViewModel
             {
                 PlayerId = playerDetails.Id,
                 PlayerName = playerDetails.Name,
                 PlayerRegistered = playerDetails.ApplicationUserId != null,
+                RegisteredUserEmailAddress = currentUserEmail,
                 Active = playerDetails.Active,
                 GamingGroupName = playerDetails.GamingGroupName,
                 GamingGroupId = playerDetails.GamingGroupId,
@@ -83,7 +94,7 @@ namespace UI.Transformations.PlayerTransformations
                                                   .ToList()
             };
 
-            PopulatePlayerVersusPlayersViewModel(playerDetails, playerDetailsViewModel);
+            PopulatePlayerVersusPlayersViewModel(playerDetails, playerIdToRegisteredUserEmailAddressDictionary, playerDetailsViewModel);
 
             SetTwitterBraggingUrlIfThePlayerIsTheCurrentlyLoggedInUser(playerDetails, urlForMinionBragging, currentUser, playerDetailsViewModel);
 
@@ -108,7 +119,9 @@ namespace UI.Transformations.PlayerTransformations
             return playerDetailsViewModel;
         }
 
-        private static void PopulatePlayerVersusPlayersViewModel(PlayerDetails playerDetails, PlayerDetailsViewModel playerDetailsViewModel)
+        private static void PopulatePlayerVersusPlayersViewModel(PlayerDetails playerDetails,
+            Dictionary<int, string> playerIdToRegisteredUserEmailAddressDictionary,
+            PlayerDetailsViewModel playerDetailsViewModel)
         {
             var playerVersusPlayers = new PlayersSummaryViewModel
             {
@@ -119,10 +132,15 @@ namespace UI.Transformations.PlayerTransformations
             {
                 var winPercentage = GetWinPercentage(playerVersusPlayerStatistics);
 
+                string registeredUserEmail;
+                playerIdToRegisteredUserEmailAddressDictionary.TryGetValue(
+                    playerVersusPlayerStatistics.OpposingPlayerId, out registeredUserEmail);
+
                 var playerSummaryViewModel = new PlayerSummaryViewModel
                 {
                     PlayerName = PlayerNameBuilder.BuildPlayerName(playerVersusPlayerStatistics.OpposingPlayerName, playerVersusPlayerStatistics.OpposingPlayerActive),
                     PlayerId = playerVersusPlayerStatistics.OpposingPlayerId,
+                    RegisteredUserEmailAddress = registeredUserEmail,
                     GamesWon = playerVersusPlayerStatistics.NumberOfGamesWonVersusThisPlayer,
                     GamesLost = playerVersusPlayerStatistics.NumberOfGamesLostVersusThisPlayer,
                     WinPercentage = (int)winPercentage
@@ -259,6 +277,15 @@ namespace UI.Transformations.PlayerTransformations
             ValidateMinions(playerDetails);
             ValidateChampionedGames(playerDetails);
             ValidateFormerChampionedGames(playerDetails);
+        }
+
+        private static void ValidatePlayerIdToRegisteredUserEmailAddressDictionary(
+            Dictionary<int, string> playerIdToRegisteredUserEmailAddressDictionary)
+        {
+            if (playerIdToRegisteredUserEmailAddressDictionary == null)
+            {
+                throw new ArgumentException(PlayerDetailsViewModelBuilder.EXCEPTION_DICTIONARY_CANNOT_BE_NULL);
+            }
         }
 
         private static void ValidatePlayerDetailsIsNotNull(PlayerDetails playerDetails)

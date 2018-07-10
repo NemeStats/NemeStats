@@ -109,7 +109,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
             templates: {
                 empty: [
                   '<div class="empty-message">',
-                    'there are no game matching this text on your gaming group.',
+                    'There are no matching games in your Gaming Group.',
                   '</div>'
                 ].join('\n'),
             }

@@ -1,7 +1,9 @@
-﻿@model UI.Models.Players.PlayersSummaryViewModel
+﻿@using UI.HtmlHelpers
+@model UI.Models.Players.PlayersSummaryViewModel
 
 @{
     Layout = null;
+    var showGravatars = Model.PlayerSummaries.Any(x => !string.IsNullOrWhiteSpace(x.RegisteredUserEmailAddress));
 }
 
 <div class="panel panel-primary player-statistics">
@@ -21,13 +23,17 @@
             <thead>
             <tr>
                 <th></th>
-                <th>
+                @if (showGravatars)
+                {
+                    <th></th>
+                }
+                <th class="playername-head">
                     <span class="sort" data-sort="name-col">Player Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                 </th>
                 <th>
                     <span class="sort asc" data-sort="winloss-col">@Model.WinLossHeader <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                 </th>
-                <th>
+                <th class="skinny-header">
                     <span class="sort" data-sort="percentagewon-col">% Won <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                 </th>
             </tr>
@@ -36,7 +42,7 @@
             @foreach (UI.Models.Players.PlayerSummaryViewModel playerSummary in Model.PlayerSummaries)
             {
                 <tr>
-                    <td>
+                    <td class="badges-col">
                         @foreach (var badge in playerSummary.SpecialBadgeTypes)
                         {
                             <i class="@badge.GetIconCssClass()" data-container="body" data-toggle="popover" data-placement="right"
@@ -44,7 +50,11 @@
                             </i>
                         }
                     </td>
-                    <td class="name-col" data-name="@playerSummary.PlayerName">
+                    @if (showGravatars)
+                    {
+                        <td class="gravatar-col">@Html.RenderGravatar(playerSummary.RegisteredUserEmailAddress)</td>
+                    }
+                    <td class="player-name-col" data-name="@playerSummary.PlayerName">
                         @Html.ActionLink(playerSummary.PlayerName, "Details", "Player", new {id = playerSummary.PlayerId}, new { title = "View Player details" })
                     </td>
                     <td class="winloss-col" data-winloss="@(playerSummary.GamesWon - playerSummary.GamesLost)">

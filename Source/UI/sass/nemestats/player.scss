@@ -79,9 +79,16 @@
     }
 }
 
-.game-player-statistics {
-    th {
-        text-align: center;
-    }
+table tbody tr td.edit-col{
+    padding: 1px;
 }
 
+@media only screen and (min-width: $nonflipscroll-minwidth) {
+    .playername-head {
+        width: $player-name-width;
+    }
+
+    .wonpercentage-head {
+        width: $skinnymetric-width;
+    }
+}

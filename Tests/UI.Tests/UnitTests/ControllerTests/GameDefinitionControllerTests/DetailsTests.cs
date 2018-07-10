@@ -24,6 +24,11 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Web.Mvc;
+using BusinessLogic.Logic.Players;
+using BusinessLogic.Models.Players;
+using BusinessLogic.Models.User;
+using NemeStats.TestingHelpers.NemeStatsTestingExtensions;
+using Shouldly;
 using UI.Models.GameDefinitionModels;
 using UI.Transformations;
 
@@ -32,33 +37,50 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
     [TestFixture]
     public class DetailsTests : GameDefinitionControllerTestBase
     {
-        private int gameDefinitionId = 1;
-        private GameDefinitionSummary gameDefinitionSummary;
-        private readonly GameDefinitionDetailsViewModel expectedViewModel = new GameDefinitionDetailsViewModel();
+        private int _gameDefinitionId = 1;
+        private GameDefinitionSummary _expectedGameDefinitionSummary;
+        private readonly GameDefinitionDetailsViewModel _expectedViewModel = new GameDefinitionDetailsViewModel();
+        private readonly int _playerId1 = 1;
+        private readonly int _playerId2 = 2;
 
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
 
-            gameDefinitionSummary = new GameDefinitionSummary
+            _expectedGameDefinitionSummary = new GameDefinitionSummary
             {
                 PlayedGames = new List<PlayedGame>(),
-                GamingGroupId = currentUser.CurrentGamingGroupId.Value
+                GamingGroupId = currentUser.CurrentGamingGroupId.Value,
+                PlayerWinRecords = new List<PlayerWinRecord>
+                {
+                    new PlayerWinRecord
+                    {
+                        PlayerId = _playerId1
+                    },
+                    new PlayerWinRecord
+                    {
+                        PlayerId = _playerId2
+                    }
+                }
             };
 
             autoMocker.Get<IGameDefinitionRetriever>().Expect(repo => repo.GetGameDefinitionDetails(
                 Arg<int>.Is.Anything,
                 Arg<int>.Is.Anything))
-                .Return(gameDefinitionSummary);
-            autoMocker.Get<IGameDefinitionDetailsViewModelBuilder>().Expect(mock => mock.Build(gameDefinitionSummary, currentUser))
-                .Return(expectedViewModel);
+                .Return(_expectedGameDefinitionSummary);
+
+            autoMocker.Get<IGameDefinitionDetailsViewModelBuilder>().Expect(mock => mock.Build(
+                    Arg<GameDefinitionSummary>.Is.Anything, 
+                    Arg<Dictionary<int, string>>.Is.Anything,
+                    Arg<ApplicationUser>.Is.Anything))
+                .Return(_expectedViewModel);
         }
 
         [Test]
         public void ItReturnsTheDetailsView()
         {
-            var viewResult = autoMocker.ClassUnderTest.Details(gameDefinitionId, currentUser) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Details(_gameDefinitionId, currentUser) as ViewResult;
 
             Assert.AreEqual(MVC.GameDefinition.Views.Details, viewResult.ViewName);
         }
@@ -66,10 +88,44 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItReturnsTheSpecifiedGameDefinitionViewModelOnTheView()
         {
-            var viewResult = autoMocker.ClassUnderTest.Details(gameDefinitionId, currentUser) as ViewResult;
+            //--act
+            var viewResult = autoMocker.ClassUnderTest.Details(_gameDefinitionId, currentUser) as ViewResult;
 
+            //--assert
+            var args = autoMocker.Get<IGameDefinitionDetailsViewModelBuilder>()
+                .GetArgumentsForCallsMadeOn(mock => mock.Build(Arg<GameDefinitionSummary>.Is.Anything, Arg<Dictionary<int, string>>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
+            var actualGameDefinitionSummary = args.AssertFirstCallIsType<GameDefinitionSummary>();
+            actualGameDefinitionSummary.ShouldBeSameAs(_expectedGameDefinitionSummary);
+            var actualApplicationUser = args.AssertFirstCallIsType<ApplicationUser>(2);
+            actualApplicationUser.ShouldBeSameAs(currentUser);
             var actualGameDefinitionViewModel = (GameDefinitionDetailsViewModel)viewResult.ViewData.Model;
-            Assert.AreEqual(expectedViewModel, actualGameDefinitionViewModel);
+            Assert.AreEqual(_expectedViewModel, actualGameDefinitionViewModel);
+        }
+
+        [Test]
+        public void ItSetsTheRegisteredUserEmailAddresses()
+        {
+            //--arrange
+            var expectedDictionary = new Dictionary<int, string>();
+            autoMocker.Get<IPlayerRetriever>().Expect(mock =>
+                    mock.GetRegisteredUserEmailAddresses(Arg<List<int>>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+                .Return(expectedDictionary);
+
+            //--act
+            autoMocker.ClassUnderTest.Details(_gameDefinitionId, currentUser);
+
+            //--assert
+            var args = autoMocker.Get<IPlayerRetriever>().GetArgumentsForCallsMadeOn(mock =>
+                mock.GetRegisteredUserEmailAddresses(Arg<List<int>>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
+            var playerIds = args.AssertFirstCallIsType<List<int>>();
+            playerIds.Count.ShouldBe(2);
+            playerIds.ShouldContain(_playerId1);
+            playerIds.ShouldContain(_playerId2);
+
+            autoMocker.Get<IGameDefinitionDetailsViewModelBuilder>().AssertWasCalled(mock => mock.Build(
+                Arg<GameDefinitionSummary>.Is.Anything, 
+                Arg<Dictionary<int, string>>.Is.Same(expectedDictionary),
+                Arg<ApplicationUser>.Is.Anything));
         }
 
         [Test]

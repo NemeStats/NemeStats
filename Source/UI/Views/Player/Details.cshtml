@@ -4,84 +4,92 @@
     ViewBag.Title = Model.PlayerName + " - " + Model.GamingGroupName;
     ViewBag.Description = $"View stats and details about the Player called '{Model.PlayerName}' on NemeStats.";
     Layout = MVC.Shared.Views._BaseLayout;
+    var showGravatar = !string.IsNullOrWhiteSpace(Model.RegisteredUserEmailAddress);
 }
 
 <div id="player-details">
-    <h2 class="page-header">
-        @Html.DisplayFor(model => model.PlayerName) on @Html.ActionLink(Model.GamingGroupName, MVC.GamingGroup.ActionNames.Details, MVC.GamingGroup.Name, new {id = Model.GamingGroupId}, new {})
-        @if (Model.UserCanEdit)
+<h2 class="page-header">
+    @Html.DisplayFor(model => model.PlayerName) on @Html.ActionLink(Model.GamingGroupName, MVC.GamingGroup.ActionNames.Details, MVC.GamingGroup.Name, new {id = Model.GamingGroupId}, new {})
+    @if (Model.UserCanEdit)
+    {
+        <a href="@Url.Action(MVC.Player.ActionNames.Edit, MVC.Player.Name, new {id = Model.PlayerId})" class="btn btn-xs btn-default" title = "Edit Player">
+            <span class="fa fa-pencil"></span>&nbsp;Edit
+        </a>
+
+        if (!Model.PlayerRegistered)
         {
-            <a href="@Url.Action(MVC.Player.ActionNames.Edit, MVC.Player.Name, new {id = Model.PlayerId})" class="btn btn-xs btn-default" title = "Edit Player">
-                <span class="fa fa-pencil"></span>&nbsp;Edit
+            <a href="@Url.Action(MVC.Player.InvitePlayer().AddRouteValue("id", Model.PlayerId))" id="invitePlayer" class="btn btn-xs btn-default" title = "Go to the Player invitation page so you can invite them to this Gaming Group">
+                <i class="fa fa-envelope"></i>&nbsp;Invite Player
             </a>
-
-            if (!Model.PlayerRegistered)
-            {
-                <a href="@Url.Action(MVC.Player.InvitePlayer().AddRouteValue("id", Model.PlayerId))" id="invitePlayer" class="btn btn-xs btn-default" title = "Go to the Player invitation page so you can invite them to this Gaming Group">
-                    <i class="fa fa-envelope"></i>&nbsp;Invite Player
-                </a>
-            }
         }
-    </h2>
+    }
+</h2>
 
-    <div class="row">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h4>Player Info</h4>
-            </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-2">
-                        <strong>
-                            Name
-                        </strong>
+<div class="row">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4>Player Info</h4>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                @if (showGravatar)
+                {
+                    <div class="col-md-2 col-sm-2">@Html.RenderGravatar(Model.RegisteredUserEmailAddress, 80)</div>
+                }
+                <div class="col-md-6 col-sm-10">
+                    <div class="row">
+                        <div class="col-md-5 col-sm-4">
+                            <strong>
+                                Name
+                            </strong>
+                        </div>
+                        <div class="col-md-5 col-sm-6">
+                            @Html.DisplayFor(model => model.PlayerName)
+                        </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-5 col-sm-4">
+                            <strong>
+                                @Html.DisplayNameFor(model => model.PlayerRegistered)
+                            </strong>
+                        </div>
 
-                    <div class="col-md-2">
-                        @Html.DisplayFor(model => model.PlayerName)
+                        <div class="col-md-5 col-sm-6">
+                            @Html.DisplayFor(model => model.PlayerRegistered)
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2">
-                        <strong>
-                            @Html.DisplayNameFor(model => model.PlayerRegistered)
-                        </strong>
-                    </div>
+                    <div class="row">
+                        <div class="col-md-5 col-sm-4">
+                            <strong>
+                                @Html.DisplayNameFor(model => model.Active)
+                            </strong>
+                        </div>
 
-                    <div class="col-md-2">
-                        @Html.DisplayFor(model => model.PlayerRegistered)
+                        <div class="col-md-5 col-sm-6">
+                            @Html.DisplayFor(model => model.Active)
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2">
-                        <strong>
-                            @Html.DisplayNameFor(model => model.Active)
-                        </strong>
-                    </div>
-
-                    <div class="col-md-2">
-                        @Html.DisplayFor(model => model.Active)
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2">
-                        <strong>
-                            Gaming Group
-                        </strong>
-                    </div>
-                    <div class="col-sm-3">
-                        @Html.ActionLink(@Model.GamingGroupName, "Details", "GamingGroup", new
-                        {
-                        id = @Model.GamingGroupId
-                        }, new
-                        {
-                            title = "View Gaming Group details"
-                        })
+                    <div class="row">
+                        <div class="col-md-5 col-sm-4">
+                            <strong>
+                                Gaming Group
+                            </strong>
+                        </div>
+                        <div class="col-md-5 col-sm-6">
+                            @Html.ActionLink(@Model.GamingGroupName, "Details", "GamingGroup", new
+                            {
+                                id = @Model.GamingGroupId
+                            }, new
+                            {
+                                title = "View Gaming Group details"
+                            })
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
     @if (Model.PlayerAchievements.Any())
     {
     @Achievements()
@@ -93,21 +101,21 @@
                 <h4>Gaming Group Statistics</h4>
             </div>
             <div class="panel-body">
-                <table class="table table-hover table-striped">
+                <table class="table table-hover table-striped keyvaluetable">
                     <tr>
-                        <td><strong>Total Games:</strong></td>
+                        <th><strong>Total Games:</strong></th>
                         <td>@Model.TotalGamesPlayed</td>
                     </tr>
                     <tr>
-                        <td><strong>Win - Loss Record:</strong></td>
+                        <th><strong>Win - Loss Record:</strong></th>
                         <td>@Model.TotalGamesWon - @Model.TotalGamesLost</td>
                     </tr>
                     <tr>
-                        <td><strong>Win Percentage:</strong></td>
+                        <th><strong>Win Percentage:</strong></th>
                         <td>@Model.WinPercentage %</td>
                     </tr>
                     <tr>
-                        <td><strong>Total Points:</strong></td>
+                        <th><strong>Total Points:</strong></th>
                         @Html.Partial("_NemePointsBreakdown", Model.NemePointsSummary, new ViewDataDictionary {{"templateid", Model.PlayerId}})
                         <td>
                             <span data-toggle="popover" data-html="true" data-templateselector="#@Model.PlayerId" data-title="NemePoints breakdown">
@@ -116,23 +124,23 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><strong>Total Championed Games:</strong></td>
+                        <th><strong>Total Championed Games:</strong></th>
                         <td>@Model.TotalChampionedGames <i class="fa fa-trophy" data-toggle="popover" data-placement="top" data-content="Total games Championed by this Player"></i></td>
                     </tr>
                     <tr>
-                        <td><strong>Average Points Per Game:</strong></td>
+                        <th><strong>Average Points Per Game:</strong></th>
                         <td>@Model.AveragePointsPerGame.ToString("N2")</td>
                     </tr>
                     <tr>
-                        <td><strong>Average Players Per Game:</strong></td>
+                        <th><strong>Average Players Per Game:</strong></th>
                         <td>@Model.AveragePlayersPerGame.ToString("N2")</td>
                     </tr>
                     <tr>
-                        <td><strong>Average Points Per Player:</strong></td>
+                        <th><strong>Average Points Per Player:</strong></th>
                         <td>@Model.AveragePointsPerPlayer.ToString("N2")</td>
                     </tr>
                     <tr>
-                        <td><strong>Longest Winning Streak:</strong></td>
+                        <th><strong>Longest Winning Streak:</strong></th>
                         <td>@Model.LongestWinningStreak</td>
                     </tr>
                 </table>

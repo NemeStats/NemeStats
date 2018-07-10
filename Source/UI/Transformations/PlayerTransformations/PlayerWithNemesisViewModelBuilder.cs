@@ -27,7 +27,8 @@ namespace UI.Transformations.PlayerTransformations
 {
     public class PlayerWithNemesisViewModelBuilder : IPlayerWithNemesisViewModelBuilder
     {
-        public PlayerWithNemesisViewModel Build(PlayerWithNemesis playerWithNemesis, ApplicationUser currentUser)
+        public PlayerWithNemesisViewModel Build(PlayerWithNemesis playerWithNemesis, string email,
+            ApplicationUser currentUser)
         {
             ValidatePlayerNotNull(playerWithNemesis);
 
@@ -40,6 +41,7 @@ namespace UI.Transformations.PlayerTransformations
                 PlayerName = playerWithNemesis.PlayerName,
                 PlayerActive = playerWithNemesis.PlayerActive,
                 PlayerRegistered = playerWithNemesis.PlayerRegistered,
+                RegisteredUserEmailAddress = email,
                 UserCanEdit = (currentUser != null && playerWithNemesis.GamingGroupId == currentUser.CurrentGamingGroupId),
                 NemesisPlayerId = playerWithNemesis.NemesisPlayerId,
                 NemesisPlayerName = playerWithNemesis.NemesisPlayerName,

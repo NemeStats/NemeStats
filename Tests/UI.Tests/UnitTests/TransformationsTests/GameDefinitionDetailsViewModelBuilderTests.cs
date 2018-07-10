@@ -23,9 +23,11 @@ using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
+using System.Linq;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Logic.Players;
+using Shouldly;
 using StructureMap.AutoMocking;
 using UI.Models.GameDefinitionModels;
 using UI.Models.PlayedGame;
@@ -61,6 +63,8 @@ namespace UI.Tests.UnitTests.TransformationsTests
         private GameDefinitionPlayerSummaryViewModel _expectedPlayerSummary1;
         private GameDefinitionPlayerSummaryViewModel _expectedPlayerSummary2;
         private BoardGameGeekInfoViewModel _expectedBoardGameGeekInfo;
+        private Dictionary<int, string> _expectedRegisteredUserDictionary;
+        private string _expectedPlayer1Email = "player1email@email.com";
 
         [OneTimeSetUpAttribute]
         public void FixtureSetUp()
@@ -154,7 +158,12 @@ namespace UI.Tests.UnitTests.TransformationsTests
             _autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<BoardGameGeekInfoViewModel>(_gameDefinitionSummary.BoardGameGeekInfo))
                 .Return(_expectedBoardGameGeekInfo);
 
-            _viewModel = _autoMocker.ClassUnderTest.Build(_gameDefinitionSummary, _currentUser);
+            _expectedRegisteredUserDictionary = new Dictionary<int, string>
+            {
+                {_playerWinRecord1.PlayerId, _expectedPlayer1Email }
+            };
+
+            _viewModel = _autoMocker.ClassUnderTest.Build(_gameDefinitionSummary, _expectedRegisteredUserDictionary, _currentUser);
         }
 
         [Test]
@@ -194,9 +203,15 @@ namespace UI.Tests.UnitTests.TransformationsTests
         {
             _gameDefinitionSummary.PlayedGames = null;
 
-            var actualViewModel = _autoMocker.ClassUnderTest.Build(_gameDefinitionSummary, _currentUser);
+            var actualViewModel = _autoMocker.ClassUnderTest.Build(_gameDefinitionSummary, new Dictionary<int, string>(), _currentUser);
 
             Assert.AreEqual(new List<PlayedGameDetailsViewModel>(), actualViewModel.PlayedGames);
+        }
+
+        [Test]
+        public void ItSetsTheRegisteredUserEmailAddresses()
+        {
+            _viewModel.GameDefinitionPlayersSummary.ShouldContain(x => x.RegisteredUserEmailAddress == _expectedPlayer1Email);
         }
 
         [Test]
@@ -221,7 +236,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
         public void TheUserCanNotEditViewModelIfTheyDoNotShareGamingGroups()
         {
             _currentUser.CurrentGamingGroupId = -1;
-            var actualViewModel = _autoMocker.ClassUnderTest.Build(_gameDefinitionSummary, _currentUser);
+            var actualViewModel = _autoMocker.ClassUnderTest.Build(_gameDefinitionSummary, new Dictionary<int, string>(), _currentUser);
 
             Assert.False(actualViewModel.UserCanEdit);
         }
@@ -229,7 +244,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
         [Test]
         public void TheUserCanNotEditViewModelIfTheUserIsUnknown()
         {
-            var actualViewModel = _autoMocker.ClassUnderTest.Build(_gameDefinitionSummary, null);
+            var actualViewModel = _autoMocker.ClassUnderTest.Build(_gameDefinitionSummary, new Dictionary<int, string>(), null);
 
             Assert.False(actualViewModel.UserCanEdit);
         }
@@ -297,7 +312,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
             _autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<GameDefinitionPlayerSummaryViewModel>(_playerWinRecord2))
                  .Return(_expectedPlayerSummary2); 
 
-            var actualResult = _autoMocker.ClassUnderTest.Build(_gameDefinitionSummary, _currentUser);
+            var actualResult = _autoMocker.ClassUnderTest.Build(_gameDefinitionSummary, new Dictionary<int, string>(), _currentUser);
 
             Assert.That(actualResult.GameDefinitionPlayersSummary.Count, Is.EqualTo(2));
             Assert.That(actualResult.GameDefinitionPlayersSummary, Contains.Item(_expectedPlayerSummary1));

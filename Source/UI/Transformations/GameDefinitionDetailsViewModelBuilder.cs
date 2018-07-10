@@ -19,13 +19,10 @@
 using System.Collections.Generic;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
-using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using System.Linq;
 using BusinessLogic.Logic;
-using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Logic.Players;
-using BusinessLogic.Logic.Points;
 using UI.Models.GameDefinitionModels;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
@@ -42,10 +39,12 @@ namespace UI.Transformations
         {
             _playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
             _transformer = transformer;
-
         }
 
-        public GameDefinitionDetailsViewModel Build(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser)
+        public GameDefinitionDetailsViewModel Build(
+            GameDefinitionSummary gameDefinitionSummary, 
+            Dictionary<int, string> playerIdToRegisteredUserEmailDictionary,
+            ApplicationUser currentUser)
         {
             BoardGameGeekInfoViewModel boardGameGeekInfoViewModel = null;
             if (gameDefinitionSummary.BoardGameGeekGameDefinitionId.HasValue)
@@ -64,28 +63,39 @@ namespace UI.Transformations
                 BoardGameGeekInfo = boardGameGeekInfoViewModel
             };
 
-            if (gameDefinitionSummary.PlayedGames == null)
+            SetPlayedGames(gameDefinitionSummary, currentUser, viewModel);
+
+            SetChampionStuff(gameDefinitionSummary, viewModel);
+
+            SetPreviousChampionStuff(gameDefinitionSummary, viewModel);
+
+            SetPlayersStuff(gameDefinitionSummary, playerIdToRegisteredUserEmailDictionary, viewModel);
+
+            return viewModel;
+        }
+
+        private void SetPlayersStuff(GameDefinitionSummary gameDefinitionSummary,
+            Dictionary<int, string> playerIdToRegisteredUserEmailDictionary, GameDefinitionDetailsViewModel viewModel)
+        {
+            var gameDefinitionPlayersSummary = new List<GameDefinitionPlayerSummaryViewModel>();
+            foreach (var playerWinRecord in gameDefinitionSummary.PlayerWinRecords)
             {
-                viewModel.PlayedGames = new List<PlayedGameDetailsViewModel>();
-            }
-            else
-            {
-                viewModel.PlayedGames = (from playedGame in gameDefinitionSummary.PlayedGames
-                                         select _playedGameDetailsViewModelBuilder.Build(playedGame, currentUser,true))
-                                   .ToList();
+                var transformedResult = _transformer.Transform<GameDefinitionPlayerSummaryViewModel>(playerWinRecord);
+                if (playerIdToRegisteredUserEmailDictionary.ContainsKey(playerWinRecord.PlayerId))
+                {
+                    transformedResult.RegisteredUserEmailAddress =
+                        playerIdToRegisteredUserEmailDictionary[playerWinRecord.PlayerId];
+                }
+
+                gameDefinitionPlayersSummary.Add(transformedResult);
             }
 
-            if (!(gameDefinitionSummary.Champion is NullChampion))
-            {
-                viewModel.ChampionName = PlayerNameBuilder.BuildPlayerName(
-                                                                           gameDefinitionSummary.Champion.Player.Name,
-                                                                           gameDefinitionSummary.Champion.Player.Active);
-                viewModel.ChampionPlayerId = gameDefinitionSummary.Champion.Player.Id;
-                viewModel.WinPercentage = gameDefinitionSummary.Champion.WinPercentage;
-                viewModel.NumberOfGamesPlayed = gameDefinitionSummary.Champion.NumberOfGames;
-                viewModel.NumberOfWins = gameDefinitionSummary.Champion.NumberOfWins;
-            }
+            viewModel.GameDefinitionPlayersSummary = gameDefinitionPlayersSummary;
+        }
 
+        private static void SetPreviousChampionStuff(GameDefinitionSummary gameDefinitionSummary,
+            GameDefinitionDetailsViewModel viewModel)
+        {
             if (!(gameDefinitionSummary.PreviousChampion is NullChampion))
             {
                 viewModel.PreviousChampionName = PlayerNameBuilder.BuildPlayerName(
@@ -93,14 +103,36 @@ namespace UI.Transformations
                     gameDefinitionSummary.PreviousChampion.Player.Active);
                 viewModel.PreviousChampionPlayerId = gameDefinitionSummary.PreviousChampion.Player.Id;
             }
+        }
 
-            viewModel.GameDefinitionPlayersSummary = gameDefinitionSummary.PlayerWinRecords
-                    .Select(_transformer.Transform<GameDefinitionPlayerSummaryViewModel>)
+        private static void SetChampionStuff(GameDefinitionSummary gameDefinitionSummary,
+            GameDefinitionDetailsViewModel viewModel)
+        {
+            if (!(gameDefinitionSummary.Champion is NullChampion))
+            {
+                viewModel.ChampionName = PlayerNameBuilder.BuildPlayerName(
+                    gameDefinitionSummary.Champion.Player.Name,
+                    gameDefinitionSummary.Champion.Player.Active);
+                viewModel.ChampionPlayerId = gameDefinitionSummary.Champion.Player.Id;
+                viewModel.WinPercentage = gameDefinitionSummary.Champion.WinPercentage;
+                viewModel.NumberOfGamesPlayed = gameDefinitionSummary.Champion.NumberOfGames;
+                viewModel.NumberOfWins = gameDefinitionSummary.Champion.NumberOfWins;
+            }
+        }
+
+        private void SetPlayedGames(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser,
+            GameDefinitionDetailsViewModel viewModel)
+        {
+            if (gameDefinitionSummary.PlayedGames == null)
+            {
+                viewModel.PlayedGames = new List<PlayedGameDetailsViewModel>();
+            }
+            else
+            {
+                viewModel.PlayedGames = (from playedGame in gameDefinitionSummary.PlayedGames
+                        select _playedGameDetailsViewModelBuilder.Build(playedGame, currentUser, true))
                     .ToList();
-
-            return viewModel;
+            }
         }
     }
-
-
 }

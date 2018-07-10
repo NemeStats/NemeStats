@@ -1,0 +1,28 @@
+﻿@import "nemestats-variables.scss";
+
+@media (min-width: $screen-sm-max) {
+    table tbody tr td.gravatar-col {
+        text-align: right;
+        vertical-align: middle;
+        padding: 0px;
+        width: $gravatar-width;
+    }
+}
+
+table thead tr th span.gravatar-header {
+    display: none;
+}
+
+@media (max-width: $screen-sm-max) {
+    &.flip-scroll {
+        table tbody tr td.gravatar-col {
+            height: 37px;
+            text-align: center;
+            vertical-align: top;
+        }
+
+        table thead tr th span.gravatar-header {
+            display: inline;
+        }
+    }
+}

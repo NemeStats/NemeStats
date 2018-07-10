@@ -43,3 +43,9 @@
         }
     }
 }
+
+@media only screen and (min-width: $nonflipscroll-minwidth) {
+    .gaminggroup-head {
+        width: $gaminggroup-width;
+    }
+}

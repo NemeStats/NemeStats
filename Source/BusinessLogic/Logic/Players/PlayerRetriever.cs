@@ -196,6 +196,8 @@ namespace BusinessLogic.Logic.Players
             };
             var recentAchievementsUnlocked = _recentPlayerAchievementsUnlockedRetriever.GetResults(query);
 
+            var playerVersusPlayerStatistics = _playerRepository.GetPlayerVersusPlayersStatistics(playerId, _dataContext);
+
             var playerDetails = new PlayerDetails
             {
                 Active = returnPlayer.Active,
@@ -211,7 +213,7 @@ namespace BusinessLogic.Logic.Players
                 Minions = minions,
                 PlayerGameSummaries = playerGameSummaries,
                 ChampionedGames = championedGames,
-                PlayerVersusPlayersStatistics = _playerRepository.GetPlayerVersusPlayersStatistics(playerId, _dataContext),
+                PlayerVersusPlayersStatistics = playerVersusPlayerStatistics,
                 FormerChampionedGames = formerChampionedGames,
                 LongestWinningStreak = longestWinningStreak,
                 NemePointsSummary = playerStatistics.NemePointsSummary,
@@ -220,7 +222,6 @@ namespace BusinessLogic.Logic.Players
 
             return playerDetails;
         }
-
 
         private static void ValidatePlayerWasFound(int playerId, Player returnPlayer)
         {
@@ -476,6 +477,23 @@ namespace BusinessLogic.Logic.Players
             };
 
             return result;
+        }
+
+        public Dictionary<int, string> GetRegisteredUserEmailAddresses(IList<int> playerIds, ApplicationUser currentUser)
+        {
+            var currentUserGamingGroupIds = _dataContext.GetQueryable<UserGamingGroup>()
+                .Where(x => x.ApplicationUserId == currentUser.Id)
+                .Select(x => x.GamingGroupId)
+                .ToList();
+            return _dataContext.GetQueryable<Player>()
+                .Where(x => currentUserGamingGroupIds.Contains(x.GamingGroupId)
+                            && playerIds.Contains(x.Id)
+                            && x.ApplicationUserId != null)
+                .Select(x => new
+                {
+                    x.Id,
+                    x.User.Email
+                }).ToDictionary(z => z.Id, z => z.Email);
         }
     }
 }

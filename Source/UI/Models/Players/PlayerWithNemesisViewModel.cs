@@ -39,5 +39,6 @@ namespace UI.Models.Players
         public int TotalChampionedGames { get; set; }
         public float AveragePointsPerGame { get; set; }
         public Dictionary<AchievementLevel, int> AchievementsPerLevel { get; set; }
+        public string RegisteredUserEmailAddress { get; set; }
     }
 }

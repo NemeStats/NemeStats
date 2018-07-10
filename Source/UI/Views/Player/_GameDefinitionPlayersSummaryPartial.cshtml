@@ -4,6 +4,8 @@
 
 @{
     Layout = null;
+
+    var showGravatars = @Model.Any(x => !string.IsNullOrWhiteSpace(x.RegisteredUserEmailAddress));
 }
 
 <div class="panel panel-primary game-player-statistics">
@@ -21,22 +23,27 @@
                         <input type="text" class="form-control search" placeholder="type player name">
                     </div>
                 </caption>
-                <thead class="player-table-head">
+                <thead>
                 <tr>
-                    <th class="col-md-1 badges-head"></th>
-                    <th class="col-md-2">
-                        <span class="sort" data-sort="name">Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                    <th class="badges-head"><span class="visible-xs-inline visible-sm-inline">Badges</span></th>
+                    @if (showGravatars)
+                    {
+                        <th><span class="visible-xs-inline visible-sm-inline">Gravatar</span></th>
+                    }
+                    <th class="playername-head">
+                        <span class="sort" data-sort="player-name-col">Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                     </th>
-                    <th class="col-md-1">
-                        <span class="sort desc" data-sort="total-points">@Html.NemePointsIco() <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                    <th class="skinny-header">
+                        <span class="sort desc" data-sort="totalpoints-col">@Html.NemePointsIco() <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                     </th>
-                    <th class="col-md-1">
+                    <th class="skinny-header">
                         <span class="sort" data-sort="plays-col">Total Games <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                     </th>
-                    <th class="col-md-2 avgpoints-head">
-                        <span class="sort" data-sort="avgpoints-col">Avg. @Html.NemePointsIco(tooltip: "NemePoints") per game <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                    <th class="skinny-header">
+                        <span class="sort" data-sort="avgpoints-col">Avg. @Html.NemePointsIco(tooltip: "NemePoints") Per Game <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                     </th>
-                    <th class="col-md-5 wonpercentage-head">
+                    <th>Wins / Losses</th>
+                    <th class="skinny-header">
                         <span class="sort" data-sort="percentage-won">% Won <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                     </th>
                 </tr>
@@ -44,7 +51,6 @@
                 <tbody class="list">
                 @foreach (var playerSummary in Model)
                 {
-
                     <tr>
                         <td class="badges-col">
                             @foreach (var badge in playerSummary.SpecialBadgeTypes)
@@ -54,7 +60,12 @@
                                 </i>
                             }
                         </td>
-                        <td class="name" data-name="@playerSummary.PlayerName">
+                        @if (showGravatars)
+                        {
+                            <td class="gravatar-col">@Html.RenderGravatar(playerSummary.RegisteredUserEmailAddress)</td>
+                        }
+
+                        <td class="name player-name-col" data-name="@playerSummary.PlayerName">
                             @Html.ActionLink(playerSummary.PlayerName, "Details", "Player", new
                             {
                                 id = playerSummary.PlayerId
@@ -63,10 +74,10 @@
                                 title = "View Player details"
                             })
                         </td>
-                        <td class="total-points" data-nemepoints="@playerSummary.NemePointsSummary.TotalNemePoints">
+                        <td class="totalpoints-col" data-nemepoints="@playerSummary.NemePointsSummary.TotalNemePoints">
                             <span data-toggle="popover" data-html="true" data-templateselector="#@playerSummary.PlayerId" data-title="NemePoints breakdown">
-                                    @playerSummary.NemePointsSummary.TotalNemePoints
-                                </span>
+                                @playerSummary.NemePointsSummary.TotalNemePoints
+                            </span>
                         </td>
                         <td class="plays-col">@playerSummary.TotalGamesPlayed</td>
                         <td class="avgpoints-col">@playerSummary.AveragePointsPerGame.ToString("N2")</td>

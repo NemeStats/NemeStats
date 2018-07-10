@@ -33,6 +33,7 @@ using System.Net;
 using System.Web.Mvc;
 using BusinessLogic.Facades;
 using BusinessLogic.Logic;
+using BusinessLogic.Logic.Players;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Models.GameDefinitionModels;
@@ -49,6 +50,7 @@ namespace UI.Controllers
         internal const int A_LOT_OF_DAYS = 10000;
 
         private readonly IGameDefinitionRetriever _gameDefinitionRetriever;
+        private readonly IPlayerRetriever _playerRetriever;
         private readonly ITrendingGamesRetriever _trendingGamesRetriever;
         private readonly IGameDefinitionDetailsViewModelBuilder _gameDefinitionTransformation;
         private readonly IGameDefinitionSaver _gameDefinitionSaver;
@@ -59,6 +61,7 @@ namespace UI.Controllers
         private readonly ICreateGameDefinitionComponent _createGameDefinitionComponent;
 
         public GameDefinitionController(IGameDefinitionRetriever gameDefinitionRetriever,
+            IPlayerRetriever playerRetriever,
             ITrendingGamesRetriever trendingGamesRetriever,
             IGameDefinitionDetailsViewModelBuilder gameDefinitionTransformation,
             IGameDefinitionSaver gameDefinitionCreator,
@@ -76,6 +79,7 @@ namespace UI.Controllers
             _boardGameGeekGamesImporter = boardGameGeekGamesImporter;
             _transformer = transformer;
             _createGameDefinitionComponent = createGameDefinitionComponent;
+            _playerRetriever = playerRetriever;
         }
 
         // GET: /GameDefinition/Details/5
@@ -92,7 +96,12 @@ namespace UI.Controllers
             try
             {
                 var gameDefinitionSummary = _gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_SHOW);
-                gamingGroupGameDefinitionViewModel = _gameDefinitionTransformation.Build(gameDefinitionSummary, currentUser);
+
+                var playerIds = gameDefinitionSummary.PlayerWinRecords.Select(x => x.PlayerId).ToList();
+                var registeredUserEmailAddressesDictionary =
+                    _playerRetriever.GetRegisteredUserEmailAddresses(playerIds, currentUser);
+
+                gamingGroupGameDefinitionViewModel = _gameDefinitionTransformation.Build(gameDefinitionSummary, registeredUserEmailAddressesDictionary, currentUser);
             }
             catch (KeyNotFoundException)
             {

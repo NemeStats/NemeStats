@@ -29,6 +29,7 @@ namespace UI.Models.Players
         public string PlayerName { get; set; }
         [Display(Name = "Player Registered")]
         public bool PlayerRegistered { get; set; }
+        public string RegisteredUserEmailAddress { get; set; }
         public bool Active { get; set; }
         public List<GameResultViewModel> PlayerGameResultDetails { get; set; }
         public int TotalGamesPlayed { get; set; }

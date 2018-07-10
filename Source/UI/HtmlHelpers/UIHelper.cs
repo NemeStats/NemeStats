@@ -16,10 +16,10 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using UI.Models;
-using UI.Models.Achievements;
 
 namespace UI.HtmlHelpers
 {
@@ -45,13 +45,44 @@ namespace UI.HtmlHelpers
             {
                 var message = htmlHelper.ViewContext.TempData[key];
                 var kind = htmlHelper.ViewContext.TempData[key + "_kind"];
-                string html = $"<div class='alert alert-{kind} voffset4'>" +
+                var html = $"<div class='alert alert-{kind} voffset4'>" +
                               $"<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
                               $"{message}" +
                               $"</div>";
                 return new HtmlString(html);
             }
             return new HtmlString("");
+        }
+
+        public static HtmlString RenderGravatar(this HtmlHelper htmlHelper, string emailAddress, int pixelDimensions = 30)
+        {
+            if (string.IsNullOrWhiteSpace(emailAddress))
+            {
+                return new MvcHtmlString(string.Empty);
+            }
+            var hashedEmail = HashEmailForGravatar(emailAddress);
+            var gravatarAltText = $"Gravatar for {emailAddress}";
+            return new MvcHtmlString($"<img src=\"https://www.gravatar.com/avatar/{hashedEmail}?s={pixelDimensions}&d=retro\" alt=\"{gravatarAltText}\" title=\"{gravatarAltText}\"/>");
+        }
+
+        public static string HashEmailForGravatar(string email)
+        {
+            var trimmedEmail = email.ToLower().Trim();
+
+            using (var md5Hasher = MD5.Create())
+            {
+                var data = md5Hasher.ComputeHash(Encoding.Default.GetBytes(trimmedEmail));
+
+                var stringBuilder = new StringBuilder();
+
+                //--loop through each byte of the hashed data and format each one as a hexadecimal string.  
+                foreach (var individualByte in data)
+                {
+                    stringBuilder.Append(individualByte.ToString("x2"));
+                }
+
+                return stringBuilder.ToString(); 
+            }
         }
     }
 }

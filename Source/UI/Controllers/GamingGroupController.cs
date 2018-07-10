@@ -34,6 +34,7 @@ using BusinessLogic.Logic.Players;
 using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.Champions;
 using BusinessLogic.Models.Nemeses;
+using BusinessLogic.Models.Players;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Mappers.Extensions;
@@ -168,13 +169,35 @@ namespace UI.Controllers
         [UserContext(RequiresGamingGroup = false)]
         public virtual ActionResult GetGamingGroupPlayers(int id, ApplicationUser currentUser, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null)
         {
-            var playersWithNemesis = _playerRetriever.GetAllPlayersWithNemesisInfo(id, dateRangeFilter)
-                .Select(player => _playerWithNemesisViewModelBuilder.Build(player, currentUser))
-                .ToList();
+            var playersWithNemesis = _playerRetriever.GetAllPlayersWithNemesisInfo(id, dateRangeFilter);
+            var playerIds = playersWithNemesis.Select(x => x.PlayerId).ToList();
+            var playerIdToRegisteredUserEmailAddressDictionary =
+                _playerRetriever.GetRegisteredUserEmailAddresses(playerIds, currentUser);
+
+            var viewModels = ConstructPlwyerWithNemesisViewModels(currentUser, playersWithNemesis, playerIdToRegisteredUserEmailAddressDictionary);
 
             ViewBag.canEdit = currentUser.CurrentGamingGroupId == id;
 
-            return PartialView(MVC.Player.Views._PlayersPartial, playersWithNemesis);
+            return PartialView(MVC.Player.Views._PlayersPartial, viewModels);
+        }
+
+        private List<PlayerWithNemesisViewModel> ConstructPlwyerWithNemesisViewModels(ApplicationUser currentUser, List<PlayerWithNemesis> playersWithNemesis,
+            Dictionary<int, string> playerIdToRegisteredUserEmailAddressDictionary)
+        {
+            var viewModels = new List<PlayerWithNemesisViewModel>();
+            foreach (var playerWithNemesisInfo in playersWithNemesis)
+            {
+                string email = null;
+                if (playerIdToRegisteredUserEmailAddressDictionary.ContainsKey(playerWithNemesisInfo.PlayerId))
+                {
+                    email = playerIdToRegisteredUserEmailAddressDictionary[playerWithNemesisInfo.PlayerId];
+                }
+
+                var viewModel = _playerWithNemesisViewModelBuilder.Build(playerWithNemesisInfo, email, currentUser);
+                viewModels.Add(viewModel);
+            }
+
+            return viewModels;
         }
 
         [HttpGet]

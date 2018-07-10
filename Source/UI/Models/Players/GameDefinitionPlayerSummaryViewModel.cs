@@ -16,5 +16,6 @@ namespace UI.Models.Players
         public int TotalGamesPlayed { get; set; }
         public NemePointsSummaryViewModel NemePointsSummary { get; set; }
         public float AveragePointsPerGame { get; set; }
+        public string RegisteredUserEmailAddress { get; set; }
     }
 }

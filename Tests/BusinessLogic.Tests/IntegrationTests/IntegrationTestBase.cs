@@ -488,6 +488,7 @@ namespace BusinessLogic.Tests.IntegrationTests
                                                                 || gameDefinition.Name == testGameName2
                                                                 || gameDefinition.Name == testGameNameForGameWithOtherGamingGroupId
                                                                 || gameDefinition.Name == testGameNameForAnotherGameWithOtherGamingGroupId
+                                                                || gameDefinition.Name == gameDefinitionWithNoChampionName
                                                             select gameDefinition.Id)
                                                             .ToList();
 

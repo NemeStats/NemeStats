@@ -1,17 +1,15 @@
 ﻿@using UI.Models.Badges
 @model IEnumerable<UI.Models.Champions.ChampionChangeViewModel>
-<div id="nemesisChangeVote" class="fl-right" style="margin-top: 21px; margin-bottom: 10.5px;"></div>
 <div class="fl-clear"></div>
 <div class="flip-scroll">
 	<table class="table table-hover table-striped">
 		<thead>
 			<tr>
-			    <th>Previous Champion</th>
-				<th>
-					New Champion <i class="@ChampionBadgeViewModel.FONT_AWESOME_CSS_CLASS" data-toggle="popover" data-placement="top"
-					               data-content="This Player now has the most wins for this board game!"></i>
-				</th>
-			    <th>Game</th>
+			    <th class="playername-head">Previous<span class="hidden-xs hidden-sm"> Champion</span></th>
+				<th class="playername-head">
+					New<span class="hidden-xs hidden-sm">Champion</span> <i class="@ChampionBadgeViewModel.FONT_AWESOME_CSS_CLASS" data-toggle="popover" data-placement="top"
+                data-content="This Player now has the most wins for this board game!"></i></th>
+			    <th class="gamename-head">Game</th>
 			    <th>Date</th>
 			</tr>
 		</thead>
@@ -24,6 +22,10 @@
 			        @if (championChange.PreviousChampionPlayerId.HasValue)
 			        {
 			            @Html.ActionLink(championChange.PreviousChampionPlayerName, "Details", "Player", new {id = championChange.PreviousChampionPlayerId}, new { title = "View Player details"})
+			        }
+			        else
+			        {
+                        <span>&nbsp;</span>
 			        }
 			    </td>
 				<td>@Html.ActionLink(championChange.NewChampionPlayerName, "Details", "Player", new { id = championChange.NewChampionPlayerId }, new { title = "View Player details"})</td>

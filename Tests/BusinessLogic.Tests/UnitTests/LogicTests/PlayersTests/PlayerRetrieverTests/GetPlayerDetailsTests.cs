@@ -29,6 +29,7 @@ using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.PlayerAchievements;
 using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.Points;
+using BusinessLogic.Models.User;
 using BusinessLogic.Paging;
 using NemeStats.TestingHelpers.NemeStatsTestingExtensions;
 using PagedList;
@@ -60,7 +61,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         private IPagedList<PlayerAchievementWinner> _expectedPlayerAchievementWinnersPageableList;
         private readonly int _gamingGroupId = 1985;
         private readonly int _expectedLongestWinningStreak = 93;
-            
+        private string _expectedEmail = "someemail@email.com";
+
         [SetUp]
         public void SetUp()
         {
@@ -149,6 +151,18 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             _autoMocker.ClassUnderTest.Expect(repo => repo.GetPlayerStatistics(Arg<int>.Is.Anything))
                 .Repeat.Once()
                 .Return(_expectedPlayerStatistics);
+
+            var queryableApplicationUser = new List<ApplicationUser>
+            {
+                new ApplicationUser
+                {
+                    Id = _player.ApplicationUserId,
+                    Email = _expectedEmail
+                }
+            }.AsQueryable();
+            _autoMocker.Get<IDataContext>()
+                .Expect(mock => mock.GetQueryable<ApplicationUser>())
+                .Return(queryableApplicationUser);
 
             _autoMocker.ClassUnderTest.Expect(mock => mock.GetPlayerGameResultsWithPlayedGameAndGameDefinition(
                 Arg<int>.Is.Anything, 

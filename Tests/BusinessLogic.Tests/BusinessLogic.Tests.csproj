@@ -362,6 +362,7 @@
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerRetrieverTests\GetPlayerQuickStatsForUserTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerRetrieverTests\GetPlayersForEditingPlayedGameTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerRetrieverTests\GetPlayersToCreateTests.cs" />
+    <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerRetrieverTests\GetRegisteredUserEmailAddressesTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerSaverTests\PlayerSaverTestBase.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerSaverTests\CreatePlayerTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerSaverTests\UpdatePlayerTests.cs" />
