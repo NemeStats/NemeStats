@@ -814,6 +814,9 @@ button > i.fa {
     color: #6cadde;
     background-color: white; }
 
+.btn-google i {
+  vertical-align: 10%; }
+
 /*$header-background-color: #2C3E50;*/
 .progress {
   height: 20px;
