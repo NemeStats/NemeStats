@@ -883,6 +883,9 @@ table tbody tr td.edit-col {
   .wonpercentage-head {
     width: 65px; } }
 
+#playersListTableBody td {
+  vertical-align: middle; }
+
 /*$header-background-color: #2C3E50;*/
 @media (min-width: 991px) {
   table tbody tr td.badges-col {
