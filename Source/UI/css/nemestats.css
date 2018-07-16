@@ -594,6 +594,9 @@ button > i.fa {
   text-align: center;
   font-size: 20px; }
 
+.btn-fullwidth {
+  width: 100%; }
+
 .gu-mirror {
   position: fixed !important;
   margin: 0 !important;
