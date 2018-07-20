@@ -92,3 +92,7 @@ table tbody tr td.edit-col{
         width: $skinnymetric-width;
     }
 }
+
+#playersListTableBody td {
+    vertical-align: middle;
+}

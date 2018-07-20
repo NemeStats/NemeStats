@@ -594,6 +594,9 @@ button > i.fa {
   text-align: center;
   font-size: 20px; }
 
+.btn-fullwidth {
+  width: 100%; }
+
 .gu-mirror {
   position: fixed !important;
   margin: 0 !important;
@@ -814,6 +817,9 @@ button > i.fa {
     color: #6cadde;
     background-color: white; }
 
+.btn-google i {
+  vertical-align: 10%; }
+
 /*$header-background-color: #2C3E50;*/
 .progress {
   height: 20px;
@@ -882,6 +888,9 @@ table tbody tr td.edit-col {
     width: 135px; }
   .wonpercentage-head {
     width: 65px; } }
+
+#playersListTableBody td {
+  vertical-align: middle; }
 
 /*$header-background-color: #2C3E50;*/
 @media (min-width: 991px) {
