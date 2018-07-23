@@ -56,6 +56,8 @@ content being returned in the message.
 * 2018-3-28 Added "nemeStatsUrl" field(s) to the responses of GET /Users, GET /Players, GET /PlayedGames, and GET /GameDefinitions so that client's have an easier 
 way of providing linkage back to NemeStats should they so choose.
 * 2018-04-09 Added "nemeStatsUrl" to POST /PlayedGames, POST /Players, and POST /GameDefinitions
+* 2018-07-22 Added "registeredUserGravatarUrl" to GET /Players endpoint. This property will only be returned if the User
+has access to the Gaming Group whose Players are being requested.
 
 ### General Information
 
@@ -551,6 +553,11 @@ This service will update an existing PlayedGame and will recalculate any Badges 
 Retrieve a list of Played Games given some criteria. Currently limited to a single Gaming Group at a time
 via the required gamingGroupId query string parameter.
 
++ Valid values for 'winnerType' response attribute are:
+    + "PlayerWin" - Indicates that there were winners and losers in the game
+    + "TeamWin - Indicates that all players won
+    + "TeamLoss" - Indicates that all players lost
+
 + Parameters
     + gamingGroupId : 923 (number, required) - The NemeStats unique identifier for the Gaming Group of the Played Game.
     + startDateGameLastUpdated : `2015-04-26` (string, optional) - If set, all Played Games returned will have been updated greater than or equal to this date. Dates must be in yyyy-MM-dd format.
@@ -638,7 +645,8 @@ via the required gamingGroupId query string parameter.
                         "boardGameGeekObjectId":40692,
                         "datePlayed":"2015-04-04",
                         "dateLastUpdated":"2015-04-24",
-                        "nemeStatsUrl" : "https://nemestats.com/PlayedGame/Details/16785"
+                        "nemeStatsUrl" : "https://nemestats.com/PlayedGame/Details/16785",
+                        "winnerType = "PlayerWin"
                     },
                     {  
                         "playerGameResults":[  
@@ -750,6 +758,8 @@ Gaming Groups, a new Player will be created for each Gaming Group. A Player may 
 ## Get Players in Gaming Group [GET /Players/{?gamingGroupId}] 
 Retrieve a list of all Players in the given Gaming Group.
 
+Note: The registeredUserGravatarUrl property will only be returned if the User has access to the Gaming Group whose Players are being requested.
+
 + Parameters
     + gamingGroupId : 923 (number, required) - The NemeStats unique identifier for the Gaming Group of the Player.
 
@@ -767,35 +777,40 @@ Retrieve a list of all Players in the given Gaming Group.
                             "playerId" : 789,
                             "active" : "true",
                             "currentNemesisPlayerId" : 456,
-                            "nemeStatsUrl" : "https://nemestats.com/Player/Details/789"
+                            "nemeStatsUrl" : "https://nemestats.com/Player/Details/789",
+                            "registeredUserGravatarUrl": null
                         },
                         {
                             "playerName" : "Chris Konnel",
                             "playerId" : 456,
                             "active" : "true",
                             "currentNemesisPlayerId" : 456,
-                            "nemeStatsUrl" : "https://nemestats.com/Player/Details/456"
+                            "nemeStatsUrl" : "https://nemestats.com/Player/Details/456",
+                            "registeredUserGravatarUrl": null
                         },
                         {
                             "playerName" : "The Destroyer",
                             "playerId" : 111,
                             "active" : "true",
                             "currentNemesisPlayerId" : null,
-                            "nemeStatsUrl" : "https://nemestats.com/Player/Details/111"
+                            "nemeStatsUrl" : "https://nemestats.com/Player/Details/111",
+                            "registeredUserGravatarUrl": null
                         },
                         {
                             "playerName" : "Herb",
                             "playerId" : 112,
                             "active" : "true",
                             "currentNemesisPlayerId" : 789,
-                            "nemeStatsUrl" : "https://nemestats.com/Player/Details/112"
+                            "nemeStatsUrl" : "https://nemestats.com/Player/Details/112",
+                            "registeredUserGravatarUrl": null
                         },
                         {
                             "playerName" : "Marvin",
                             "playerId" : 745,
                             "active" : "false",
                             "currentNemesisPlayerId" : null,
-                            "nemeStatsUrl" : "https://nemestats.com/Player/Details/745"
+                            "nemeStatsUrl" : "https://nemestats.com/Player/Details/745",
+                            "registeredUserGravatarUrl": "https://www.gravatar.com/avatar/2c9bbaaa654ca7428a6313e4e2e7e341?d=retro"
                         }
                     ]
                 }
