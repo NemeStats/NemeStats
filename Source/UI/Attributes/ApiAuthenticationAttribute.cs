@@ -12,6 +12,8 @@ namespace UI.Attributes
 {
     public class ApiAuthenticationAttribute : ActionFilterAttribute
     {
+        public bool AuthenticateOnly { get; set; }
+
         private readonly IAuthTokenValidator authTokenValidator;
         private readonly ClientIdCalculator clientIdCalculator;
         
@@ -44,9 +46,12 @@ namespace UI.Attributes
 
             if (!actionContext.Request.Headers.Contains(AUTH_HEADER))
             {
-                actionContext.Response = actionContext.Request.CreateErrorResponse(
-                    HttpStatusCode.BadRequest,
-                    ERROR_MESSAGE_MISSING_AUTH_TOKEN_HEADER);
+                if (!AuthenticateOnly)
+                {
+                    actionContext.Response = actionContext.Request.CreateErrorResponse(
+                        HttpStatusCode.BadRequest,
+                        ERROR_MESSAGE_MISSING_AUTH_TOKEN_HEADER);
+                }
 
                 return;
             }
@@ -55,9 +60,13 @@ namespace UI.Attributes
 
             if(string.IsNullOrWhiteSpace(authHeader))
             {
-                actionContext.Response = actionContext.Request.CreateErrorResponse(
-                    HttpStatusCode.BadRequest,
-                    ERROR_MESSAGE_INVALID_AUTH_TOKEN); 
+                if (!AuthenticateOnly)
+                {
+                    actionContext.Response = actionContext.Request.CreateErrorResponse(
+                        HttpStatusCode.BadRequest,
+                        ERROR_MESSAGE_INVALID_AUTH_TOKEN);
+                }
+
                 return;
             }
 
@@ -65,9 +74,13 @@ namespace UI.Attributes
 
             if (applicationUser == null)
             {
-                actionContext.Response = actionContext.Request.CreateErrorResponse(
-                    HttpStatusCode.Unauthorized,
-                    ERROR_MESSAGE_INVALID_AUTH_TOKEN);
+                if (!AuthenticateOnly)
+                {
+                    actionContext.Response = actionContext.Request.CreateErrorResponse(
+                        HttpStatusCode.Unauthorized,
+                        ERROR_MESSAGE_INVALID_AUTH_TOKEN);
+                }
+
                 return;
             }
 

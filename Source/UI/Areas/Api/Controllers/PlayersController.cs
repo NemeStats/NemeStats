@@ -24,6 +24,7 @@ namespace UI.Areas.Api.Controllers
             _playerRetriever = playerRetriever;
         }
 
+        [ApiAuthentication(AuthenticateOnly = true)]
         [ApiModelValidation]
         [ApiRoute("Players/", StartingVersion = 2)]
         [HttpGet]
@@ -40,17 +41,30 @@ namespace UI.Areas.Api.Controllers
         {
             var results = _playerRetriever.GetAllPlayers(gamingGroupId);
 
-            var playerSearchResultsMessage = new PlayersSearchResultsMessage
+            var playerIds = results.Select(x => x.Id).ToList();
+            //--include the current player so we can attempt to get their email address as well
+            var playerIdToRegisteredUserEmailAddressDictionary =
+                _playerRetriever.GetRegisteredUserEmailAddresses(playerIds, CurrentUser);
+
+            var playerSearchResultsMessage = new PlayersSearchResultsMessage();
+            foreach (var player in results)
             {
-                Players = results.Select(player => new PlayerSearchResultMessage
+                var playerSearchResultMessage = new PlayerSearchResultMessage
                 {
                     Active = player.Active,
                     PlayerId = player.Id,
                     CurrentNemesisPlayerId = player.NemesisId,
                     PlayerName = player.Name,
                     NemeStatsUrl = AbsoluteUrlBuilder.GetPlayerDetailsUrl(player.Id)
-                }).ToList()
-            };
+                };
+
+                if (playerIdToRegisteredUserEmailAddressDictionary.ContainsKey(player.Id))
+                {
+                    playerSearchResultMessage.RegisteredUserGravatarUrl = UIHelper.BuildGravatarUrl(playerIdToRegisteredUserEmailAddressDictionary[player.Id]);
+                }
+
+                playerSearchResultsMessage.Players.Add(playerSearchResultMessage);
+            }
 
             return Request.CreateResponse(HttpStatusCode.OK, playerSearchResultsMessage);
         }

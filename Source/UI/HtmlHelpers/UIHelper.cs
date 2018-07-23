@@ -60,9 +60,16 @@ namespace UI.HtmlHelpers
             {
                 return new MvcHtmlString(string.Empty);
             }
-            var hashedEmail = HashEmailForGravatar(emailAddress);
+
+            var baseGravatarUrl = BuildGravatarUrl(emailAddress);
             var gravatarAltText = $"Gravatar for {emailAddress}";
-            return new MvcHtmlString($"<img src=\"https://www.gravatar.com/avatar/{hashedEmail}?s={pixelDimensions}&d=retro\" alt=\"{gravatarAltText}\" title=\"{gravatarAltText}\"/>");
+            return new MvcHtmlString($"<img src=\"{baseGravatarUrl}?d=retro&s={pixelDimensions}\" alt=\"{gravatarAltText}\" title=\"{gravatarAltText}\"/>");
+        }
+
+        public static string BuildGravatarUrl(string emailAddress)
+        {
+            var hashedEmail = HashEmailForGravatar(emailAddress);
+            return $"https://www.gravatar.com/avatar/{hashedEmail}?d=retro";
         }
 
         public static string HashEmailForGravatar(string email)
