@@ -46,29 +46,58 @@ namespace UI.Tests.UnitTests.AttributesTests
                 Is.EqualTo("The ApiAuthentication attribute can only be applied to actions in an ApiController that extends ApiControllerBase."));
         }
 
-        [Test]
-        public void ShouldReturnBadRequestWhenNoTokenProvided()
+        [TestFixture]
+        public class When_Authenticating_Only : ApiAuthenticationAttributeTests
         {
-            _attribute.OnActionExecuting(_actionContext);
+            [Test]
+            public void ShouldNotReturnBadRequestWhenNoTokenProvided()
+            {
+                _attribute.AuthenticateOnly = true;
 
-            Assert.That(_actionContext.Response.Content, Is.TypeOf(typeof(ObjectContent<HttpError>)));
-            var content = _actionContext.Response.Content as ObjectContent<HttpError>;
-            var httpError = content.Value as HttpError;
-            Assert.That(_actionContext.Response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
-            Assert.That(httpError.Message, Is.EqualTo(ApiAuthenticationAttribute.ERROR_MESSAGE_MISSING_AUTH_TOKEN_HEADER));
+                _attribute.OnActionExecuting(_actionContext);
+
+                Assert.That(_actionContext.Response, Is.Null);
+            }
+
+            [Test]
+            public void ShouldNotReturnBadRequestWhenTokenHasEmptyValue()
+            {
+                _attribute.AuthenticateOnly = true;
+
+                _request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new[] { string.Empty });
+                _attribute.OnActionExecuting(_actionContext);
+
+                Assert.That(_actionContext.Response, Is.Null);
+            }
         }
 
-        [Test]
-        public void ShouldReturnBadRequestWhenTokenHasEmptyValue()
+        [TestFixture]
+        public class When_Not_Authenticating_Only : ApiAuthenticationAttributeTests
         {
-            _request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new [] { string.Empty });
-            _attribute.OnActionExecuting(_actionContext);
+            [Test]
+            public void ShouldReturnBadRequestWhenNoTokenProvided()
+            {
+                _attribute.OnActionExecuting(_actionContext);
 
-            Assert.That(_actionContext.Response.Content, Is.TypeOf(typeof(ObjectContent<HttpError>)));
-            var content = _actionContext.Response.Content as ObjectContent<HttpError>;
-            var httpError = content.Value as HttpError;
-            Assert.That(_actionContext.Response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
-            Assert.That(httpError.Message, Is.EqualTo(ApiAuthenticationAttribute.ERROR_MESSAGE_INVALID_AUTH_TOKEN));
+                Assert.That(_actionContext.Response.Content, Is.TypeOf(typeof(ObjectContent<HttpError>)));
+                var content = _actionContext.Response.Content as ObjectContent<HttpError>;
+                var httpError = content.Value as HttpError;
+                Assert.That(_actionContext.Response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+                Assert.That(httpError.Message, Is.EqualTo(ApiAuthenticationAttribute.ERROR_MESSAGE_MISSING_AUTH_TOKEN_HEADER));
+            }
+
+            [Test]
+            public void ShouldReturnBadRequestWhenTokenHasEmptyValue()
+            {
+                _request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new[] { string.Empty });
+                _attribute.OnActionExecuting(_actionContext);
+
+                Assert.That(_actionContext.Response.Content, Is.TypeOf(typeof(ObjectContent<HttpError>)));
+                var content = _actionContext.Response.Content as ObjectContent<HttpError>;
+                var httpError = content.Value as HttpError;
+                Assert.That(_actionContext.Response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+                Assert.That(httpError.Message, Is.EqualTo(ApiAuthenticationAttribute.ERROR_MESSAGE_INVALID_AUTH_TOKEN));
+            }
         }
 
         [Test]
