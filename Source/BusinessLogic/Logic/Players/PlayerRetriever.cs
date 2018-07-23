@@ -481,6 +481,10 @@ namespace BusinessLogic.Logic.Players
 
         public Dictionary<int, string> GetRegisteredUserEmailAddresses(IList<int> playerIds, ApplicationUser currentUser)
         {
+            if (currentUser == null)
+            {
+                return new Dictionary<int, string>();
+            }
             var currentUserGamingGroupIds = _dataContext.GetQueryable<UserGamingGroup>()
                 .Where(x => x.ApplicationUserId == currentUser.Id)
                 .Select(x => x.GamingGroupId)

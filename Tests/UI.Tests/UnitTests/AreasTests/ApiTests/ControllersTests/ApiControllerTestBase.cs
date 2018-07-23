@@ -17,7 +17,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
         protected const int EXPECTED_GAMING_GROUP_ID = 2;
 
         [SetUp]
-        public void BaseSetUp()
+        public virtual void BaseSetUp()
         {
             AutomapperConfiguration.Configure();
             _autoMocker = new RhinoAutoMocker<T>();

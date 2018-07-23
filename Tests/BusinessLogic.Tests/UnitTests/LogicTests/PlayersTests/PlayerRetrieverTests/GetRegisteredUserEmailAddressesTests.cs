@@ -111,6 +111,19 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         }
 
         [Test]
+        public void It_Returns_An_Empty_Dictionary_When_There_Is_No_Current_User()
+        {
+            //--arrange
+
+            //--act
+            var actualResult = _autoMocker.ClassUnderTest.GetRegisteredUserEmailAddresses(_allPotentialPlayerIds, null);
+
+            //--assert
+            actualResult.ShouldNotBeNull();
+            actualResult.Count.ShouldBe(0);
+        }
+
+        [Test]
         public void It_Doesnt_Return_Results_For_Players_That_Arent_In_One_Of_The_Current_Users_Gaming_Groups()
         {
             //--arrange
