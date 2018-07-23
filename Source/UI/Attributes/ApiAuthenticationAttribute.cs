@@ -1,10 +1,11 @@
 ﻿using System;
-using BusinessLogic.Logic.Users;
-using BusinessLogic.Models.User;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web.Http.Controllers;
 using System.Web.Mvc;
+using BusinessLogic.Logic.Users;
+using BusinessLogic.Models.User;
 using UI.Areas.Api;
 using ActionFilterAttribute = System.Web.Http.Filters.ActionFilterAttribute;
 
@@ -14,8 +15,8 @@ namespace UI.Attributes
     {
         public bool AuthenticateOnly { get; set; }
 
-        private readonly IAuthTokenValidator authTokenValidator;
-        private readonly ClientIdCalculator clientIdCalculator;
+        private readonly IAuthTokenValidator _authTokenValidator;
+        private readonly ClientIdCalculator _clientIdCalculator;
         
         internal const string AUTH_HEADER = "X-Auth-Token";
         internal const string PARAMETER_NAME_GAMING_GROUP_ID = "gamingGroupId";
@@ -32,11 +33,11 @@ namespace UI.Attributes
 
         public ApiAuthenticationAttribute(IAuthTokenValidator authTokenValidator, ClientIdCalculator clientIdCalculator)
         {
-            this.authTokenValidator = authTokenValidator;
-            this.clientIdCalculator = clientIdCalculator;
+            _authTokenValidator = authTokenValidator;
+            _clientIdCalculator = clientIdCalculator;
         }
 
-        public override void OnActionExecuting(System.Web.Http.Controllers.HttpActionContext actionContext)
+        public override void OnActionExecuting(HttpActionContext actionContext)
         {
             var apiBaseController = actionContext.ControllerContext.Controller as ApiControllerBase;
             if (apiBaseController == null)
@@ -70,7 +71,7 @@ namespace UI.Attributes
                 return;
             }
 
-            ApplicationUser applicationUser = authTokenValidator.ValidateAuthToken(authHeader);
+            ApplicationUser applicationUser = _authTokenValidator.ValidateAuthToken(authHeader);
 
             if (applicationUser == null)
             {
@@ -94,7 +95,7 @@ namespace UI.Attributes
                 return;
             }
 
-            applicationUser.AnonymousClientId = this.clientIdCalculator.GetClientId(actionContext.Request, applicationUser);
+            applicationUser.AnonymousClientId = _clientIdCalculator.GetClientId(actionContext.Request, applicationUser);
 
             apiBaseController.CurrentUser = applicationUser;
         }
