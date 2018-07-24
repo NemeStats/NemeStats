@@ -258,11 +258,11 @@
                             <th>Rank</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="clickable-row">
 
                         @foreach (var gameResultViewModel in Model.PlayerGameResultDetails)
                         {
-                        <tr class="game-item">
+                        <tr class="game-item"  data-details-url="@Url.Action("Details", "PlayedGame", new {id = gameResultViewModel.PlayedGameId})" title="View Played Game details">
                             <td class="bgg-link-col">
                                 @if (gameResultViewModel.BoardGameGeekUri != null)
                                 {
@@ -313,6 +313,9 @@
             playerDetails.init(settings);
             playerDetails.renderGameDefinitionsPieChart();
         });
+
+        var playedGamesView = new window.Views.PlayedGame.PlayedGames();
+        playedGamesView.init();
     </script>
     }
 </div>
@@ -320,46 +323,44 @@
 @helper Achievements()
 {
 <div class="row">
-    
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h4>Achievements</h4>
-            </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4>Achievements</h4>
+        </div>
 
-            <div class="row">
-                <div class="col-md-12">
-                    <span class="achievement-list">
-                        @if (!Model.PlayerAchievements.Any())
+        <div class="row">
+            <div class="col-md-12">
+                <span class="achievement-list">
+                    @if (!Model.PlayerAchievements.Any())
+                    {
+                    <span> There are no achievements unlocked yet <span class="fa fa-frown-o"></span>. You have to record played games to earn achievements.</span>
+                    }
+                    else
+                    {
+                        foreach (var playerAchievement in Model.PlayerAchievements)
                         {
-                        <span> There are no achievements unlocked yet <span class="fa fa-frown-o"></span>. You have to record played games to earn achievements.</span>
-                        }
-                        else
-                        {
-                            foreach (var playerAchievement in Model.PlayerAchievements)
-                            {
-                                <span class="block">
-                                    <a href="@Url.Action("PlayerAchievement", "Achievement", routeValues: new {achievementId = playerAchievement.AchievementId, playerId = playerAchievement.PlayerId})">
-                                        <span class="achievement big @playerAchievement.AchievementLevel.ToString().ToLower()" data-container="body" data-toggle="popover" data-placement="top" data-content="@playerAchievement.Description">
-                                            <span class="circle">
-                                                <span class="content">
-                                                    <span class="@playerAchievement.IconClass"></span>
-                                                </span>
+                            <span class="block">
+                                <a href="@Url.Action("PlayerAchievement", "Achievement", routeValues: new {achievementId = playerAchievement.AchievementId, playerId = playerAchievement.PlayerId})">
+                                    <span class="achievement big @playerAchievement.AchievementLevel.ToString().ToLower()" data-container="body" data-toggle="popover" data-placement="top" data-content="@playerAchievement.Description">
+                                        <span class="circle">
+                                            <span class="content">
+                                                <span class="@playerAchievement.IconClass"></span>
                                             </span>
                                         </span>
-                                    </a>
-                                    <span class="title">@playerAchievement.AchievementName</span>
-                                </span>
-                            }
+                                    </span>
+                                </a>
+                                <span class="title">@playerAchievement.AchievementName</span>
+                            </span>
                         }
-                    </span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12" style="padding: 0 0 20px 55px">
-                    <a href="@Url.Action(MVC.Achievement.Index())" class="btn btn-xs btn-info">View all Achievements</a>
-                </div>
+                    }
+                </span>
             </div>
         </div>
-    
+        <div class="row">
+            <div class="col-md-12" style="padding: 0 0 20px 55px">
+                <a href="@Url.Action(MVC.Achievement.Index())" class="btn btn-xs btn-info">View all Achievements</a>
+            </div>
+        </div>
+    </div>
 </div>
 }
