@@ -63,7 +63,7 @@ namespace UI.HtmlHelpers
 
             var baseGravatarUrl = BuildGravatarUrl(emailAddress);
             var gravatarAltText = $"Gravatar for {emailAddress}";
-            return new MvcHtmlString($"<img src=\"{baseGravatarUrl}?d=retro&s={pixelDimensions}\" alt=\"{gravatarAltText}\" title=\"{gravatarAltText}\"/>");
+            return new MvcHtmlString($"<img src=\"{baseGravatarUrl}&s={pixelDimensions}\" alt=\"{gravatarAltText}\" title=\"{gravatarAltText}\"/>");
         }
 
         public static string BuildGravatarUrl(string emailAddress)
