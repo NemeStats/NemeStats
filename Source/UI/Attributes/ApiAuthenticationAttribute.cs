@@ -88,10 +88,15 @@ namespace UI.Attributes
             if (actionContext.ActionArguments.ContainsKey(PARAMETER_NAME_GAMING_GROUP_ID)
                 && (int)actionContext.ActionArguments[PARAMETER_NAME_GAMING_GROUP_ID] != applicationUser.CurrentGamingGroupId)
             {
-                actionContext.Response = actionContext.Request.CreateErrorResponse(
-                    HttpStatusCode.Unauthorized,
-                    string.Format(ERROR_MESSAGE_UNAUTHORIZED_TO_GAMING_GROUP,
-                    actionContext.ActionArguments[PARAMETER_NAME_GAMING_GROUP_ID]));
+                //TODO write unit test. This is a hot production fix
+                if (!AuthenticateOnly)
+                {
+                    actionContext.Response = actionContext.Request.CreateErrorResponse(
+                        HttpStatusCode.Unauthorized,
+                        string.Format(ERROR_MESSAGE_UNAUTHORIZED_TO_GAMING_GROUP,
+                            actionContext.ActionArguments[PARAMETER_NAME_GAMING_GROUP_ID]));
+                }
+
                 return;
             }
 
