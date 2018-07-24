@@ -61,10 +61,10 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="clickable-row">
                     @foreach (var playedGameDetailsViewModel in Model.PlayedGameDetailsViewModels)
                     {
-                        <tr class="game-item">
+                        <tr class="game-item" data-details-url="@Url.Action("Details", "PlayedGame", new {id = playedGameDetailsViewModel.PlayedGameId})" title="View Played Game details">
                             <td class="bgg-link-col">
                                 @if (playedGameDetailsViewModel.BoardGameGeekUri != null)
                                 {
@@ -72,7 +72,7 @@
                                     if (!string.IsNullOrEmpty(playedGameDetailsViewModel.ThumbnailImageUrl))
                                     {
                                         <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details,MVC.GameDefinition.Name,new {id=playedGameDetailsViewModel.GameDefinitionId})">
-                                            <img class="bgg-thumbnail" src="@playedGameDetailsViewModel.ThumbnailImageUrl" alt="@playedGameDetailsViewModel.GameDefinitionName" title="@playedGameDetailsViewModel.GameDefinitionName" />
+                                            <img class="bgg-thumbnail" src="@playedGameDetailsViewModel.ThumbnailImageUrl" alt="@playedGameDetailsViewModel.GameDefinitionName" title="View Game Definition details" />
                                         </a>
                                     }
                                     else
@@ -99,9 +99,6 @@
                                 }
                             </td>
                             <td>
-                                <a href="@Url.Action("Details", "PlayedGame", new {id = playedGameDetailsViewModel.PlayedGameId})" title="View Played Game details">
-                                    <i class="fa fa-book fa-2x"></i>
-                                </a>
                                 @if (playedGameDetailsViewModel.UserCanEdit)
                                 {
                                     <a href="@Url.Action("Edit", "PlayedGame", new {id = playedGameDetailsViewModel.PlayedGameId})" title="Edit Played Game">

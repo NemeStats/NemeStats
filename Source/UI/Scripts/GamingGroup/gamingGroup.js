@@ -295,6 +295,9 @@ Views.GamingGroup.GamingGroupView.prototype = {
 
                 var layout = new Views.Shared.Layout();
                 layout.initializePopoversAndTooltips(parent);
+
+                var playedGamesView = new window.Views.PlayedGame.PlayedGames();
+                playedGamesView.init();
             }
         });
     },

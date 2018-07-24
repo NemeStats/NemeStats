@@ -619,6 +619,9 @@ button > i.fa {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
   filter: alpha(opacity=20); }
 
+.clickable-row > tr {
+  cursor: pointer; }
+
 /*$header-background-color: #2C3E50;*/
 @media (max-width: 991px) {
   .home-page-icon {

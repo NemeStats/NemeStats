@@ -194,6 +194,7 @@ namespace Links
             private const string URLPATH = "~/Scripts/PlayedGame";
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+            public static readonly string playedgames_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/playedgames.min.js") ? Url("playedgames.min.js") : Url("playedgames.js");
             public static readonly string recordexceldownload_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/recordexceldownload.min.js") ? Url("recordexceldownload.min.js") : Url("recordexceldownload.js");
             public static readonly string search_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/search.min.js") ? Url("search.min.js") : Url("search.js");
         }
@@ -403,6 +404,7 @@ namespace Links
             {
                 public static class Assets
                 {
+                    public const string playedgames_js = "~/Scripts/PlayedGame/playedgames.js"; 
                     public const string recordexceldownload_js = "~/Scripts/PlayedGame/recordexceldownload.js"; 
                     public const string search_js = "~/Scripts/PlayedGame/search.js"; 
                 }
