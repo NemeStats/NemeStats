@@ -270,11 +270,13 @@ body {
       margin-bottom: 100px; } }
 
 footer {
-  height: 100px;
   color: #fff;
   background-color: #354458;
   padding: 25px;
   z-index: 999; }
+  @media (min-width: 768px) {
+    footer {
+      height: 100px; } }
   footer.bottom {
     position: fixed;
     bottom: 0;
