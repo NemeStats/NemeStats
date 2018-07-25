@@ -24,7 +24,7 @@ namespace UI.Tests.UnitTests.AttributesTests
         private ClientIdCalculator _clientIdCalculatorMock;
 
         [SetUp]
-        public void SetUp()
+        public virtual void SetUp()
         {
             _request = new HttpRequestMessage();
             _request.SetConfiguration(new HttpConfiguration());
@@ -49,11 +49,16 @@ namespace UI.Tests.UnitTests.AttributesTests
         [TestFixture]
         public class When_Authenticating_Only : ApiAuthenticationAttributeTests
         {
+            [SetUp]
+            public override void SetUp()
+            {
+                base.SetUp();
+                _attribute.AuthenticateOnly = true;
+            }
+
             [Test]
             public void ShouldNotReturnBadRequestWhenNoTokenProvided()
             {
-                _attribute.AuthenticateOnly = true;
-
                 _attribute.OnActionExecuting(_actionContext);
 
                 Assert.That(_actionContext.Response, Is.Null);
@@ -62,9 +67,53 @@ namespace UI.Tests.UnitTests.AttributesTests
             [Test]
             public void ShouldNotReturnBadRequestWhenTokenHasEmptyValue()
             {
-                _attribute.AuthenticateOnly = true;
-
                 _request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new[] { string.Empty });
+                _attribute.OnActionExecuting(_actionContext);
+
+                Assert.That(_actionContext.Response, Is.Null);
+            }
+
+            [Test]
+            public void ShouldNotReturnUnauthorizedHttpStatusWhenWrongToken()
+            {
+                const string TOKEN = "DIFFERENT";
+                _request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new[] { TOKEN });
+
+                _authTokenValidatorMock.Expect(mock => mock.ValidateAuthToken(Arg<string>.Is.Anything)).Return(null);
+
+                _attribute.OnActionExecuting(_actionContext);
+
+                Assert.That(_actionContext.Response, Is.Null);
+            }
+
+            [Test]
+            public void ShouldNotReturnUnauthorizedHttpStatusWhenTokenExpired()
+            {
+                const string EXPECTED_TOKEN = "TEST";
+                _request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new[] { EXPECTED_TOKEN });
+
+                _attribute.OnActionExecuting(_actionContext);
+
+                Assert.That(_actionContext.Response, Is.Null);
+            }
+
+            [Test]
+            public void ItDoesNotReturnAnUnauthorizedHttpStatusWhenThereIsAGamingGroupIdThatDoesntMatchTheCurrentUser()
+            {
+                const string TOKEN = "TEST";
+                _request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new[] { TOKEN });
+                const int REQUESTED_GAMING_GROUP_ID = 1;
+                _actionContext.ActionArguments.Add("gamingGroupId", REQUESTED_GAMING_GROUP_ID);
+                const int GAMING_GROUP_ID = -1;
+                var expectedUser = new ApplicationUser
+                {
+                    Id = "some id",
+                    CurrentGamingGroupId = GAMING_GROUP_ID
+                };
+                _authTokenValidatorMock.Expect(mock => mock.ValidateAuthToken(TOKEN)).Return(expectedUser);
+                const string EXPECTED_CLIENT_ID = "some client id";
+                _clientIdCalculatorMock.Expect(mock => mock.GetClientId(_request, expectedUser)).Return(EXPECTED_CLIENT_ID);
+
                 _attribute.OnActionExecuting(_actionContext);
 
                 Assert.That(_actionContext.Response, Is.Null);
@@ -97,6 +146,64 @@ namespace UI.Tests.UnitTests.AttributesTests
                 var httpError = content.Value as HttpError;
                 Assert.That(_actionContext.Response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
                 Assert.That(httpError.Message, Is.EqualTo(ApiAuthenticationAttribute.ERROR_MESSAGE_INVALID_AUTH_TOKEN));
+            }
+
+            [Test]
+            public void ShouldReturnUnauthorizedHttpStatusWhenWrongToken()
+            {
+                const string TOKEN = "DIFFERENT";
+                _request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new[] { TOKEN });
+
+                _authTokenValidatorMock.Expect(mock => mock.ValidateAuthToken(Arg<string>.Is.Anything)).Return(null);
+
+                _attribute.OnActionExecuting(_actionContext);
+
+                Assert.That(_actionContext.Response.Content, Is.TypeOf(typeof(ObjectContent<HttpError>)));
+                var content = _actionContext.Response.Content as ObjectContent<HttpError>;
+                var httpError = content.Value as HttpError;
+                Assert.That(_actionContext.Response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+                Assert.That(httpError.Message, Is.EqualTo(ApiAuthenticationAttribute.ERROR_MESSAGE_INVALID_AUTH_TOKEN));
+            }
+
+            [Test]
+            public void ShouldReturnUnauthorizedHttpStatusWhenTokenExpired()
+            {
+                const string EXPECTED_TOKEN = "TEST";
+                _request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new[] { EXPECTED_TOKEN });
+
+                _attribute.OnActionExecuting(_actionContext);
+
+                Assert.That(_actionContext.Response.Content, Is.TypeOf(typeof(ObjectContent<HttpError>)));
+                var content = _actionContext.Response.Content as ObjectContent<HttpError>;
+                var httpError = content.Value as HttpError;
+                Assert.That(_actionContext.Response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+                Assert.That(httpError.Message, Is.EqualTo(ApiAuthenticationAttribute.ERROR_MESSAGE_INVALID_AUTH_TOKEN));
+            }
+
+            [Test]
+            public void ItReturnsAnUnauthorizedHttpStatusWhenThereIsAGamingGroupIdThatDoesntMatchTheCurrentUser()
+            {
+                const string TOKEN = "TEST";
+                _request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new[] { TOKEN });
+                const int REQUESTED_GAMING_GROUP_ID = 1;
+                _actionContext.ActionArguments.Add("gamingGroupId", REQUESTED_GAMING_GROUP_ID);
+                const int GAMING_GROUP_ID = -1;
+                var expectedUser = new ApplicationUser
+                {
+                    Id = "some id",
+                    CurrentGamingGroupId = GAMING_GROUP_ID
+                };
+                _authTokenValidatorMock.Expect(mock => mock.ValidateAuthToken(TOKEN)).Return(expectedUser);
+                const string EXPECTED_CLIENT_ID = "some client id";
+                _clientIdCalculatorMock.Expect(mock => mock.GetClientId(_request, expectedUser)).Return(EXPECTED_CLIENT_ID);
+
+                _attribute.OnActionExecuting(_actionContext);
+
+                Assert.That(_actionContext.Response.Content, Is.TypeOf(typeof(ObjectContent<HttpError>)));
+                var content = _actionContext.Response.Content as ObjectContent<HttpError>;
+                var httpError = content.Value as HttpError;
+                Assert.That(_actionContext.Response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+                Assert.That(httpError.Message, Is.EqualTo(string.Format(ApiAuthenticationAttribute.ERROR_MESSAGE_UNAUTHORIZED_TO_GAMING_GROUP, REQUESTED_GAMING_GROUP_ID)));
             }
         }
 
@@ -136,64 +243,6 @@ namespace UI.Tests.UnitTests.AttributesTests
             ApplicationUser actualUser = ((ApiControllerBase)_actionContext.ControllerContext.Controller).CurrentUser;
 
             Assert.That(actualUser.AnonymousClientId, Is.EqualTo(EXPECTED_CLIENT_ID));
-        }
-
-        [Test]
-        public void ShouldReturnUnauthorizedHttpStatusWhenWrongToken()
-        {
-            const string TOKEN = "DIFFERENT";
-            _request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new[] { TOKEN });
-
-            _authTokenValidatorMock.Expect(mock => mock.ValidateAuthToken(Arg<string>.Is.Anything)).Return(null);
-
-            _attribute.OnActionExecuting(_actionContext);
-
-            Assert.That(_actionContext.Response.Content, Is.TypeOf(typeof(ObjectContent<HttpError>)));
-            var content = _actionContext.Response.Content as ObjectContent<HttpError>;
-            var httpError = content.Value as HttpError;
-            Assert.That(_actionContext.Response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(httpError.Message, Is.EqualTo(ApiAuthenticationAttribute.ERROR_MESSAGE_INVALID_AUTH_TOKEN));
-        }
-
-        [Test]
-        public void ShouldReturnUnauthorizedHttpStatusWhenTokenExpired()
-        {
-            const string EXPECTED_TOKEN = "TEST";
-            _request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new[] { EXPECTED_TOKEN });
-
-            _attribute.OnActionExecuting(_actionContext);
-
-            Assert.That(_actionContext.Response.Content, Is.TypeOf(typeof(ObjectContent<HttpError>)));
-            var content = _actionContext.Response.Content as ObjectContent<HttpError>;
-            var httpError = content.Value as HttpError;
-            Assert.That(_actionContext.Response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(httpError.Message, Is.EqualTo(ApiAuthenticationAttribute.ERROR_MESSAGE_INVALID_AUTH_TOKEN));
-        }
-
-        [Test]
-        public void ItReturnsAnUnauthorizedHttpStatusWhenThereIsAGamingGroupIdThatDoesntMatchTheCurrentUser()
-        {
-            const string TOKEN = "TEST";
-            _request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new[] { TOKEN });
-            const int REQUESTED_GAMING_GROUP_ID = 1;
-            _actionContext.ActionArguments.Add("gamingGroupId", REQUESTED_GAMING_GROUP_ID);
-            const int GAMING_GROUP_ID = -1;
-            var expectedUser = new ApplicationUser
-            {
-                Id = "some id",
-                CurrentGamingGroupId = GAMING_GROUP_ID
-            };
-            _authTokenValidatorMock.Expect(mock => mock.ValidateAuthToken(TOKEN)).Return(expectedUser);
-            const string EXPECTED_CLIENT_ID = "some client id";
-            _clientIdCalculatorMock.Expect(mock => mock.GetClientId(_request, expectedUser)).Return(EXPECTED_CLIENT_ID);
-
-            _attribute.OnActionExecuting(_actionContext);
-
-            Assert.That(_actionContext.Response.Content, Is.TypeOf(typeof(ObjectContent<HttpError>)));
-            var content = _actionContext.Response.Content as ObjectContent<HttpError>;
-            var httpError = content.Value as HttpError;
-            Assert.That(_actionContext.Response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(httpError.Message, Is.EqualTo(string.Format(ApiAuthenticationAttribute.ERROR_MESSAGE_UNAUTHORIZED_TO_GAMING_GROUP, REQUESTED_GAMING_GROUP_ID)));
         }
     }
 }

@@ -88,7 +88,6 @@ namespace UI.Attributes
             if (actionContext.ActionArguments.ContainsKey(PARAMETER_NAME_GAMING_GROUP_ID)
                 && (int)actionContext.ActionArguments[PARAMETER_NAME_GAMING_GROUP_ID] != applicationUser.CurrentGamingGroupId)
             {
-                //TODO write unit test. This is a hot production fix
                 if (!AuthenticateOnly)
                 {
                     actionContext.Response = actionContext.Request.CreateErrorResponse(
