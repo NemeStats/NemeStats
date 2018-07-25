@@ -20,7 +20,7 @@
     <div class="row">
         @Html.Partial(MVC.UniversalGame.Views._UniversalGameStats, Model.UniversalGameStats)
     </div>
-    
+
 
     @if (Model.TopChampions.Count > 0)
     {
@@ -32,16 +32,16 @@
                 <div class="panel-body">
                     @{
                         var options = new ViewDataDictionary
-                    {
-                        {"showCondensed", true}
-                    };
+                            {
+                                {"showCondensed", true}
+                            };
                     }
                     @Html.Partial(MVC.Player.Views._TopChampions, Model.TopChampions, options)
                 </div>
             </div>
         </div>
-                        }
-    
+    }
+
     @if (Model.RecentlyPlayedGames.Count > 0)
     {
         <div class="row">
@@ -52,9 +52,9 @@
                 <div class="panel-body">
                     @{
                         var options = new ViewDataDictionary
-                    {
-                        {"showCondensed", true}
-                    };
+                            {
+                                {"showCondensed", true}
+                            };
                     }
                     @Html.Partial(MVC.PlayedGame.Views._RecentlyPlayedGamesPartial, Model.RecentlyPlayedGames, options)
                 </div>
@@ -69,10 +69,10 @@
     @if (gamingGroupData != null)
     {
         var viewDataDictionary = new ViewDataDictionary
-        {
-            {"GamingGroupName", gamingGroupData.GamingGroupName},
-            {"GamingGroupId", gamingGroupData.GamingGroupId}
-        };
+{
+    {"GamingGroupName", gamingGroupData.GamingGroupName},
+    {"GamingGroupId", gamingGroupData.GamingGroupId}
+};
         <div class="row">
             @Html.Partial(MVC.GameDefinition.Views._GamingGroupGameDefinitionStatsPartial, gamingGroupData.GamingGroupGameDefinitionStats, viewDataDictionary)
         </div>
@@ -87,3 +87,11 @@
     }
 </div>
 
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var playedGamesView = new window.Views.PlayedGame.PlayedGames();
+            playedGamesView.init();
+        });
+    </script>
+}

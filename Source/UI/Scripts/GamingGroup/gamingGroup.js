@@ -293,7 +293,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
             success: function (html) {
                 $("#" + divIdForRenderingResults).html(html);
 
-                var layout = new Views.Shared.Layout();
+                var layout = new window.Views.Shared.Layout();
                 layout.initializePopoversAndTooltips(parent);
 
                 var playedGamesView = new window.Views.PlayedGame.PlayedGames();
