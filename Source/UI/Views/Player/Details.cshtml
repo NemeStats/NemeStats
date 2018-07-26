@@ -194,10 +194,10 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody class="list">
+                        <tbody class="list clickable-row" id="playerDetailsGameDefinitionsTbody">
                             @foreach (var summary in Model.PlayerGameSummaries)
                             {
-                            <tr class="game-item">
+                            <tr class="game-item"  data-details-url="@Url.Action("Details", "GameDefinition", new {id = summary.GameDefinitionId})" title="View Game Definition details">
                                 <td class="badges-col">
                                     @if (summary.IsChampion)
                                     {
@@ -366,6 +366,9 @@
     $(document).ready(function () {
         var clickableRows = new window.Views.Shared.ClickableRows();
         var settings = { tbodyId: "playerDetailsRecentGamesTbody" };
+        clickableRows.init(settings);
+
+        settings = { tbodyId: "playerDetailsGameDefinitionsTbody" };
         clickableRows.init(settings);
     });
 </script>
