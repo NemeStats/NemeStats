@@ -39,6 +39,8 @@
 
     @Styles.Render("~/bundles/content/css")
     @Styles.Render("~/Content/themes/base/css")
+    
+    @Scripts.Render("~/bundles/jquery")
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
@@ -97,7 +99,6 @@
     @RenderBody()
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
-    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/signalr")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/jqueryui")

@@ -15,106 +15,114 @@
                 </div>
             </caption>
             <thead>
-                <tr>
-                    <th class="col-md-2 bgg-link-head"></th>
-                    <th class="col-md-4 name-head">
-                        <span class="sort" data-sort="name">Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
-                    </th>
-                    <th class="col-md-2 plays-head">
-                        <span class="sort desc" data-sort="plays-col">
-                            <span class="hidden-xs hidden-sm">
-                                <span>Played Games</span>
-                            </span>
-                            <span class="hidden-md hidden-lg">
-                                Plays
-                            </span>
-                            <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span>
+            <tr>
+                <th class="col-md-2 bgg-link-head"></th>
+                <th class="col-md-4 name-head">
+                    <span class="sort" data-sort="name">Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                </th>
+                <th class="col-md-2 plays-head">
+                    <span class="sort desc" data-sort="plays-col">
+                        <span class="hidden-xs hidden-sm">
+                            <span>Played Games</span>
                         </span>
-                    </th>
-                    <th class="col-md-3">
-                        <span class="sort" data-sort="champion-col">
-                            <i class="fa fa-trophy" data-container="body" data-toggle="popover" data-placement="top"
-                               data-content="The Champion is the Player within the Gaming Group with the most wins of this game."></i>
-                            <span class="hidden-xs hidden-sm">
-                                <span>Previous/Current Champion</span>
-                            </span>
-                            <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span>
+                        <span class="hidden-md hidden-lg">
+                            Plays
                         </span>
-                    </th>
-                    @if (Model.Any() && Model.First().UserCanEdit)
-                    {
-                        <th class="col-md-1 edit-head">&nbsp;</th>
-                    }
-                </tr>
+                        <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span>
+                    </span>
+                </th>
+                <th class="col-md-3">
+                    <span class="sort" data-sort="champion-col">
+                        <i class="fa fa-trophy" data-container="body" data-toggle="popover" data-placement="top"
+                           data-content="The Champion is the Player within the Gaming Group with the most wins of this game."></i>
+                        <span class="hidden-xs hidden-sm">
+                            <span>Previous/Current Champion</span>
+                        </span>
+                        <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span>
+                    </span>
+                </th>
+                @if (Model.Any() && Model.First().UserCanEdit)
+                {
+                    <th class="col-md-1 edit-head">&nbsp;</th>
+                }
+            </tr>
             </thead>
-            <tbody class="list">
+            <tbody class="list clickable-row" id="gamedefinitionTbody">
 
             @foreach (var item in Model)
             {
                 BoardGameGeekInfoViewModel boardGameGeekInfo = item.BoardGameGeekInfo;
-                <tr class="game-item">
+                <tr class="game-item" data-details-url="@Url.Action(MVC.GameDefinition.Details().AddRouteValue("id", item.Id))" title="View Game Definition details">
                     <td class="bgg-link-col">
                         @if (boardGameGeekInfo != null)
                         {
-                                <a href="@Url.Action(MVC.GameDefinition.Details().AddRouteValue("id", item.Id))">
-                                    @if (string.IsNullOrEmpty(boardGameGeekInfo.ThumbnailImageUrl))
-                                    {
-                                        <img src="~/Content/Images/bgg_small.png" alt="View Global Stats" title="View Global Stats" />
-                                    }else
-                                    {
-                                        <img class="bgg-thumbnail" src="@boardGameGeekInfo.ThumbnailImageUrl" alt="View Global Stats" title="View Global Stats"/> 
-                                    }
-                                </a>
-                         }
-                        </td>
-                        <td class="name-col">
-                            <b>
-                                @Html.ActionLink(item.Name, "Details", "GameDefinition", new { id = item.Id }, new { @class = "name", title = "View Game Definition details" })
-                            </b>
-                        </td>
-                        <td class="plays-col">@Html.DisplayFor(modelItem => item.TotalNumberOfGamesPlayed)</td>
-                        <td class="champion-col" data-champion="@(item.ChampionName ?? "-")">
-                            @if (item.PreviousChampionName != null)
-                            {
-                                <span style="text-decoration: line-through">
-                                    <b>
-                                        @Html.ActionLink(item.PreviousChampionName,
-                                            "Details",
-                                            "Player",
-                                            new { id = item.PreviousChampionPlayerId },
-                                            new { title = "View Player details"})
-                                    </b>
-                                </span>
-                                <span>/</span>
-                            }
-                            @if (item.ChampionName != null)
-                            {
-                                <b>
-                                    @Html.ActionLink(item.ChampionName, "Details", "Player", new { id = item.ChampionPlayerId }, new { title = "View Player details" })
-                                </b>
-                            }
-                            else
-                            {
-                                <span>-</span>
-                            }
-                        </td>
-
-                        @if (item.UserCanEdit)
+                            <a href="@Url.Action(MVC.GameDefinition.Details().AddRouteValue("id", item.Id))">
+                                @if (string.IsNullOrEmpty(boardGameGeekInfo.ThumbnailImageUrl))
+                                {
+                                    <img src="~/Content/Images/bgg_small.png" alt="View Global Stats" title="View Global Stats" />
+                                }else
+                                {
+                                    <img class="bgg-thumbnail" src="@boardGameGeekInfo.ThumbnailImageUrl" alt="View Global Stats" title="View Global Stats"/> 
+                                }
+                            </a>
+                        }
+                    </td>
+                    <td class="name-col">
+                        <b>
+                            @Html.ActionLink(item.Name, "Details", "GameDefinition", new { id = item.Id }, new { @class = "name", title = "View Game Definition details" })
+                        </b>
+                    </td>
+                    <td class="plays-col">@Html.DisplayFor(modelItem => item.TotalNumberOfGamesPlayed)</td>
+                    <td class="champion-col" data-champion="@(item.ChampionName ?? "-")">
+                        @if (item.PreviousChampionName != null)
                         {
-                            <td class="edit-col">
-                                <a href="@Url.Action("Edit", "GameDefinition", new
+                            <span style="text-decoration: line-through">
+                                <b>
+                                    @Html.ActionLink(item.PreviousChampionName,
+                                        "Details",
+                                        "Player",
+                                        new { id = item.PreviousChampionPlayerId },
+                                        new { title = "View Player details"})
+                                </b>
+                            </span>
+                            <span>/</span>
+                        }
+                        @if (item.ChampionName != null)
+                        {
+                            <b>
+                                @Html.ActionLink(item.ChampionName, "Details", "Player", new { id = item.ChampionPlayerId }, new { title = "View Player details" })
+                            </b>
+                        }
+                        else
+                        {
+                            <span>-</span>
+                        }
+                    </td>
+
+                    @if (item.UserCanEdit)
+                    {
+                        <td class="edit-col">
+                            <a href="@Url.Action("Edit", "GameDefinition", new
                                      {
                                          id = item.Id
                                      })" title="Edit Game Definition">
-                                    <span class="fa fa-pencil fa-2x"></span>
-                                </a>
-                            </td>
-                        }
+                                <span class="fa fa-pencil fa-2x"></span>
+                            </a>
+                        </td>
+                    }
 
-                    </tr>
-                }
+                </tr>
+            }
             </tbody>
         </table>
         <ul class="pagination"></ul>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var clickableRows = new window.Views.Shared.ClickableRows();
+        var settings = { tbodyId: "gamedefinitionTbody" };
+        clickableRows.init(settings);
+    });
+</script>

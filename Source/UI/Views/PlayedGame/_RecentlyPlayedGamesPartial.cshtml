@@ -6,56 +6,59 @@
 <div class="flip-scroll">
     <table class="table table-hover table-striped gameDefinitionsList" id="recentGamesTable">
         <thead>
-            <tr>
+        <tr>
+            @if (!showCondensed)
+            {
+                <th class="bgg-link-head"></th>
+                <th>Game</th>
+            }
+            <th class="playername-head">Winner</th>
+            <th>Date</th>
+            <th><span class="hidden-xs hidden-sm">Gaming </span>Group</th>
+        </tr>
+        </thead>
+        <tbody class="clickable-row" id="recentGamesTbody">
+        @{ var position = 1;}
+        @foreach (var publicGame in Model)
+        {
+            <tr class="game-item" data-position="@position" data-details-url="@Url.Action("Details", "PlayedGame", new {id = publicGame.PlayedGameId})" title="View Played Game details">
+                @{ position++;}
                 @if (!showCondensed)
                 {
-                    <th class="bgg-link-head"></th>
-                    <th>Game</th>
+                    <td class="bgg-link-col">
+                        @if (!string.IsNullOrEmpty(publicGame.ThumbnailImageUrl))
+                        {
+                            <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details, MVC.GameDefinition.Name, new {id = publicGame.GameDefinitionId})" title="View details of @publicGame.GameDefinitionName">
+                                <img class="bgg-thumbnail" src="@publicGame.ThumbnailImageUrl" alt="@publicGame.GameDefinitionName" />
+                            </a>
+                        }
+                    </td>
+                    <td>@Html.ActionLink(publicGame.GameDefinitionName, "Details", "GameDefinition", new { id = publicGame.GameDefinitionId }, new { title = $"View details of {publicGame.GameDefinitionName}" })</td>
                 }
-                <th class="playername-head">Winner</th>
-                <th>Date</th>
-                <th><span class="hidden-xs hidden-sm">Gaming </span>Group</th>
+                @switch (publicGame.WinnerType)
+                {
+                    case BusinessLogic.Models.PlayedGames.WinnerTypes.TeamWin:
+                        <td class="gameResult-teamWin">EVERYONE WON</td>
+                        break;
+                    case BusinessLogic.Models.PlayedGames.WinnerTypes.TeamLoss:
+                        <td class="gameResult-teamLoss">EVERYONE LOST</td>
+                        break;
+                    default:
+                        <td>@Html.ActionLink(publicGame.WinningPlayer.Name, "Details", "Player", new { id = publicGame.WinningPlayer.Id }, new { title = "View Player details" })</td>
+                        break;
+                }
+                <td>@Html.ActionLink(publicGame.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new { id = publicGame.PlayedGameId }, new { title = "View Played Game details" })</td>
+                <td>@Html.ActionLink(publicGame.GamingGroupName, "Details", "GamingGroup", new { id = publicGame.GamingGroupId }, new { title = "View Gaming Group details" })</td>
             </tr>
-        </thead>
-        <tbody class="clickable-row">
-            @{ var position = 1;}
-            @foreach (var publicGame in Model)
-            {
-                <tr class="game-item" data-position="@position" data-details-url="@Url.Action("Details", "PlayedGame", new {id = publicGame.PlayedGameId})" title="View Played Game details">
-                    @{ position++;}
-                    @if (!showCondensed)
-                    {
-                        <td class="bgg-link-col">
-                            @if (!string.IsNullOrEmpty(publicGame.ThumbnailImageUrl))
-                            {
-                                <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details, MVC.GameDefinition.Name, new {id = publicGame.GameDefinitionId})" title="View details of @publicGame.GameDefinitionName">
-                                    <img class="bgg-thumbnail" src="@publicGame.ThumbnailImageUrl" alt="@publicGame.GameDefinitionName" />
-                                </a>
-                            }
-                        </td>
-                        <td>@Html.ActionLink(publicGame.GameDefinitionName, "Details", "GameDefinition", new { id = publicGame.GameDefinitionId }, new { title = $"View details of {publicGame.GameDefinitionName}" })</td>
-                    }
-                    @switch (publicGame.WinnerType)
-                    {
-                        case BusinessLogic.Models.PlayedGames.WinnerTypes.TeamWin:
-                            <td class="gameResult-teamWin">EVERYONE WON</td>
-                            break;
-                        case BusinessLogic.Models.PlayedGames.WinnerTypes.TeamLoss:
-                            <td class="gameResult-teamLoss">EVERYONE LOST</td>
-                            break;
-                        default:
-                            <td>@Html.ActionLink(publicGame.WinningPlayer.Name, "Details", "Player", new { id = publicGame.WinningPlayer.Id }, new { title = "View Player details" })</td>
-                            break;
-                    }
-                    <td>@Html.ActionLink(publicGame.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new { id = publicGame.PlayedGameId }, new { title = "View Played Game details" })</td>
-                    <td>@Html.ActionLink(publicGame.GamingGroupName, "Details", "GamingGroup", new { id = publicGame.GamingGroupId }, new { title = "View Gaming Group details" })</td>
-                </tr>
-            }
+        }
         </tbody>
     </table>
 </div>
-
-<script>
-    var playedGamesView = new window.Views.PlayedGame.PlayedGames();
-    playedGamesView.init();
+    
+<script type="text/javascript">
+    $(document).ready(function () {
+        var clickableRows = new window.Views.Shared.ClickableRows();
+        var settings = { tbodyId: "recentGamesTbody" };
+        clickableRows.init(settings);
+    });
 </script>

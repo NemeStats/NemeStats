@@ -4,7 +4,7 @@
 @using UI.Models.Players
 
 @{
-    string title = @Model.GameDefinitionName + " - " + Model.DatePlayed.ToShortDateString();
+    string title = $"{Model.PlayerResults.Count}-Player Game of {Model.GameDefinitionName} on {Model.DatePlayed.ToShortDateString()}";
     ViewBag.Title = title + " - " + Model.GamingGroupName;
     Layout = MVC.Shared.Views._BaseLayout;
 }

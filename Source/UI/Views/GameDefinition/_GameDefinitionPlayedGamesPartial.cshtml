@@ -8,45 +8,42 @@
         <div class="table-responsive">
             <table class="table table-hover table-striped">
                 <thead>
-                    <tr>
-                        <th class="col-md-5">
-                            Date Played
-                        </th>
-                        <th class="col-md-6 result-head">
-                            Result
-                        </th>
-                        <th class="col-md-1 edit-head">
+                <tr>
+                    <th class="col-md-5">
+                        Date Played
+                    </th>
+                    <th class="col-md-6 result-head">
+                        Result
+                    </th>
+                    <th class="col-md-1 edit-head">
 
-                        </th>
-                    </tr>
+                    </th>
+                </tr>
                 </thead>
-                <tbody>
-                    @foreach (var playedGameViewModel in Model)
-                    {
-                        <tr>
-                            <td>@playedGameViewModel.DatePlayed.ToShortDateString()</td>
-                            <td class="result-col">
-                                @foreach (var gameResultViewModel in playedGameViewModel.PlayerResults)
-                                {
-                                    @Html.Partial(MVC.PlayedGame.Views._GameResult, gameResultViewModel)
-                                }
-                            </td>
-                            <td class="edit-col">
-                                <a href="@Url.Action("Details", "PlayedGame", new {id = playedGameViewModel.PlayedGameId})" title="View Played Game details">
-                                    <i class="fa fa-book fa-2x"></i>
+                <tbody class="clickable-row">
+                @foreach (var playedGameViewModel in Model)
+                {
+                    <tr data-details-url="@Url.Action("Details", "PlayedGame", new {id = playedGameViewModel.PlayedGameId})" title="View Played Game details">
+                        <td>@playedGameViewModel.DatePlayed.ToShortDateString()</td>
+                        <td class="result-col">
+                            @foreach (var gameResultViewModel in playedGameViewModel.PlayerResults)
+                            {
+                                @Html.Partial(MVC.PlayedGame.Views._GameResult, gameResultViewModel)
+                            }
+                        </td>
+                        <td class="edit-col">
+                            @if (playedGameViewModel.UserCanEdit)
+                            {
+                                <a href="@Url.Action("Edit", "PlayedGame", new {id = playedGameViewModel.PlayedGameId})" title="Edit this Played Game">
+                                    <i class="fa fa-pencil fa-2x"></i>
                                 </a>
-                                @if (playedGameViewModel.UserCanEdit)
-                                {
-                                    <a href="@Url.Action("Edit", "PlayedGame", new {id = playedGameViewModel.PlayedGameId})" title="Edit this Played Game">
-                                        <i class="fa fa-pencil fa-2x"></i>
-                                    </a>
-                                                <a href="@Url.Action("Delete", "PlayedGame", new {id = playedGameViewModel.PlayedGameId})" title="Delete this Played Game">
-                                                    <i class="fa fa-trash-o fa-2x"></i>
-                                                </a>
-                                }
-                            </td>
-                        </tr>
-                    }
+                                <a href="@Url.Action("Delete", "PlayedGame", new {id = playedGameViewModel.PlayedGameId})" title="Delete this Played Game">
+                                    <i class="fa fa-trash-o fa-2x"></i>
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                }
                 </tbody>
             </table>
         </div>

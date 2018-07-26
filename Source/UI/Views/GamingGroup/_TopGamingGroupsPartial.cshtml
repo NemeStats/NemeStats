@@ -1,44 +1,54 @@
 ﻿@model UI.Models.GamingGroup.GamingGroupsSummaryViewModel
 
 <div class="flip-scroll">
-	<table class="table table-hover table-striped" id="topGamingGroupsTable">
-		<thead>
-			<tr>
-				<th class="gaminggroup-head"><span class="hidden-xs hidden-sm">Gaming </span>Group</th>
-				<th class="skinny-header">Plays</th>
-				<th class="skinny-header">Players</th>
-			    <th><span class="hidden-xs hidden-sm playername-head">Group </span>Champion</th>
-                @if (Model.ShowForEdit)
-                {
-                    <th>Active
-                        <i class="fa fa-question-circle-o" data-toggle="popover" data-placement="left"
-                           data-content="Indicates whether the Gaming Group will show up in normal views. The group can be re-activated on the Edit page."></i></th>
-                    <th></th>
-                }
-			</tr>
-		</thead>
+    <table class="table table-hover table-striped" id="topGamingGroupsTable">
+        <thead>
+        <tr>
+            <th class="gaminggroup-head"><span class="hidden-xs hidden-sm">Gaming </span>Group</th>
+            <th class="skinny-header">Plays</th>
+            <th class="skinny-header">Players</th>
+            <th><span class="hidden-xs hidden-sm playername-head">Group </span>Champion</th>
+            @if (Model.ShowForEdit)
+            {
+                <th>Active
+                    <i class="fa fa-question-circle-o" data-toggle="popover" data-placement="left"
+                       data-content="Indicates whether the Gaming Group will show up in normal views. The group can be re-activated on the Edit page."></i></th>
+                <th></th>
+            }
+        </tr>
+        </thead>
+        <tbody class="clickable-row" id="topGamingGroupsTbody">
         @{ var position = 1; }
-		@foreach (var gamingGroup in Model.GamingGroups)
-		{
-			<tr data-position="@position">
+        @foreach (var gamingGroup in Model.GamingGroups)
+        {
+            <tr data-position="@position" data-details-url="@Url.Action("Details", "GamingGroup", new {id = gamingGroup.GamingGroupId})" title="View Gaming Group details">
                 @{ position++; }
-				<td>@Html.ActionLink(gamingGroup.GamingGroupName, "Details", "GamingGroup", new { id = gamingGroup.GamingGroupId }, new { title = "View Gaming Group details" })</td>
-				<td>@gamingGroup.NumberOfGamesPlayed</td>
-				<td>@gamingGroup.NumberOfPlayers</td>
-			    <td>
-			        @if (gamingGroup.GamingGroupChampion != null)
-			        {
-			            @Html.ActionLink(gamingGroup.GamingGroupChampion.PlayerName, "Details", "Player", new { id = gamingGroup.GamingGroupChampion.PlayerId }, new { title = "View Player details" })
-			        }
-			    </td>
+                <td>@Html.ActionLink(gamingGroup.GamingGroupName, "Details", "GamingGroup", new { id = gamingGroup.GamingGroupId }, new { title = "View Gaming Group details" })</td>
+                <td>@gamingGroup.NumberOfGamesPlayed</td>
+                <td>@gamingGroup.NumberOfPlayers</td>
+                <td>
+                    @if (gamingGroup.GamingGroupChampion != null)
+                    {
+                        @Html.ActionLink(gamingGroup.GamingGroupChampion.PlayerName, "Details", "Player", new { id = gamingGroup.GamingGroupChampion.PlayerId }, new { title = "View Player details" })
+                    }
+                </td>
                 @if (Model.ShowForEdit)
                 {
                     <td>@Html.CheckBoxFor(m => gamingGroup.Active, new { disabled = "disabled" })</td>
                     <td><a href="@Url.Action("Edit", "GamingGroup", new {id = gamingGroup.GamingGroupId})" title="Edit Gaming Group">
-                        <i class="fa fa-pencil fa-2x"></i></a>
+                            <i class="fa fa-pencil fa-2x"></i></a>
                     </td>
                 }
-			</tr>
-		}
-	</table>
+            </tr>
+        }
+        </tbody>
+    </table>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var clickableRows = new window.Views.Shared.ClickableRows();
+        var settings = { tbodyId: "topGamingGroupsTbody" };
+        clickableRows.init(settings);
+    });
+</script>

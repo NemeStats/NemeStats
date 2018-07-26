@@ -258,7 +258,7 @@
                             <th>Rank</th>
                         </tr>
                     </thead>
-                    <tbody class="clickable-row">
+                    <tbody class="clickable-row" id="playerDetailsRecentGamesTbody">
 
                         @foreach (var gameResultViewModel in Model.PlayerGameResultDetails)
                         {
@@ -313,9 +313,6 @@
             playerDetails.init(settings);
             playerDetails.renderGameDefinitionsPieChart();
         });
-
-        var playedGamesView = new window.Views.PlayedGame.PlayedGames();
-        playedGamesView.init();
     </script>
     }
 </div>
@@ -364,3 +361,11 @@
     </div>
 </div>
 }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var clickableRows = new window.Views.Shared.ClickableRows();
+        var settings = { tbodyId: "playerDetailsRecentGamesTbody" };
+        clickableRows.init(settings);
+    });
+</script>

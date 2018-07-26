@@ -699,7 +699,6 @@
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\namespace-1.0.0.js" />
     <Content Include="Scripts\namespace.min-1.0.0.js" />
-    <Content Include="Scripts\PlayedGame\playedgames.js" />
     <Content Include="Scripts\PlayedGame\recordexceldownload.js" />
     <Content Include="Scripts\PlayedGame\search.js" />
     <Content Include="Scripts\Player\playerDetails.js" />
@@ -712,6 +711,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Shared\GoogleAnalytics.js" />
+    <Content Include="Scripts\Shared\clickablerows.js" />
     <Content Include="Scripts\Shared\_Layout.js" />
     <Content Include="Scripts\dragula.min.js" />
     <Content Include="Scripts\typeahead-bundle.js" />

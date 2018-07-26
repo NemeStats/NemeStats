@@ -20,7 +20,10 @@ body {
 
 
 footer {
-    height: $footer-height;
+    @media (min-width: $screen-sm-min) {
+        height: $footer-height;
+    }
+
     color: #fff;
     background-color: $brand-primary;
     padding: 25px;

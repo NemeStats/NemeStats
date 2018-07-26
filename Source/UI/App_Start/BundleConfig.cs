@@ -83,7 +83,6 @@ namespace UI
                 .Include("~/Scripts/CreatePlayedGame/createplayedgame.js")
                 .Include("~/Scripts/PlayedGame/search.js")
                 .Include("~/Scripts/PlayedGame/recordexceldownload.js")
-                .Include("~/Scripts/PlayedGame/playedgames.js")
                 .Include("~/Scripts/Player/createOrUpdatePlayer.js")
                 .Include("~/Scripts/Player/playerDetails.js")
                 .Include("~/Scripts/Player/players.js")
@@ -95,6 +94,7 @@ namespace UI
                 .Include("~/Scripts/GameDefinition/GameDefinitionPlayersSummaryPartial.js")
                 .Include("~/Scripts/Shared/_Layout.js")
                 .Include("~/Scripts/Shared/_LoginPartial.js")
+                .Include("~/Scripts/Shared/clickablerows.js")
                 .Include("~/Scripts/Home/home.js")
                 .Include("~/Scripts/Shared/GoogleAnalytics.js"));
 
