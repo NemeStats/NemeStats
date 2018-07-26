@@ -46,73 +46,81 @@
         <div class="flip-scroll">
             <table class="table table-striped table-hover gameDefinitionsList">
                 <thead>
-                    <tr>
-                        <th class="bgg-link-head"></th>
-                        <th class="name-head">
-                            Game Name
-                        </th>
-                        <th>
-                            Date Played
-                        </th>
-                        <th class="result-head">
-                            Result
-                        </th>
-                        <th class="edit-head">
-                        </th>
-                    </tr>
+                <tr>
+                    <th class="bgg-link-head"></th>
+                    <th class="name-head">
+                        Game Name
+                    </th>
+                    <th>
+                        Date Played
+                    </th>
+                    <th class="result-head">
+                        Result
+                    </th>
+                    <th class="edit-head">
+                    </th>
+                </tr>
                 </thead>
-                <tbody class="clickable-row">
-                    @foreach (var playedGameDetailsViewModel in Model.PlayedGameDetailsViewModels)
-                    {
-                        <tr class="game-item" data-details-url="@Url.Action("Details", "PlayedGame", new {id = playedGameDetailsViewModel.PlayedGameId})" title="View Played Game details">
-                            <td class="bgg-link-col">
-                                @if (playedGameDetailsViewModel.BoardGameGeekUri != null)
-                                {
+                <tbody class="clickable-row" id="playedGamesTbody">
+                @foreach (var playedGameDetailsViewModel in Model.PlayedGameDetailsViewModels)
+                {
+                    <tr class="game-item" data-details-url="@Url.Action("Details", "PlayedGame", new {id = playedGameDetailsViewModel.PlayedGameId})" title="View Played Game details">
+                        <td class="bgg-link-col">
+                            @if (playedGameDetailsViewModel.BoardGameGeekUri != null)
+                            {
 
-                                    if (!string.IsNullOrEmpty(playedGameDetailsViewModel.ThumbnailImageUrl))
-                                    {
-                                        <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details,MVC.GameDefinition.Name,new {id=playedGameDetailsViewModel.GameDefinitionId})">
-                                            <img class="bgg-thumbnail" src="@playedGameDetailsViewModel.ThumbnailImageUrl" alt="@playedGameDetailsViewModel.GameDefinitionName" title="View Game Definition details" />
-                                        </a>
-                                    }
-                                    else
-                                    {
-                                        <a href="@playedGameDetailsViewModel.BoardGameGeekUri.AbsoluteUri" target="_blank;">
-                                            <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
-                                        </a>
-                                    }
-
-                                }
-                            </td>
-                            <td class="name-col">
-                                <b>
-                                    @Html.ActionLink(playedGameDetailsViewModel.GameDefinitionName, MVC.GameDefinition.ActionNames.Details, MVC.GameDefinition.Name, new { id = playedGameDetailsViewModel.GameDefinitionId }, new { title = "View Game Definition details" })
-                                </b>
-                            </td>
-                            <td>
-                                @playedGameDetailsViewModel.DatePlayed.ToShortDateString()
-                            </td>
-                            <td class="result-col">
-                                @foreach (var playerGameResultDetails in playedGameDetailsViewModel.PlayerResults)
+                                if (!string.IsNullOrEmpty(playedGameDetailsViewModel.ThumbnailImageUrl))
                                 {
-                                    @Html.Partial(MVC.PlayedGame.Views._GameResult, playerGameResultDetails)
-                                }
-                            </td>
-                            <td>
-                                @if (playedGameDetailsViewModel.UserCanEdit)
-                                {
-                                    <a href="@Url.Action("Edit", "PlayedGame", new {id = playedGameDetailsViewModel.PlayedGameId})" title="Edit Played Game">
-                                        <i class="fa fa-pencil fa-2x"></i>
-                                    </a>
-                                    <a href="@Url.Action("Delete", "PlayedGame", new {id = playedGameDetailsViewModel.PlayedGameId})" title="Delete Played Game">
-                                        <i class="fa fa-trash-o fa-2x"></i>
+                                    <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details,MVC.GameDefinition.Name,new {id=playedGameDetailsViewModel.GameDefinitionId})">
+                                        <img class="bgg-thumbnail" src="@playedGameDetailsViewModel.ThumbnailImageUrl" alt="@playedGameDetailsViewModel.GameDefinitionName" title="View Game Definition details" />
                                     </a>
                                 }
-                            </td>
-                        </tr>
-                    }
+                                else
+                                {
+                                    <a href="@playedGameDetailsViewModel.BoardGameGeekUri.AbsoluteUri" target="_blank;">
+                                        <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                                    </a>
+                                }
+
+                            }
+                        </td>
+                        <td class="name-col">
+                            <b>
+                                @Html.ActionLink(playedGameDetailsViewModel.GameDefinitionName, MVC.GameDefinition.ActionNames.Details, MVC.GameDefinition.Name, new { id = playedGameDetailsViewModel.GameDefinitionId }, new { title = "View Game Definition details" })
+                            </b>
+                        </td>
+                        <td>
+                            @playedGameDetailsViewModel.DatePlayed.ToShortDateString()
+                        </td>
+                        <td class="result-col">
+                            @foreach (var playerGameResultDetails in playedGameDetailsViewModel.PlayerResults)
+                            {
+                                @Html.Partial(MVC.PlayedGame.Views._GameResult, playerGameResultDetails)
+                            }
+                        </td>
+                        <td>
+                            @if (playedGameDetailsViewModel.UserCanEdit)
+                            {
+                                <a href="@Url.Action("Edit", "PlayedGame", new {id = playedGameDetailsViewModel.PlayedGameId})" title="Edit Played Game">
+                                    <i class="fa fa-pencil fa-2x"></i>
+                                </a>
+                                <a href="@Url.Action("Delete", "PlayedGame", new {id = playedGameDetailsViewModel.PlayedGameId})" title="Delete Played Game">
+                                    <i class="fa fa-trash-o fa-2x"></i>
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                }
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var clickableRows = new window.Views.Shared.ClickableRows();
+        var settings = { tbodyId: "playedGamesTbody" };
+        clickableRows.init(settings);
+    });
+</script>

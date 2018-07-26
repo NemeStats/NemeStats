@@ -3,23 +3,24 @@
 <div class="flip-scroll">
     <table class="table table-hover table-striped gameDefinitionsList" id="trendingGamesTable">
         <thead>
-            <tr>
-                <th class="bgg-link-head"></th>
-                <th>Name</th>
-                <th>Copies</th>
-                <th>Plays</th>
-            </tr>
+        <tr>
+            <th class="bgg-link-head"></th>
+            <th>Name</th>
+            <th>Copies</th>
+            <th>Plays</th>
+        </tr>
         </thead>
+        <tbody class="clickable-row" id="trendingGamesTbody">
         @{ var position = 1; }
         @foreach (TrendingGameViewModel trendingGame in Model)
         {
-            <tr class="game-item" data-position="@position">
+            <tr class="game-item" data-position="@position" data-details-url="@Url.Action(MVC.UniversalGame.Details().AddRouteValue("id", trendingGame.BoardGameGeekGameDefinitionId))" title="View Game Definition universal stats">
                 @{position++;}
                 <td class="bgg-link-col">
-                    <a href="@Url.Action(MVC.UniversalGame.Details().AddRouteValue("id", trendingGame.BoardGameGeekGameDefinitionId))" title="View universal stats for Game Definition">
+                    <a href="@Url.Action(MVC.UniversalGame.Details().AddRouteValue("id", trendingGame.BoardGameGeekGameDefinitionId))" title="View Game Definition universal stats">
                         @if (!string.IsNullOrEmpty(trendingGame.ThumbnailImageUrl))
                         {
-                            <img class="bgg-thumbnail" src="@trendingGame.ThumbnailImageUrl" alt="View universal stats" title="View universal stats for Game Definition"/>
+                            <img class="bgg-thumbnail" src="@trendingGame.ThumbnailImageUrl" alt="View universal stats" title="View Game Definition universal stats"/>
                         }
                         else
                         {
@@ -32,6 +33,15 @@
                 <td>@trendingGame.GamingGroupsPlayingThisGame</td>
                 <td>@trendingGame.GamesPlayed</td>
             </tr>
-         }
+        }
+        </tbody>
     </table>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var clickableRows = new window.Views.Shared.ClickableRows();
+        var settings = { tbodyId: "trendingGamesTbody" };
+        clickableRows.init(settings);
+    });
+</script>

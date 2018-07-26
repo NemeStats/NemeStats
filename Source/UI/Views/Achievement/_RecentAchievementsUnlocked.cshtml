@@ -1,53 +1,63 @@
 ﻿@model PagedList.IPagedList<UI.Models.Players.PlayerAchievementWinnerViewModel>
-    @{
-        Layout = null;
-        var position = 1;
+@{
+    Layout = null;
+    var position = 1;
 
-        bool showGamingGroup = ViewData["hideGamingGroupColumn"] == null || !(bool) ViewData["hideGamingGroupColumn"];
-    }
+    bool showGamingGroup = ViewData["hideGamingGroupColumn"] == null || !(bool) ViewData["hideGamingGroupColumn"];
+}
 
-    <div class="flip-scroll">
-        <table class="table table-hover table-striped" id="recentAchievementsUnlocked">
-            <thead>
-                <tr>
-                    <th class="achievement-head">Achievement</th>
-                    <th class="playername-head">Player</th>
-                    @if(showGamingGroup)
-                    {
-                        <th>Gaming Group</th>
-                    }
-                    <th>Date</th>
-                </tr>
-            </thead>
-            @foreach (var playerAchievement in Model)
+<div class="flip-scroll">
+    <table class="table table-hover table-striped" id="recentAchievementsUnlocked">
+        <thead>
+        <tr>
+            <th class="achievement-head">Achievement</th>
+            <th class="playername-head">Player</th>
+            @if(showGamingGroup)
             {
-            <tr data-position="@position">
-                @{ position++; }
-                <td>
-                    <a href="@Url.Action(MVC.Achievement.Details(playerAchievement.AchievementId, null))" title="View Achievement details">
-                        <span class="achievement medium @playerAchievement.AchievementLevel.ToString().ToLower()">
-                            <span class="circle">
-                                <span class="content">
-                                    <span class="@playerAchievement.IconClass"></span>
-                                </span>
+                <th>Gaming Group</th>
+            }
+            <th>Date</th>
+        </tr>
+        </thead>
+        <tbody class="clickable-row" id="recentAchievementsTbody">
+        @foreach (var playerAchievement in Model)
+        {
+        <tr data-position="@position"data-details-url="@Url.Action(MVC.Achievement.PlayerAchievement(playerAchievement.AchievementId, playerAchievement.PlayerId))" title="View this Player's Achievement">
+            @{ position++; }
+            <td>
+                <a href="@Url.Action(MVC.Achievement.Details(playerAchievement.AchievementId, null))" title="View Achievement details">
+                    <span class="achievement medium @playerAchievement.AchievementLevel.ToString().ToLower()">
+                        <span class="circle">
+                            <span class="content">
+                                <span class="@playerAchievement.IconClass"></span>
                             </span>
                         </span>
-                        @playerAchievement.AchievementName
-                    </a>
-                </td>
+                    </span>
+                    @playerAchievement.AchievementName
+                </a>
+            </td>
+            <td>
+                @Html.ActionLink(playerAchievement.PlayerName, "Details", "Player", new { id = playerAchievement.PlayerId }, new { title = "View Player details" })
+            </td>
+            @if(showGamingGroup)
+            {
                 <td>
-                    @Html.ActionLink(playerAchievement.PlayerName, "Details", "Player", new { id = playerAchievement.PlayerId }, new { title = "View Player details" })
+                    @Html.ActionLink(playerAchievement.GamingGroupName, "Details", "GamingGroup", new { id = playerAchievement.GamingGroupId }, new { title = "View Gaming Group details" })
                 </td>
-                @if(showGamingGroup)
-                {
-                    <td>
-                        @Html.ActionLink(playerAchievement.GamingGroupName, "Details", "GamingGroup", new { id = playerAchievement.GamingGroupId }, new { title = "View Gaming Group details" })
-                    </td>
-                }
-                <td>
-                    <a href="@Url.Action(MVC.Achievement.PlayerAchievement(playerAchievement.AchievementId, playerAchievement.PlayerId))" title="View this Player's Achievement">@playerAchievement.AchievementLastUpdateDate.ToShortDateString()</a>
-                </td>
-            </tr>
             }
-        </table>
-    </div>
+            <td>
+                <a href="@Url.Action(MVC.Achievement.PlayerAchievement(playerAchievement.AchievementId, playerAchievement.PlayerId))" title="View this Player's Achievement">@playerAchievement.AchievementLastUpdateDate.ToShortDateString()</a>
+            </td>
+        </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var clickableRows = new window.Views.Shared.ClickableRows();
+        var settings = { tbodyId: "recentAchievementsTbody" };
+        clickableRows.init(settings);
+    });
+</script>

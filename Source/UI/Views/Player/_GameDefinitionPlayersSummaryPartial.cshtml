@@ -48,10 +48,10 @@
                     </th>
                 </tr>
                 </thead>
-                <tbody class="list">
+                <tbody class="list clickable-row" id="gameDefinitionPlayersTbody">
                 @foreach (var playerSummary in Model)
                 {
-                    <tr>
+                    <tr data-details-url="@Url.Action("Details", "Player", new {id = playerSummary.PlayerId})" title="View Player details">
                         <td class="badges-col">
                             @foreach (var badge in playerSummary.SpecialBadgeTypes)
                             {
@@ -109,3 +109,9 @@
 {
     @Html.Partial("_NemePointsBreakdown", playerSummary.NemePointsSummary, new ViewDataDictionary {{"templateid", playerSummary.PlayerId}})
 }
+
+<script type="text/javascript">$(document).ready(function () {
+    var clickableRows = new window.Views.Shared.ClickableRows();
+    var settings = { tbodyId: "gameDefinitionPlayersTbody" };
+    clickableRows.init(settings);
+});</script>
