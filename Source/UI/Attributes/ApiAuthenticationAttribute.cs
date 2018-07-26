@@ -94,9 +94,9 @@ namespace UI.Attributes
                         HttpStatusCode.Unauthorized,
                         string.Format(ERROR_MESSAGE_UNAUTHORIZED_TO_GAMING_GROUP,
                             actionContext.ActionArguments[PARAMETER_NAME_GAMING_GROUP_ID]));
-                }
 
-                return;
+                    return;
+                }
             }
 
             applicationUser.AnonymousClientId = _clientIdCalculator.GetClientId(actionContext.Request, applicationUser);
