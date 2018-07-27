@@ -195,11 +195,18 @@
                   max-width: 175px; } }
         .home-container .home-banner .cta-wrapper .panel .current-player-stats .stat-value {
           font-size: 28px; }
-        .home-container .home-banner .cta-wrapper .panel .social-login button {
-          width: 100%;
-          font-size: 22px; }
-          .home-container .home-banner .cta-wrapper .panel .social-login button i.fa {
-            margin-right: 10px; }
+        .home-container .home-banner .cta-wrapper .panel .social-login {
+          padding-top: 30px;
+          padding-bottom: 30px; }
+          @media (min-width: 480px) {
+            .home-container .home-banner .cta-wrapper .panel .social-login {
+              padding-right: 45px;
+              padding-left: 45px; } }
+          .home-container .home-banner .cta-wrapper .panel .social-login button {
+            width: 100%;
+            font-size: 22px; }
+            .home-container .home-banner .cta-wrapper .panel .social-login button i.fa {
+              margin-right: 10px; }
         .home-container .home-banner .cta-wrapper .panel .common-login {
           background-color: #eee; }
           .home-container .home-banner .cta-wrapper .panel .common-login .or {
@@ -253,6 +260,9 @@
       .home-features .description .imgs img {
         width: 65px;
         margin-top: 10px; }
+
+.forgot-password {
+  padding-top: 20px; }
 
 /*$header-background-color: #2C3E50;*/
 body {
@@ -704,7 +714,9 @@ button > i.fa {
 .btn.btn-google {
   color: white;
   background-color: #2196F3;
-  border-color: #2196F3; }
+  border-color: #2196F3;
+  padding-left: 0px;
+  padding-right: 0px; }
   .btn.btn-google:focus, .btn.btn-google.focus {
     color: white;
     background-color: #0c7cd5;
