@@ -704,7 +704,9 @@ button > i.fa {
 .btn.btn-google {
   color: white;
   background-color: #2196F3;
-  border-color: #2196F3; }
+  border-color: #2196F3;
+  padding-left: 0px;
+  padding-right: 0px; }
   .btn.btn-google:focus, .btn.btn-google.focus {
     color: white;
     background-color: #0c7cd5;

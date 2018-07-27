@@ -3,7 +3,9 @@
 
 .btn {
     &.btn-google {
-        @include button-variant(white,$google-background-color,$google-background-color)
+        @include button-variant(white,$google-background-color,$google-background-color);
+        padding-left: 0px;
+        padding-right: 0px;
     }
 
     &.btn-action {
