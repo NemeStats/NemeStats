@@ -261,6 +261,9 @@
         width: 65px;
         margin-top: 10px; }
 
+.forgot-password {
+  padding-top: 20px; }
+
 /*$header-background-color: #2C3E50;*/
 body {
   padding-top: 50px;
