@@ -195,11 +195,18 @@
                   max-width: 175px; } }
         .home-container .home-banner .cta-wrapper .panel .current-player-stats .stat-value {
           font-size: 28px; }
-        .home-container .home-banner .cta-wrapper .panel .social-login button {
-          width: 100%;
-          font-size: 22px; }
-          .home-container .home-banner .cta-wrapper .panel .social-login button i.fa {
-            margin-right: 10px; }
+        .home-container .home-banner .cta-wrapper .panel .social-login {
+          padding-top: 30px;
+          padding-bottom: 30px; }
+          @media (min-width: 480px) {
+            .home-container .home-banner .cta-wrapper .panel .social-login {
+              padding-right: 45px;
+              padding-left: 45px; } }
+          .home-container .home-banner .cta-wrapper .panel .social-login button {
+            width: 100%;
+            font-size: 22px; }
+            .home-container .home-banner .cta-wrapper .panel .social-login button i.fa {
+              margin-right: 10px; }
         .home-container .home-banner .cta-wrapper .panel .common-login {
           background-color: #eee; }
           .home-container .home-banner .cta-wrapper .panel .common-login .or {
