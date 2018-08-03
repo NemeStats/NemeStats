@@ -111,10 +111,9 @@
                 }
 
                 .social-login {
-                    padding-top: 30px;
-                    padding-bottom: 30px;
+                    padding: 25px 30px;
 
-                    @media (min-width: $screen-xs-min) {
+                    @media (min-width: $screen-md-min) {
                         padding-right: 45px;
                         padding-left: 45px;
                     }
@@ -134,7 +133,7 @@
                     padding-left: 30px;
                     padding-right: 30px;
 
-                    @media (min-width: $screen-xs-min) {
+                    @media (min-width: $screen-md-min) {
                         padding-right: 45px;
                         padding-left: 45px;
                     }

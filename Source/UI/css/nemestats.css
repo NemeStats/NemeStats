@@ -207,9 +207,8 @@
   .current-player-stats .stat-value {
           font-size: 28px; }
         .home-container .home-banner .cta-wrapper .panel .social-login {
-          padding-top: 30px;
-          padding-bottom: 30px; }
-          @media (min-width: 480px) {
+          padding: 25px 30px; }
+          @media (min-width: 992px) {
             .home-container .home-banner .cta-wrapper .panel .social-login {
               padding-right: 45px;
               padding-left: 45px; } }
@@ -222,7 +221,7 @@
           background-color: #eee;
           padding-left: 30px;
           padding-right: 30px; }
-          @media (min-width: 480px) {
+          @media (min-width: 992px) {
             .home-container .home-banner .cta-wrapper .panel .common-login {
               padding-right: 45px;
               padding-left: 45px; } }
