@@ -53,8 +53,12 @@
             }
 
             .panel {
-                @media (max-width: $screen-sm-min) {
+                @media (max-width: $screen-xs-max) {
                     max-width: 288px;
+                }
+
+                @media (min-width: $screen-sm-min) {
+                    max-width: 400px;
                 }
 
                 margin: 40px auto 0px;

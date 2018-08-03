@@ -163,9 +163,12 @@
       .home-container .home-banner .cta-wrapper .panel {
         margin: 40px auto 0px;
         text-align: left; }
-        @media (max-width: 768px) {
+        @media (max-width: 767px) {
           .home-container .home-banner .cta-wrapper .panel {
             max-width: 288px; } }
+        @media (min-width: 768px) {
+          .home-container .home-banner .cta-wrapper .panel {
+            max-width: 400px; } }
         .home-container .home-banner .cta-wrapper .panel \ .current-player-stats .panel {
           margin-top: 10px; }
         .home-container .home-banner .cta-wrapper .panel \ .current-player-stats .panel-heading {
