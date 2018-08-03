@@ -278,7 +278,8 @@
         margin-top: 10px; }
 
 .forgot-password {
-  padding-top: 20px; }
+  padding-top: 20px;
+  text-align: center; }
 
 /*$header-background-color: #2C3E50;*/
 body {
