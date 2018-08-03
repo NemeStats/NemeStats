@@ -10,11 +10,11 @@
     <div class="home-banner">
         <div class="cta-wrapper container">
 
-            <div class="col-md-7 col-xs-12 subtitle">
+            <div class="col-md-7 col-sm-12 col-xs-12 subtitle">
                 <img src="~/Content/Images/NemeStats-White.png" />
                 <div class="text">Board game tracking made fun!</div>
             </div>
-            <div class="col-md-5 col-md-offset-0 col-xs-12">
+            <div class="col-md-5 col-md-offset-0 col-sm-6 col-sm-offset-3 col-xs-12">
                 @if (Model.ShowQuickStats)
                 {
                     <div>
@@ -33,7 +33,6 @@
                         </div>
                         <div class="common-login">
                             <div class="or">or</div>
-                            <div class="title">Log in with your NemeStats account</div>
                             @{ Html.RenderAction(MVC.Account.LoginForm()); }
                         </div>
                     </div>

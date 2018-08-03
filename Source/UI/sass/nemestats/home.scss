@@ -53,11 +53,14 @@
             }
 
             .panel {
-                margin-top: 40px;
-                text-align: center;
+                @media (max-width: $screen-sm-min) {
+                    max-width: 288px;
+                }
 
+                margin: 40px auto 0px;
+                text-align: left;
 
-                .current-player-stats {
+                \ .current-player-stats {
 
                     .panel {
                         margin-top: 10px;
@@ -112,12 +115,18 @@
                 }
 
                 .social-login {
-                    padding-top: 30px;
-                    padding-bottom: 30px;
-                    @media (min-width: $screen-xs-min) {
+                    padding: 25px 20px;
+
+                    @media (min-width: $screen-md-min) {
                         padding-right: 45px;
                         padding-left: 45px;
                     }
+
+                    @media (max-width: $screen-xs-min) {
+                        padding-right: 20px;
+                        padding-left: 20px;
+                    }
+
                     button {
                         width: 100%;
                         font-size: 22px;
@@ -130,6 +139,18 @@
 
                 .common-login {
                     background-color: #eee;
+                    padding-left: 20px;
+                    padding-right: 20px;
+
+                    @media (min-width: $screen-md-min) {
+                        padding-right: 45px;
+                        padding-left: 45px;
+                    }
+
+                    @media (max-width: $screen-xs-min) {
+                        padding-right: 20px;
+                        padding-left: 20px;
+                    }
 
                     .or {
                         position: relative;
@@ -212,4 +233,5 @@
 
 .forgot-password {
     padding-top: 20px;
+    text-align: center;
 }

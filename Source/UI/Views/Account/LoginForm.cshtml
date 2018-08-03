@@ -4,27 +4,27 @@
 
 }
 
-@using (Html.BeginForm(MVC.Account.Login(), FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm(MVC.Account.Login(), FormMethod.Post, new { role = "form" }))
 {
     @Html.AntiForgeryToken()
 
     <div class="form-group">
-        @Html.LabelFor(m => m.UserName, new { @class = "col-xs-4 control-label" })
-        <div class="col-xs-7">
+        @Html.LabelFor(m => m.UserName, new { @class = "control-label" })
+        <div>
             @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
             @Html.ValidationMessageFor(m => m.UserName)
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Password, new { @class = "col-xs-4 control-label" })
-        <div class="col-xs-7">
+        @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+        <div>
             @Html.PasswordFor(m => m.Password, new { @class = "form-control", autocomplete = "current-password" })
             @Html.ValidationMessageFor(m => m.Password)
         </div>
     </div>
     <div class="form-group">
         <div>
-            <div class="checkbox col-sm-offset-1 col-sm-11">
+            <div class="checkbox">
                 <label>
                     @Html.CheckBoxFor(m => m.RememberMe)
                     @Html.DisplayNameFor(m => m.RememberMe)
@@ -33,18 +33,14 @@
         </div>
     </div>
     <div class="form-group">
-        <div class="col-sm-offset-1 col-sm-11">
+        <div>
             <input type="submit" value="Log in" class="btn btn-primary btn-lg btn-fullwidth" />
         </div>
     </div>
 
-    <div class="form-group">
-        <div>
-            <div class="col-sm-offset-1 col-sm-11">
-                <label class="forgot-password">
-                    @Html.ActionLink("Forgot Password?", MVC.Account.ForgotPassword())
-                </label>
-            </div>
-        </div>
+    <div class="form-group forgot-password">
+        <label>
+            @Html.ActionLink("Forgot Password?", MVC.Account.ForgotPassword())
+        </label>
     </div>
 }
