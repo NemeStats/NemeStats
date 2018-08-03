@@ -161,57 +161,53 @@
             height: 100px;
             padding-top: 20px; } }
       .home-container .home-banner .cta-wrapper .panel {
-        margin-top: 40px;
+        margin: 40px auto 0px;
         text-align: left; }
-        .home-container .home-banner .cta-wrapper .panel \
-  .current-player-stats .panel {
+        @media (max-width: 768px) {
+          .home-container .home-banner .cta-wrapper .panel {
+            max-width: 288px; } }
+        .home-container .home-banner .cta-wrapper .panel \ .current-player-stats .panel {
           margin-top: 10px; }
-        .home-container .home-banner .cta-wrapper .panel \
-  .current-player-stats .panel-heading {
+        .home-container .home-banner .cta-wrapper .panel \ .current-player-stats .panel-heading {
           font-size: 14px; }
-        .home-container .home-banner .cta-wrapper .panel \
-  .current-player-stats .btn-action {
+        .home-container .home-banner .cta-wrapper .panel \ .current-player-stats .btn-action {
           width: 100%;
           font-size: 22px; }
           @media (max-width: 991px) {
-            .home-container .home-banner .cta-wrapper .panel \
-  .current-player-stats .btn-action {
+            .home-container .home-banner .cta-wrapper .panel \ .current-player-stats .btn-action {
               font-size: 16px; } }
-        .home-container .home-banner .cta-wrapper .panel \
-  .current-player-stats .last-game-played {
+        .home-container .home-banner .cta-wrapper .panel \ .current-player-stats .last-game-played {
           text-align: left;
           padding: 15px 0; }
           @media (max-width: 991px) {
-            .home-container .home-banner .cta-wrapper .panel \
-  .current-player-stats .last-game-played {
+            .home-container .home-banner .cta-wrapper .panel \ .current-player-stats .last-game-played {
               text-align: center; } }
-          .home-container .home-banner .cta-wrapper .panel \
-  .current-player-stats .last-game-played .image-col {
+          .home-container .home-banner .cta-wrapper .panel \ .current-player-stats .last-game-played .image-col {
             text-align: center; }
-            .home-container .home-banner .cta-wrapper .panel \
-  .current-player-stats .last-game-played .image-col .bgg-thumbnail {
+            .home-container .home-banner .cta-wrapper .panel \ .current-player-stats .last-game-played .image-col .bgg-thumbnail {
               width: auto;
               max-height: 100px;
               max-width: 130px; }
               @media (max-width: 1200px) {
-                .home-container .home-banner .cta-wrapper .panel \
-  .current-player-stats .last-game-played .image-col .bgg-thumbnail {
+                .home-container .home-banner .cta-wrapper .panel \ .current-player-stats .last-game-played .image-col .bgg-thumbnail {
                   max-width: 100px; } }
               @media (max-width: 991px) {
-                .home-container .home-banner .cta-wrapper .panel \
-  .current-player-stats .last-game-played .image-col .bgg-thumbnail {
+                .home-container .home-banner .cta-wrapper .panel \ .current-player-stats .last-game-played .image-col .bgg-thumbnail {
                   text-align: center;
                   min-height: 100px;
                   max-width: 175px; } }
-        .home-container .home-banner .cta-wrapper .panel \
-  .current-player-stats .stat-value {
+        .home-container .home-banner .cta-wrapper .panel \ .current-player-stats .stat-value {
           font-size: 28px; }
         .home-container .home-banner .cta-wrapper .panel .social-login {
-          padding: 25px 30px; }
+          padding: 25px 20px; }
           @media (min-width: 992px) {
             .home-container .home-banner .cta-wrapper .panel .social-login {
               padding-right: 45px;
               padding-left: 45px; } }
+          @media (max-width: 480px) {
+            .home-container .home-banner .cta-wrapper .panel .social-login {
+              padding-right: 20px;
+              padding-left: 20px; } }
           .home-container .home-banner .cta-wrapper .panel .social-login button {
             width: 100%;
             font-size: 22px; }
@@ -219,12 +215,16 @@
               margin-right: 10px; }
         .home-container .home-banner .cta-wrapper .panel .common-login {
           background-color: #eee;
-          padding-left: 30px;
-          padding-right: 30px; }
+          padding-left: 20px;
+          padding-right: 20px; }
           @media (min-width: 992px) {
             .home-container .home-banner .cta-wrapper .panel .common-login {
               padding-right: 45px;
               padding-left: 45px; } }
+          @media (max-width: 480px) {
+            .home-container .home-banner .cta-wrapper .panel .common-login {
+              padding-right: 20px;
+              padding-left: 20px; } }
           .home-container .home-banner .cta-wrapper .panel .common-login .or {
             position: relative;
             left: 50%;
