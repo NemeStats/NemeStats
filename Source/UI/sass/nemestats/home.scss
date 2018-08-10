@@ -113,8 +113,23 @@
                     }
 
 
+                    .left-stat-box {
+                        padding-right: 5px;
+                    }
+
+                    .middle-stat-box {
+                        padding-right: 5px;
+                        padding-left: 5px;
+                    }
+
+                    .right-stat-box {
+                        padding-left: 5px;
+                    }
+
                     .stat-value {
                         font-size: 28px;
+                        padding-left: 5px;
+                        padding-right: 5px;
                     }
                 }
 

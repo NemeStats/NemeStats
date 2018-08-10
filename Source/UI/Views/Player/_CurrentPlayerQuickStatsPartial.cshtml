@@ -1,4 +1,5 @@
-﻿@model UI.Models.Players.PlayerQuickStatsViewModel
+﻿@using UI.HtmlHelpers
+@model UI.Models.Players.PlayerQuickStatsViewModel
 
 <div class="panel panel-default">
     <div class="panel-body current-player-stats">
@@ -56,15 +57,15 @@
         @if (Model.PlayerId.HasValue)
         {
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-4 left-stat-box">
                     <div class="panel panel-default">
-                        <div class="panel-heading"><span class="fa-stack neme-points-ico" data-toggle="popover" data-placement="top" data-content="Total NemePoints earned by playing games" data-original-title="" title=""><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x letter"></i></span></div>
+                        <div class="panel-heading">NemePoints</div>
                         <div class="panel-body stat-value">
-                            @Html.ActionLink(Model.NemePointsSummary.TotalNemePoints.ToString(), "Details", "Player", new { id = Model.PlayerId }, new { title = "View my Player details for more statistics" })
+                            @Html.ActionLink(Model.NemePointsSummary.TotalNemePoints.ToString(), "Details", "Player", new { id = Model.PlayerId }, new { title = "View my Player details for more statistics" })&nbsp;@Html.NemePointsIco()
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-4 middle-stat-box">
                     <div class="panel panel-default">
                         <div class="panel-heading">Plays</div>
                         <div class="panel-body stat-value">
@@ -72,7 +73,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-4 right-stat-box">
                     <div class="panel panel-default">
                         <div class="panel-heading">Wins</div>
                         <div class="panel-body stat-value">
