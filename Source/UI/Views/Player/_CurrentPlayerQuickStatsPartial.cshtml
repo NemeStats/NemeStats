@@ -66,7 +66,7 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Games Played</div>
+                        <div class="panel-heading">Plays</div>
                         <div class="panel-body stat-value">
                             @Html.ActionLink(@Model.TotalGamesPlayed.ToString(), "Details", "Player", new { id = Model.PlayerId }, new { title = "View my Player details for more statistics" })
                         </div>
@@ -74,7 +74,7 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Games Won</div>
+                        <div class="panel-heading">Wins</div>
                         <div class="panel-body stat-value">
                             @Html.ActionLink(@Model.TotalGamesWon.ToString(), "Details", "Player", new { id = Model.PlayerId }, new { title = "View my Player details for more statistics" })
                         </div>
