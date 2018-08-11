@@ -68,7 +68,7 @@
                                     <span class="fa fa-caret-down"></span>&nbsp;<span class="fa fa-caret-up"></span>
                                 </span>
                             </th>
-                            <th>
+                            <th class="registered-head">
                                 @if (userCanEdit)
                                 {
                                     @:Registered
@@ -76,8 +76,9 @@
                             </th>
                             @if (userCanEdit)
                             {
-                                <th class="edit-head">
-                                </th>
+                            <th class="edit-head">
+                                <span class="visible-xs-inline visible-sm-inline">Edit</span>
+                            </th>
                             }
                         </tr>
                     </thead>
@@ -146,7 +147,7 @@
                                         </b>
                                     }
                                 </td>
-                                <td>
+                                <td class="registered-col">
                                     @if (userCanEdit)
                                     {
                                         @Html.DisplayFor(modelItem => item.PlayerRegistered)

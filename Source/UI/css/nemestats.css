@@ -694,6 +694,8 @@ button > i.fa {
   .flip-scroll .wonpercentage-head {
     height: 73px;
     padding-top: 40px; }
+  .flip-scroll .registered-head {
+    height: 38px; }
   .flip-scroll .badges-col {
     height: 37px;
     text-align: center; }
@@ -709,6 +711,8 @@ button > i.fa {
   .flip-scroll .edit-col {
     height: 52px;
     text-align: center; }
+  .flip-scroll .registered-col {
+    height: 38px; }
   .flip-scroll .nemesis-col {
     height: 70px; }
   .flip-scroll .champion-col {
