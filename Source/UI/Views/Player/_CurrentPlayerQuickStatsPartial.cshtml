@@ -9,10 +9,12 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <a href="@Url.Action(MVC.PlayedGame.ActionNames.Details,MVC.PlayedGame.Name,new {id = Model.LastGamingGroupPlayedGame.PlayedGameId})" title="View Played Game details">View last group game</a>
+                    <a href="@Url.Action(MVC.PlayedGame.ActionNames.Details, MVC.PlayedGame.Name, new {id = Model.LastGamingGroupPlayedGame.PlayedGameId})" title="View Played Game details">
+                        View last game played on @Model.LastGamingGroupPlayedGame.DatePlayed.ToShortDateString()
+                    </a>
                 </div>
                 <div class="panel-body last-game-played">
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <div class="image-col voffset2">
                             <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details,MVC.GameDefinition.Name,new {id= Model.LastGamingGroupPlayedGame.GameDefinitionId})" title="View @Model.LastGamingGroupPlayedGame.GameDefinitionName details">
                                 @if (!string.IsNullOrEmpty(Model.LastGamingGroupPlayedGame.ThumbnailImageUrl))
@@ -27,7 +29,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="col-sm-4 voffset2">
+                    <div class="col-sm-6 voffset2">
                         <span>Winner:</span>
                         @if (Model.LastGamingGroupPlayedGame.WinnerType == BusinessLogic.Models.PlayedGames.WinnerTypes.TeamWin)
                         {
@@ -43,12 +45,6 @@
                                 <a href="@Url.Action(MVC.Player.ActionNames.Details,MVC.Player.Name, new {id = Model.LastGamingGroupPlayedGame.WinningPlayerId})" title="View Player details">@Model.LastGamingGroupPlayedGame.WinningPlayerName</a>
                             </div>
                         }
-                    </div>
-                    <div class="col-sm-4 voffset2">
-                        <span>Date:</span>
-                        <div class="voffset2">
-                            <a href="@Url.Action(MVC.PlayedGame.ActionNames.Details,MVC.PlayedGame.Name, new {id = Model.LastGamingGroupPlayedGame.PlayedGameId})" title="View Played Game details">@Model.LastGamingGroupPlayedGame.DatePlayed.ToShortDateString()</a>
-                        </div>
                     </div>
                 </div>
             </div>
