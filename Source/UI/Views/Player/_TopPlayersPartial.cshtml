@@ -8,7 +8,7 @@
         <thead>
         <tr>
             <th>Name</th>
-            <th>@Html.NemePointsIco()</th>
+            <th>NemePoints</th>
             <th>Played Games</th>
             <th>Win %</th>
         </tr>
@@ -27,7 +27,7 @@
                     })</td>
                 <td>
                     <span data-toggle="popover" data-html="true" data-templateselector="#@topPlayerViewModel.PlayerId" data-title="NemePoints breakdown">
-                        @topPlayerViewModel.NemePointsSummary.TotalNemePoints
+                        @topPlayerViewModel.NemePointsSummary.TotalNemePoints&nbsp;@Html.NemePointsIco()
                     </span>
                 </td>
                 <td>@topPlayerViewModel.TotalNumberOfGamesPlayed</td>

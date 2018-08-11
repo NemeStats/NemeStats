@@ -1,4 +1,5 @@
-﻿@model UI.Models.Players.PlayerQuickStatsViewModel
+﻿@using UI.HtmlHelpers
+@model UI.Models.Players.PlayerQuickStatsViewModel
 
 <div class="panel panel-default">
     <div class="panel-body current-player-stats">
@@ -8,10 +9,12 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <a href="@Url.Action(MVC.PlayedGame.ActionNames.Details,MVC.PlayedGame.Name,new {id = Model.LastGamingGroupPlayedGame.PlayedGameId})" title="View Played Game details">View last group game</a>
+                    <a href="@Url.Action(MVC.PlayedGame.ActionNames.Details, MVC.PlayedGame.Name, new {id = Model.LastGamingGroupPlayedGame.PlayedGameId})" title="View Played Game details">
+                        View last game played on @Model.LastGamingGroupPlayedGame.DatePlayed.ToShortDateString()
+                    </a>
                 </div>
                 <div class="panel-body last-game-played">
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <div class="image-col voffset2">
                             <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details,MVC.GameDefinition.Name,new {id= Model.LastGamingGroupPlayedGame.GameDefinitionId})" title="View @Model.LastGamingGroupPlayedGame.GameDefinitionName details">
                                 @if (!string.IsNullOrEmpty(Model.LastGamingGroupPlayedGame.ThumbnailImageUrl))
@@ -26,7 +29,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="col-sm-4 voffset2">
+                    <div class="col-sm-6 voffset2">
                         <span>Winner:</span>
                         @if (Model.LastGamingGroupPlayedGame.WinnerType == BusinessLogic.Models.PlayedGames.WinnerTypes.TeamWin)
                         {
@@ -43,38 +46,32 @@
                             </div>
                         }
                     </div>
-                    <div class="col-sm-4 voffset2">
-                        <span>Date:</span>
-                        <div class="voffset2">
-                            <a href="@Url.Action(MVC.PlayedGame.ActionNames.Details,MVC.PlayedGame.Name, new {id = Model.LastGamingGroupPlayedGame.PlayedGameId})" title="View Played Game details">@Model.LastGamingGroupPlayedGame.DatePlayed.ToShortDateString()</a>
-                        </div>
-                    </div>
                 </div>
             </div>
         }
 
         @if (Model.PlayerId.HasValue)
         {
-            <div class="row">
-                <div class="col-sm-4">
+            <div class="row stats-boxes">
+                <div class="col-md-4">
                     <div class="panel panel-default">
-                        <div class="panel-heading"><span class="fa-stack neme-points-ico" data-toggle="popover" data-placement="top" data-content="Total NemePoints earned by playing games" data-original-title="" title=""><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x letter"></i></span></div>
+                        <div class="panel-heading">NemePoints</div>
                         <div class="panel-body stat-value">
-                            @Html.ActionLink(Model.NemePointsSummary.TotalNemePoints.ToString(), "Details", "Player", new { id = Model.PlayerId }, new { title = "View my Player details for more statistics" })
+                            @Html.ActionLink(Model.NemePointsSummary.TotalNemePoints.ToString(), "Details", "Player", new { id = Model.PlayerId }, new { title = "View my Player details for more statistics" })&nbsp;@Html.NemePointsIco()
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-md-4">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Games Played</div>
+                        <div class="panel-heading">Plays</div>
                         <div class="panel-body stat-value">
                             @Html.ActionLink(@Model.TotalGamesPlayed.ToString(), "Details", "Player", new { id = Model.PlayerId }, new { title = "View my Player details for more statistics" })
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-md-4">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Games Won</div>
+                        <div class="panel-heading">Wins</div>
                         <div class="panel-body stat-value">
                             @Html.ActionLink(@Model.TotalGamesWon.ToString(), "Details", "Player", new { id = Model.PlayerId }, new { title = "View my Player details for more statistics" })
                         </div>

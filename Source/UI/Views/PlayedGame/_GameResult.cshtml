@@ -1,4 +1,5 @@
 ﻿@using BusinessLogic.Models.PlayedGames
+@using UI.HtmlHelpers
 @model UI.Models.PlayedGame.GameResultViewModel
 
 @{
@@ -60,10 +61,8 @@ else
 {
     <div class="col-xs-5 total">
         <span data-toggle="popover" data-html="true" data-templateselector="#@Model.Id" data-title="NemePoints breakdown">
-
-            @Model.NemePointsSummary.TotalNemePoints<span class="fa-stack neme-points-ico"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x letter"></i></span>
+            @Model.NemePointsSummary.TotalNemePoints&nbsp;@Html.NemePointsIco()
         </span>
-
     </div>
 }
 

@@ -85,6 +85,10 @@
             padding-top: 40px;
         }
 
+        .registered-head {
+            height: $registered-height;
+        }
+
         .badges-col {
             height: $badges-height;
             text-align: center;
@@ -108,6 +112,10 @@
         .edit-col {
             height: $edit-height;
             text-align: center;
+        }
+
+        .registered-col {
+            height: $registered-height;
         }
 
         .nemesis-col {

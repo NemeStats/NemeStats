@@ -2,13 +2,11 @@
 @using UI.HtmlHelpers
 @using UI.Models.Badges
 @model IList<UI.Models.Players.PlayerWithNemesisViewModel>
-
 @{
     Layout = null;
-    bool userCanEdit = (bool?) ViewData["canEdit"] == true;
+    bool userCanEdit = (bool?)ViewData["canEdit"] == true;
     var showGravatars = Model.Any(x => !string.IsNullOrWhiteSpace(x.RegisteredUserEmailAddress));
 }
-
 <div class="playersList">
     <div class="panel panel-primary">
         <div class="panel-heading">
@@ -19,9 +17,9 @@
         <div class="panel-body">
             @if (userCanEdit)
             {
-            <div class="well">
-                @Html.Action("SavePlayer", "Player")
-            </div>
+                <div class="well">
+                    @Html.Action("SavePlayer", "Player")
+                </div>
             }
             <div class="flip-scroll" id="playersList">
                 <table class="table table-hover table-striped">
@@ -32,57 +30,57 @@
                         </div>
                     </caption>
                     <thead>
-                    <tr>
-                            
-                        @if (showGravatars)
-                        {
-                            <th class="gravatar-header"><span class="gravatar-header">Gravatar</span></th>
-                        }
-                        <th class="playername-head">
-                            <span class="sort" data-sort="player-name-col"><span class="hidden-sm hidden-xs">Player </span>Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
-                        </th>
-                        <th>
-                            <span class="sort desc" data-sort="total-nemepoints-col">@Html.NemePointsIco() <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
-                        </th>
-                        <th>
-                            <span class="sort" data-sort="played-games-col">Plays <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
-                        </th>
-                        <th>
-                            <span class="sort" data-sort="avg-nemepoints-col">Avg. @Html.NemePointsIco(tooltip: "NemePoints") <span class="hidden-xs hidden-sm">per game</span> <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
-                        </th>
-                        <th>
-                            <span class="sort" data-sort="overall-win-col"><span class="hidden-xs hidden-sm">Overall </span>Win % <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
-                        </th>
-                        <th>
-                            <span class="sort" data-sort="championed-games-col">
-                                <i class="fa fa-trophy" data-toggle="popover" data-placement="top" data-content="Total games Championed by this Player"></i> <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span>
-                            </span>
-                        </th>
-                        <th>
-                            <span class="sort" data-sort="achievements-col">
-                            <span class="hidden-xs hidden-sm">Achievements</span><span class="visible-xs-inline visible-sm-inline">Achv.</span> <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span>
-                            </span>
-                        </th>
-                        <th class="nemesis-head">
-                            <span class="sort" data-sort="nemesis-col">
-                                <i class="ns-icon-nemesis" data-toggle="popover" data-placement="top"
-                                    data-content="@NemesisBadgeViewModel.POPOVER_TEXT"></i>
-                                <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span>
-                            </span>
-                        </th>
-                        <th>
+                        <tr>
+
+                            @if (showGravatars)
+                            {
+                                <th class="gravatar-header"><span class="gravatar-header">Gravatar</span></th>
+                            }
+                            <th class="playername-head">
+                                <span class="sort" data-sort="player-name-col">Player&nbsp;<span class="fa fa-caret-down"></span>&nbsp;<span class="fa fa-caret-up"></span></span>
+                            </th>
+                            <th>
+                                <span class="sort desc" data-sort="total-nemepoints-col">@Html.NemePointsIco()&nbsp;<span class="fa fa-caret-down"></span>&nbsp;<span class="fa fa-caret-up"></span></span>
+                            </th>
+                            <th>
+                                <span class="sort" data-sort="played-games-col">Plays&nbsp;<span class="fa fa-caret-down"></span>&nbsp;<span class="fa fa-caret-up"></span></span>
+                            </th>
+                            <th>
+                                <span class="sort" data-sort="avg-nemepoints-col">Avg. NemePoints&nbsp;<span class="fa fa-caret-down"></span>&nbsp;<span class="fa fa-caret-up"></span></span>
+                            </th>
+                            <th>
+                                <span class="sort" data-sort="overall-win-col">Win %&nbsp;<span class="fa fa-caret-down"></span>&nbsp;<span class="fa fa-caret-up"></span></span>
+                            </th>
+                            <th>
+                                <span class="sort" data-sort="championed-games-col">
+                                    <i class="fa fa-trophy" data-toggle="popover" data-placement="top" data-content="Total games Championed by this Player"></i>&nbsp;<span class="fa fa-caret-down"></span>&nbsp;<span class="fa fa-caret-up"></span>
+                                </span>
+                            </th>
+                            <th>
+                                <span class="sort" data-sort="achievements-col">
+                                    <span class="hidden-xs hidden-sm">Achievements</span><span class="visible-xs-inline visible-sm-inline">Achv.</span>&nbsp;<span class="fa fa-caret-down"></span>&nbsp;<span class="fa fa-caret-up"></span>
+                                </span>
+                            </th>
+                            <th class="nemesis-head">
+                                <span class="sort" data-sort="nemesis-col">
+                                    <i class="ns-icon-nemesis" data-toggle="popover" data-placement="top"
+                                       data-content="@NemesisBadgeViewModel.POPOVER_TEXT"></i>&nbsp;
+                                    <span class="fa fa-caret-down"></span>&nbsp;<span class="fa fa-caret-up"></span>
+                                </span>
+                            </th>
+                            <th class="registered-head">
+                                @if (userCanEdit)
+                                {
+                                    @:Registered
+                                }
+                            </th>
                             @if (userCanEdit)
                             {
-                                @:Registered
-                            }
-                        </th>
-                        @if (userCanEdit)
-                        {
                             <th class="edit-head">
-
+                                <span class="visible-xs-inline visible-sm-inline">Edit</span>
                             </th>
-                        }
-                    </tr>
+                            }
+                        </tr>
                     </thead>
                     <tbody id="playersListTableBody" class="list clickable-row">
                         @foreach (var item in Model)
@@ -93,7 +91,7 @@
                                     <td class="gravatar-col">@Html.RenderGravatar(item.RegisteredUserEmailAddress)</td>
                                 }
                                 <td class="player-name-col" data-name="@item.PlayerName">
-                                    <b>@Html.ActionLink(item.PlayerName, MVC.Player.Details(item.PlayerId, null), new {title = "View Player details"})</b>
+                                    <b>@Html.ActionLink(item.PlayerName, MVC.Player.Details(item.PlayerId, null), new { title = "View Player details" })</b>
                                 </td>
                                 <td class="total-nemepoints-col" data-nemepoints="@item.NemePointsSummary.TotalNemePoints">
                                     <span data-toggle="popover" data-html="true" data-templateselector="#@item.PlayerId" data-title="NemePoints breakdown">
@@ -101,7 +99,7 @@
                                     </span>
                                 </td>
                                 <td class="played-games-col">@item.NumberOfPlayedGames</td>
-                                <td class="avg-nemepoints-col">@item.AveragePointsPerGame.ToString("N2")</td>
+                                <td class="avg-nemepoints-col">@item.AveragePointsPerGame.ToString("N2")&nbsp;@Html.NemePointsIco()</td>
                                 <td class="overall-win-col">
                                     @item.OverallWinPercentage %
                                 </td>
@@ -112,19 +110,19 @@
                                     <a href="@Url.Action(MVC.Player.Details(item.PlayerId, null))" title="View Player details">
                                         <span class="achievements">
                                             <span class="achievement bronze" data-toggle="popover" data-placement="top"
-                                                    data-content="Bronze Achievements">
+                                                  data-content="Bronze Achievements">
                                                 <span class="circle">
                                                     <span class="content">@item.AchievementsPerLevel[AchievementLevel.Bronze]</span>
                                                 </span>
                                             </span>
                                             <span class="achievement silver" data-toggle="popover" data-placement="top"
-                                                    data-content="Silver Achievements">
+                                                  data-content="Silver Achievements">
                                                 <span class="circle">
                                                     <span class="content">@item.AchievementsPerLevel[AchievementLevel.Silver]</span>
                                                 </span>
                                             </span>
                                             <span class="achievement gold" data-toggle="popover" data-placement="top"
-                                                    data-content="Gold Achievements">
+                                                  data-content="Gold Achievements">
                                                 <span class="circle">
                                                     <span class="content">@item.AchievementsPerLevel[AchievementLevel.Gold]</span>
                                                 </span>
@@ -137,20 +135,19 @@
                                     {
                                         <span style="text-decoration: line-through">
                                             <b>
-                                                @Html.ActionLink(item.PreviousNemesisPlayerName, MVC.Player.Details(item.PreviousNemesisPlayerId.Value, null), new {title = "View Player details"})
+                                                @Html.ActionLink(item.PreviousNemesisPlayerName, MVC.Player.Details(item.PreviousNemesisPlayerId.Value, null), new { title = "View Player details" })
                                             </b>
                                         </span>
-                                        @:<br/>
+                                        @:<br />
                                     }
-
                                     @if (item.NemesisPlayerId.HasValue)
                                     {
                                         <b>
-                                            @Html.ActionLink(item.NemesisPlayerName, MVC.Player.Details(item.NemesisPlayerId.Value, null), new {title = "View Player details"})
+                                            @Html.ActionLink(item.NemesisPlayerName, MVC.Player.Details(item.NemesisPlayerId.Value, null), new { title = "View Player details" })
                                         </b>
                                     }
                                 </td>
-                                <td>
+                                <td class="registered-col">
                                     @if (userCanEdit)
                                     {
                                         @Html.DisplayFor(modelItem => item.PlayerRegistered)
@@ -182,12 +179,10 @@
         </div>
     </div>
 </div>
-
 @foreach (var item in Model)
 {
-@Html.Partial("_NemePointsBreakdown", item.NemePointsSummary, new ViewDataDictionary { { "templateid", item.PlayerId } })
+    @Html.Partial("_NemePointsBreakdown", item.NemePointsSummary, new ViewDataDictionary { { "templateid", item.PlayerId } })
 }
-
 <script type="text/javascript">
     $(document).ready(function () {
         var clickableRows = new window.Views.Shared.ClickableRows();

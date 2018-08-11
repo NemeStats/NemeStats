@@ -26,7 +26,7 @@ Views.Player.Players.prototype = {
 		            </span>\
 	            </td>\
 	            <td class=\"played-games-col\">0</td>\
-	            <td class=\"avg-nemepoints-col\">0.00</td>\
+	            <td class=\"avg-nemepoints-col\">0</td>\
 	            <td class=\"overall-win-col\">\
 		            0 %\
 	            </td>\

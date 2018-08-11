@@ -31,20 +31,20 @@
                         <th><span class="visible-xs-inline visible-sm-inline">Gravatar</span></th>
                     }
                     <th class="playername-head">
-                        <span class="sort" data-sort="player-name-col">Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                        <span class="sort" data-sort="player-name-col">Name&nbsp;<span class="fa fa-caret-down"></span>&nbsp;<span class="fa fa-caret-up"></span></span>
                     </th>
                     <th class="skinny-header">
-                        <span class="sort desc" data-sort="totalpoints-col">@Html.NemePointsIco() <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                        <span class="sort desc" data-sort="totalpoints-col">NemePoints&nbsp;<span class="fa fa-caret-down"></span>&nbsp;<span class="fa fa-caret-up"></span></span>
                     </th>
                     <th class="skinny-header">
-                        <span class="sort" data-sort="plays-col">Total Games <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                        <span class="sort" data-sort="plays-col">Total Games&nbsp;<span class="fa fa-caret-down"></span>&nbsp;<span class="fa fa-caret-up"></span></span>
                     </th>
                     <th class="skinny-header">
-                        <span class="sort" data-sort="avgpoints-col">Avg. @Html.NemePointsIco(tooltip: "NemePoints") Per Game <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                        <span class="sort" data-sort="avgpoints-col">Avg. NemePoints&nbsp;<span class="fa fa-caret-down"></span>&nbsp;<span class="fa fa-caret-up"></span></span>
                     </th>
                     <th>Wins / Losses</th>
                     <th class="skinny-header">
-                        <span class="sort" data-sort="percentage-won">% Won <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                        <span class="sort" data-sort="percentage-won">% Won&nbsp;<span class="fa fa-caret-down"></span>&nbsp;<span class="fa fa-caret-up"></span></span>
                     </th>
                 </tr>
                 </thead>
@@ -76,11 +76,11 @@
                         </td>
                         <td class="totalpoints-col" data-nemepoints="@playerSummary.NemePointsSummary.TotalNemePoints">
                             <span data-toggle="popover" data-html="true" data-templateselector="#@playerSummary.PlayerId" data-title="NemePoints breakdown">
-                                @playerSummary.NemePointsSummary.TotalNemePoints
+                                @playerSummary.NemePointsSummary.TotalNemePoints&nbsp;@Html.NemePointsIco()
                             </span>
                         </td>
                         <td class="plays-col">@playerSummary.TotalGamesPlayed</td>
-                        <td class="avgpoints-col">@playerSummary.AveragePointsPerGame.ToString("N2")</td>
+                        <td class="avgpoints-col">@playerSummary.AveragePointsPerGame.ToString("N2")&nbsp;@Html.NemePointsIco()</td>
                         <td class="percentage-won" data-winpercentage="@playerSummary.WinPercentage">
                             <div class="progress" data-container="body" data-toggle="popover" data-placement="top"
                                  data-content="@playerSummary.GamesWon games won - @playerSummary.GamesLost games lost">

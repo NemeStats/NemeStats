@@ -15,7 +15,7 @@ namespace UI.Models.Players
         public int LostPercentage => 100 - WinPercentage;
         public int TotalGamesPlayed { get; set; }
         public NemePointsSummaryViewModel NemePointsSummary { get; set; }
-        public float AveragePointsPerGame { get; set; }
+        public int AveragePointsPerGame { get; set; }
         public string RegisteredUserEmailAddress { get; set; }
     }
 }

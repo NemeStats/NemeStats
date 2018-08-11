@@ -161,46 +161,43 @@
             height: 100px;
             padding-top: 20px; } }
       .home-container .home-banner .cta-wrapper .panel {
-        margin: 40px auto 0px;
+        margin: 20px auto 0px;
         text-align: left; }
         @media (max-width: 767px) {
           .home-container .home-banner .cta-wrapper .panel {
             max-width: 288px; } }
-        @media (min-width: 768px) {
-          .home-container .home-banner .cta-wrapper .panel {
-            max-width: 372px; } }
-        .home-container .home-banner .cta-wrapper .panel \ .current-player-stats .panel {
+        .home-container .home-banner .cta-wrapper .panel .current-player-stats .panel {
           margin-top: 10px; }
-        .home-container .home-banner .cta-wrapper .panel \ .current-player-stats .panel-heading {
+        .home-container .home-banner .cta-wrapper .panel .current-player-stats .panel-heading {
           font-size: 14px; }
-        .home-container .home-banner .cta-wrapper .panel \ .current-player-stats .btn-action {
+        .home-container .home-banner .cta-wrapper .panel .current-player-stats .btn-action {
           width: 100%;
           font-size: 22px; }
-          @media (max-width: 991px) {
-            .home-container .home-banner .cta-wrapper .panel \ .current-player-stats .btn-action {
+          @media (max-width: 767px) {
+            .home-container .home-banner .cta-wrapper .panel .current-player-stats .btn-action {
               font-size: 16px; } }
-        .home-container .home-banner .cta-wrapper .panel \ .current-player-stats .last-game-played {
+        .home-container .home-banner .cta-wrapper .panel .current-player-stats .last-game-played {
           text-align: left;
           padding: 15px 0; }
-          @media (max-width: 991px) {
-            .home-container .home-banner .cta-wrapper .panel \ .current-player-stats .last-game-played {
+          @media (max-width: 767px) {
+            .home-container .home-banner .cta-wrapper .panel .current-player-stats .last-game-played {
               text-align: center; } }
-          .home-container .home-banner .cta-wrapper .panel \ .current-player-stats .last-game-played .image-col {
+          .home-container .home-banner .cta-wrapper .panel .current-player-stats .last-game-played .image-col {
             text-align: center; }
-            .home-container .home-banner .cta-wrapper .panel \ .current-player-stats .last-game-played .image-col .bgg-thumbnail {
+            .home-container .home-banner .cta-wrapper .panel .current-player-stats .last-game-played .image-col .bgg-thumbnail {
               width: auto;
               max-height: 100px;
-              max-width: 130px; }
-              @media (max-width: 1200px) {
-                .home-container .home-banner .cta-wrapper .panel \ .current-player-stats .last-game-played .image-col .bgg-thumbnail {
-                  max-width: 100px; } }
-              @media (max-width: 991px) {
-                .home-container .home-banner .cta-wrapper .panel \ .current-player-stats .last-game-played .image-col .bgg-thumbnail {
-                  text-align: center;
+              max-width: 120px; }
+              @media (max-width: 767px) {
+                .home-container .home-banner .cta-wrapper .panel .current-player-stats .last-game-played .image-col .bgg-thumbnail {
                   min-height: 100px;
-                  max-width: 175px; } }
-        .home-container .home-banner .cta-wrapper .panel \ .current-player-stats .stat-value {
-          font-size: 28px; }
+                  max-width: 200px; } }
+        .home-container .home-banner .cta-wrapper .panel .current-player-stats .stats-boxes .panel-default {
+          text-align: center; }
+        .home-container .home-banner .cta-wrapper .panel .current-player-stats .stat-value {
+          font-size: 24px;
+          padding-left: 5px;
+          padding-right: 5px; }
         .home-container .home-banner .cta-wrapper .panel .social-login {
           padding: 25px 20px; }
           @media (min-width: 992px) {
@@ -697,6 +694,8 @@ button > i.fa {
   .flip-scroll .wonpercentage-head {
     height: 73px;
     padding-top: 40px; }
+  .flip-scroll .registered-head {
+    height: 38px; }
   .flip-scroll .badges-col {
     height: 37px;
     text-align: center; }
@@ -712,6 +711,8 @@ button > i.fa {
   .flip-scroll .edit-col {
     height: 52px;
     text-align: center; }
+  .flip-scroll .registered-col {
+    height: 38px; }
   .flip-scroll .nemesis-col {
     height: 70px; }
   .flip-scroll .champion-col {

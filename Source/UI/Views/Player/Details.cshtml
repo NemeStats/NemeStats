@@ -115,11 +115,11 @@
                         <td>@Model.WinPercentage %</td>
                     </tr>
                     <tr>
-                        <th><strong>Total Points:</strong></th>
+                        <th><strong>Total NemePoints:</strong></th>
                         @Html.Partial("_NemePointsBreakdown", Model.NemePointsSummary, new ViewDataDictionary {{"templateid", Model.PlayerId}})
                         <td>
                             <span data-toggle="popover" data-html="true" data-templateselector="#@Model.PlayerId" data-title="NemePoints breakdown">
-                                @Model.NemePointsSummary.TotalNemePoints @Html.NemePointsIco()
+                                @Model.NemePointsSummary.TotalNemePoints&nbsp;@Html.NemePointsIco()
                             </span>
                         </td>
                     </tr>
