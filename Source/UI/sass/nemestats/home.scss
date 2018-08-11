@@ -53,16 +53,12 @@
             }
 
             .panel {
+                margin: 20px auto 0px;
+                text-align: left;
+
                 @media (max-width: $screen-xs-max) {
                     max-width: 288px;
                 }
-
-                @media (min-width: $screen-sm-min) {
-                    max-width: 372px;
-                }
-
-                margin: 40px auto 0px;
-                text-align: left;
 
                 .current-player-stats {
 
@@ -78,18 +74,18 @@
                         width: 100%;
                         font-size: 22px;
 
-                        @media (max-width: $screen-sm-max) {
+                        @media (max-width: $screen-xs-max) {
                             font-size: 16px;
                         }
                     }
 
                     .last-game-played {
                         text-align: left;
-                        padding: 15px 0;
 
-                        @media (max-width: $screen-sm-max) {
+                        @media (max-width: $screen-xs-max) {
                             text-align: center;
                         }
+                        padding: 15px 0;
 
                         .image-col {
                             text-align: center;
@@ -97,37 +93,22 @@
                             .bgg-thumbnail {
                                 width: auto;
                                 max-height: 100px;
-                                max-width: 130px;
+                                max-width: 95px;
 
-                                @media (max-width: $screen-lg-min) {
-                                    max-width: 100px;
-                                }
-
-                                @media (max-width: $screen-sm-max) {
-                                    text-align: center;
+                                @media (max-width: $screen-xs-max) {
                                     min-height: 100px;
-                                    max-width: 175px;
+                                    max-width: 200px;
                                 }
                             }
                         }
                     }
 
-
-                    .left-stat-box {
-                        padding-right: 5px;
-                    }
-
-                    .middle-stat-box {
-                        padding-right: 5px;
-                        padding-left: 5px;
-                    }
-
-                    .right-stat-box {
-                        padding-left: 5px;
+                    .stats-boxes .panel-default {
+                        text-align: center;
                     }
 
                     .stat-value {
-                        font-size: 28px;
+                        font-size: 24px;
                         padding-left: 5px;
                         padding-right: 5px;
                     }
