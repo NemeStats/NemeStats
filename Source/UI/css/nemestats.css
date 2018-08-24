@@ -274,6 +274,9 @@
   padding-top: 20px;
   text-align: center; }
 
+.navbar-fixed-top .nemestats-navbar {
+  max-height: 360px; }
+
 /*$header-background-color: #2C3E50;*/
 body {
   padding-top: 50px;
