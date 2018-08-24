@@ -132,6 +132,11 @@ namespace UI.Controllers
             return View();
         }
 
+        public virtual ActionResult NemeStatsAndroidApp()
+        {
+            return View();
+        }
+
         public virtual ActionResult AboutNemePoints()
         {
             return View();

@@ -162,7 +162,8 @@
             padding-top: 20px; } }
       .home-container .home-banner .cta-wrapper .panel {
         margin: 20px auto 0px;
-        text-align: left; }
+        text-align: left;
+        max-width: 325px; }
         @media (max-width: 767px) {
           .home-container .home-banner .cta-wrapper .panel {
             max-width: 288px; } }
@@ -200,14 +201,6 @@
           padding-right: 5px; }
         .home-container .home-banner .cta-wrapper .panel .social-login {
           padding: 25px 20px; }
-          @media (min-width: 992px) {
-            .home-container .home-banner .cta-wrapper .panel .social-login {
-              padding-right: 45px;
-              padding-left: 45px; } }
-          @media (max-width: 480px) {
-            .home-container .home-banner .cta-wrapper .panel .social-login {
-              padding-right: 20px;
-              padding-left: 20px; } }
           .home-container .home-banner .cta-wrapper .panel .social-login button {
             width: 100%;
             font-size: 22px; }
@@ -280,6 +273,9 @@
 .forgot-password {
   padding-top: 20px;
   text-align: center; }
+
+.navbar-fixed-top .nemestats-navbar {
+  max-height: 360px; }
 
 /*$header-background-color: #2C3E50;*/
 body {
