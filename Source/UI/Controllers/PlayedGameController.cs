@@ -195,6 +195,22 @@ namespace UI.Controllers
             if (ModelState.IsValid)
             {
                 int? resultId;
+
+                if (request.GameDefinitionId == null)
+                {
+                    if (string.IsNullOrEmpty(request.GameDefinitionName))
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+
+                    request.GameDefinitionId = _createGameDefinitionComponent.Execute(new CreateGameDefinitionRequest
+                    {
+                        Name = request.GameDefinitionName,
+                        GamingGroupId = request.GameDefinitionId ?? currentUser.CurrentGamingGroupId,
+                        BoardGameGeekGameDefinitionId = request.BoardGameGeekGameDefinitionId
+                    }, currentUser).Id;
+                }
+
                 if (request.EditMode && request.PlayedGameId.HasValue)
                 {
                     _playedGameSaver.UpdatePlayedGame(
@@ -205,21 +221,6 @@ namespace UI.Controllers
                 }
                 else
                 {
-                    if (request.GameDefinitionId == null)
-                    {
-                        if (string.IsNullOrEmpty(request.GameDefinitionName))
-                        {
-                            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                        }
-
-                        request.GameDefinitionId = _createGameDefinitionComponent.Execute(new CreateGameDefinitionRequest
-                        {
-                            Name = request.GameDefinitionName,
-                            GamingGroupId = request.GameDefinitionId ?? currentUser.CurrentGamingGroupId,
-                            BoardGameGeekGameDefinitionId = request.BoardGameGeekGameDefinitionId
-                        }, currentUser).Id;
-                    }
-
                     var newlyCompletedGame = _mapperFactory.GetMapper<SavePlayedGameRequest, NewlyCompletedGame>().Map(request);
                     newlyCompletedGame.TransactionSource = TransactionSource.WebApplication;
                     resultId =
