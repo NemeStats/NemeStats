@@ -289,7 +289,8 @@ namespace UI.Controllers
             {
                 NumberOfGamesToRetrieve = NUMBER_OF_RECENT_GAMES_TO_DISPLAY,
                 //--only include games that are tomorrow or in the past to avoid issues with the Thai Buddhist calendar
-                MaxDate = DateTime.UtcNow.Date.AddDays(1)
+                MaxDate = DateTime.UtcNow.Date.AddDays(1),
+                MinDate = DateTime.UtcNow.Date.AddDays(-7)
             };
             var recentlyPlayedGames = _playedGameRetriever.GetRecentPublicGames(recentlyPlayedGamesFilter);
 

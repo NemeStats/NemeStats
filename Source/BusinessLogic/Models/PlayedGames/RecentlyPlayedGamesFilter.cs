@@ -13,6 +13,7 @@ namespace BusinessLogic.Models.PlayedGames
         public int NumberOfGamesToRetrieve { get; set; }
         public int? BoardGameGeekGameDefinitionId { get; set; }
         public DateTime MaxDate { get; set; } = DateTime.MaxValue;
+        public DateTime? MinDate { get; set; }
 
         protected bool Equals(RecentlyPlayedGamesFilter other)
         {

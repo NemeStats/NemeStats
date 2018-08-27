@@ -62,7 +62,18 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		    var firstCall = args.AssertFirstCallIsType<RecentlyPlayedGamesFilter>();
 		    firstCall.MaxDate.ShouldBe(DateTime.UtcNow.Date.AddDays(1));
             firstCall.NumberOfGamesToRetrieve.ShouldBe(PlayedGameController.NUMBER_OF_RECENT_GAMES_TO_DISPLAY);
-
 		}
-	}
+
+	    [Test]
+	    public void It_Returns_Recently_Played_Games_No_More_Than_7_Days_Old()
+	    {
+	        AutoMocker.ClassUnderTest.ShowRecentlyPlayedGames();
+
+	        var args =
+	            AutoMocker.Get<IPlayedGameRetriever>()
+	                .GetArgumentsForCallsMadeOn(mock => mock.GetRecentPublicGames(Arg<RecentlyPlayedGamesFilter>.Is.Anything));
+	        var firstCall = args.AssertFirstCallIsType<RecentlyPlayedGamesFilter>();
+	        firstCall.MinDate.ShouldBe(DateTime.UtcNow.Date.AddDays(-7));
+	    }
+    }
 }

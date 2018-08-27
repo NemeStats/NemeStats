@@ -102,6 +102,11 @@ namespace BusinessLogic.Logic.PlayedGames
             var query = _dataContext.GetQueryable<PlayedGame>()
                 .Where(x => x.DatePlayed <= filter.MaxDate);
 
+            if (filter.MinDate.HasValue)
+            {
+                query = query.Where(x => x.DatePlayed >= filter.MinDate);
+            }
+
             if (filter.BoardGameGeekGameDefinitionId.HasValue)
             {
                 query = query.Where(x => x.GameDefinition.BoardGameGeekGameDefinitionId == filter.BoardGameGeekGameDefinitionId);
