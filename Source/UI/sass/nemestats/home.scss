@@ -29,7 +29,7 @@
                     font-family: "Audiowide";
                     font-size: 60px;
                     color: $subtitle-color;
-                    margin-top: 40px;
+                    margin-top: 10px;
                     text-shadow: 0 1px 2px #111111;
 
                     @media (max-width: $screen-sm-max) {
@@ -55,7 +55,7 @@
             .panel {
                 margin: 20px auto 0px;
                 text-align: left;
-                max-width: 325px;
+                max-width: 425px;
 
                 @media (max-width: $screen-xs-max) {
                     max-width: 288px;
