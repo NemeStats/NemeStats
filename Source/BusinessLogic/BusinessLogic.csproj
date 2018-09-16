@@ -221,6 +221,7 @@
     <Compile Include="Exceptions\ApiFriendlyException.cs" />
     <Compile Include="Exceptions\InvalidDateFormatException.cs" />
     <Compile Include="Exceptions\InvalidSourceException.cs" />
+    <Compile Include="Exceptions\NoValidGamingGroupException.cs" />
     <Compile Include="Exceptions\PlayerAlreadyExistsException.cs" />
     <Compile Include="Exceptions\PlayerNotInGamingGroupException.cs" />
     <Compile Include="Exceptions\PlayerWithThisEmailAlreadyExistsException.cs" />

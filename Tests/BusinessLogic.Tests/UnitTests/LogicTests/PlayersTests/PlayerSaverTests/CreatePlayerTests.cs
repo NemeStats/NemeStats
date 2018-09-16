@@ -60,12 +60,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
         }
 
         [Test]
-        public void ItThrowsAUserHasNoGamingGroupExceptionIfTheUserHasNoGamingGroup()
+        public void ItThrowsANoValidGamingGroupExceptionIfTheUserHasNoGamingGroupAndNoneWasSpecified()
         {
             _currentUser.CurrentGamingGroupId = null;
-            var expectedException = new UserHasNoGamingGroupException(_currentUser.Id);
+            _createPlayerRequest.GamingGroupId = null;
+            var expectedException = new NoValidGamingGroupException(_currentUser.Id);
 
-            var actualException = Assert.Throws<UserHasNoGamingGroupException>(() => _autoMocker.ClassUnderTest.CreatePlayer(_createPlayerRequest, _currentUser));
+            var actualException = Assert.Throws<NoValidGamingGroupException>(() => _autoMocker.ClassUnderTest.CreatePlayer(_createPlayerRequest, _currentUser));
 
             Assert.AreEqual(expectedException.Message, actualException.Message);
         }

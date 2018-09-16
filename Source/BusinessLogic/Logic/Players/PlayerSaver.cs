@@ -51,11 +51,9 @@ namespace BusinessLogic.Logic.Players
         {
             ValidateRequestIsNotNull(createPlayerRequest);
             ValidatePlayerNameIsNotNullOrWhiteSpace(createPlayerRequest.Name);
-            ValidateCurrentUserHasACurrentGamingGroup(applicationUser);
             ValidateRequestedEmailIsntSetAtTheSameTimeAsAttemptingToLinktoCurrentPlayer(createPlayerRequest,
                 linkCurrentUserToThisPlayer);
-
-            int gamingGroupId = createPlayerRequest.GamingGroupId ?? applicationUser.CurrentGamingGroupId.Value;
+            var gamingGroupId = ValidateAndGetGamingGroupId(createPlayerRequest, applicationUser);
             ValidatePlayerDoesntExistWithThisName(createPlayerRequest.Name, gamingGroupId);
 
             ValidateUserNotAlreadyRegisteredWithThisEmail(
@@ -89,19 +87,26 @@ namespace BusinessLogic.Logic.Players
             return newPlayer;
         }
 
+        private int ValidateAndGetGamingGroupId(CreatePlayerRequest createPlayerRequest, ApplicationUser applicationUser)
+        {
+            if (createPlayerRequest.GamingGroupId.HasValue)
+            {
+                return createPlayerRequest.GamingGroupId.Value;
+            }
+
+            if (applicationUser.CurrentGamingGroupId.HasValue)
+            {
+                return applicationUser.CurrentGamingGroupId.Value;
+            }
+
+            throw new NoValidGamingGroupException(applicationUser.Id);
+        }
+
         private void ValidateRequestIsNotNull(CreatePlayerRequest createPlayerRequest)
         {
             if (createPlayerRequest == null)
             {
                 throw new ArgumentNullException(nameof(createPlayerRequest));
-            }
-        }
-
-        private void ValidateCurrentUserHasACurrentGamingGroup(ApplicationUser applicationUser)
-        {
-            if (!applicationUser.CurrentGamingGroupId.HasValue)
-            {
-                throw new UserHasNoGamingGroupException(applicationUser.Id);
             }
         }
 
