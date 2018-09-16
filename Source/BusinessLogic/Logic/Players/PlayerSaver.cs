@@ -179,8 +179,7 @@ namespace BusinessLogic.Logic.Players
         {
             ValidatePlayerIsNotNull(player);
             ValidatePlayerNameIsNotNullOrWhiteSpace(player.Name);
-            ValidateUserHasGamingGroup(applicationUser);
-            ValidatePlayerWithThisNameDoesntAlreadyExist(player, applicationUser.CurrentGamingGroupId.Value);
+            ValidatePlayerWithThisNameDoesntAlreadyExist(player);
             var alreadyInDatabase = player.AlreadyInDatabase();
 
             var newPlayer = _dataContext.Save(player, applicationUser);
@@ -203,6 +202,8 @@ namespace BusinessLogic.Logic.Players
             return newPlayer;
         }
 
+
+
         private static void ValidatePlayerIsNotNull(Player player)
         {
             if (player == null)
@@ -219,19 +220,11 @@ namespace BusinessLogic.Logic.Players
             }
         }
 
-        private static void ValidateUserHasGamingGroup(ApplicationUser applicationUser)
-        {
-            if (!applicationUser.CurrentGamingGroupId.HasValue)
-            {
-                throw new UserHasNoGamingGroupException(applicationUser.Id);
-            }
-        }
-
-        private void ValidatePlayerWithThisNameDoesntAlreadyExist(Player player, int gamingGroupId)
+        private void ValidatePlayerWithThisNameDoesntAlreadyExist(Player player)
         {
             var playerWithNameAlreadyExists = _dataContext.GetQueryable<Player>()
                 .FirstOrDefault(x => x.Name == player.Name 
-                          && x.GamingGroupId == gamingGroupId 
+                          && x.GamingGroupId == player.GamingGroupId
                           && x.Id != player.Id);
 
             if (playerWithNameAlreadyExists != null)
