@@ -53,7 +53,7 @@ namespace BusinessLogic.Logic.Players
             ValidatePlayerNameIsNotNullOrWhiteSpace(createPlayerRequest.Name);
             ValidateRequestedEmailIsntSetAtTheSameTimeAsAttemptingToLinktoCurrentPlayer(createPlayerRequest,
                 linkCurrentUserToThisPlayer);
-            var gamingGroupId = ValidateAndGetGamingGroupId(createPlayerRequest, applicationUser);
+            var gamingGroupId = ValidateAndGetGamingGroupId(createPlayerRequest.GamingGroupId, applicationUser);
             ValidatePlayerDoesntExistWithThisName(createPlayerRequest.Name, gamingGroupId);
 
             ValidateUserNotAlreadyRegisteredWithThisEmail(
@@ -87,11 +87,11 @@ namespace BusinessLogic.Logic.Players
             return newPlayer;
         }
 
-        private int ValidateAndGetGamingGroupId(CreatePlayerRequest createPlayerRequest, ApplicationUser applicationUser)
+        private int ValidateAndGetGamingGroupId(int? requestedGamingGroupId, ApplicationUser applicationUser)
         {
-            if (createPlayerRequest.GamingGroupId.HasValue)
+            if (requestedGamingGroupId.HasValue)
             {
-                return createPlayerRequest.GamingGroupId.Value;
+                return requestedGamingGroupId.Value;
             }
 
             if (applicationUser.CurrentGamingGroupId.HasValue)

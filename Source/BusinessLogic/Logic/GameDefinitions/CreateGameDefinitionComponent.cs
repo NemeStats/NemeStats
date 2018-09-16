@@ -28,7 +28,7 @@ namespace BusinessLogic.Logic.GameDefinitions
             ValidateNotNull(createGameDefinitionRequest);
             ValidateGameDefinitionNameIsNotNullOrWhitespace(createGameDefinitionRequest.Name);
 
-            var gamingGroupId = ValidateAndGetGamingGroupId(createGameDefinitionRequest, currentUser);
+            var gamingGroupId = ValidateAndGetGamingGroupId(createGameDefinitionRequest.GamingGroupId, currentUser);
 
             BoardGameGeekGameDefinition boardGameGeekGameDefinition = null;
             if (createGameDefinitionRequest.BoardGameGeekGameDefinitionId.HasValue)
@@ -92,11 +92,11 @@ namespace BusinessLogic.Logic.GameDefinitions
             }
         }
 
-        private int ValidateAndGetGamingGroupId(CreateGameDefinitionRequest createGameDefinitionRequest, ApplicationUser applicationUser)
+        private int ValidateAndGetGamingGroupId(int? requestedGamingGroupId, ApplicationUser applicationUser)
         {
-            if (createGameDefinitionRequest.GamingGroupId.HasValue)
+            if (requestedGamingGroupId.HasValue)
             {
-                return createGameDefinitionRequest.GamingGroupId.Value;
+                return requestedGamingGroupId.Value;
             }
 
             if (applicationUser.CurrentGamingGroupId.HasValue)
