@@ -86,62 +86,21 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
         }
 
         [Test]
-        public void It_Throws_A_UserHasNoGamingGroupException_If_The_Current_User_Doesnt_Have_An_Active_Gaming_Group()
+        public void It_Throws_A_NoValidGamingGroupException_If_The_User_Has_No_Gaming_Group_And_There_Is_None_Specified_On_The_Request()
         {
             //--arrange
-            var expectedException = new UserHasNoGamingGroupException(_currentUser.Id);
+            var expectedException = new NoValidGamingGroupException(_currentUser.Id);
             _currentUser.CurrentGamingGroupId = null;
+            var request = CreateValidNewlyCompletedGame();
+            request.GamingGroupId = null;
 
             //--act
             var actualException =
-                Assert.Throws<UserHasNoGamingGroupException>(
-                    () => _autoMocker.ClassUnderTest.Execute(CreateValidNewlyCompletedGame(), _currentUser, _dataContext));
+                Assert.Throws<NoValidGamingGroupException>(
+                    () => _autoMocker.ClassUnderTest.Execute(request, _currentUser, _dataContext));
 
             //--assert
             actualException.Message.ShouldBe(expectedException.Message);
-        }
-
-
-        [Test]
-        public void It_Validates_The_User_Has_Access_To_The_Specified_Gaming_Group_Id()
-        {
-            //--arrange
-            var newlyCompletedPlayedGame = CreateValidNewlyCompletedGame();
-            newlyCompletedPlayedGame.GamingGroupId = GAMING_GROUP_ID;
-            _currentUser.CurrentGamingGroupId = 42;
-
-            //--act
-            _autoMocker.ClassUnderTest.Execute(newlyCompletedPlayedGame, _currentUser, _dataContext);
-
-            //--assert
-            _autoMocker.Get<ISecuredEntityValidator>().AssertWasCalled(mock => mock.RetrieveAndValidateAccess<GamingGroup>(newlyCompletedPlayedGame.GamingGroupId.Value, _currentUser));
-        }
-
-        [Test]
-        public void It_Doesnt_Bother_Validating_The_Gaming_Group_If_It_Wasnt_Explicitly_Set()
-        {
-            //--arrange
-            var newlyCompletedPlayedGame = CreateValidNewlyCompletedGame();
-
-            //--act
-            _autoMocker.ClassUnderTest.Execute(newlyCompletedPlayedGame, _currentUser, _dataContext);
-
-            //--assert
-            _autoMocker.Get<ISecuredEntityValidator>().AssertWasNotCalled(mock => mock.RetrieveAndValidateAccess<GamingGroup>(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
-        }
-
-        [Test]
-        public void It_Doesnt_Bother_Validating_The_Gaming_Group_If_It_Matches_The_Current_Users()
-        {
-            //--arrange
-            var newlyCompletedPlayedGame = CreateValidNewlyCompletedGame();
-            newlyCompletedPlayedGame.GamingGroupId = _currentUser.CurrentGamingGroupId;
-
-            //--act
-            _autoMocker.ClassUnderTest.Execute(newlyCompletedPlayedGame, _currentUser, _dataContext);
-
-            //--assert
-            _autoMocker.Get<ISecuredEntityValidator>().AssertWasNotCalled(mock => mock.RetrieveAndValidateAccess<GamingGroup>(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
         }
 
         [Test]

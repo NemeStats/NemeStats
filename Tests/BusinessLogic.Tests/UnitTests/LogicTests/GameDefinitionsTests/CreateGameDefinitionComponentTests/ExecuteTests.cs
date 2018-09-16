@@ -38,7 +38,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.CreateGa
         }
 
         [Test]
-        public void It_Throws_A_UserHasNoGamingGroupException_If_The_User_Has_No_Gaming_Group()
+        public void It_Throws_A_NoValidGamingGroupException_If_The_User_Has_No_Gaming_Group_And_There_Is_None_Specified_On_The_Request()
         {
             //--arrange
             _currentUser.CurrentGamingGroupId = null;
