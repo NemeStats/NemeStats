@@ -42,11 +42,16 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.CreateGa
         {
             //--arrange
             _currentUser.CurrentGamingGroupId = null;
-            var expectedException = new UserHasNoGamingGroupException(_currentUser.Id);
+            var createGameDefinitionRequest = new CreateGameDefinitionRequest
+            {
+                Name = "some name",
+                GamingGroupId = null
+            };
+            var expectedException = new NoValidGamingGroupException(_currentUser.Id);
 
             //--act
-            var actualException = Assert.Throws<UserHasNoGamingGroupException>(
-                () => _autoMocker.ClassUnderTest.Execute((CreateGameDefinitionRequest)null, _currentUser, _dataContextMock));
+            var actualException = Assert.Throws<NoValidGamingGroupException>(
+                () => _autoMocker.ClassUnderTest.Execute(createGameDefinitionRequest, _currentUser, _dataContextMock));
 
             //--assert
             actualException.Message.ShouldBe(expectedException.Message);
