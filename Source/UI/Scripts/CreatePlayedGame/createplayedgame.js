@@ -34,6 +34,8 @@ Views.PlayedGame.CreatePlayedGame = function () {
 
     this.component = null;
     this.gaObject = null;
+
+    this.previousUserRankingsAndScores = null;
 };
 
 //Implementation
@@ -233,6 +235,8 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         RankScored: playerRank.GameRank
                     });
                 });
+                parent.previousUserRankingsAndScores = model.PlayerRanks;// We back up our existing rankings and scores so we can merge with new players later.
+
                 this._viewModel.GameNotes = model.Notes;
                 this._viewModel.WinnerType = model.WinnerType;
                 this._viewModel.PlayedGameId = model.PlayedGameId;
@@ -267,14 +271,22 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         return this.viewModel.Players.length + " players";
                     },
                     orderedPlayers: function () {
-                        return this.viewModel.Players.sort(function (player1, player2) {
-                            if (player1.Rank < player2.Rank) return -1;
-                            if (player1.Rank > player2.Rank) return 1;
-                            return 0;
-                        });
+                        if (editMode) {
+                            return this.viewModel.Players.sort(function (player1, player2) {
+                                if (player1.RankScored < player2.RankScored) return -1;
+                                if (player1.RankScored > player2.RankScored) return 1;
+                                return 0;
+                            });
+                        } else {
+                            return this.viewModel.Players.sort(function (player1, player2) {
+                                if (player1.Rank < player2.Rank) return -1;
+                                if (player1.Rank > player2.Rank) return 1;
+                                return 0;
+                            });
+                        }
                     }
                 },
-                methods: {
+                methods: {                    
                     stepAlreadyCompleted: function(step) {
                         return this.viewModel.CompletedSteps[step];
                     },
@@ -405,6 +417,20 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                             }
                         });
 
+                        // Merge existing scores back in if edit mode.
+                        if (editMode) {
+                            var existingScores = parent.previousUserRankingsAndScores;
+                            this.viewModel.Players.forEach(function (_player){
+                                playerName = _player.Name;
+
+                                existingScores.forEach(function (_oldPlayer) {
+                                    oldName = _oldPlayer.PlayerName
+                                    if (playerName === oldName) _player.PointsScored = _oldPlayer.PointsScored;
+                                });
+                            });
+
+                            this.recalculateRankScored();
+                        }
                         return numberOfSelectedPlayers;
                     },
                     gotoSetGameResult: function () {
