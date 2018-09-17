@@ -44,31 +44,27 @@ namespace BusinessLogic.Logic.Players
 
         public void InvitePlayer(PlayerInvitation playerInvitation, ApplicationUser currentUser)
         {
-            if (!currentUser.CurrentGamingGroupId.HasValue)
-            {
-                throw new UserHasNoGamingGroupException(currentUser.Id);
-            }
-            GamingGroup gamingGroup = _dataContext.FindById<GamingGroup>(currentUser.CurrentGamingGroupId);
+            var gamingGroup = _dataContext.FindById<GamingGroup>(playerInvitation.GamingGroupId);
 
-            string existingUserId = (from ApplicationUser user in _dataContext.GetQueryable<ApplicationUser>()
+            var existingUserId = (from ApplicationUser user in _dataContext.GetQueryable<ApplicationUser>()
                                      where user.Email == playerInvitation.InvitedPlayerEmail
                                      select user.Id).FirstOrDefault();       
             
-            GamingGroupInvitation gamingGroupInvitation = new GamingGroupInvitation
+            var gamingGroupInvitation = new GamingGroupInvitation
             {
                 DateSent = DateTime.UtcNow,
-                GamingGroupId = currentUser.CurrentGamingGroupId.Value,
+                GamingGroupId = playerInvitation.GamingGroupId,
                 InviteeEmail = playerInvitation.InvitedPlayerEmail,
                 InvitingUserId = currentUser.Id,
                 PlayerId = playerInvitation.InvitedPlayerId,
                 RegisteredUserId = existingUserId
             };
 
-            GamingGroupInvitation savedGamingGroupInvitation = _dataContext.Save(gamingGroupInvitation, currentUser);
+            var savedGamingGroupInvitation = _dataContext.Save(gamingGroupInvitation, currentUser);
             //commit so we can get the Id back
             _dataContext.CommitAllChanges();
 
-            string urlRoot = _configurationManager.AppSettings[APP_SETTING_URL_ROOT];
+            var urlRoot = _configurationManager.AppSettings[APP_SETTING_URL_ROOT];
 
             var customMessage = string.Empty;
             if (!string.IsNullOrWhiteSpace(playerInvitation.CustomEmailMessage))

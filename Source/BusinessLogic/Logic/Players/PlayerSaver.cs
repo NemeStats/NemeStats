@@ -75,7 +75,8 @@ namespace BusinessLogic.Logic.Players
                 {
                     EmailSubject = $"NemeStats Invitation from {applicationUser.UserName}",
                     InvitedPlayerEmail = createPlayerRequest.PlayerEmailAddress,
-                    InvitedPlayerId = newPlayer.Id
+                    InvitedPlayerId = newPlayer.Id,
+                    GamingGroupId = gamingGroupId
                 };
                 _playerInviter.InvitePlayer(playerInvitation, applicationUser);
             }

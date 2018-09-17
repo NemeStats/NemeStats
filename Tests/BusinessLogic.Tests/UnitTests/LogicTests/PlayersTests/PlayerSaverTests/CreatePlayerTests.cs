@@ -25,13 +25,15 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
         {
             _createPlayerRequest = new CreatePlayerRequest
             {
-                Name = "player name"
+                Name = "player name",
+                GamingGroupId = _currentUser.CurrentGamingGroupId.Value
             };
 
             _expectedSavedPlayer = new Player
             {
                 Name = _createPlayerRequest.Name,
-                Id = 89
+                Id = 89,
+                GamingGroupId = _currentUser.CurrentGamingGroupId.Value
             };
             _autoMocker.Get<IDataContext>()
                 .Expect(mock => mock.Save(Arg<Player>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
@@ -132,7 +134,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
         }
 
         [Test]
-        public void It_InvitesAnotherUserIfTheEmailAddressWasSpecified()
+        public void ItInvitesAnotherUserIfTheEmailAddressWasSpecified()
         {
             //--arrange
             _createPlayerRequest.PlayerEmailAddress = "some email";
@@ -148,6 +150,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
             actualPlayerInvitation.EmailSubject.ShouldBe("NemeStats Invitation from " + _currentUser.UserName);
             actualPlayerInvitation.InvitedPlayerEmail.ShouldBe(_createPlayerRequest.PlayerEmailAddress);
             actualPlayerInvitation.InvitedPlayerId.ShouldBe(_expectedSavedPlayer.Id);
+            actualPlayerInvitation.GamingGroupId.ShouldBe(_expectedSavedPlayer.GamingGroupId);
 
             var actualApplicationUser = args.AssertFirstCallIsType<ApplicationUser>(1);
             actualApplicationUser.ShouldBeSameAs(_currentUser);

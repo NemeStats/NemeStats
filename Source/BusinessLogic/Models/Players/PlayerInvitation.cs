@@ -16,8 +16,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using System.Linq;
-
 namespace BusinessLogic.Models.Players
 {
     public class PlayerInvitation
@@ -26,5 +24,6 @@ namespace BusinessLogic.Models.Players
         public string InvitedPlayerEmail { get; set; }
         public string EmailSubject { get; set; }
         public string CustomEmailMessage { get; set; }
+        public int GamingGroupId { get; set; }
     }
 }

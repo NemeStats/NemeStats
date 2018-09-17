@@ -60,11 +60,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerInviterTes
                 CustomEmailMessage = "custom message",
                 EmailSubject = "email subject",
                 InvitedPlayerEmail = "player email",
-                InvitedPlayerId = 1
+                InvitedPlayerId = 1,
+                GamingGroupId = _expectedGamingGroupId
             };
             _currentUser = new ApplicationUser
             {
-                CurrentGamingGroupId = _expectedGamingGroupId,
                 UserName = "Fergie Ferg"
             };
             _gamingGroup = new GamingGroup
@@ -74,10 +74,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerInviterTes
             };
             _gamingGroupInvitation = new GamingGroupInvitation
             {
-                Id = Guid.NewGuid()
+                Id = Guid.NewGuid(),
+                GamingGroupId = _expectedGamingGroupId
             };
 
-            _dataContextMock.Expect(mock => mock.FindById<GamingGroup>(_currentUser.CurrentGamingGroupId))
+            _dataContextMock.Expect(mock => mock.FindById<GamingGroup>(_gamingGroupInvitation.GamingGroupId))
                            .Return(_gamingGroup);
 
             var applicationUsers = new List<ApplicationUser>
@@ -104,32 +105,23 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerInviterTes
         }
 
         [Test]
-        public void It_Throws_A_UserHasNoGamingGroupException_If_The_Inviting_User_Has_No_Gaming_Group()
-        {
-            //--arrange
-            _currentUser.CurrentGamingGroupId = null;
-            var expectedException = new UserHasNoGamingGroupException(_currentUser.Id);
-
-            //--act
-            var actualException = Assert.Throws<UserHasNoGamingGroupException>(() => _playerInviter.InvitePlayer(_playerInvitation, _currentUser));
-
-            //--assert
-            actualException.Message.ShouldBe(expectedException.Message);
-        }
-
-
-        [Test]
         public void It_Saves_A_Gaming_Group_Invitation()
         {
             _playerInviter.InvitePlayer(_playerInvitation, _currentUser);
 
-            _dataContextMock.AssertWasCalled(mock => mock.Save<GamingGroupInvitation>(Arg<GamingGroupInvitation>.Matches(
-                invite => invite.PlayerId == _playerInvitation.InvitedPlayerId
-                && invite.DateSent.Date == DateTime.UtcNow.Date
-                && invite.GamingGroupId == _currentUser.CurrentGamingGroupId
-                && invite.InviteeEmail == _playerInvitation.InvitedPlayerEmail
-                && invite.InvitingUserId == _currentUser.Id),
-                Arg<ApplicationUser>.Is.Same(_currentUser)));
+            var args = _dataContextMock.GetArgumentsForCallsMadeOn(mock =>
+                mock.Save(Arg<GamingGroupInvitation>.Is.Anything,
+                    Arg<ApplicationUser>.Is.Anything));
+
+            var actualInvitation = args.AssertFirstCallIsType<GamingGroupInvitation>();
+            actualInvitation.PlayerId.ShouldBe(_playerInvitation.InvitedPlayerId);
+            actualInvitation.GamingGroupId.ShouldBe(_playerInvitation.GamingGroupId);
+            actualInvitation.DateSent.Date.ShouldBe(DateTime.UtcNow.Date);
+            actualInvitation.InviteeEmail.ShouldBe(_playerInvitation.InvitedPlayerEmail);
+            actualInvitation.InvitingUserId.ShouldBe(_currentUser.Id);
+
+            var actualUser = args.AssertFirstCallIsType<ApplicationUser>(1);
+            actualUser.ShouldBeSameAs(_currentUser);
         }
 
         [Test]

@@ -63,7 +63,8 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEnt
 
                 var expectedException = new UnauthorizedEntityAccessException(_currentUser.Id,
                     _securedEntity.GetType(),
-                    _securedEntityId);
+                    _securedEntityId,
+                    _securedEntity.GamingGroupId);
                 var userGamingGroupQueryable = new List<UserGamingGroup>
                 {
                     new UserGamingGroup
