@@ -66,7 +66,7 @@ namespace BusinessLogic.DataAccess.Security
 
                 if (matchingUserGamingGroup == null)
                 {
-                    throw new UnauthorizedEntityAccessException(currentUser.Id, typeof(TEntity), entity.GetIdAsObject());
+                    throw new UnauthorizedEntityAccessException(currentUser.Id, typeof(TEntity), entity.GetIdAsObject(), securedEntity.GamingGroupId);
                 }
             }
         }
