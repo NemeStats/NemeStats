@@ -190,4 +190,3 @@ UpgradeLog*.htm
 FakesAssemblies/
 
 .vs/
-/Source/UI/package-lock.json
