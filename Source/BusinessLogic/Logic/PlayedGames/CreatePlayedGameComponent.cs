@@ -33,21 +33,11 @@ namespace BusinessLogic.Logic.PlayedGames
 
         public override PlayedGame Execute(NewlyCompletedGame newlyCompletedGame, ApplicationUser currentUser, IDataContext dataContext)
         {
-            if (!currentUser.CurrentGamingGroupId.HasValue)
-            {
-                throw new UserHasNoGamingGroupException(currentUser.Id);    
-            }
-
-            if (newlyCompletedGame.GamingGroupId.HasValue && newlyCompletedGame.GamingGroupId != currentUser.CurrentGamingGroupId)
-            {
-                _securedEntityValidator.RetrieveAndValidateAccess<GamingGroup>(newlyCompletedGame.GamingGroupId.Value, currentUser);
-            }
+            var gamingGroupId = ValidateAndGetGamingGroupId(newlyCompletedGame.GamingGroupId, currentUser);
 
             var gameDefinition = _securedEntityValidator.RetrieveAndValidateAccess<GameDefinition>(newlyCompletedGame.GameDefinitionId, currentUser);
 
             _linkedPlayedGameValidator.Validate(newlyCompletedGame);
-
-            var gamingGroupId = newlyCompletedGame.GamingGroupId ?? currentUser.CurrentGamingGroupId.Value;
 
             _playedGameSaver.ValidateAccessToPlayers(newlyCompletedGame.PlayerRanks, gamingGroupId, currentUser, dataContext);
 
@@ -74,6 +64,21 @@ namespace BusinessLogic.Logic.PlayedGames
             };
 
             return playedGame;
+        }
+
+        private int ValidateAndGetGamingGroupId(int? requestedGamingGroupId, ApplicationUser applicationUser)
+        {
+            if (requestedGamingGroupId.HasValue)
+            {
+                return requestedGamingGroupId.Value;
+            }
+
+            if (applicationUser.CurrentGamingGroupId.HasValue)
+            {
+                return applicationUser.CurrentGamingGroupId.Value;
+            }
+
+            throw new NoValidGamingGroupException(applicationUser.Id);
         }
     }
 }

@@ -25,13 +25,15 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
         {
             _createPlayerRequest = new CreatePlayerRequest
             {
-                Name = "player name"
+                Name = "player name",
+                GamingGroupId = _currentUser.CurrentGamingGroupId.Value
             };
 
             _expectedSavedPlayer = new Player
             {
                 Name = _createPlayerRequest.Name,
-                Id = 89
+                Id = 89,
+                GamingGroupId = _currentUser.CurrentGamingGroupId.Value
             };
             _autoMocker.Get<IDataContext>()
                 .Expect(mock => mock.Save(Arg<Player>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
@@ -60,12 +62,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
         }
 
         [Test]
-        public void ItThrowsAUserHasNoGamingGroupExceptionIfTheUserHasNoGamingGroup()
+        public void ItThrowsANoValidGamingGroupExceptionIfTheUserHasNoGamingGroupAndNoneWasSpecified()
         {
             _currentUser.CurrentGamingGroupId = null;
-            var expectedException = new UserHasNoGamingGroupException(_currentUser.Id);
+            _createPlayerRequest.GamingGroupId = null;
+            var expectedException = new NoValidGamingGroupException(_currentUser.Id);
 
-            var actualException = Assert.Throws<UserHasNoGamingGroupException>(() => _autoMocker.ClassUnderTest.CreatePlayer(_createPlayerRequest, _currentUser));
+            var actualException = Assert.Throws<NoValidGamingGroupException>(() => _autoMocker.ClassUnderTest.CreatePlayer(_createPlayerRequest, _currentUser));
 
             Assert.AreEqual(expectedException.Message, actualException.Message);
         }
@@ -131,7 +134,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
         }
 
         [Test]
-        public void It_InvitesAnotherUserIfTheEmailAddressWasSpecified()
+        public void ItInvitesAnotherUserIfTheEmailAddressWasSpecified()
         {
             //--arrange
             _createPlayerRequest.PlayerEmailAddress = "some email";
@@ -147,6 +150,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
             actualPlayerInvitation.EmailSubject.ShouldBe("NemeStats Invitation from " + _currentUser.UserName);
             actualPlayerInvitation.InvitedPlayerEmail.ShouldBe(_createPlayerRequest.PlayerEmailAddress);
             actualPlayerInvitation.InvitedPlayerId.ShouldBe(_expectedSavedPlayer.Id);
+            actualPlayerInvitation.GamingGroupId.ShouldBe(_expectedSavedPlayer.GamingGroupId);
 
             var actualApplicationUser = args.AssertFirstCallIsType<ApplicationUser>(1);
             actualApplicationUser.ShouldBeSameAs(_currentUser);

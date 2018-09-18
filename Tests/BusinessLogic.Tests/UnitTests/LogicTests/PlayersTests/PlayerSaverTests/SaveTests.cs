@@ -59,17 +59,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
         }
 
         [Test]
-        public void ItThrowsAUserHasNoGamingGroupExceptionIfTheUserHasNoGamingGroup()
-        {
-            _currentUser.CurrentGamingGroupId = null;
-            var expectedException = new UserHasNoGamingGroupException(_currentUser.Id);
-
-            var actualException = Assert.Throws<UserHasNoGamingGroupException>(() => _autoMocker.ClassUnderTest.Save(_playerThatAlreadyExists, _currentUser));
-
-            Assert.AreEqual(expectedException.Message, actualException.Message);
-        }
-
-        [Test]
         public void ItSetsThePlayerName()
         {
             var player = new Player
@@ -279,7 +268,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
         {
             var player = new Player
             {
-                Name = _playerThatAlreadyExists.Name
+                Name = _playerThatAlreadyExists.Name,
+                GamingGroupId = _currentUser.CurrentGamingGroupId.Value
             };
             var exception = Assert.Throws<PlayerAlreadyExistsException>(
                 () => _autoMocker.ClassUnderTest.Save(player, _currentUser));

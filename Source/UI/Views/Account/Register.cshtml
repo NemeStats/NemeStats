@@ -19,6 +19,7 @@
                 {
                     @Html.AntiForgeryToken()
                     @Html.ValidationSummary()
+                    @Html.HiddenFor(m => m.GamingGroupInvitationId)
                     <div class="form-group">
                         @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
                         <div class="col-md-10">

@@ -51,11 +51,9 @@ namespace BusinessLogic.Logic.Players
         {
             ValidateRequestIsNotNull(createPlayerRequest);
             ValidatePlayerNameIsNotNullOrWhiteSpace(createPlayerRequest.Name);
-            ValidateCurrentUserHasACurrentGamingGroup(applicationUser);
             ValidateRequestedEmailIsntSetAtTheSameTimeAsAttemptingToLinktoCurrentPlayer(createPlayerRequest,
                 linkCurrentUserToThisPlayer);
-
-            int gamingGroupId = createPlayerRequest.GamingGroupId ?? applicationUser.CurrentGamingGroupId.Value;
+            var gamingGroupId = ValidateAndGetGamingGroupId(createPlayerRequest.GamingGroupId, applicationUser);
             ValidatePlayerDoesntExistWithThisName(createPlayerRequest.Name, gamingGroupId);
 
             ValidateUserNotAlreadyRegisteredWithThisEmail(
@@ -77,7 +75,8 @@ namespace BusinessLogic.Logic.Players
                 {
                     EmailSubject = $"NemeStats Invitation from {applicationUser.UserName}",
                     InvitedPlayerEmail = createPlayerRequest.PlayerEmailAddress,
-                    InvitedPlayerId = newPlayer.Id
+                    InvitedPlayerId = newPlayer.Id,
+                    GamingGroupId = gamingGroupId
                 };
                 _playerInviter.InvitePlayer(playerInvitation, applicationUser);
             }
@@ -89,19 +88,26 @@ namespace BusinessLogic.Logic.Players
             return newPlayer;
         }
 
+        private int ValidateAndGetGamingGroupId(int? requestedGamingGroupId, ApplicationUser applicationUser)
+        {
+            if (requestedGamingGroupId.HasValue)
+            {
+                return requestedGamingGroupId.Value;
+            }
+
+            if (applicationUser.CurrentGamingGroupId.HasValue)
+            {
+                return applicationUser.CurrentGamingGroupId.Value;
+            }
+
+            throw new NoValidGamingGroupException(applicationUser.Id);
+        }
+
         private void ValidateRequestIsNotNull(CreatePlayerRequest createPlayerRequest)
         {
             if (createPlayerRequest == null)
             {
                 throw new ArgumentNullException(nameof(createPlayerRequest));
-            }
-        }
-
-        private void ValidateCurrentUserHasACurrentGamingGroup(ApplicationUser applicationUser)
-        {
-            if (!applicationUser.CurrentGamingGroupId.HasValue)
-            {
-                throw new UserHasNoGamingGroupException(applicationUser.Id);
             }
         }
 
@@ -174,8 +180,7 @@ namespace BusinessLogic.Logic.Players
         {
             ValidatePlayerIsNotNull(player);
             ValidatePlayerNameIsNotNullOrWhiteSpace(player.Name);
-            ValidateUserHasGamingGroup(applicationUser);
-            ValidatePlayerWithThisNameDoesntAlreadyExist(player, applicationUser.CurrentGamingGroupId.Value);
+            ValidatePlayerWithThisNameDoesntAlreadyExist(player);
             var alreadyInDatabase = player.AlreadyInDatabase();
 
             var newPlayer = _dataContext.Save(player, applicationUser);
@@ -198,6 +203,8 @@ namespace BusinessLogic.Logic.Players
             return newPlayer;
         }
 
+
+
         private static void ValidatePlayerIsNotNull(Player player)
         {
             if (player == null)
@@ -214,19 +221,11 @@ namespace BusinessLogic.Logic.Players
             }
         }
 
-        private static void ValidateUserHasGamingGroup(ApplicationUser applicationUser)
-        {
-            if (!applicationUser.CurrentGamingGroupId.HasValue)
-            {
-                throw new UserHasNoGamingGroupException(applicationUser.Id);
-            }
-        }
-
-        private void ValidatePlayerWithThisNameDoesntAlreadyExist(Player player, int gamingGroupId)
+        private void ValidatePlayerWithThisNameDoesntAlreadyExist(Player player)
         {
             var playerWithNameAlreadyExists = _dataContext.GetQueryable<Player>()
                 .FirstOrDefault(x => x.Name == player.Name 
-                          && x.GamingGroupId == gamingGroupId 
+                          && x.GamingGroupId == player.GamingGroupId
                           && x.Id != player.Id);
 
             if (playerWithNameAlreadyExists != null)

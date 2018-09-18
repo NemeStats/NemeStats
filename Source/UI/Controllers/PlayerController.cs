@@ -184,7 +184,8 @@ namespace UI.Controllers
                 InvitedPlayerId = playerInvitationViewModel.PlayerId,
                 InvitedPlayerEmail = playerInvitationViewModel.EmailAddress.Trim(),
                 EmailSubject = playerInvitationViewModel.EmailSubject,
-                CustomEmailMessage = playerInvitationViewModel.EmailBody
+                CustomEmailMessage = playerInvitationViewModel.EmailBody,
+                GamingGroupId = currentUser.CurrentGamingGroupId.Value
             };
 
             playerInviter.InvitePlayer(playerInvitation, currentUser);

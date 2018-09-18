@@ -25,11 +25,10 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         public override GameDefinition Execute(CreateGameDefinitionRequest createGameDefinitionRequest, ApplicationUser currentUser, IDataContext dataContextWithTransaction)
         {
-            ValidateUserHasGamingGroup(currentUser);
             ValidateNotNull(createGameDefinitionRequest);
             ValidateGameDefinitionNameIsNotNullOrWhitespace(createGameDefinitionRequest.Name);
 
-            var gamingGroupId = createGameDefinitionRequest.GamingGroupId ?? currentUser.CurrentGamingGroupId.Value;
+            var gamingGroupId = ValidateAndGetGamingGroupId(createGameDefinitionRequest.GamingGroupId, currentUser);
 
             BoardGameGeekGameDefinition boardGameGeekGameDefinition = null;
             if (createGameDefinitionRequest.BoardGameGeekGameDefinitionId.HasValue)
@@ -68,14 +67,6 @@ namespace BusinessLogic.Logic.GameDefinitions
             return dataContextWithTransaction.Save(existingGameDefinition, currentUser);
         }
 
-        private static void ValidateUserHasGamingGroup(ApplicationUser currentUser)
-        {
-            if (!currentUser.CurrentGamingGroupId.HasValue)
-            {
-                throw new UserHasNoGamingGroupException(currentUser.Id);
-            }
-        }
-
         private static void ValidateNotNull(CreateGameDefinitionRequest createGameDefinitionRequest)
         {
             if (createGameDefinitionRequest == null)
@@ -99,6 +90,21 @@ namespace BusinessLogic.Logic.GameDefinitions
                 string message = $"An active Game Definition with name '{existingGameDefinition.Name}' already exists in this Gaming Group.";
                 throw new DuplicateKeyException(message);
             }
+        }
+
+        private int ValidateAndGetGamingGroupId(int? requestedGamingGroupId, ApplicationUser applicationUser)
+        {
+            if (requestedGamingGroupId.HasValue)
+            {
+                return requestedGamingGroupId.Value;
+            }
+
+            if (applicationUser.CurrentGamingGroupId.HasValue)
+            {
+                return applicationUser.CurrentGamingGroupId.Value;
+            }
+
+            throw new NoValidGamingGroupException(applicationUser.Id);
         }
     }
 }

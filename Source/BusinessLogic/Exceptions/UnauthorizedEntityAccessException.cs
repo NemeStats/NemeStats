@@ -22,10 +22,10 @@ namespace BusinessLogic.Exceptions
 {
     public class UnauthorizedEntityAccessException : ApiFriendlyException 
     {
-        internal const string EXCEPTION_MESSAGE_FORMAT = "User with Id '{0}' does not have access to entity of type '{1}' with Id '{2}";
+        internal const string EXCEPTION_MESSAGE_FORMAT = "User with Id '{0}' does not have access to entity of type '{1}' with Id '{2}' in Gaming Group '{3}'";
 
-        public UnauthorizedEntityAccessException(string userId, Type entityType, object entityId) 
-            : base(string.Format(EXCEPTION_MESSAGE_FORMAT, userId, entityType, entityId), HttpStatusCode.Unauthorized)
+        public UnauthorizedEntityAccessException(string userId, Type entityType, object entityId, int gamingGroupId) 
+            : base(string.Format(EXCEPTION_MESSAGE_FORMAT, userId, entityType, entityId, gamingGroupId), HttpStatusCode.Unauthorized)
         {
         }
     }

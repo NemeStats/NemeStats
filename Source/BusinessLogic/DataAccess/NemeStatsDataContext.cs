@@ -82,7 +82,7 @@ namespace BusinessLogic.DataAccess
             ValidateArguments(entity, currentUser);
 
             var validator = _securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>(this);
-            validator.ValidateAccess<TEntity>(entity, currentUser);
+            validator.ValidateAccess(entity, currentUser);
 
             if (!entity.AlreadyInDatabase() && typeof(TEntity) != typeof(GamingGroup))
             {
