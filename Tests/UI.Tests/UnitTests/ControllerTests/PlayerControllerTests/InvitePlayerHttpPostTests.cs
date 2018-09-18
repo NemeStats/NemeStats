@@ -22,6 +22,8 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using UI.Models.Players;
 using BusinessLogic.Logic.Players;
+using NemeStats.TestingHelpers.NemeStatsTestingExtensions;
+using Shouldly;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {
@@ -38,19 +40,22 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 EmailSubject = "email subject",
                 PlayerId = 1
             };
-            ApplicationUser applicationUser = new ApplicationUser();
 
             autoMocker.ClassUnderTest.Url.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
                 .Return("some url");
 
-            autoMocker.ClassUnderTest.InvitePlayer(playerInvitationViewModel, applicationUser);
+            autoMocker.ClassUnderTest.InvitePlayer(playerInvitationViewModel, currentUser);
 
-            autoMocker.Get<IPlayerInviter>().AssertWasCalled(mock => mock.InvitePlayer(Arg<PlayerInvitation>.Matches(
-                invite => invite.CustomEmailMessage == playerInvitationViewModel.EmailBody
-                && invite.EmailSubject == playerInvitationViewModel.EmailSubject
-                && invite.InvitedPlayerEmail == playerInvitationViewModel.EmailAddress
-                && invite.InvitedPlayerId == playerInvitationViewModel.PlayerId),
-                Arg<ApplicationUser>.Is.Same(applicationUser)));
+            var args = autoMocker.Get<IPlayerInviter>()
+                .GetArgumentsForCallsMadeOn(mock => mock.InvitePlayer(Arg<PlayerInvitation>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
+            var actualInvite = args.AssertFirstCallIsType<PlayerInvitation>();
+            actualInvite.GamingGroupId.ShouldBe(currentUser.CurrentGamingGroupId.Value);
+            actualInvite.EmailSubject.ShouldBe(playerInvitationViewModel.EmailSubject);
+            actualInvite.InvitedPlayerEmail.ShouldBe(playerInvitationViewModel.EmailAddress);
+            actualInvite.InvitedPlayerId.ShouldBe(playerInvitationViewModel.PlayerId);
+
+            var actualApplicationUser = args.AssertFirstCallIsType<ApplicationUser>(1);
+            actualApplicationUser.ShouldBeSameAs(currentUser);
         }
     }
 }
