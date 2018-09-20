@@ -261,7 +261,8 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                     newPlayerName: '',
                     serverRequestInProgress: false,
                     recentlyPlayedGameId: null,
-                    editMode: editMode
+                    editMode: editMode,
+                    gameHasBeenRecorded: false
                 },
                 computed: {
                     newPlayedGameUrl: function () {
@@ -325,25 +326,26 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         this.changeStep(parent._steps.SelectPlayers);
                     },
                     backToSelectDate: function () {
-                        if (this.viewModel.Date) {
+                        if ((!this.gameHasBeenRecorded) && this.viewModel.Date) {
                             parent.gaObject.trackGAEvent("PlayedGames", "Back", "BackToSelectDate", this.currentStep);
                             this.changeStep(parent._steps.SelectDate);
                         }
                     },
                     backToSelectGame: function () {
-                        if (this.viewModel.Game.Id) {
+                        if ((!this.gameHasBeenRecorded) && this.viewModel.Game.Id) {
                             parent.gaObject.trackGAEvent("PlayedGames", "Back", "BackToSelectGame", this.currentStep);
                             this.changeStep(parent._steps.SelectGame);
                         }
                     },
                     backToSelectPlayers: function () {
-                        if (this.viewModel.Players.length > 0 && this.viewModel.Game != null) {
+                        if ((!this.gameHasBeenRecorded) && this.viewModel.Players.length > 0 && this.viewModel.Game != null) {
                             parent.gaObject.trackGAEvent("PlayedGames", "Back", "BackToSelectPlayers", this.currentStep);
+                            parent.previousUserRankingsAndScores = this.viewModel.Players;
                             this.changeStep(parent._steps.SelectPlayers);
                         }
                     },
                     backToSetResult: function () {
-                        if (this.viewModel.Players.length > 1 && this.viewModel.Game != null) {
+                        if ((!this.gameHasBeenRecorded) && this.viewModel.Players.length > 1 && this.viewModel.Game != null) {
                             parent.gaObject.trackGAEvent("PlayedGames", "Back", "BackToSetResult", this.currentStep);
                             this.changeStep(parent._steps.SetResult);
                         }
@@ -417,21 +419,33 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                             }
                         });
 
+                        this.mergePlayerResults();
+
+                        return numberOfSelectedPlayers;
+                    },
+                    mergePlayerResults: function () {
                         // Merge existing scores back in if edit mode.
-                        if (editMode) {
-                            var existingScores = parent.previousUserRankingsAndScores;
-                            this.viewModel.Players.forEach(function (_player){
+                        
+                        var existingScores = parent.previousUserRankingsAndScores;
+                        if (existingScores !== null){
+                            this.viewModel.Players.forEach(function (_player) {
                                 playerName = _player.Name;
 
                                 existingScores.forEach(function (_oldPlayer) {
-                                    oldName = _oldPlayer.PlayerName
-                                    if (playerName === oldName) _player.PointsScored = _oldPlayer.PointsScored;
+                                    if (_oldPlayer.Name === undefined) {
+                                        oldName = _oldPlayer.PlayerName;
+                                    }
+                                    else {
+                                        oldName = _oldPlayer.Name
+                                    }                                    
+                                    if (playerName === oldName) {
+                                        _player.PointsScored = _oldPlayer.PointsScored;
+                                    }
                                 });
                             });
 
                             this.recalculateRankScored();
                         }
-                        return numberOfSelectedPlayers;
                     },
                     gotoSetGameResult: function () {
                         var numberOfSelectedPlayers = this.recalculateSelectedPlayers();
@@ -568,6 +582,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                                     component.recentlyPlayedGameId = response.playedGameId;
                                     component.currentStep = parent._steps.Summary;
                                     component.viewModel.CompletedSteps[parent._steps.SetResult] = true;
+                                    component.gameHasBeenRecorded = true;
                                 } else {
 
                                     if (response.errors) {
