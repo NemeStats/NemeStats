@@ -274,6 +274,15 @@ $color-border: #dce4ec;
                 border: solid 1px $brand-primary;
                 padding: 20px;
 
+                .btn {
+                    width: 100%;
+                    margin: 5px 0px;
+                    @media (min-width: $screen-xs-min) {
+                        width: auto;
+                        margin: 0px 5px;
+                    }
+                }
+
                 .btn-wrapper {
                     padding: 20px;
 

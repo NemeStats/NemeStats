@@ -1403,6 +1403,13 @@ table tbody tr td.edit-col {
   #record-played-game .form .content .tab-content {
     border: solid 1px #354458;
     padding: 20px; }
+    #record-played-game .form .content .tab-content .btn {
+      width: 100%;
+      margin: 5px 0px; }
+      @media (min-width: 480px) {
+        #record-played-game .form .content .tab-content .btn {
+          width: auto;
+          margin: 0px 5px; } }
     #record-played-game .form .content .tab-content .btn-wrapper {
       padding: 20px;
       text-align: center; }
