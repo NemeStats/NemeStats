@@ -189,12 +189,15 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdate
             return totalGamesUpdated;
         }
 
-        public int RefreshAllBoardGameGeekData()
+        public int RefreshAllBoardGameGeekData(int startId = 0)
         {
+            _dataContext.SetCommandTimeout(120);
             var allExistingBoardGameGeekGameDefinitions = _dataContext.GetQueryable<BoardGameGeekGameDefinition>()
                 .Include(g => g.Categories)
                 .Include(g => g.Mechanics)
+                .Where(x => x.Id > startId && !x.Thumbnail.StartsWith("https://cf.geekdo-images.com/thumb/img/"))
                 .OrderBy(x => x.Id)
+                .Take(1000)
                 .ToList();
             var totalGamesUpdated = UpdateBoardGameGeekDefinitions(allExistingBoardGameGeekGameDefinitions);
 
@@ -280,11 +283,12 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdate
                     if (totalGamesUpdated++ % 10 == 0)
                     {
                         _dataContext.CommitAllChanges();
-                        Console.WriteLine("{0} BoardGameGeekGameDefinitions updated so far...", totalGamesUpdated);
+                        Debug.WriteLine($@"Last Id Updated was '{existingBoardGameGeekGameDefinition.Id}'. {totalGamesUpdated} BoardGameGeekGameDefinitions updated so far...");
                     }
                 }
             }
             _dataContext.CommitAllChanges();
+            Debug.WriteLine($@"Done. Updated a total of {totalGamesUpdated} BoardGameGeekGameDefinitions.");
 
             return totalGamesUpdated;
         }
