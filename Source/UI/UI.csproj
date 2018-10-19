@@ -626,6 +626,7 @@
     <Content Include="sass\nemestats\buttons.scss" />
     <Content Include="sass\nemestats\achievements.scss" />
     <Content Include="sass\nemestats\gravatar.scss" />
+    <Content Include="sass\nemestats\login.scss" />
     <None Include="sass\nemestats\player.scss" />
     <Content Include="sass\nemestats\nemestats-variables.scss" />
     <Content Include="sass\nemestats\flipscroll.scss" />

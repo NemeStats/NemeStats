@@ -3884,4 +3884,45 @@ table thead tr th span.gravatar-header {
   .flip-scroll table thead tr th span.gravatar-header {
     display: inline; } }
 
+/*$header-background-color: #2C3E50;*/
+.login-box {
+  max-width: 425px; }
+  .login-box .social-login {
+    padding-top: 15px;
+    padding-bottom: 15px; }
+    .login-box .social-login button {
+      width: 100%;
+      font-size: 20px; }
+      @media (min-width: 480px) {
+        .login-box .social-login button {
+          font-size: 22px; } }
+      .login-box .social-login button i.fa {
+        margin-right: 10px; }
+  .login-box .common-login {
+    padding-right: 15px;
+    padding-left: 15px;
+    background-color: #eee; }
+
+.or {
+  position: relative;
+  left: 50%;
+  margin-left: -15px;
+  top: -15px;
+  height: 30px;
+  width: 30px;
+  text-align: center;
+  line-height: 30px;
+  color: #4e525b;
+  font-size: 14px;
+  font-weight: 700;
+  background-color: white;
+  -webkit-border-radius: 500px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 500px;
+  -moz-background-clip: padding;
+  border-radius: 500px;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  z-index: 2; }
+
 /*# sourceMappingURL=nemestats.css.map */

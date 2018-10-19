@@ -30,20 +30,9 @@
                 }
                 else if(Model.ShowLoginPartial)
                 {
-                    <div class="panel panel-default">
-                        <div class="panel-body social-login">
-                            @using (Html.BeginForm(MVC.Account.ExternalLogin()))
-                            {
-                                @Html.AntiForgeryToken()
-                                <button type="submit" class="btn btn-google btn-lg" id="gtm-google-login-button" name="provider" value="Google" title="Log in using your Google account"><i class="fa fa-google fa-lg"></i>Continue with Google</button>
-                            }
-                        </div>
-                        <div class="common-login">
-                            <div class="or">or</div>
-                            @{ Html.RenderAction(MVC.Account.LoginForm()); }
-                        </div>
+                    <div>
+                        @{ Html.RenderAction(MVC.Account.LoginForm()); }
                     </div>
-
                 }
             </div>
         </div>
