@@ -1,0 +1,52 @@
+﻿@import "nemestats-variables.scss";
+
+.login-box {
+    max-width: 425px;
+
+    .social-login {
+        padding-top: 15px;
+        padding-bottom: 15px;
+
+        button {
+            width: 100%;
+            font-size: 20px;
+
+            @media (min-width: $screen-xs-min) {
+                font-size: 22px;
+            }
+
+            i.fa {
+                margin-right: 10px;
+            }
+        }
+    }
+
+    .common-login {
+        padding-right: 15px;
+        padding-left: 15px;
+        background-color: #eee;
+    }
+}
+
+.or {
+    position: relative;
+    left: 50%;
+    margin-left: -15px;
+    top: -15px;
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    line-height: 30px;
+    color: #4e525b;
+    font-size: 14px;
+    font-weight: $font-weight-bold;
+    background-color: white;
+    -webkit-border-radius: 500px;
+    -webkit-background-clip: padding-box;
+    -moz-border-radius: 500px;
+    -moz-background-clip: padding;
+    border-radius: 500px;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    z-index: 2;
+}

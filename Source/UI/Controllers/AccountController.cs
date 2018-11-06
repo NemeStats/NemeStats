@@ -84,7 +84,7 @@ namespace UI.Controllers
         public virtual ActionResult LoginForm()
         {
             var model = new LoginViewModel();
-            return View(MVC.Account.Views.LoginForm, model);
+            return PartialView(MVC.Account.Views.LoginForm, model);
         }
 
         // GET: /Account/Login

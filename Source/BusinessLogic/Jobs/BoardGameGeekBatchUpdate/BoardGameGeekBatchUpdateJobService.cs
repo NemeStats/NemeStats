@@ -195,8 +195,9 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdate
             var allExistingBoardGameGeekGameDefinitions = _dataContext.GetQueryable<BoardGameGeekGameDefinition>()
                 .Include(g => g.Categories)
                 .Include(g => g.Mechanics)
-                .Where(x => x.Id > startId && !x.Thumbnail.StartsWith("https://cf.geekdo-images.com/thumb/img/"))
+                .Where(x => x.Id > startId)
                 .OrderBy(x => x.Id)
+                //TODO this was a hack to prevent timeouts
                 .Take(1000)
                 .ToList();
             var totalGamesUpdated = UpdateBoardGameGeekDefinitions(allExistingBoardGameGeekGameDefinitions);

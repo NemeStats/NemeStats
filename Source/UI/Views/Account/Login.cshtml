@@ -8,34 +8,25 @@
 
 <h2 class="page-header">@ViewBag.Title</h2>
 <hr/> 
-<div class="row">
-    <div class="col-md-8">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h4>Use a local account to log in.</h4>
-            </div>
-            <div class="panel-body">
-                <section>
-                    @Html.ValidationSummary(true)
-                    @{ Html.RenderAction(MVC.Account.LoginForm()); }
-                </section>
-            </div>
-        </div>
+<div class="panel panel-primary">
+    <div class="panel-heading hidden-xs">
+        <h4>Login with Google or local account</h4>
     </div>
-    <div class="col-md-4">
-        <section id="socialLoginForm">
-            <div class="sidebar-module sidebar-module-inset">
-                @Html.Partial("_ExternalLoginsListPartial", new { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
-            </div>
-        </section>
+    <div class="panel-body">
+        @Html.ValidationSummary(true)
+        @{ Html.RenderAction(MVC.Account.LoginForm()); }
     </div>
+    @*<div>
+        <p>
+            You can login with Google or login with the User Name and Password you used
+            when you created your account with NemeStats.
+        </p>
+    </div>*@
 </div>
+
 <div class="row">
     <div class="col-md-8">
         <em>@Html.ActionLink("Register", "Register", new { }, new { title = "Create a new NemeStats account" }) if you don't have a local account.</em>
-        <p>
-            @Html.ActionLink("Forget password?", "ForgotPassword", new { }, new { title = "Reset your password by entering your username" })
-        </p>
     </div>
 </div>
 
