@@ -216,7 +216,7 @@
                                     </ul>
                                 </div>
                                 <div role="tabpanel" class="tab-pane" v-bind:class="{ 'active': viewModel.GameType == 3 }" id="cooperative">
-                                    <button class="btn btn-success btn-recordgame btn-everyone-won" id="btnEveryoneWonButton" title="Give everyone a team win">
+                                    <button class="btn btn-success btn-recordgame btn-everyone-won" id="btnEveryoneWonButton" title="Give everyone a team win" v-on:click="setGameResult(2)">
                                         <i class="fa fa-smile-o"></i> Everyone Won
                                     </button>
 
