@@ -338,14 +338,14 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         }
                     },
                     backToSelectPlayers: function () {
-                        if ((!this.gameHasBeenRecorded) && this.viewModel.Players.length > 0 && this.viewModel.Game != null) {
+                        if ((!this.gameHasBeenRecorded) && this.viewModel.Players.length > 0 && this.viewModel.Game !== null) {
                             parent.gaObject.trackGAEvent("PlayedGames", "Back", "BackToSelectPlayers", this.currentStep);
                             parent.previousUserRankingsAndScores = this.viewModel.Players;
                             this.changeStep(parent._steps.SelectPlayers);
                         }
                     },
                     backToSetResult: function () {
-                        if ((!this.gameHasBeenRecorded) && this.viewModel.Players.length > 1 && this.viewModel.Game != null) {
+                        if ((!this.gameHasBeenRecorded) && this.viewModel.Players.length > 1 && this.viewModel.Game !== null) {
                             parent.gaObject.trackGAEvent("PlayedGames", "Back", "BackToSetResult", this.currentStep);
                             this.changeStep(parent._steps.SetResult);
                         }
@@ -463,7 +463,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                     setRank: function (key, rank) {
                         var owner = this;
                         this.viewModel.Players.forEach(function (player, index) {
-                            if (player.Id == key) {
+                            if (player.Id === key) {
                                 player.Rank = rank;
                                 Vue.set(owner.viewModel.Players, index, player);
                                 return;
