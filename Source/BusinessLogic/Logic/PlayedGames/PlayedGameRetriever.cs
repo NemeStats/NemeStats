@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models.User;
@@ -38,12 +39,14 @@ namespace BusinessLogic.Logic.PlayedGames
         private readonly IDataContext _dataContext;
         private readonly IPlayerRetriever _playerRetriever;
         private readonly IWinnerTypeCalculator _winnerTypeCalculator;
+        private readonly IPlayedGameRepository _playedGameRepository;
 
-        public PlayedGameRetriever(IDataContext dataContext, IPlayerRetriever playerRetriever, IWinnerTypeCalculator winnerTypeCalculator)
+        public PlayedGameRetriever(IDataContext dataContext, IPlayerRetriever playerRetriever, IWinnerTypeCalculator winnerTypeCalculator, IPlayedGameRepository playedGameRepository)
         {
             _dataContext = dataContext;
             _playerRetriever = playerRetriever;
             _winnerTypeCalculator = winnerTypeCalculator;
+            _playedGameRepository = playedGameRepository;
         }
 
         public List<PlayedGame> GetRecentGames(int numberOfGames, int gamingGroupId, IDateRangeFilter dateRangeFilter = null)
@@ -99,50 +102,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
         public List<PublicGameSummary> GetRecentPublicGames(RecentlyPlayedGamesFilter filter)
         {
-            var query = _dataContext.GetQueryable<PlayedGame>()
-                .Where(x => x.DatePlayed <= filter.MaxDate);
-
-            if (filter.MinDate.HasValue)
-            {
-                query = query.Where(x => x.DatePlayed >= filter.MinDate);
-            }
-
-            if (filter.BoardGameGeekGameDefinitionId.HasValue)
-            {
-                query = query.Where(x => x.GameDefinition.BoardGameGeekGameDefinitionId == filter.BoardGameGeekGameDefinitionId);
-            }
-
-            var publicGameSummaries = (from playedGame in query group new PublicGameSummary
-                 {
-                     PlayedGameId = playedGame.Id,
-                     GameDefinitionId = playedGame.GameDefinitionId,
-                     GameDefinitionName = playedGame.GameDefinition.Name,
-                     GamingGroupId = playedGame.GamingGroupId,
-                     GamingGroupName = playedGame.GamingGroup.Name,
-                     WinnerType = playedGame.WinnerType,
-                     WinningPlayer = playedGame.PlayerGameResults.FirstOrDefault(player => player.GameRank == 1).Player,
-                     DatePlayed = playedGame.DatePlayed,
-                     ThumbnailImageUrl = playedGame.GameDefinition.BoardGameGeekGameDefinition.Thumbnail,
-                     BoardGameGeekObjectId = playedGame.GameDefinition.BoardGameGeekGameDefinitionId
-                 } 
-                 by playedGame.GamingGroupId
-                 into gamingGroups
-                 select gamingGroups
-                    .OrderByDescending(x => x.DatePlayed)
-                    .ThenByDescending(y => y.PlayedGameId)
-                    .FirstOrDefault()
-                )
-                    .OrderByDescending(x => x.DatePlayed)
-                    .ThenByDescending(y => y.PlayedGameId)
-                    .Take(filter.NumberOfGamesToRetrieve)
-                    .ToList();
-
-            foreach (var publicGameSummary in publicGameSummaries)
-            {
-                publicGameSummary.BoardGameGeekUri =
-                    BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(publicGameSummary.BoardGameGeekObjectId);
-            }
-            return publicGameSummaries;
+            return _playedGameRepository.GetRecentPublicGames(filter);
         }
 
         public List<PlayedGameSearchResult> SearchPlayedGames(PlayedGameFilter playedGameFilter)

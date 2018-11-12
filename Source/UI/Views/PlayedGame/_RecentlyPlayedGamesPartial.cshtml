@@ -44,7 +44,7 @@
                         <td class="gameResult-teamLoss">EVERYONE LOST</td>
                         break;
                     default:
-                        <td>@Html.ActionLink(publicGame.WinningPlayer.Name, "Details", "Player", new { id = publicGame.WinningPlayer.Id }, new { title = "View Player details" })</td>
+                        <td>@Html.ActionLink(publicGame.WinningPlayerName, "Details", "Player", new { id = publicGame.WinningPlayerId }, new { title = "View Player details" })</td>
                         break;
                 }
                 <td>@Html.ActionLink(publicGame.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new { id = publicGame.PlayedGameId }, new { title = "View Played Game details" })</td>

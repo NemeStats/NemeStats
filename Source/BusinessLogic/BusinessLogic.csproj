@@ -183,6 +183,8 @@
     <Compile Include="DataAccess\Repositories\GameDefinitionRepository.cs" />
     <Compile Include="DataAccess\Repositories\IChampionRepository.cs" />
     <Compile Include="DataAccess\Repositories\IGameDefinitionRepository.cs" />
+    <Compile Include="DataAccess\Repositories\IPlayedGameRepository.cs" />
+    <Compile Include="DataAccess\Repositories\PlayedGameRepository.cs" />
     <Compile Include="DataAccess\SecuredEntityWithTechnicalKey.cs" />
     <Compile Include="DataAccess\Security\GenericSecuredEntityValidator.cs" />
     <Compile Include="DataAccess\Security\IGenericSecuredEntityValidator.cs" />
