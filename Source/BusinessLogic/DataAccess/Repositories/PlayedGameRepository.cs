@@ -58,7 +58,9 @@ namespace BusinessLogic.DataAccess.Repositories
             if (filter.BoardGameGeekGameDefinitionId.HasValue)
             {
                 boardGameGeekGameDefinitionInnerJoin =
-                    "INNER JOIN BoardGameGeekGameDefinition ON BoardGameGeekGameDefinition.Id = GameDefinition.BoardGameGeekGameDefinitionId ";
+                    @"INNER JOIN GameDefinition ON PlayedGame.GameDefinitionId = GameDefinition.Id 
+                    INNER JOIN BoardGameGeekGameDefinition ON BoardGameGeekGameDefinition.Id = GameDefinition.BoardGameGeekGameDefinitionId ";
+
                 boardGameGeekGameDefinitionIdPredicate =
                     "AND BoardGameGeekGameDefinition.Id = @BoardGameGeekGameDefinitionId ";
 
