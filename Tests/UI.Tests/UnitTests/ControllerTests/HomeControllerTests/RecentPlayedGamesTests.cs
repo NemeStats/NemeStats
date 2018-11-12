@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using BusinessLogic.Facades;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.PlayedGames;
+using NemeStats.TestingHelpers.NemeStatsTestingExtensions;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
@@ -14,7 +15,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
     public class RecentPlayedGamesTests : HomeControllerTestBase
     {
         [Test]
-        public void It_Returns_The_Last_Five_PublicGameSummaries_With_A_Max_Date_Of_Tomorrow()
+        public void It_Returns_The_Last_Five_PublicGameSummaries_With_A_Max_Date_Of_Tomorrow_And_Min_Date_Of_2_Days_Ago()
         {
             //--arrange
             var expectedResults = new List<PublicGameSummary>
@@ -30,10 +31,13 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
             var results = _autoMocker.ClassUnderTest.RecentPlayedGames();
 
             //--assert
-            _autoMocker.Get<IRecentPublicGamesRetriever>().AssertWasCalled(
-                mock => mock.GetResults(Arg<RecentlyPlayedGamesFilter>.Matches(
-                    x => x.NumberOfGamesToRetrieve == HomeController.NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW
-                    && x.MaxDate == DateTime.UtcNow.Date.AddDays(1))));
+            var args = _autoMocker.Get<IRecentPublicGamesRetriever>().GetArgumentsForCallsMadeOn(
+                mock => mock.GetResults(Arg<RecentlyPlayedGamesFilter>.Is.Anything));
+            var actualFilter = args.AssertFirstCallIsType<RecentlyPlayedGamesFilter>();
+            actualFilter.MaxDate.ShouldBe(DateTime.UtcNow.Date.AddDays(1));
+            actualFilter.MinDate.ShouldBe(DateTime.UtcNow.Date.AddDays(-2));
+            actualFilter.NumberOfGamesToRetrieve.ShouldBe(HomeController.NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW);
+
             var viewResult = results as PartialViewResult;
             viewResult.ShouldNotBeNull();
             viewResult.ViewName.ShouldBe(MVC.PlayedGame.Views._RecentlyPlayedGamesPartial);
@@ -41,6 +45,5 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
             viewModel.ShouldNotBeNull();
             viewModel.ShouldBeSameAs(expectedResults);
         }
-
     }
 }

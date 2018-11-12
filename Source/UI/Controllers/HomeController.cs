@@ -105,6 +105,7 @@ namespace UI.Controllers
             var recentlyPlayedGamesFilter = new RecentlyPlayedGamesFilter
             {
                 NumberOfGamesToRetrieve = NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW,
+                MinDate = DateTime.UtcNow.Date.AddDays(-2),
                 MaxDate = DateTime.UtcNow.Date.AddDays(1)
             };
             var publicGameSummaries = _recentPublicGamesRetriever.GetResults(recentlyPlayedGamesFilter);
