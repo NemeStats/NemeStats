@@ -26,7 +26,17 @@ Views.Shared.Layout.prototype = {
             var $item = $(item);
             if ($item.data("templateselector")) {
                 var content = $($item.data("templateselector")).html();
-                $item.popover({ trigger: 'click', content: content, placement: 'top', container: "body", viewport: $item });
+             
+                $item.popover({
+                    trigger: 'click',
+                    content: content,
+                    placement: 'top',
+                    container: "body",
+                    viewport: $item
+                }).click(function(e) {
+                    e.stopPropagation();
+                });
+             
                 $item.addClass("clickable");
             } else {
                 $item.popover({ trigger: 'hover', container: "body" });
