@@ -16,7 +16,7 @@
                 @Rank()
 
                 @Html.ActionLink(Model.PlayerName, "Details", "Player", new { id = Model.PlayerId }, new { title = "View Player details" })
-                
+
                 @if (Model.PointsScored.HasValue && Model.ShowPointsScored)
                 {
                     <span class="small">(@Model.PointsScored.Value.ToString("N0") game points scored)</span>
@@ -24,7 +24,11 @@
 
             </b>
         </div>
-        @TotalPoints()
+        <div class="col-xs-5 total">
+            <span data-toggle="popover" data-html="true" data-templateselector="#@Model.Id" data-title="NemePoints breakdown">
+                @Model.NemePointsSummary.TotalNemePoints&nbsp;@Html.NemePointsIco()
+            </span>
+        </div>
     </div>
 
     @Html.Partial("_NemePointsBreakdown", Model.NemePointsSummary, new ViewDataDictionary { { "templateid", Model.Id } })
@@ -33,36 +37,26 @@
 @helper Rank()
 {
 
-if (@Model.WinnerType == WinnerTypes.TeamWin)
-{
+    if (@Model.WinnerType == WinnerTypes.TeamWin)
+    {
         <span class="fa-stack rank" data-toggle="popover" data-placement="top" data-content="Everyone won!">
             <i class="fa fa-square fa-stack-2x text-success"></i>
             <i class="fa fa-inverse fa-stack-1x fa-smile-o"></i>
         </span>
-}
-else if (Model.WinnerType == WinnerTypes.TeamLoss)
-{
+    }
+    else if (Model.WinnerType == WinnerTypes.TeamLoss)
+    {
         <span class="fa-stack rank" data-toggle="popover" data-placement="top" data-content="Everyone lost">
             <i class="fa fa-square fa-stack-2x text-danger"></i>
             <i class="fa fa-inverse fa-stack-1x fa-frown-o"></i>
         </span>
-}
-else
-{
+    }
+    else
+    {
         <span class="fa-stack rank" data-toggle="popover" data-placement="top" data-content="Rank on game">
             <i class="fa fa-square fa-stack-2x"></i>
             <i class="fa fa-inverse fa-stack-1x value">@Model.GameRankString</i>
         </span>
-}
-
-
-}
-@helper TotalPoints()
-{
-    <div class="col-xs-5 total">
-        <span data-toggle="popover" data-html="true" data-templateselector="#@Model.Id" data-title="NemePoints breakdown">
-            @Model.NemePointsSummary.TotalNemePoints&nbsp;@Html.NemePointsIco()
-        </span>
-    </div>
+    }
 }
 
