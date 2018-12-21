@@ -1,0 +1,63 @@
+﻿@import "nemestats-variables.scss";
+
+.player-game-rank {
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    width: 290px;
+    margin-bottom: 12px;
+    background-color: #d3d3d3;
+
+    .rank-name {
+        display: flex;
+        flex-basis: 100%;
+        align-items: center;
+        font-size: 1.25em;
+
+        .rank {
+            font-size: 1.25em;
+            text-align: center;
+            padding: .125em 0;
+            border: solid;
+            border-radius: 1rem;
+            width: 20%;
+
+            .rank-double-digit {
+            }
+        }
+
+        .player-name {
+            margin-left: .5em;
+        }
+    }
+
+    .nemepoints-breakdown {
+        flex-basis: 100%;
+        text-align: center;
+
+        table {
+            width: 100%;
+
+            th {
+                text-align: center;
+            }
+
+            td {
+                border-right: solid 1px;
+                width: 20%;
+            }
+
+            .nemepoints-equals {
+                width: 5%;
+            }
+
+            .nemepoints-header {
+                text-align: left;
+            }
+        }
+    }
+}
+
+div.player-game-rank:last-child {
+    margin-bottom: 0px;
+}

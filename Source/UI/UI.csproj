@@ -679,6 +679,7 @@
     <Content Include="Scripts\handlebars.runtime.min.js" />
     <Content Include="Scripts\Home\home.js" />
     <Content Include="Scripts\Idea.Informer\tab6.js" />
+    <Content Include="sass\nemestats\playergameresult.scss" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.2.4.js" />
     <Content Include="Scripts\jquery-2.2.4.min.js" />

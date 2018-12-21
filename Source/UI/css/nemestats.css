@@ -923,6 +923,46 @@ table tbody tr td.edit-col {
   vertical-align: middle; }
 
 /*$header-background-color: #2C3E50;*/
+.player-game-rank {
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+  width: 290px;
+  margin-bottom: 12px;
+  background-color: #d3d3d3; }
+  .player-game-rank .rank-name {
+    display: flex;
+    flex-basis: 100%;
+    align-items: center;
+    font-size: 1.25em; }
+    .player-game-rank .rank-name .rank {
+      font-size: 1.25em;
+      text-align: center;
+      padding: .125em 0;
+      border: solid;
+      border-radius: 1rem;
+      width: 20%; }
+    .player-game-rank .rank-name .player-name {
+      margin-left: .5em; }
+  .player-game-rank .nemepoints-breakdown {
+    flex-basis: 100%;
+    text-align: center; }
+    .player-game-rank .nemepoints-breakdown table {
+      width: 100%; }
+      .player-game-rank .nemepoints-breakdown table th {
+        text-align: center; }
+      .player-game-rank .nemepoints-breakdown table td {
+        border-right: solid 1px;
+        width: 20%; }
+      .player-game-rank .nemepoints-breakdown table .nemepoints-equals {
+        width: 5%; }
+      .player-game-rank .nemepoints-breakdown table .nemepoints-header {
+        text-align: left; }
+
+div.player-game-rank:last-child {
+  margin-bottom: 0px; }
+
+/*$header-background-color: #2C3E50;*/
 @media (min-width: 991px) {
   table tbody tr td.badges-col {
     text-align: right;
