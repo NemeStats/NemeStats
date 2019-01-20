@@ -64,6 +64,7 @@ namespace UI.Areas.Api.Controllers
                 {
                     Active = result.Active,
                     BoardGameGeekGameDefinitionId = result.BoardGameGeekGameDefinitionId,
+                    BoardGameGeekObjectId = result.BoardGameGeekGameDefinitionId,
                     GameDefinitionId = result.Id,
                     GameDefinitionName = result.Name,
                     NemeStatsUrl = AbsoluteUrlBuilder.GetGameDefinitionUrl(result.Id)
