@@ -108,6 +108,7 @@ namespace BusinessLogic.Logic.PlayedGames
         public List<PlayedGameSearchResult> SearchPlayedGames(PlayedGameFilter playedGameFilter)
         {
             var queryable = from playedGame in _dataContext.GetQueryable<PlayedGame>()
+                .Where(x => x.GameDefinition.Active)
                 .OrderByDescending(game => game.DatePlayed)
                 .ThenByDescending(game => game.DateCreated)
                 select new PlayedGameSearchResult

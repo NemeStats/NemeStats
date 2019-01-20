@@ -27,6 +27,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
         private readonly DateTime DATE_APRIL = new DateTime(2015, 4, 1, 4, 4, 4);
         private const string EXTERNAL_SOURCE_NAME = "some source name";
         private IList<PlayedGameApplicationLinkage> expectedLinkagesForAprilGame;
+        private const int INACTIVE_GAME_DEFINITION_ID = 73;
 
         [SetUp]
         public void SetUp()
@@ -55,7 +56,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
                     DateCreated = DATE_MARCH,
                     DatePlayed = DATE_MARCH,
                     PlayerGameResults = new List<PlayerGameResult>(),
-                    GameDefinition = new GameDefinition(),
+                    GameDefinition = new GameDefinition
+                    {
+                        Active = true
+                    },
                     GamingGroup = new GamingGroup(),
                     GamingGroupId = EXPECTED_GAMING_GROUP_ID,
                     GameDefinitionId = EXPECTED_GAME_DEFINITION_ID,
@@ -82,11 +86,26 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
                             }
                         }
                     },
-                    GameDefinition = new GameDefinition(),
+                    GameDefinition = new GameDefinition{
+                        Active = true
+                    },
                     GamingGroup = new GamingGroup(),
                     GamingGroupId = 135353,
                     ApplicationLinkages = expectedLinkagesForAprilGame,
-                }
+                },
+                new PlayedGame
+                {
+                    Id = -1,
+                    PlayerGameResults = new List<PlayerGameResult>(),
+                    GameDefinition = new GameDefinition
+                    {
+                        Active = false
+                    },
+                    GamingGroup = new GamingGroup(),
+                    GamingGroupId = EXPECTED_GAMING_GROUP_ID,
+                    GameDefinitionId = INACTIVE_GAME_DEFINITION_ID,
+                    ApplicationLinkages = new List<PlayedGameApplicationLinkage>(),
+                },
             };
 
             autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayedGame>()).Return(playedGames.AsQueryable());
@@ -259,6 +278,16 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
 
             Assert.That(results.Count, Is.EqualTo(1));
             Assert.True(results.All(x => x.DatePlayed <= DATE_MARCH));
+        }
+
+        [Test]
+        public void ItExcludesPlaysForGamesThatAreNotActive()
+        {
+            var filter = new PlayedGameFilter();
+
+            var results = autoMocker.ClassUnderTest.SearchPlayedGames(filter);
+
+            Assert.That(!results.Any(x => x.GameDefinitionId == INACTIVE_GAME_DEFINITION_ID));
         }
 
         [Test]
