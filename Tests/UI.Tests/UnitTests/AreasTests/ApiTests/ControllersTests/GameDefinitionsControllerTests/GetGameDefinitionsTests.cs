@@ -39,6 +39,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.GameDefinition
             Assert.That(firstActualGameDefinitionSearchResultMessage.GameDefinitionName, Is.EqualTo(expectedResults[0].Name));
             Assert.That(firstActualGameDefinitionSearchResultMessage.Active, Is.EqualTo(expectedResults[0].Active));
             Assert.That(firstActualGameDefinitionSearchResultMessage.BoardGameGeekGameDefinitionId, Is.EqualTo(expectedResults[0].BoardGameGeekGameDefinitionId));
+            Assert.That(firstActualGameDefinitionSearchResultMessage.BoardGameGeekObjectId, Is.EqualTo(expectedResults[0].BoardGameGeekGameDefinitionId));
             Assert.That(firstActualGameDefinitionSearchResultMessage.NemeStatsUrl,
                 Is.EqualTo(AbsoluteUrlBuilder.GetGameDefinitionUrl(firstActualGameDefinitionSearchResultMessage.GameDefinitionId)));
         }
