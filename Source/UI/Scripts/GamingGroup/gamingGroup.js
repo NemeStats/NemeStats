@@ -220,7 +220,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
                     var playersTableId = "playersList";
 
                     if (ResponsiveBootstrapToolkit.is('>=md')) {
-                        new List(playersTableId, { valueNames: playersValues, page: 20, plugins: [ListPagination({ innerWindow: 20 })] });
+                        new List(playersTableId, { valueNames: playersValues, page: 25, plugins: [ListPagination({ innerWindow: 25 })] });
                     } else {
                         new List(playersTableId, { valueNames: playersValues });
                     }
@@ -292,7 +292,13 @@ Views.GamingGroup.GamingGroupView.prototype = {
             type: "GET",
             success: function (html) {
                 $("#" + divIdForRenderingResults).html(html);
-
+                var playedGamesValues = ['game-item', 'name-col','result-col'];
+                var playedGamesTableID = "playedGamesList"
+                if (ResponsiveBootstrapToolkit.is('>=md')) {
+                    new List(playedGamesTableID, { valueNames: playedGamesValues, page: 8, plugins: [ListPagination({ innerWindow: 12 })] });
+                } else {
+                   new List(playedGamesTableID, { valueNames: gamedefinitionsValues });
+                }
                 var layout = new window.Views.Shared.Layout();
                 layout.initializePopoversAndTooltips(parent);
             }
