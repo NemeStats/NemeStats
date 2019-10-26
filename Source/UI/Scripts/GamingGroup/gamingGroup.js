@@ -220,7 +220,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
                     var playersTableId = "playersList";
 
                     if (ResponsiveBootstrapToolkit.is('>=md')) {
-                        new List(playersTableId, { valueNames: playersValues, page: 25, plugins: [ListPagination({ innerWindow: 25 })] });
+                        new List(playersTableId, { valueNames: playersValues, page: 20, plugins: [ListPagination({ innerWindow: 20 })] });
                     } else {
                         new List(playersTableId, { valueNames: playersValues });
                     }
