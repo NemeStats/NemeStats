@@ -11,7 +11,7 @@
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h4>
-                Players <span class="badge">@Model.Count</span>
+                Players <span class="badge">@Model.Where(player => player.PlayerActive).ToList().Count</span>
             </h4>
         </div>
         <div class="panel-body">
@@ -83,7 +83,7 @@
                         </tr>
                     </thead>
                     <tbody id="playersListTableBody" class="list clickable-row">
-                        @foreach (var item in Model)
+                        @foreach (var item in Model.Where(player => player.PlayerActive))
                         {
                             <tr data-details-url="@Url.Action(MVC.Player.Details(item.PlayerId, null))" title="View Player details">
                                 @if (showGravatars)
@@ -179,7 +179,7 @@
         </div>
     </div>
 </div>
-@foreach (var item in Model)
+@foreach (var item in Model.Where(player => player.PlayerActive))
 {
     @Html.Partial("_NemePointsBreakdown", item.NemePointsSummary, new ViewDataDictionary { { "templateid", item.PlayerId } })
 }
