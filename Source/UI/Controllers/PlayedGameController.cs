@@ -327,6 +327,17 @@ namespace UI.Controllers
                             + "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);
         }
 
+        // POST: /PlayedGame/DangerousDelete/5
+        [System.Web.Mvc.Authorize]
+        [System.Web.Mvc.HttpPost, System.Web.Mvc.ActionName("DangerousDelete")]
+        [ValidateAntiForgeryToken]
+        [UserContext]
+        public virtual ActionResult DangerousDelete(int id, ApplicationUser currentUser)
+        {
+            _playedGameDeleter.DeletePlayedGame(id, currentUser);
+            return new RedirectResult(Request.UrlReferrer.ToString());
+        }
+
         [System.Web.Mvc.Authorize]
         [UserContext]
         [System.Web.Mvc.HttpGet]
