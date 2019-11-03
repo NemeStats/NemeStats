@@ -218,7 +218,7 @@ namespace UI.Controllers
 
         [HttpGet]
         [UserContext(RequiresGamingGroup = false)]
-        public virtual ActionResult GetGamingGroupPlayedGames(int id, ApplicationUser currentUser, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null, [System.Web.Http.FromUri]int numberOfItems = 20)
+        public virtual ActionResult GetGamingGroupPlayedGames(int id, ApplicationUser currentUser, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null, [System.Web.Http.FromUri]int numberOfItems = 100)
         {
             var games = _playedGameRetriever.GetRecentGames(numberOfItems, id, dateRangeFilter);
             var viewModel = new PlayedGamesViewModel
