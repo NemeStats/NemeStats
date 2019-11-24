@@ -89,10 +89,16 @@ Views.Shared.Layout.prototype = {
 };
 
 $(document).ready(function () {
+    var self = this;
+    $('ul.dropdown-menu [data-toggle=dropdown]').on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $(self).parent().siblings().removeClass('open');
+        $(self).parent().toggleClass('open');
+    });
     var layout = new Views.Shared.Layout();
     layout.init();
     layout.setupHubConnection();
     layout.setupDynamicStyles();
-
     $(window).on('resize orientationChange', layout.setupDynamicStyles);
 });
