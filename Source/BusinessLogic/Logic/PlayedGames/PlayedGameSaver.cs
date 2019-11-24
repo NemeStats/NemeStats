@@ -48,9 +48,6 @@ namespace BusinessLogic.Logic.PlayedGames
 
         public PlayedGameSaver(
             IDataContext applicationDataContext,
-            INemeStatsEventTracker playedGameTracker,
-            INemesisRecalculator nemesisRecalculator,
-            IChampionRecalculator championRecalculator,
             ISecuredEntityValidator securedEntityValidator,
             IPointsCalculator pointsCalculator,
             IApplicationLinker applicationLinker, 

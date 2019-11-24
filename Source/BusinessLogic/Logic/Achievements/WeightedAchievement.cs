@@ -62,7 +62,7 @@ namespace BusinessLogic.Logic.Achievements
                     select item).ToList();
                 
 
-            if (noUnknownGames.Count() == 5)
+            if (noUnknownGames.Count == 5)
             {
                 result.PlayerProgress = noUnknownGames.Min(p => p.Count);
             }

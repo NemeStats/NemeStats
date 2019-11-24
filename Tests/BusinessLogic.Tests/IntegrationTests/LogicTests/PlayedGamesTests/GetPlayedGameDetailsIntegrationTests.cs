@@ -50,7 +50,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
         public void ItFetchesTheGameResults()
         {
             var playedGame = GetTestSubjectPlayedGame();
-            Assert.GreaterOrEqual(testPlayedGames[0].PlayerGameResults.Count, playedGame.PlayerGameResults.Count());
+            Assert.GreaterOrEqual(testPlayedGames[0].PlayerGameResults.Count, playedGame.PlayerGameResults.Count);
         }
 
         [Test]

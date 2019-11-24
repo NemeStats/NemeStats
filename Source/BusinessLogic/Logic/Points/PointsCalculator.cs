@@ -73,7 +73,7 @@ namespace BusinessLogic.Logic.Points
                 throw new ArgumentException(EXCEPTION_MESSAGE_CANNOT_EXCEED_MAX_PLAYERS);
             }
 
-            if (playerRanks.GroupBy(x => x.PlayerId).Count(y => y.Count() > 1) > 0)
+            if (playerRanks.GroupBy(x => x.PlayerId).Any(y => y.Count() > 1))
             {
                 throw new ArgumentException(string.Format(EXCEPTION_MESSAGE_DUPLICATE_PLAYER));
             }

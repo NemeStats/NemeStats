@@ -85,7 +85,7 @@ namespace BusinessLogic.DataAccess.Repositories
 
         private static bool ThereIsATieForChampion(List<ChampionStatistics> championStatistics)
         {
-            if (championStatistics.Count() != 2)
+            if (championStatistics.Count != 2)
             {
                 return false;
             }

@@ -45,7 +45,7 @@ namespace BusinessLogic.Logic.OneTimeJobs
                     {
                         var bggResults = bggSearcher.SearchBoardGames(game.Name.Trim(), true);
 
-                        if (bggResults.Count() == 1)
+                        if (bggResults.Count == 1)
                         {
                             game.BoardGameGeekGameDefinitionId = bggResults.First().BoardGameId;
                             ApplicationUser user = new ApplicationUser

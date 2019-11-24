@@ -38,7 +38,7 @@ namespace BoardGameGeekApiClient.Service
                 var xDoc = _apiDownloadService.DownloadApiResult(apiUri);
 
                 var xElements = xDoc.Descendants("items").ToList();
-                if (xElements.Count() == 1)
+                if (xElements.Count == 1)
                 {
                     var firstImageElement = xElements.First().Element("item").Element("image");
                     if (firstImageElement != null)
@@ -71,7 +71,7 @@ namespace BoardGameGeekApiClient.Service
 
                 // LINQ to XML.
                 var xElements = xDoc.Descendants("items").ToList();
-                if (xElements.Count() == 1)
+                if (xElements.Count == 1)
                 {
 
                     var gameCollection = xElements.Select(boardgame => new GameDetails
@@ -146,7 +146,7 @@ namespace BoardGameGeekApiClient.Service
 
 
                 var xElements = xDoc.Descendants("user").ToList();
-                if (xElements.Count() == 1)
+                if (xElements.Count == 1)
                 {
 
                     var userElement = xElements.First();
@@ -187,7 +187,7 @@ namespace BoardGameGeekApiClient.Service
                 var xDoc = _apiDownloadService.DownloadApiResult(url);
 
                 var xElements = xDoc.Descendants("items").ToList();
-                if (xElements.Count() == 1)
+                if (xElements.Count == 1)
                 {
                     var gameCollection = xElements.Descendants("item").Select(boardgame => new GameDetails
                     {
