@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Xml.Linq;
 using BoardGameGeekApiClient.Interfaces;
+using Exceptionless;
 using Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling;
 
 namespace BoardGameGeekApiClient.Service
@@ -48,20 +49,29 @@ namespace BoardGameGeekApiClient.Service
             // Due to malformed header I cannot use GetContentAsync and ReadAsStringAsync :(
             // UTF-8 is now hard-coded...
 
-            //wait 500ms before each read to avoid BGG block
+            //--wait 500ms before each read to avoid BGG block
             Thread.Sleep(500);
             data = null;
-            while (data == null)
+            var tryCount = 0;
+            while (tryCount < 2)
             {
                 var request = WebRequest.CreateHttp(requestUrl);
                 request.Timeout = 10000;
                 using (var response = (HttpWebResponse)(request.GetResponse()))
                 {
-                    if (response.StatusCode != HttpStatusCode.OK) continue;
-
-                    using (var reader = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
+                    if (response.StatusCode != HttpStatusCode.OK)
                     {
-                        data = XDocument.Parse(reader.ReadToEnd());
+                        var exception = new Exception($"Expected a 200 OK response from BGG when calling '{requestUrl.AbsolutePath}', but got a '{response.StatusCode}' response.");
+                        exception.ToExceptionless();
+                        tryCount++;
+                    }
+                    else
+                    {
+                        using (var reader = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
+                        {
+                            data = XDocument.Parse(reader.ReadToEnd());
+                            break;
+                        }
                     }
                 }
             }
