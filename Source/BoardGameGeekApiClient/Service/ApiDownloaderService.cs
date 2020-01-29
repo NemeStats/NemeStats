@@ -57,6 +57,8 @@ namespace BoardGameGeekApiClient.Service
             {
                 var request = WebRequest.CreateHttp(requestUrl);
                 request.Timeout = 10000;
+                //--setting this so BGG can see the request from NemeStats
+                request.UserAgent = "NemeStats website/2.96";
                 using (var response = (HttpWebResponse)(request.GetResponse()))
                 {
                     if (response.StatusCode != HttpStatusCode.OK)
