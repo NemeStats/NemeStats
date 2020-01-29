@@ -27,6 +27,7 @@ namespace BoardGameGeekApiClient.Service
 
         public ApiDownloaderService()
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             var retryStrategy = new Incremental(5, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2));
             _retryPolicy = new RetryPolicy<BGGTransientErrorDetectionStrategy>(retryStrategy);
         }
