@@ -13,7 +13,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
 {
     public class GetFromSourceTests
     {
-        private int _boardGameGeekGameDefinitionId = 1;
+        private readonly int _boardGameGeekGameDefinitionId = 1;
         private RhinoAutoMocker<UniversalStatsRetriever> _autoMocker;
         private BoardGameGeekGameDefinition _expectedBoardGameGeekGameDefinition;
 
@@ -108,6 +108,31 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
 
             //--assert
             result.TotalGamingGroupsWithThisGame.ShouldBe(2);
+        }
+
+        [Test]
+        public void It_Returns_Defaults_If_There_Are_No_Game_Definitions()
+        {
+            //--arrange
+            var expectedBggDefinition = new BoardGameGeekGameDefinition
+            {
+                Id = _boardGameGeekGameDefinitionId,
+                GameDefinitions = new List<GameDefinition>(),
+            };
+            var queryable = new List<BoardGameGeekGameDefinition>
+            {
+                expectedBggDefinition,
+            }.AsQueryable();
+            var mockRetriever = new RhinoAutoMocker<UniversalStatsRetriever>();
+            mockRetriever.Get<IDataContext>().Expect(mock => mock.GetQueryable<BoardGameGeekGameDefinition>()).Return(queryable);
+
+            //--act
+            var result = mockRetriever.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId);
+
+            //--assert
+            result.AveragePlayersPerGame.ShouldBe(null);
+            result.TotalGamingGroupsWithThisGame.ShouldBe(0);
+            result.TotalNumberOfGamesPlayed.ShouldBe(0);
         }
     }
 }
