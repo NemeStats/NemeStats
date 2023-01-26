@@ -35,7 +35,15 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
                             new PlayedGame
                             {
                                 NumberOfPlayers = 2
-                            }
+                            },
+                            new PlayedGame
+                            {
+                                NumberOfPlayers = 2
+                            },
+                            new PlayedGame
+                            {
+                                NumberOfPlayers = 2
+                            },
                         }
                     },
                     new GameDefinition
@@ -95,7 +103,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
             var result = _autoMocker.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId);
 
             //--assert
-            result.TotalNumberOfGamesPlayed.ShouldBe(2);
+            result.TotalNumberOfGamesPlayed.ShouldBe(4);
         }
 
         [Test]
@@ -133,6 +141,49 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
             result.AveragePlayersPerGame.ShouldBe(null);
             result.TotalGamingGroupsWithThisGame.ShouldBe(0);
             result.TotalNumberOfGamesPlayed.ShouldBe(0);
+        }
+
+        [Test]
+        public void It_Handles_Game_Definitions_With_No_PlayedGames()
+        {
+            //--arrange
+            var expectedBggDefinition = new BoardGameGeekGameDefinition
+            {
+                Id = _boardGameGeekGameDefinitionId,
+                GameDefinitions = new List<GameDefinition>
+                {
+                    new GameDefinition
+                    {
+                        GamingGroupId = 1,
+                        PlayedGames = new List<PlayedGame>(),
+                    },
+                    new GameDefinition
+                    {
+                        GamingGroupId = 2,
+                        PlayedGames = new List<PlayedGame>
+                        {
+                            new PlayedGame
+                            {
+                                NumberOfPlayers = 3
+                            }
+                        }
+                    }
+                },
+            };
+            var queryable = new List<BoardGameGeekGameDefinition>
+            {
+                expectedBggDefinition,
+            }.AsQueryable();
+            var mockRetriever = new RhinoAutoMocker<UniversalStatsRetriever>();
+            mockRetriever.Get<IDataContext>().Expect(mock => mock.GetQueryable<BoardGameGeekGameDefinition>()).Return(queryable);
+
+            //--act
+            var result = mockRetriever.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId);
+
+            //--assert
+            result.AveragePlayersPerGame.ShouldBe(3);
+            result.TotalGamingGroupsWithThisGame.ShouldBe(1);
+            result.TotalNumberOfGamesPlayed.ShouldBe(1);
         }
     }
 }
