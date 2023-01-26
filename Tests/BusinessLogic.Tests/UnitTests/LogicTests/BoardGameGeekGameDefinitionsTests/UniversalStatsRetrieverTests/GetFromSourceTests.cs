@@ -185,5 +185,42 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
             result.TotalGamingGroupsWithThisGame.ShouldBe(1);
             result.TotalNumberOfGamesPlayed.ShouldBe(1);
         }
+
+        [Test]
+        public void It_Handles_When_All_Game_Definitions_Have_No_PlayedGames()
+        {
+            //--arrange
+            var expectedBggDefinition = new BoardGameGeekGameDefinition
+            {
+                Id = _boardGameGeekGameDefinitionId,
+                GameDefinitions = new List<GameDefinition>
+                {
+                    new GameDefinition
+                    {
+                        GamingGroupId = 1,
+                        PlayedGames = new List<PlayedGame>(),
+                    },
+                    new GameDefinition
+                    {
+                        GamingGroupId = 2,
+                        PlayedGames = new List<PlayedGame>(),
+                    }
+                },
+            };
+            var queryable = new List<BoardGameGeekGameDefinition>
+            {
+                expectedBggDefinition,
+            }.AsQueryable();
+            var mockRetriever = new RhinoAutoMocker<UniversalStatsRetriever>();
+            mockRetriever.Get<IDataContext>().Expect(mock => mock.GetQueryable<BoardGameGeekGameDefinition>()).Return(queryable);
+
+            //--act
+            var result = mockRetriever.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId);
+
+            //--assert
+            result.AveragePlayersPerGame.ShouldBe(0);
+            result.TotalGamingGroupsWithThisGame.ShouldBe(0);
+            result.TotalNumberOfGamesPlayed.ShouldBe(0);
+        }
     }
 }
