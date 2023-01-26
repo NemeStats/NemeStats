@@ -36,7 +36,7 @@ namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
             {
                 return new UniversalGameStats
                 {
-                    AveragePlayersPerGame = definition.GameDefinitions.Where(gd => gd.PlayedGames.Any()).Average(y => y.PlayedGames.Select(p => p.NumberOfPlayers).Average()),
+                    AveragePlayersPerGame = definition.GameDefinitions.Where(gd => gd.PlayedGames.Any()).DefaultIfEmpty().Average(y => y?.PlayedGames.Select(p => p.NumberOfPlayers).Average()) ?? 0,
                     TotalNumberOfGamesPlayed = definition.GameDefinitions.Sum(y => y.PlayedGames.Count),
                     TotalGamingGroupsWithThisGame = definition.GameDefinitions.Count(g => g.Active && g.PlayedGames.Any())
                 };
