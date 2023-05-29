@@ -73,7 +73,8 @@ namespace BusinessLogic.Tests.IntegrationTests
 
             try
             {
-                gameDefinition.Id.ShouldNotBe(default);
+                // TODO: update CI build to support simplified syntax for `default`
+                gameDefinition.Id.ShouldNotBe(default(int));
             }
             finally
             {
