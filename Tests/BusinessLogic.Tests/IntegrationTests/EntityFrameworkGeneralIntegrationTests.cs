@@ -34,6 +34,7 @@ namespace BusinessLogic.Tests.IntegrationTests
     [Category("Integration")]
     public class EntityFrameworkGeneralIntegrationTests : IntegrationTestIoCBase
     {
+        private int _gamingGroupIdWithNemesisPlayers;
         private int _playerIdWithNoPlayedGames;
         private int _somePlayedGameId;
         private ApplicationUser _userWithGamingGroup;
@@ -49,8 +50,10 @@ namespace BusinessLogic.Tests.IntegrationTests
                 .First();
 
             _somePlayedGameId = dataContext.GetQueryable<PlayedGame>().Select(x => x.Id).First();
-
             _userWithGamingGroup = dataContext.GetQueryable<ApplicationUser>().OrderBy(x => x.Id).First(x => x.CurrentGamingGroupId > 0);
+
+            // TODO: These tests only work if the DataAccessTests have already run -- otherwise the data may not exist
+            _gamingGroupIdWithNemesisPlayers = dataContext.GetQueryable<GamingGroup>().First(gg => gg.Name == "this is test gaming group 1").Id;
         }
 
         [Test]
@@ -68,7 +71,16 @@ namespace BusinessLogic.Tests.IntegrationTests
             dataContext.Save(gameDefinition, _userWithGamingGroup);
             dataContext.CommitAllChanges();
 
-            gameDefinition.Id.ShouldNotBe(default(int));
+            try
+            {
+                // TODO: update CI build to support simplified syntax for `default`
+                gameDefinition.Id.ShouldNotBe(default(int));
+            }
+            finally
+            {
+                // TODO: refactor
+                CleanupFromLastTime(dataContext, gameDefinition, _userWithGamingGroup);
+            }
         }
 
         private static void CleanupFromLastTime(
@@ -91,7 +103,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             var dataContext = GetInstance<IDataContext>();
 
             var players = dataContext.GetQueryable<Player>()
-                            .Where(player => player.Active && player.GamingGroupId == 1)
+                            .Where(player => player.Active && player.GamingGroupId == _gamingGroupIdWithNemesisPlayers)
                             .Include(player => player.Nemesis)
                             .Include(player => player.Nemesis.NemesisPlayer)
 
@@ -390,8 +402,13 @@ namespace BusinessLogic.Tests.IntegrationTests
             dataContext.Save(firstPlayedGame, applicationUserWhoCanSave);
 
             var firstGameDefinition = dataContext.GetQueryable<GameDefinition>().First(x => x.GamingGroupId == applicationUserWhoCanSave.CurrentGamingGroupId);
-            int numberOfCharactersToSubstring = firstGameDefinition.Name.Length > 100 ? 100 : firstGameDefinition.Name.Length;
+            var originalGameName = firstGameDefinition.Name;
+            int numberOfCharactersToSubstring = originalGameName.Length > 100 ? 100 : originalGameName.Length;
             firstGameDefinition.Name = (Guid.NewGuid() + firstGameDefinition.Name).Substring(0, numberOfCharactersToSubstring);
+            dataContext.Save(firstGameDefinition, applicationUserWhoCanSave);
+
+            // reset it back so that later tests can clean up properly
+            firstGameDefinition.Name = originalGameName;
             dataContext.Save(firstGameDefinition, applicationUserWhoCanSave);
 
             dataContext.Dispose();

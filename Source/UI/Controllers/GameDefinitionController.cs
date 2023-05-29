@@ -24,6 +24,7 @@ using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.Users;
+using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using System;
@@ -103,7 +104,7 @@ namespace UI.Controllers
 
                 gamingGroupGameDefinitionViewModel = _gameDefinitionTransformation.Build(gameDefinitionSummary, registeredUserEmailAddressesDictionary, currentUser);
             }
-            catch (KeyNotFoundException)
+            catch (EntityDoesNotExistException<GameDefinition>)
             {
                 return new HttpNotFoundResult();
             }

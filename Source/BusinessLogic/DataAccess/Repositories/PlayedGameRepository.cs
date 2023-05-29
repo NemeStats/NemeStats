@@ -27,7 +27,7 @@ namespace BusinessLogic.DataAccess.Repositories
             WinningPlayers AS (
             SELECT MAX(PlayerGameResult.PlayerId) AS WinningPlayerId, PlayerGameResult.PlayedGameId
             FROM PlayerGameResult INNER JOIN GamingGroupsWithGamesInLastTwoDays 
-	            ON PlayerGameResult.PlayedGameId = GamingGroupsWithGamesInLastTwoDays.PlayedGameId
+                ON PlayerGameResult.PlayedGameId = GamingGroupsWithGamesInLastTwoDays.PlayedGameId
             WHERE PlayerGameREsult.GameRank = 1
             GROUP BY PlayerGameResult.PlayedGameId)
 
