@@ -429,6 +429,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             CleanUpGameDefinitions(testGameNameForGameWithOtherGamingGroupId);
             CleanUpGameDefinitions(testGameNameForAnotherGameWithOtherGamingGroupId);
             CleanUpGameDefinitions(gameDefinitionWithNoChampionName);
+            // TODO: always seem to be passing in null here
             CleanUpBoardGameGeekGameDefinitions(testBoardGameGeekGameDefinition);
             CleanUpPlayers();
             _nemeStatsDbContext.SaveChanges();
