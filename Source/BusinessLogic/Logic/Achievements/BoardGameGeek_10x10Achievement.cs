@@ -46,7 +46,7 @@ namespace BusinessLogic.Logic.Achievements
                     .Select(s => s.Key)
                     .ToList();
 
-            result.PlayerProgress = numberOfGamesWith10PlaysInYear.Count();
+            result.PlayerProgress = numberOfGamesWith10PlaysInYear.Count;
             if (result.PlayerProgress == LevelThresholds[AchievementLevel.Gold])
             {
                 result.RelatedEntities = numberOfGamesWith10PlaysInYear;

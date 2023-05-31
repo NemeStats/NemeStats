@@ -36,58 +36,11 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdate
             stopwatch.Start();
             try
             {
-
-
                 var orphanGames = GetOrphanGames();
                 result.OrphanGames = orphanGames.Count;
-
                 foreach (var game in orphanGames)
                 {
-                    var gameName = RemoveYear(game.Name);
-
-                    var existingGame = GetExistingBGGGameByName(gameName);
-                    if (existingGame != null)
-                    {
-                        UpdateGameDefinition(game, existingGame.Id, result);
-                    }
-                    else
-                    {
-                        var searchResult = _boardGameGeekApiClient.SearchBoardGames(gameName, true);
-                        if (searchResult.Any())
-                        {
-                            var gameToAdd = GetGameToAddFromSearch(searchResult);
-
-                            if (gameToAdd != null)
-                            {
-
-                                existingGame = GetExistingBGGGameById(gameToAdd);
-                                if (existingGame != null)
-                                {
-                                    UpdateGameDefinition(game, existingGame.Id, result);
-                                }
-                                else
-                                {
-                                    var newRecord = CreateBGGGame(gameToAdd);
-
-                                    UpdateGameDefinition(game, newRecord.Id, result);
-                                }
-                            }
-                        }
-                    }
-
-                    if (game.BoardGameGeekGameDefinitionId != null)
-                    {
-                        _dataContext.CommitAllChanges();
-                    }
-                    else
-                    {
-                        result.StillOrphanGames.Add(new LinkOrphanGamesJobResult.OrphanGame()
-                        {
-                            Name = game.Name,
-                            Id = game.Id,
-                            GamingGroupId = game.GamingGroupId
-                        });
-                    }
+                    CreateOrUpdateOrphanGames(game, result);
                 }
             }
             catch (Exception ex)
@@ -100,6 +53,57 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdate
             stopwatch.Stop();
             result.TimeEllapsed = stopwatch.Elapsed;
             return result;
+        }
+
+        private void CreateOrUpdateOrphanGames(GameDefinition game, LinkOrphanGamesJobResult result)
+        {
+            var gameName = RemoveYear(game.Name);
+            var existingGame = GetExistingBGGGameByName(gameName);
+            if (existingGame != null)
+            {
+                UpdateGameDefinition(game, existingGame.Id, result);
+            }
+            else
+            {
+                CreateOrUpdateBGGGame(existingGame, gameName, game, result);
+            }
+
+            if (game.BoardGameGeekGameDefinitionId != null)
+            {
+                _dataContext.CommitAllChanges();
+            }
+            else
+            {
+                result.StillOrphanGames.Add(new LinkOrphanGamesJobResult.OrphanGame()
+                {
+                    Name = game.Name,
+                    Id = game.Id,
+                    GamingGroupId = game.GamingGroupId
+                });
+            }
+        }
+
+        private void CreateOrUpdateBGGGame(BoardGameGeekGameDefinition existingGame, string gameName, GameDefinition game, LinkOrphanGamesJobResult result)
+        {
+            var searchResult = _boardGameGeekApiClient.SearchBoardGames(gameName, true);
+            if (searchResult.Any())
+            {
+                var gameToAdd = GetGameToAddFromSearch(searchResult);
+
+                if (gameToAdd != null)
+                {
+                    existingGame = GetExistingBGGGameById(gameToAdd);
+                    if (existingGame != null)
+                    {
+                        UpdateGameDefinition(game, existingGame.Id, result);
+                    }
+                    else
+                    {
+                        var newRecord = CreateBGGGame(gameToAdd);
+                        UpdateGameDefinition(game, newRecord.Id, result);
+                    }
+                }
+            }
         }
 
         private void UpdateGameDefinition(GameDefinition game, int boardGameGeekGameDefinitionId,
@@ -216,8 +220,8 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdate
 
                 if (gameDetails != null)
                 {
-                    existingBoardGameGeekGameDefinition.DateUpdated = DateTime.UtcNow;
 
+                    existingBoardGameGeekGameDefinition.DateUpdated = DateTime.UtcNow;
                     existingBoardGameGeekGameDefinition.AverageWeight = gameDetails.AverageWeight;
                     existingBoardGameGeekGameDefinition.Description = gameDetails.Description;
                     existingBoardGameGeekGameDefinition.MaxPlayTime = gameDetails.MaxPlayTime;
@@ -231,56 +235,23 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdate
 
                     foreach (var gameCategory in gameDetails.Categories)
                     {
-                        if (
-                            existingBoardGameGeekGameDefinition.Categories.All(
-                                c => !c.CategoryName.Equals(gameCategory.Category, StringComparison.InvariantCultureIgnoreCase)))
+                        if (CategoryDoesntExistInGamesCategoryList(existingBoardGameGeekGameDefinition, gameCategory.Category))
                         {
-                            var existentCategory =
-                                _dataContext.GetQueryable<BoardGameGeekGameCategory>()
-                                    .FirstOrDefault(
-                                        c =>
-                                            c.CategoryName.Equals(gameCategory.Category,
-                                                StringComparison.InvariantCultureIgnoreCase));
-                            if (existentCategory == null)
-                            {
-                                existentCategory = new BoardGameGeekGameCategory()
-                                {
-                                    BoardGameGeekGameCategoryId = gameCategory.Id,
-                                    CategoryName = gameCategory.Category
-                                };
-                            }
-
-                            existingBoardGameGeekGameDefinition.Categories.Add(existentCategory);
+                            var category = GetOrCreateGameCategory(gameCategory);
+                            existingBoardGameGeekGameDefinition.Categories.Add(category);
                         }
                     }
 
                     foreach (var gameMechanic in gameDetails.Mechanics)
                     {
-                        if (
-                            existingBoardGameGeekGameDefinition.Mechanics.All(
-                                c => !c.MechanicName.Equals(gameMechanic.Mechanic, StringComparison.InvariantCultureIgnoreCase)))
+                        if (MechanicDoesntExistInGamesMechanicsList(existingBoardGameGeekGameDefinition, gameMechanic.Mechanic))
                         {
-                            var existentMechanic =
-                                _dataContext.GetQueryable<BoardGameGeekGameMechanic>()
-                                    .FirstOrDefault(
-                                        c =>
-                                            c.MechanicName.Equals(gameMechanic.Mechanic,
-                                                StringComparison.InvariantCultureIgnoreCase));
-                            if (existentMechanic == null)
-                            {
-                                existentMechanic = new BoardGameGeekGameMechanic()
-                                {
-                                    BoardGameGeekGameMechanicId = gameMechanic.Id,
-                                    MechanicName = gameMechanic.Mechanic
-                                };
-                            }
-
-                            existingBoardGameGeekGameDefinition.Mechanics.Add(existentMechanic);
+                            var mechanic = GetOrCreateMechanic(gameMechanic);
+                            existingBoardGameGeekGameDefinition.Mechanics.Add(mechanic);
                         }
                     }
 
                     _dataContext.AdminSave(existingBoardGameGeekGameDefinition);
-
                     if (totalGamesUpdated++ % 10 == 0)
                     {
                         _dataContext.CommitAllChanges();
@@ -292,6 +263,55 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdate
             Debug.WriteLine($@"Done. Updated a total of {totalGamesUpdated} BoardGameGeekGameDefinitions.");
 
             return totalGamesUpdated;
+        }
+
+        private BoardGameGeekGameMechanic GetOrCreateMechanic(GameMechanic gameMechanic)
+        {
+            var mechanic = _dataContext.GetQueryable<BoardGameGeekGameMechanic>()
+                                    .FirstOrDefault(
+                                        c =>
+                                            c.MechanicName.Equals(gameMechanic.Mechanic,
+                                                StringComparison.InvariantCultureIgnoreCase));
+            if (mechanic == null)
+            {
+                mechanic = new BoardGameGeekGameMechanic()
+                {
+                    BoardGameGeekGameMechanicId = gameMechanic.Id,
+                    MechanicName = gameMechanic.Mechanic
+                };
+            }
+            return mechanic;
+        }
+
+        private BoardGameGeekGameCategory GetOrCreateGameCategory(GameCategory gameCategory)
+        {
+            BoardGameGeekGameCategory category;
+            category = _dataContext.GetQueryable<BoardGameGeekGameCategory>()
+                                   .FirstOrDefault(
+                                       c =>
+                                           c.CategoryName.Equals(gameCategory.Category,
+                                               StringComparison.InvariantCultureIgnoreCase));
+            if (category == null)
+            {
+                category = new BoardGameGeekGameCategory()
+                {
+                    BoardGameGeekGameCategoryId = gameCategory.Id,
+                    CategoryName = gameCategory.Category
+                };
+            }
+            return category;
+        }
+
+        private static bool MechanicDoesntExistInGamesMechanicsList(BoardGameGeekGameDefinition existingBoardGameGeekGameDefinition, string mechanic)
+        {
+            return existingBoardGameGeekGameDefinition.Mechanics.All(
+                                c => !c.MechanicName.Equals(mechanic, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        private static bool CategoryDoesntExistInGamesCategoryList(BoardGameGeekGameDefinition gameDefinition, string category)
+        {
+            return gameDefinition.Categories.All(
+                                c => !c.CategoryName.Equals(category, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }

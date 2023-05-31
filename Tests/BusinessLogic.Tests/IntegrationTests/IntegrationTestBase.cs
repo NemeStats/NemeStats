@@ -386,7 +386,7 @@ namespace BusinessLogic.Tests.IntegrationTests
         {
             List<PlayerRank> playerRanks = new List<PlayerRank>();
 
-            for (int i = 0; i < players.Count(); i++)
+            for (int i = 0; i < players.Count; i++)
             {
                 playerRanks.Add(new PlayerRank
                 {

@@ -11,9 +11,13 @@ Views.Shared.ClickableRows.prototype = {
     init: function (settings) {
         this.$tbodyId = settings.tbodyId;
 
-        $("#" + this.$tbodyId + " > tr").click(function() {
+        $("#" + this.$tbodyId + " > tr").click(function(e) {
             var element = this;
-            window.location = element.getAttribute("data-details-url");
+            if (e.ctrlKey && element.getAttribute("title") === "View Played Game details") {
+                element.classList.toggle("active").siblings().removeClass('active');
+            } else {
+                window.location = element.getAttribute("data-details-url");
+            }
         });
     }
 }

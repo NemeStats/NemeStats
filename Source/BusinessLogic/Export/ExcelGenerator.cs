@@ -62,7 +62,7 @@ namespace BusinessLogic.Export
 
         private static void AddDataRows(List<PlayedGameExportModel> playedGameExportModels, ExcelWorksheet worksheet)
         {
-            for (int i = 0; i < playedGameExportModels.Count(); i++)
+            for (int i = 0; i < playedGameExportModels.Count; i++)
             {
                 PlayedGameExportModel playedGameExportModel = playedGameExportModels[i];
 

@@ -175,7 +175,7 @@ namespace BusinessLogic.Events.HandlerFactory
 
             if (this.MessageHandlers.TryGetValue(messageType, out handlerTypes))
             {
-                return handlerTypes.Count();
+                return handlerTypes.Count;
             }
 
             return 0;
@@ -196,7 +196,7 @@ namespace BusinessLogic.Events.HandlerFactory
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception("Exception encountered with filteredHandlers", ex);
             }
 
             return result;

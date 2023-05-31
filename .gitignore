@@ -11,6 +11,7 @@ Web.Debug.config
 Web.Release.config
 Source/UI/PrivateAppSettings.config
 .vs/
+.sonarqube/*
 
 # Build results
 [Dd]ebug/

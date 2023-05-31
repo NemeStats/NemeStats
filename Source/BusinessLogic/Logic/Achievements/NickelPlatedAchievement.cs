@@ -45,7 +45,7 @@ namespace BusinessLogic.Logic.Achievements
                     .Where(a => a.Count >= 5)
                     .ToList();
 
-            result.PlayerProgress = allNickeledGameIds.Count();
+            result.PlayerProgress = allNickeledGameIds.Count;
             result.RelatedEntities = allNickeledGameIds.Select(y => y.Key).ToList();
 
             if (result.PlayerProgress < LevelThresholds[AchievementLevel.Bronze])

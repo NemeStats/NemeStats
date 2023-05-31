@@ -113,8 +113,18 @@
                                 </a>
                             }
                         </td>
+                        <td>
+                            @using (Html.BeginForm("/DangerousDelete", "PlayedGame"))
+                            {
+                                @Html.AntiForgeryToken()
+                                <span class="form-actions no-color">
+                                    <input type="hidden" id="id" name="id" value="@playedGameDetailsViewModel.PlayedGameId" />
+                                    <input type="submit" value="Dangerous Delete" class="btn btn-default btn-danger" title="Dangerous Delete Button" />
+                                </span>
+                            }
+                        </td>
                     </tr>
-                }
+                            }
                 </tbody>
             </table>
             <ul class="pagination"></ul>
