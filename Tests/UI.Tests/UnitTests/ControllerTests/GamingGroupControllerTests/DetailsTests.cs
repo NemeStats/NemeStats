@@ -15,13 +15,17 @@
 
 #endregion LICENSE
 
-using System;
+using BusinessLogic.Exceptions;
+using BusinessLogic.Logic.GamingGroups;
+using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.Utility;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System.Web.Mvc;
 using Shouldly;
+using System;
+using System.Net;
+using System.Web.Mvc;
 using UI.Models.GamingGroup;
 
 namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
@@ -32,7 +36,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         private GamingGroupSummary _gamingGroupSummary;
         private BasicDateRangeFilter _dateRangeFilter;
 
-        [Test]
+        [SetUp]
         public override void SetUp()
         {
             base.SetUp();
@@ -47,7 +51,10 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
                 Active = true
             };
             _dateRangeFilter = new BasicDateRangeFilter();
+        }
 
+        private void SetUpAutoMockerToReturnSummary()
+        {
             autoMocker.ClassUnderTest.Expect(mock => mock.GetGamingGroupSummary(
                 Arg<int>.Is.Anything,
                 Arg<IDateRangeFilter>.Is.Anything))
@@ -58,6 +65,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItReturnsTheDetailsView()
         {
+            SetUpAutoMockerToReturnSummary();
             var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId.Value, currentUser, _dateRangeFilter) as ViewResult;
 
             Assert.AreEqual(MVC.GamingGroup.Views.Details, viewResult.ViewName);
@@ -66,6 +74,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItAddsAGamingGroupViewModelToTheView()
         {
+            SetUpAutoMockerToReturnSummary();
             var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId.Value, currentUser, _dateRangeFilter) as ViewResult;
 
             var viewModel = viewResult.Model as GamingGroupViewModel;
@@ -80,6 +89,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItPreservesTheDateRangeFilter()
         {
+            SetUpAutoMockerToReturnSummary();
             var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId.Value, currentUser, _dateRangeFilter) as ViewResult;
 
             var model = viewResult.Model as GamingGroupViewModel;
@@ -89,6 +99,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItAddsAModelErrorIfTheBasicDateRangeFilterHasValidationErrors()
         {
+            SetUpAutoMockerToReturnSummary();
             var basicDateRangeFilterMock = MockRepository.GenerateMock<BasicDateRangeFilter>();
             var expectedErrorMessage = "some error message";
             basicDateRangeFilterMock.Expect(mock => mock.IsValid(out Arg<string>.Out(expectedErrorMessage).Dummy)).Return(false);
@@ -98,6 +109,20 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             var modelErrorsForKey = viewResult.ViewData.ModelState["dateRangeFilter"].Errors;
             Assert.That(modelErrorsForKey.Count, Is.EqualTo(1));
             Assert.That(modelErrorsForKey[0].ErrorMessage, Is.EqualTo(expectedErrorMessage));
+        }
+
+        [Test]
+        public void ItReturnsAnHttpNotFoundStatusCodeIfTheGamingGroupIsNotFound()
+        {
+            const int nonExistentGamingGroupId = -1;
+            autoMocker.Get<IGamingGroupRetriever>().BackToRecord(BackToRecordOptions.All);
+            autoMocker.Get<IGamingGroupRetriever>().Expect(mock => mock.GetGamingGroupDetails(Arg<GamingGroupFilter>.Is.Anything))
+                .Throw(new EntityDoesNotExistException<GamingGroup>(nonExistentGamingGroupId));
+            autoMocker.Get<IGamingGroupRetriever>().Replay();
+
+            var result = autoMocker.ClassUnderTest.Details(nonExistentGamingGroupId, currentUser) as HttpStatusCodeResult;
+
+            Assert.That(result.StatusCode, Is.EqualTo((int)HttpStatusCode.NotFound));
         }
     }
 }

@@ -15,26 +15,28 @@
 
 #endregion LICENSE
 
-using System.Collections.Generic;
-using BusinessLogic.Logic;
-using BusinessLogic.Logic.GamingGroups;
-using BusinessLogic.Logic.Users;
-using BusinessLogic.Models.GamingGroups;
-using BusinessLogic.Models.User;
-using BusinessLogic.Models.Utility;
-using System.Linq;
-using System.Web.Mvc;
 using BusinessLogic.DataAccess.Security;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Facades;
+using BusinessLogic.Logic;
 using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.GameDefinitions;
+using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
+using BusinessLogic.Logic.Users;
+using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.Champions;
+using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.Nemeses;
 using BusinessLogic.Models.Players;
+using BusinessLogic.Models.User;
+using BusinessLogic.Models.Utility;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Mappers.Extensions;
@@ -129,7 +131,17 @@ namespace UI.Controllers
                 ModelState.AddModelError("dateRangeFilter", errorMessage);
             }
 
-            var gamingGroupSummary = GetGamingGroupSummary(id, dateRangeFilter);
+            GamingGroupSummary gamingGroupSummary;
+
+            try
+            {
+                gamingGroupSummary = GetGamingGroupSummary(id, dateRangeFilter);
+            }
+            catch (EntityDoesNotExistException<GamingGroup>)
+            {
+                return new HttpNotFoundResult();
+            }
+
             var viewModel = new GamingGroupViewModel
             {
                 PublicDetailsView = new GamingGroupPublicDetailsViewModel
