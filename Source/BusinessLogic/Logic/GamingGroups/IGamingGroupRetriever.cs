@@ -26,18 +26,18 @@ using BusinessLogic.Models.Utility;
 
 namespace BusinessLogic.Logic.GamingGroups
 {
-	public interface IGamingGroupRetriever
-	{
+    public interface IGamingGroupRetriever
+    {
         GamingGroupSummary GetGamingGroupDetails(GamingGroupFilter gamingGroupFilter);
 
         GamingGroup GetGamingGroupById(int gamingGroupId);
 
-		IList<GamingGroupListItemModel> GetGamingGroupsForUser(string applicationUserId);
+        IList<GamingGroupListItemModel> GetGamingGroupsForUser(string applicationUserId);
 
-		List<TopGamingGroupSummary> GetTopGamingGroups(int numberOfTopGamingGroupsToShow);
-	    List<GamingGroupSitemapInfo> GetGamingGroupsSitemapInfo();
-	    GamingGroupStats GetGamingGroupStats(int gamingGroupId, BasicDateRangeFilter dateFilter);
-	    GamingGroupWithUsers GetGamingGroupWithUsers(int gamingGroupId, ApplicationUser currentUser);
-	    RecentGamingGroupChanges GetRecentChanges(int gamingGroupId, BasicDateRangeFilter dateFilter);
-	}
+        List<TopGamingGroupSummary> GetTopGamingGroups(int numberOfTopGamingGroupsToShow);
+        List<GamingGroupSitemapInfo> GetGamingGroupsSitemapInfo();
+        GamingGroupStats GetGamingGroupStats(int gamingGroupId, BasicDateRangeFilter dateFilter);
+        GamingGroupWithUsers GetGamingGroupWithUsers(int gamingGroupId, ApplicationUser currentUser);
+        RecentGamingGroupChanges GetRecentChanges(int gamingGroupId, BasicDateRangeFilter dateFilter);
+    }
 }
