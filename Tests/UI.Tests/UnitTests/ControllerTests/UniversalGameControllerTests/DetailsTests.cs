@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
-using BusinessLogic.Facades;
+﻿using BusinessLogic.Exceptions;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Models;
@@ -11,6 +9,9 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
 using StructureMap.AutoMocking;
+using System.Collections.Generic;
+using System.Net;
+using System.Web.Mvc;
 using UI.Controllers;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
@@ -24,7 +25,7 @@ namespace UI.Tests.UnitTests.ControllerTests.UniversalGameControllerTests
     {
         private RhinoAutoMocker<UniversalGameController> _autoMocker;
 
-        private int _boardGameGeekGameDefinitionId = 1;
+        private readonly int _boardGameGeekGameDefinitionId = 1;
         private ApplicationUser _currentUser;
         private BoardGameGeekGameSummary _expectedBoardGameGeekGameSummary;
         private UniversalGameDetailsViewModel _expectedUniversalGameDetailsViewModel;
@@ -184,7 +185,7 @@ namespace UI.Tests.UnitTests.ControllerTests.UniversalGameControllerTests
         }
 
         [Test]
-        public void It_Returns_A_Null_GamingGroupGameDefinitionSummary_If_The_Current_User_Doesnt_Have_The_Game_Definition()
+        public void ItReturnsANullGamingGroupGameDefinitionSummary_IfTheCurrentUserDoesNotHaveTheGameDefinition()
         {
             //--arrange
             _autoMocker.Get<IUniversalGameRetriever>().BackToRecord();
@@ -199,6 +200,21 @@ namespace UI.Tests.UnitTests.ControllerTests.UniversalGameControllerTests
             //--assert
             var model = result.Model as UniversalGameDetailsViewModel;
             model.GamingGroupGameDefinitionSummary.ShouldBeNull();
+        }
+
+        [Test]
+        public void ItReturnsAnHttpNotFoundStatusCodeWhenGameDoesNotExist()
+        {
+            const int nonExistentGameId = -1;
+            _autoMocker.Get<IUniversalGameRetriever>().BackToRecord(BackToRecordOptions.All);
+            _autoMocker.Get<IUniversalGameRetriever>().Expect(mock =>
+                mock.GetBoardGameGeekGameSummary(nonExistentGameId, _currentUser))
+                .Throw(new EntityDoesNotExistException<BoardGameGeekGameDefinition>(nonExistentGameId));
+            _autoMocker.Get<IUniversalGameRetriever>().Replay();
+
+            var result = _autoMocker.ClassUnderTest.Details(nonExistentGameId, _currentUser) as HttpStatusCodeResult;
+
+            Assert.That(result.StatusCode, Is.EqualTo((int)HttpStatusCode.NotFound));
         }
     }
 }
