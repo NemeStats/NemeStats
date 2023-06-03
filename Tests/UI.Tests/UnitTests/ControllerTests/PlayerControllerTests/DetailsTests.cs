@@ -15,16 +15,18 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
-using NUnit.Framework;
-using Rhino.Mocks;
-using System.Collections.Generic;
-using System.Web.Mvc;
 using BusinessLogic.Models.User;
 using NemeStats.TestingHelpers.NemeStatsTestingExtensions;
+using NUnit.Framework;
+using Rhino.Mocks;
 using Shouldly;
+using System.Collections.Generic;
+using System.Net;
+using System.Web.Mvc;
 using UI.Controllers;
 using UI.Controllers.Helpers;
 using UI.Models.PlayedGame;
@@ -36,7 +38,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
     [TestFixture]
     public class DetailsTests : PlayerControllerTestBase
     {
-        private int _playerId = 1;
+        private readonly int _playerId = 1;
         private string _expectedMinionUrl;
         private readonly Dictionary<int, string> _expectedPlayerIdToRegisteredUserEmailDictionary = new Dictionary<int, string>();
 
@@ -164,7 +166,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             var applicationUser = args.AssertCallIsType<ApplicationUser>(0, 1);
             applicationUser.ShouldBeSameAs(currentUser);
 
-            //--the fact that .Build is called with this dictionary as a parameter is implicity tested elsewhere. This isn't great, but not worth refactoring for now
+            //--the fact that .Build is called with this dictionary as a parameter is implicitly tested elsewhere. This isn't great, but not worth refactoring for now
         }
 
         [Test]
@@ -178,7 +180,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         }
 
         [Test]
-        public void ItPutsTheRecentGamesMessageOnTheViewbag()
+        public void ItPutsTheRecentGamesMessageOnTheViewBag()
         {
             PlayerDetails playerDetails = new PlayerDetails(){ PlayerGameResults = new List<PlayerGameResult>() };
             autoMocker.Get<IPlayerRetriever>().Expect(playerLogic => playerLogic.GetPlayerDetails(
@@ -205,6 +207,21 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             autoMocker.ClassUnderTest.Details(_playerId, currentUser);
 
             Assert.AreEqual(expectedMessage, autoMocker.ClassUnderTest.ViewBag.RecentGamesMessage);
+        }
+
+        [Test]
+        public void ItReturnsAnHttpNotFoundStatusCodeWhenPlayerDoesNotExist()
+        {
+            const int nonExistentPlayerId = -1;
+            autoMocker.Get<IPlayerRetriever>().BackToRecord(BackToRecordOptions.All);
+            autoMocker.Get<IPlayerRetriever>().Expect(mock => 
+                mock.GetPlayerDetails(nonExistentPlayerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE))
+                .Throw(new EntityDoesNotExistException<Player>(nonExistentPlayerId));
+            autoMocker.Get<IPlayerRetriever>().Replay();
+
+            var result = autoMocker.ClassUnderTest.Details(nonExistentPlayerId, currentUser) as HttpStatusCodeResult;
+
+            Assert.That(result.StatusCode, Is.EqualTo((int)HttpStatusCode.NotFound));
         }
     }
 }

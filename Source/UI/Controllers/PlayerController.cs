@@ -16,10 +16,12 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using AutoMapper;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Nemeses;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using System;
@@ -32,8 +34,6 @@ using UI.Controllers.Helpers;
 using UI.Models.Players;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
-using AutoMapper;
-using BusinessLogic.Models.Nemeses;
 
 namespace UI.Controllers
 {
@@ -93,22 +93,29 @@ namespace UI.Controllers
         [UserContext(RequiresGamingGroup = false)]
         public virtual ActionResult Details(int id, ApplicationUser currentUser)
         {
-            var player = playerRetriever.GetPlayerDetails(id, NUMBER_OF_RECENT_GAMES_TO_RETRIEVE);
+            try
+            {
+                var player = playerRetriever.GetPlayerDetails(id, NUMBER_OF_RECENT_GAMES_TO_RETRIEVE);
             
-            var fullUrl = Url.Action(MVC.Player.ActionNames.Details, MVC.Player.Name, new { id }, Request.Url.Scheme) + "#minions";
+                var fullUrl = Url.Action(MVC.Player.ActionNames.Details, MVC.Player.Name, new { id }, Request.Url.Scheme) + "#minions";
 
-            var playerIds = player.PlayerVersusPlayersStatistics.Select(x => x.OpposingPlayerId).ToList();
-            //--include the current player so we can attempt to get their email address as well
-            playerIds.Add(id);
-            var playerIdToRegisteredUserEmailAddressDictionary =
-                playerRetriever.GetRegisteredUserEmailAddresses(playerIds, currentUser);
-            var playerDetailsViewModel = playerDetailsViewModelBuilder.Build(player, playerIdToRegisteredUserEmailAddressDictionary, fullUrl, currentUser);
+                var playerIds = player.PlayerVersusPlayersStatistics.Select(x => x.OpposingPlayerId).ToList();
+                //--include the current player so we can attempt to get their email address as well
+                playerIds.Add(id);
+                var playerIdToRegisteredUserEmailAddressDictionary =
+                    playerRetriever.GetRegisteredUserEmailAddresses(playerIds, currentUser);
+                var playerDetailsViewModel = playerDetailsViewModelBuilder.Build(player, playerIdToRegisteredUserEmailAddressDictionary, fullUrl, currentUser);
 
-            ViewBag.RecentGamesMessage = showingXResultsMessageBuilder.BuildMessage(
-                NUMBER_OF_RECENT_GAMES_TO_RETRIEVE,
-                player.PlayerGameResults.Count);
+                ViewBag.RecentGamesMessage = showingXResultsMessageBuilder.BuildMessage(
+                    NUMBER_OF_RECENT_GAMES_TO_RETRIEVE,
+                    player.PlayerGameResults.Count);
 
-            return View(MVC.Player.Views.Details, playerDetailsViewModel);
+                return View(MVC.Player.Views.Details, playerDetailsViewModel);
+            }
+            catch (EntityDoesNotExistException<Player>)
+            {
+                return new HttpNotFoundResult();
+            }
         }
 
         // GET: /Player/SavePlayer
@@ -154,6 +161,27 @@ namespace UI.Controllers
             return View(MVC.Player.Views.InvitePlayer, playerInvitationViewModel);
         }
 
+        [HttpPost]
+        [Authorize]
+        [UserContext]
+        public virtual ActionResult InvitePlayer(PlayerInvitationViewModel playerInvitationViewModel, ApplicationUser currentUser)
+        {
+            var playerInvitation = new PlayerInvitation
+            {
+                InvitedPlayerId = playerInvitationViewModel.PlayerId,
+                InvitedPlayerEmail = playerInvitationViewModel.EmailAddress.Trim(),
+                EmailSubject = playerInvitationViewModel.EmailSubject,
+                CustomEmailMessage = playerInvitationViewModel.EmailBody,
+                GamingGroupId = currentUser.CurrentGamingGroupId.Value
+            };
+
+            playerInviter.InvitePlayer(playerInvitation, currentUser);
+
+            SetToastMessage(TempMessageKeys.TEMP_MESSAGE_KEY_PLAYER_INVITED, $"Email invitation successfully sent to {playerInvitationViewModel.PlayerName}!");
+
+            return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name));
+        }
+
         [HttpGet]
         public virtual ActionResult ShowTopPlayers()
         {
@@ -172,27 +200,6 @@ namespace UI.Controllers
             var recentNemesisChanges = nemesisHistoryRetriever.GetRecentNemesisChanges(request);
             var recentNemesisChangesViewModels = nemesisChangeViewModelBuilder.Build(recentNemesisChanges).ToList();
             return View(MVC.Player.Views.RecentNemesisChanges, recentNemesisChangesViewModels);
-        }
-
-        [HttpPost]
-        [Authorize]
-        [UserContext]
-        public virtual ActionResult InvitePlayer(PlayerInvitationViewModel playerInvitationViewModel, ApplicationUser currentUser)
-        {
-            var playerInvitation = new PlayerInvitation
-            {
-                InvitedPlayerId = playerInvitationViewModel.PlayerId,
-                InvitedPlayerEmail = playerInvitationViewModel.EmailAddress.Trim(),
-                EmailSubject = playerInvitationViewModel.EmailSubject,
-                CustomEmailMessage = playerInvitationViewModel.EmailBody,
-                GamingGroupId = currentUser.CurrentGamingGroupId.Value
-            };
-
-            playerInviter.InvitePlayer(playerInvitation, currentUser);
-
-            SetToastMessage(TempMessageKeys.TEMP_MESSAGE_KEY_PLAYER_INVITED,$"Email invitation successfully sent to {playerInvitationViewModel.PlayerName}!");
-
-            return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name));
         }
 
         [Authorize]
