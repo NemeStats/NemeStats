@@ -3,6 +3,9 @@ User-agent: *
 Disallow: /PlayedGame/Details/
 Disallow: /Player/Details/
 Disallow: /achievements/*/player/
+Disallow: /GamingGroup/
+Disallow: /UniversalGame/Details/
+Allow: /GamingGroup/GetTopGamingGroups
 Allow: /
 
 Sitemap: https://nemestats.com/sitemaps/sitemapindex.xml
