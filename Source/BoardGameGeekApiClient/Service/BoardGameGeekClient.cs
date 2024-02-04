@@ -27,7 +27,7 @@ namespace BoardGameGeekApiClient.Service
             _rollbar = rollbarClient;
         }
 
-        public const string BASE_URL_API_V2 = "http://www.boardgamegeek.com/xmlapi2";
+        public const string BASE_URL_API_V2 = "https://www.boardgamegeek.com/xmlapi2";
 
         public string GetGameThumbnail(int gameId)
         {

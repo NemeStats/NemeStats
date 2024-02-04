@@ -15,7 +15,7 @@ namespace BoardGameGeekApiClient.Tests.IntegrationTests
             [SetUp]
             public void SetUp()
             {
-                UserName = "kairos";
+                UserName = "HolisticDeveloper";
                 _results = ApiClient.GetUserGames(UserName);
             }
 
@@ -24,7 +24,7 @@ namespace BoardGameGeekApiClient.Tests.IntegrationTests
             {
                 Assert.IsNotNull(_results);
                 Assert.IsNotEmpty(_results);
-                Assert.That(_results.Any(g => g.Name == "Alchemists"), Is.True);
+                Assert.That(_results.Exists(g => g.Name == "Too Many Bones"), Is.True);
             }
         }
 
