@@ -16,11 +16,13 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using System.Linq;
-using BusinessLogic.Models.User;
-using System.Web.Mvc;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
+using BusinessLogic.Models;
+using BusinessLogic.Models.User;
+using System.Linq;
+using System.Web.Mvc;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Models.GameDefinitionModels;
@@ -36,7 +38,7 @@ namespace UI.Controllers
         private readonly IUniversalGameRetriever _universalGameRetriever;
         private readonly IPlayedGameDetailsViewModelBuilder _playedGameDetailsViewModelBuilder;
 
-        public UniversalGameController(ITransformer transformer, IUniversalGameRetriever universalGameRetriever, IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder, IUniversalTopChampionsRetreiver universalTopChampionsRetreiver)
+        public UniversalGameController(ITransformer transformer, IUniversalGameRetriever universalGameRetriever, IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder, IUniversalTopChampionsRetreiver universalTopChampionsRetriever)
         {
             _transformer = transformer;
             _universalGameRetriever = universalGameRetriever;
@@ -46,31 +48,38 @@ namespace UI.Controllers
         [UserContext(RequiresGamingGroup = false)]
         public virtual ActionResult Details(int id, ApplicationUser currentUser)
         {
-            var boardGameGeekGameSummary = _universalGameRetriever.GetBoardGameGeekGameSummary(id, currentUser);
-            var viewModel = _transformer.Transform<UniversalGameDetailsViewModel>(boardGameGeekGameSummary);
-            viewModel.BoardGameGeekInfo.HideLinkToGlobalStats = true;
-
-            var gamingGroupGameDefinitionSummary = boardGameGeekGameSummary.GamingGroupGameDefinitionSummary;
-
-            if (gamingGroupGameDefinitionSummary != null)
+            try
             {
-                viewModel.GamingGroupGameDefinitionSummary = new GamingGroupGameDefinitionViewModel
-                {
-                    GamingGroupId = gamingGroupGameDefinitionSummary.GamingGroupId,
-                    GamingGroupName = gamingGroupGameDefinitionSummary.GamingGroupName,
-                    PlayedGamesPanelTitle = $"Last {gamingGroupGameDefinitionSummary.PlayedGames.Count} Played Games",
-                    PlayedGames = gamingGroupGameDefinitionSummary.PlayedGames.Select(playedGame => _playedGameDetailsViewModelBuilder.Build(playedGame, currentUser, true)).ToList(),
-                    GameDefinitionPlayerSummaries = gamingGroupGameDefinitionSummary.PlayerWinRecords
-                    .Select(playerWinRecord => _transformer.Transform<GameDefinitionPlayerSummaryViewModel>(playerWinRecord)).ToList(),
-                    GamingGroupGameDefinitionStats = new GamingGroupGameDefinitionStatsViewModel
-                    {
-                        AveragePlayersPerGame = $"{gamingGroupGameDefinitionSummary.AveragePlayersPerGame:0.#}",
-                        TotalNumberOfGamesPlayed = gamingGroupGameDefinitionSummary.TotalNumberOfGamesPlayed
-                    }
-                };
-            }
+                var boardGameGeekGameSummary = _universalGameRetriever.GetBoardGameGeekGameSummary(id, currentUser);
+                var viewModel = _transformer.Transform<UniversalGameDetailsViewModel>(boardGameGeekGameSummary);
+                viewModel.BoardGameGeekInfo.HideLinkToGlobalStats = true;
 
-            return View(MVC.UniversalGame.Views.Details, viewModel);
+                var gamingGroupGameDefinitionSummary = boardGameGeekGameSummary.GamingGroupGameDefinitionSummary;
+
+                if (gamingGroupGameDefinitionSummary != null)
+                {
+                    viewModel.GamingGroupGameDefinitionSummary = new GamingGroupGameDefinitionViewModel
+                    {
+                        GamingGroupId = gamingGroupGameDefinitionSummary.GamingGroupId,
+                        GamingGroupName = gamingGroupGameDefinitionSummary.GamingGroupName,
+                        PlayedGamesPanelTitle = $"Last {gamingGroupGameDefinitionSummary.PlayedGames.Count} Played Games",
+                        PlayedGames = gamingGroupGameDefinitionSummary.PlayedGames.Select(playedGame => _playedGameDetailsViewModelBuilder.Build(playedGame, currentUser, true)).ToList(),
+                        GameDefinitionPlayerSummaries = gamingGroupGameDefinitionSummary.PlayerWinRecords
+                        .Select(playerWinRecord => _transformer.Transform<GameDefinitionPlayerSummaryViewModel>(playerWinRecord)).ToList(),
+                        GamingGroupGameDefinitionStats = new GamingGroupGameDefinitionStatsViewModel
+                        {
+                            AveragePlayersPerGame = $"{gamingGroupGameDefinitionSummary.AveragePlayersPerGame:0.#}",
+                            TotalNumberOfGamesPlayed = gamingGroupGameDefinitionSummary.TotalNumberOfGamesPlayed
+                        }
+                    };
+                }
+
+                return View(MVC.UniversalGame.Views.Details, viewModel);
+            }
+            catch (EntityDoesNotExistException<BoardGameGeekGameDefinition>)
+            {
+                return new HttpNotFoundResult();
+            }
         }
     }
 }

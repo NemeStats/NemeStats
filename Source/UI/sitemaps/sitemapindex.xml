@@ -4,6 +4,7 @@
     <loc>https://nemestats.com/sitemaps/staticpagessitemap-001.xml</loc>
     <lastmod>2018-05-01</lastmod>
   </sitemap>
+<!--
   <sitemap>
     <loc>https://nemestats.com/sitemaps/universalgamessitemap-001.xml</loc>
     <lastmod>2018-05-01</lastmod>
@@ -12,4 +13,5 @@
     <loc>https://nemestats.com/sitemaps/gaminggroupssitemap-001.xml</loc>
     <lastmod>2018-05-01</lastmod>
   </sitemap>
+-->
 </sitemapindex>

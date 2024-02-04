@@ -82,7 +82,7 @@ namespace BoardGameGeekApiClient.Tests.IntegrationTests
                 [SetUp]
                 public override void SetUp()
                 {
-                    Query = "go";
+                    Query = "pandemic";
                     base.SetUp();
                 }
 

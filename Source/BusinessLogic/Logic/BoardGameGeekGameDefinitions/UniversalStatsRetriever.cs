@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Data.Entity;
 using System.Linq;
 using BusinessLogic.Caching;
 using BusinessLogic.DataAccess;
@@ -6,8 +6,6 @@ using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.Utilities;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
-using System.Collections;
-using BusinessLogic.Facades;
 
 namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
 {
@@ -22,21 +20,31 @@ namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
 
         public override UniversalGameStats GetFromSource(int boardGameGeekGameDefinitionId)
         {
-            var result = _dataContext.GetQueryable<BoardGameGeekGameDefinition>()
+            var definition = _dataContext
+                .GetQueryable<BoardGameGeekGameDefinition>()
                 .Where(x => x.Id == boardGameGeekGameDefinitionId)
-                .Select(x => new UniversalGameStats
-                {
-                    AveragePlayersPerGame = x.GameDefinitions.Average(y => y.PlayedGames.Select(p => p.NumberOfPlayers).Average()),
-                    TotalNumberOfGamesPlayed = x.GameDefinitions.Sum(y => y.PlayedGames.Count),
-                    TotalGamingGroupsWithThisGame = x.GameDefinitions.Where(g=>g.Active && g.PlayedGames.Any()).GroupBy(y => y.GamingGroupId).Select(z => z.Key).Count()
-                }).SingleOrDefault();
+                .Include(x => x.GameDefinitions)
+                .Include(x => x.GameDefinitions.Select(y => y.PlayedGames))
+                .SingleOrDefault();
 
-            if (result == null)
+            if (definition == null)
             {
                 throw new EntityDoesNotExistException<BoardGameGeekGameDefinition>(boardGameGeekGameDefinitionId);
             }
 
-            return result;
+            if (definition.GameDefinitions.Any())
+            {
+                return new UniversalGameStats
+                {
+                    AveragePlayersPerGame = definition.GameDefinitions.Where(gd => gd.PlayedGames.Any()).DefaultIfEmpty().Average(y => y?.PlayedGames.Select(p => p.NumberOfPlayers).Average()) ?? 0,
+                    TotalNumberOfGamesPlayed = definition.GameDefinitions.Sum(y => y.PlayedGames.Count),
+                    TotalGamingGroupsWithThisGame = definition.GameDefinitions.Count(g => g.Active && g.PlayedGames.Any())
+                };
+            }
+            else
+            {
+                return new UniversalGameStats();
+            }
         }
     }
 }

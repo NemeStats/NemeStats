@@ -16,12 +16,13 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.PlayedGames;
+using BusinessLogic.Models;
 using NUnit.Framework;
+using Rhino.Mocks;
 using System.Net;
 using System.Web.Mvc;
-using Rhino.Mocks;
-using BusinessLogic.Models;
 using UI.Models.PlayedGame;
 using UI.Transformations;
 
@@ -47,9 +48,15 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [Test]
         public void ItReturns404StatusWhenNoPlayedGameIsFound()
         {
-            HttpStatusCodeResult actualResult = AutoMocker.ClassUnderTest.Details(-1, null) as HttpStatusCodeResult;
+            const int nonExistentPlayedGameId = -1;
+            AutoMocker.Get<IPlayedGameRetriever>().BackToRecord(BackToRecordOptions.All);
+            AutoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetPlayedGameDetails(nonExistentPlayedGameId))
+                .Throw(new EntityDoesNotExistException<PlayedGame>(nonExistentPlayedGameId));
+            AutoMocker.Get<IPlayedGameRetriever>().Replay();
 
-            Assert.AreEqual((int)HttpStatusCode.NotFound, actualResult.StatusCode);
+            var result = AutoMocker.ClassUnderTest.Details(nonExistentPlayedGameId, CurrentUser) as HttpStatusCodeResult;
+
+            Assert.That(result.StatusCode, Is.EqualTo((int)HttpStatusCode.NotFound));
         }
 
         [Test]

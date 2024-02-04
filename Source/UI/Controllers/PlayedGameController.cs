@@ -16,9 +16,8 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using System;
-using System.Globalization;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.PlayedGames;
@@ -27,12 +26,13 @@ using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.User;
+using BusinessLogic.Paging;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using BusinessLogic.Models.Players;
-using BusinessLogic.Paging;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Mappers.Interfaces;
@@ -53,7 +53,6 @@ namespace UI.Controllers
         private readonly IPlayedGameSaver _playedGameSaver;
         private readonly IGameDefinitionRetriever _gameDefinitionRetriever;
         private readonly IPlayedGameDeleter _playedGameDeleter;
-        private readonly IPlayerSaver _playerSaver;
         private readonly IMapperFactory _mapperFactory;
         private readonly ICreatePlayedGameComponent _createPlayedGameComponent;
         private readonly ICreateGameDefinitionComponent _createGameDefinitionComponent;
@@ -68,7 +67,6 @@ namespace UI.Controllers
             IGameDefinitionRetriever gameDefinitionRetriever,
             IPlayedGameSaver playedGameSaver,
             IPlayedGameDeleter playedGameDeleter,
-            IPlayerSaver playerSaver,
             IMapperFactory mapperFactory, 
             ICreatePlayedGameComponent createPlayedGameComponent, 
             ICreateGameDefinitionComponent createGameDefinitionComponent)
@@ -80,7 +78,6 @@ namespace UI.Controllers
             _gameDefinitionRetriever = gameDefinitionRetriever;
             _playedGameSaver = playedGameSaver;
             _playedGameDeleter = playedGameDeleter;
-            _playerSaver = playerSaver;
             _mapperFactory = mapperFactory;
             _createPlayedGameComponent = createPlayedGameComponent;
             _createGameDefinitionComponent = createGameDefinitionComponent;
@@ -94,19 +91,26 @@ namespace UI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var playedGame = _playedGameRetriever.GetPlayedGameDetails(id.Value);
-            if (playedGame == null)
+
+            PlayedGame playedGame;
+
+            try
+            {
+                playedGame = _playedGameRetriever.GetPlayedGameDetails(id.Value);
+            }
+            catch (EntityDoesNotExistException<PlayedGame>)
             {
                 return HttpNotFound();
             }
+
             var playedGameDetails = _playedGameDetailsBuilder.Build(playedGame, currentUser, true);
             return View(MVC.PlayedGame.Views.Details, playedGameDetails);
         }
 
         // GET: /PlayedGame/Create
-        [System.Web.Mvc.Authorize]
+        [Authorize]
         [UserContext]
-        [System.Web.Mvc.HttpGet]
+        [HttpGet]
         public virtual ActionResult Create(ApplicationUser currentUser)
         {
             var viewModel = MakeBaseCreatePlayedGameViewModel<CreatePlayedGameViewModel>(currentUser.CurrentGamingGroupId.Value);
@@ -262,7 +266,7 @@ namespace UI.Controllers
             viewModel.PlayerRanks = playedGameInfo.PlayerRanks;
             
             return View(MVC.PlayedGame.Views.CreateOrEdit, viewModel);
-//TODO allow editing of a game immediately after saving. No need to disable if currentStep == 5
+            //TODO allow editing of a game immediately after saving. No need to disable if currentStep == 5
         }
 
         private GameResultTypes SetGameType(List<PlayerRankWithName> playerRanks)
@@ -282,7 +286,7 @@ namespace UI.Controllers
         }
 
 
-        [System.Web.Mvc.HttpGet]
+        [HttpGet]
         public virtual ActionResult ShowRecentlyPlayedGames()
         {
             var recentlyPlayedGamesFilter = new RecentlyPlayedGamesFilter
@@ -298,7 +302,7 @@ namespace UI.Controllers
         }
 
         // GET: /PlayedGame/Delete/5
-        [System.Web.Mvc.Authorize]
+        [Authorize]
         [UserContext]
         public virtual ActionResult Delete(int? id, ApplicationUser currentUser)
         {
@@ -315,8 +319,8 @@ namespace UI.Controllers
         }
 
         // POST: /PlayedGame/Delete/5
-        [System.Web.Mvc.Authorize]
-        [System.Web.Mvc.HttpPost, System.Web.Mvc.ActionName("Delete")]
+        [Authorize]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [UserContext]
         public virtual ActionResult DeleteConfirmed(int id, ApplicationUser currentUser)
@@ -327,9 +331,9 @@ namespace UI.Controllers
                             + "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);
         }
 
-        [System.Web.Mvc.Authorize]
+        [Authorize]
         [UserContext]
-        [System.Web.Mvc.HttpGet]
+        [HttpGet]
         public virtual ActionResult Search(ApplicationUser currentUser)
         {
             var viewModel = new SearchViewModel
@@ -343,9 +347,9 @@ namespace UI.Controllers
             return View(MVC.PlayedGame.Views.Search, viewModel);
         }
 
-        [System.Web.Mvc.Authorize]
+        [Authorize]
         [UserContext]
-        [System.Web.Mvc.HttpPost]
+        [HttpPost]
         public virtual ActionResult Search(PlayedGamesFilterViewModel filter, ApplicationUser currentUser)
         {
             var playedGameFilter = new PlayedGameFilter

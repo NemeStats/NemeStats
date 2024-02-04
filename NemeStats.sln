@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "Source\UI\UI.csproj", "{960D6AE0-E6AE-4241-AB88-85532666AA84}"
 EndProject
@@ -20,6 +20,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{0F24A6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0D3237EF-CD60-42C4-BADD-F6AF8A7D9205}"
 	ProjectSection(SolutionItems) = preProject
+		Contributors.md = Contributors.md
+		GetStarted.ps1 = GetStarted.ps1
+		LICENSE = LICENSE
+		README.md = README.md
 		WebEssentials-Settings.json = WebEssentials-Settings.json
 	EndProjectSection
 EndProject
@@ -148,5 +152,6 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8
+		SolutionGuid = {A715C659-7657-40FA-8CE5-F9C710CC5468}
 	EndGlobalSection
 EndGlobal

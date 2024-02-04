@@ -22,45 +22,45 @@ using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
+using StructureMap.AutoMocking;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using StructureMap.AutoMocking;
 using UI.Controllers;
 using UI.Mappers.Interfaces;
 using UI.Models.PlayedGame;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
-	public class PlayedGameControllerTestBase
-	{
-	    protected RhinoAutoMocker<PlayedGameController> AutoMocker; 
-		protected string TestUserName = "the test user name";
-		protected ApplicationUser CurrentUser;
-	    protected const int EXPECTED_GAMING_GROUP_ID = 1;
-		protected List<GameDefinitionSummary> GameDefinitionSummaries;
-		protected List<PublicGameSummary> ExpectedViewModel;
-		protected PlayedGameEditViewModel ExpectedPopulatedCompletedGameViewModel;
-		protected List<Player> PlayerList;
-		protected List<SelectListItem> PlayerSelectList;
-		protected List<GameDefinition> GameDefinitionList;
-		protected List<SelectListItem> GameDefinitionSelectList;
+    public class PlayedGameControllerTestBase
+    {
+        protected RhinoAutoMocker<PlayedGameController> AutoMocker; 
+        protected string TestUserName = "the test user name";
+        protected ApplicationUser CurrentUser;
+        protected const int EXPECTED_GAMING_GROUP_ID = 1;
+        protected List<GameDefinitionSummary> GameDefinitionSummaries;
+        protected List<PublicGameSummary> ExpectedViewModel;
+        protected PlayedGameEditViewModel ExpectedPopulatedCompletedGameViewModel;
+        protected List<Player> PlayerList;
+        protected List<SelectListItem> PlayerSelectList;
+        protected List<GameDefinition> GameDefinitionList;
+        protected List<SelectListItem> GameDefinitionSelectList;
 
-		[SetUp]
-		public virtual void TestSetUp()
-		{
+        [SetUp]
+        public virtual void TestSetUp()
+        {
             AutoMocker = new RhinoAutoMocker<PlayedGameController>();
             AutoMocker.PartialMockTheClassUnderTest();
 
             CurrentUser = new ApplicationUser()
-			{
-				CurrentGamingGroupId = EXPECTED_GAMING_GROUP_ID
+            {
+                CurrentGamingGroupId = EXPECTED_GAMING_GROUP_ID
             };
-			GameDefinitionSummaries = new List<GameDefinitionSummary>();
+            GameDefinitionSummaries = new List<GameDefinitionSummary>();
             AutoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitions(EXPECTED_GAMING_GROUP_ID))
-				.Repeat.Once()
-				.Return(GameDefinitionSummaries);
+                .Repeat.Once()
+                .Return(GameDefinitionSummaries);
 
-		    AutoMocker.ClassUnderTest.Url = MockRepository.GenerateMock<UrlHelper>();
+            AutoMocker.ClassUnderTest.Url = MockRepository.GenerateMock<UrlHelper>();
 
             var expectedMapper = MockRepository.GenerateMock<ICustomMapper<SavePlayedGameRequest, NewlyCompletedGame>>();
             AutoMocker.Get<IMapperFactory>()
@@ -74,5 +74,5 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                 .Return(expectedUpdateGameMapper);
             expectedUpdateGameMapper.Expect(mock => mock.Map(Arg<SavePlayedGameRequest>.Is.Anything)).Return(new UpdatedGame());
         }
-	}
+    }
 }

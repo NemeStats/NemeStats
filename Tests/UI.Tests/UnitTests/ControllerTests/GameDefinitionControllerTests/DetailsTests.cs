@@ -31,6 +31,7 @@ using NemeStats.TestingHelpers.NemeStatsTestingExtensions;
 using Shouldly;
 using UI.Models.GameDefinitionModels;
 using UI.Transformations;
+using BusinessLogic.Exceptions;
 
 namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 {
@@ -139,14 +140,16 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItReturnsAnHttpNotFoundStatusCodeIfTheGameDefinitionIsNotFound()
         {
+            const int nonExistentGameDefinitionId = 999999;
+
             autoMocker.Get<IGameDefinitionRetriever>().BackToRecord(BackToRecordOptions.All);
             autoMocker.Get<IGameDefinitionRetriever>().Replay();
             autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetGameDefinitionDetails(
                 Arg<int>.Is.Anything,
                 Arg<int>.Is.Anything))
-                .Throw(new KeyNotFoundException());
+                .Throw(new EntityDoesNotExistException<GameDefinition>(nonExistentGameDefinitionId));
 
-            var result = autoMocker.ClassUnderTest.Details(999999, currentUser) as HttpStatusCodeResult;
+            var result = autoMocker.ClassUnderTest.Details(nonExistentGameDefinitionId, currentUser) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.NotFound, result.StatusCode);
         }

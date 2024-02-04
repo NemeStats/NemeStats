@@ -27,42 +27,42 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessLogic.Models
 {
-	public class GamingGroup : SecuredEntityWithTechnicalKey<int>
-	{
-		public GamingGroup()
-		{
-			DateCreated = DateTime.UtcNow;
-		}
+    public class GamingGroup : SecuredEntityWithTechnicalKey<int>
+    {
+        public GamingGroup()
+        {
+            DateCreated = DateTime.UtcNow;
+        }
 
-		public override int Id { get; set; }
-	    [StringLength(255)]
+        public override int Id { get; set; }
+        [StringLength(255)]
         public string Name { get; set; }
-	    [StringLength(2000)]
+        [StringLength(2000)]
         public string PublicDescription { get; set; }
-	    [StringLength(255)]
+        [StringLength(255)]
         public string PublicGamingGroupWebsite { get; set; }
 
         //--This is necessary so that the GamingGroup itself can be a secured entity
         [NotMapped]
-	    public override int GamingGroupId
-	    {
-	        get { return Id; }
-	        set { Id = value; }
-	    }
+        public override int GamingGroupId
+        {
+            get { return Id; }
+            set { Id = value; }
+        }
 
-	    public string OwningUserId { get; set; }
+        public string OwningUserId { get; set; }
         public int? GamingGroupChampionPlayerId { get; set; }
-		public DateTime DateCreated { get; set; }
-	    public bool Active { get; set; } = true;
+        public DateTime DateCreated { get; set; }
+        public bool Active { get; set; } = true;
 
-		[ForeignKey("OwningUserId")]
-		public virtual ApplicationUser OwningUser { get; set; }
+        [ForeignKey("OwningUserId")]
+        public virtual ApplicationUser OwningUser { get; set; }
         [ForeignKey("GamingGroupChampionPlayerId")]
         public virtual Player GamingGroupChampion { get; set; }
-		public virtual IList<Player> Players { get; set; }
-		public virtual IList<GameDefinition> GameDefinitions { get; set; }
-		public virtual IList<PlayedGame> PlayedGames { get; set; }
-		public virtual IList<GamingGroupInvitation> GamingGroupInvitations { get; set; }
-		public virtual IList<UserGamingGroup> UserGamingGroups { get; set; }
-	}
+        public virtual IList<Player> Players { get; set; }
+        public virtual IList<GameDefinition> GameDefinitions { get; set; }
+        public virtual IList<PlayedGame> PlayedGames { get; set; }
+        public virtual IList<GamingGroupInvitation> GamingGroupInvitations { get; set; }
+        public virtual IList<UserGamingGroup> UserGamingGroups { get; set; }
+    }
 }
