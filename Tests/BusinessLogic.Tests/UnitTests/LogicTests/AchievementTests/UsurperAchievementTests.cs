@@ -7,7 +7,6 @@ using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.Games;
 using NUnit.Framework;
-using NUnit.VisualStudio.TestAdapter;
 using Rhino.Mocks;
 using StructureMap.AutoMocking;
 
