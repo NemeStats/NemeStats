@@ -1,4 +1,4 @@
-{ 
+{
   "name": "NemeStats",
   "repository": {
     "type": "git",
@@ -30,9 +30,11 @@
     "font-awesome": "^4.4.0"
   },
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-sass": "2.0.0",
-    "grunt-contrib-copy": "^0.8.2"
+    "grunt": "^1.6.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-sass": "^3.1.0",
+    "node-gyp": "^10.0.1",
+    "node-sass": "^9.0.0"
   }
 }
