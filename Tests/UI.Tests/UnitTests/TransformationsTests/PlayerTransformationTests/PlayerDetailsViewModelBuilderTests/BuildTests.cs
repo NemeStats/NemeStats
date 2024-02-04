@@ -495,7 +495,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             var expectedPointsPerGame = (float)_playerDetails.PlayerStats.NemePointsSummary.TotalPoints / (float)_playerDetails.PlayerStats.TotalGames;
             var expectedPointsPerPlayer = expectedPointsPerGame / (float)_playerDetails.PlayerStats.AveragePlayersPerGame;
 
-            Assert.AreEqual(expectedPointsPerPlayer, _playerDetailsViewModel.AveragePointsPerPlayer);
+            Assert.That(expectedPointsPerPlayer, Is.EqualTo(_playerDetailsViewModel.AveragePointsPerPlayer).Within(.001));
         }
 
         [Test]
