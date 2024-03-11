@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Logic.PlayerAchievements;
+using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.User;
 using BusinessLogic.Paging;
@@ -81,16 +83,24 @@ namespace UI.Controllers
         public virtual ActionResult PlayerAchievement(AchievementId achievementId, int playerId)
         {
             var query = new PlayerAchievementQuery(achievementId, playerId);
-            var playerAchievementDetails = _playerAchievementRetriever.GetPlayerAchievement(query);
-            if (playerAchievementDetails == null)
+
+            try
+            {
+                var playerAchievementDetails = _playerAchievementRetriever.GetPlayerAchievement(query);
+                if (playerAchievementDetails == null)
+                {
+                    return new HttpNotFoundResult();
+                }
+
+                var playerAchievementViewModel =
+                    _transformer.Transform<PlayerAchievementViewModel>(playerAchievementDetails);
+
+                return View(MVC.Achievement.Views.Details, playerAchievementViewModel);
+            }
+            catch (EntityDoesNotExistException<Player>)
             {
                 return new HttpNotFoundResult();
             }
-
-            var playerAchievementViewModel =
-                _transformer.Transform<PlayerAchievementViewModel>(playerAchievementDetails);
-
-            return View(MVC.Achievement.Views.Details, playerAchievementViewModel);
         }
 
         [Route("recent-unlocks/{page}")]
