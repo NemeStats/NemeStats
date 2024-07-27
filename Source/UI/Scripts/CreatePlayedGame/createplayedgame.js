@@ -53,13 +53,14 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
         var rankedGameContainer = document.getElementById("ranked-game");
         var list = dragula([rankedGameContainer]);
 
-        list.on("dragend", function (el) {
+        list.on("drop", function (el) {
             $.each($(el).parent().find("li"), function (i, player) {
                 var $player = $(player);
                 var key = $player.data("index");
                 parent.component.setRank(key, i + 1);
                 parent.gaObject.trackGAEvent("PlayedGames", "SetRank", "DragAndDrop", key);
             });
+
         });
 
     },
@@ -272,16 +273,17 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         return this.viewModel.Players.length + " players";
                     },
                     orderedPlayers: function () {
+                        // Uncomment this to replace dynamic sorting of players
                         if (editMode) {
                             return this.viewModel.Players.sort(function (player1, player2) {
-                                if (player1.RankScored < player2.RankScored) return -1;
-                                if (player1.RankScored > player2.RankScored) return 1;
+                                //if (player1.RankScored < player2.RankScored) return -1;
+                                //if (player1.RankScored > player2.RankScored) return 1;
                                 return 0;
                             });
                         } else {
                             return this.viewModel.Players.sort(function (player1, player2) {
-                                if (player1.Rank < player2.Rank) return -1;
-                                if (player1.Rank > player2.Rank) return 1;
+                                //if (player1.Rank < player2.Rank) return -1;
+                                //if (player1.Rank > player2.Rank) return 1;
                                 return 0;
                             });
                         }
@@ -473,11 +475,11 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                     changeRank: function (player, increase) {
                         var newRank;
 
-                        var elementMoved = $("[data-index=" + player.Id + "]");
-                        elementMoved.addClass("animated pulse");
-                        elementMoved.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
-                            $(this).removeClass("animated pulse");
-                        });
+                        //var elementMoved = $("[data-index=" + player.Id + "]");
+                        //elementMoved.addClass("animated pulse");
+                        //elementMoved.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+                        //    $(this).removeClass("animated pulse");
+                        //});
 
                         if (increase) {
                             if (player.Rank === 1) {
@@ -485,31 +487,23 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                             }
                             newRank = player.Rank - 1;
                         } else {
+                            if (player.Rank + 1 > this.viewModel.Players.length) {
+                                return;
+                            }
                             newRank = player.Rank + 1;
                         }
 
-                        this.viewModel.Players.forEach(function (p) {
-                            if (p.Rank === newRank) {
-                                p.Rank = player.Rank;
-                                return;
-                            }
-                        });
+                        //this.viewModel.Players.forEach(function (p) {
+                        //    if (p.Rank === newRank) {
+                        //        p.Rank = player.Rank;
+                        //        return;
+                        //    }
+                        // });
 
                         player.Rank = newRank;
                     },
                     isLastRank: function (player) {
-                        var hasMoreRankThanOtherPlayer = false;
-                        var hasLessRankThanOtherPlayer = false;
-                        this.viewModel.Players.forEach(function (p) {
-                            if (player.Name !== p.Name) {
-                                if (player.Rank >= p.Rank) {
-                                    hasMoreRankThanOtherPlayer = true;
-                                } else {
-                                    hasLessRankThanOtherPlayer = true;
-                                }
-                            }
-                        });
-                        return hasMoreRankThanOtherPlayer && !hasLessRankThanOtherPlayer;
+                        return (player.Rank >= this.viewModel.Players.length)
                     },
                     focus: function(e) {
                         e.target.select();

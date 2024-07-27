@@ -192,70 +192,70 @@
                             <div class="tab-content">
                                 <div role="tabpanel" class="tab-pane" v-bind:class="{ 'active': viewModel.GameType == 1 }" id="ranked">
                                     <ul class="list-group" id="ranked-game">
-                                        <li class="list-group-item result-item" v-for="(player, index) in orderedPlayers" :key="player.Id" :data-index="player.Id">
-
-                                            <input type="number" class="form-control input-sm rank" v-model="player.Rank" number @@click="focus" />
+                                        <li class="list-group-item result-item" v-for="(player, index) in orderedPlayers" :key="player.Id" :data-index="player.Id" style="padding-bottom:25px;margin-bottom:5px;align-self:center">
+                                            <b>{{ player.Rank }}</b>&nbsp;&nbsp;&nbsp;&nbsp;
                                             {{ player.Name }}
                                             <div class="result-float-right">
                                                 <button class="btn btn-default" id="btn-reducerank" v-on:click="changeRank(player,true)" tabindex="-1" :disabled="player.Rank === 1" title="Improve rank"><span class="fa fa-arrow-up"></span></button>
                                                 <button class="btn btn-default" id="btn-increaserank" v-on:click="changeRank(player,false)" tabindex="-1" :disabled="isLastRank(player)" title="Decrease rank"><span class="fa fa-arrow-down"></span></button>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div role="tabpanel" class="tab-pane" v-bind:class="{ 'active': viewModel.GameType == 2 }" id="scored">
-                                    <ul class="list-group" id="scored-game">
-                                        <li class="list-group-item result-item" v-for="(player, index) in viewModel.Players" :key="player.PlayerId" v-bind:data-index="index">
-                                            <strong>{{ player.RankScored | scoredposition }}</strong> - 
-                                            {{ player.Name }}
-                                            <div class="result-float-right">
-                                                <input type="number" class="form-control input-sm score" v-model.number="player.PointsScored" number v-on:blur="recalculateRankScored" @@click="focus" debounce="500"/> points
-                                            </div>
-                                            <div class="fl-clear"></div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div role="tabpanel" class="tab-pane" v-bind:class="{ 'active': viewModel.GameType == 3 }" id="cooperative">
-                                    <button class="btn btn-success btn-recordgame btn-everyone-won" id="btnEveryoneWonButton" title="Give everyone a team win" v-on:click="setGameResult(2)">
-                                        <i class="fa fa-smile-o"></i> Everyone Won
-                                    </button>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" v-bind:class="{ 'active': viewModel.GameType == 2 }" id="scored">
+                                        <ul class="list-group" id="scored-game">
+                                            <li class="list-group-item result-item" v-for="(player, index) in viewModel.Players" :key="player.PlayerId" v-bind:data-index="index">
+                                                <strong>{{ player.RankScored | scoredposition }}</strong> -
+                                                {{ player.Name }}
+                                                <div class="result-float-right">
+                                                    <input type="number" class="form-control input-sm score" v-model.number="player.PointsScored" number v-on:blur="recalculateRankScored" @@click="focus" debounce="500"/> points
+                                                </div>
+                                                <div class="fl-clear"></div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" v-bind:class="{ 'active': viewModel.GameType == 3 }" id="cooperative">
+                                        <button class="btn btn-success btn-recordgame btn-everyone-won" id="btnEveryoneWonButton" title="Give everyone a team win" v-on:click="setGameResult(2)">
+                                            <i class="fa fa-smile-o"></i> Everyone Won
+                                        </button>
 
-                                    <button class="btn btn-danger btn-recordgame btn-not-first" id="btnEveryoneLostButton" title="Give everyone a team loss" v-on:click="setGameResult(3)">
-                                        <i class="fa fa-frown-o"></i> Everyone Lost
-                                    </button> 
+                                        <button class="btn btn-danger btn-recordgame btn-not-first" id="btnEveryoneLostButton" title="Give everyone a team loss" v-on:click="setGameResult(3)">
+                                            <i class="fa fa-frown-o"></i> Everyone Lost
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <h4 class="title">Game notes (optional)</h4>
+                                <textarea v-model="viewModel.GameNotes" class="form-control" rows="4"></textarea>
+                            </div>
+                            <button class="btn btn-default" v-on:click="backToSelectPlayers" title="Go back to change the Players">Back</button>
+                            <button class="btn btn-primary" v-on:click="setGameResult(1)" title="Save this game now">Save played game</button>
                         </div>
-                        <div class="form-group">
-                            <h4 class="title">Game notes (optional)</h4>
-                            <textarea v-model="viewModel.GameNotes" class="form-control" rows="4"></textarea>
-                        </div>
-                        <button class="btn btn-default" v-on:click="backToSelectPlayers" title="Go back to change the Players">Back</button>
-                        <button class="btn btn-primary" v-on:click="setGameResult(1)" title="Save this game now">Save played game</button>
                     </div>
-                </div>
-                <div v-show="currentStep==5" style="display: none">
-                    <div class="content">
-                        <h2 class="title">Played game recorded successfully</h2>
-                        <div class="well">
-                            <h4 style="margin-bottom: 20px"><strong>{{ viewModel.Players.length }}</strong> players played <strong>{{ viewModel.Game.Name }}</strong> on <strong>{{ viewModel.Date | convertToLocalDate }}</strong></h4>
+                    <div v-show="currentStep==5" style="display: none">
+                        <div class="content">
+                            <h2 class="title">Played game recorded successfully</h2>
+                            <div class="well">
+                                <h4 style="margin-bottom: 20px"><strong>{{ viewModel.Players.length }}</strong> players played <strong>{{ viewModel.Game.Name }}</strong> on <strong>{{ viewModel.Date | convertToLocalDate }}</strong></h4>
 
-                            <h4 class="title">What do you want to do next?</h4>
-                            <div class="action-buttons">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <a id="btn-gotogaminggroup" href="@Url.Action(MVC.GamingGroup.Index())" class="btn btn-primary" title="View Gaming Group details"><span class="fa fa-arrow-left fa-lg"></span> View my Gaming Group</a>
+                                <h4 class="title">What do you want to do next?</h4>
+                                <div class="action-buttons">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <a id="btn-gotogaminggroup" href="@Url.Action(MVC.GamingGroup.Index())" class="btn btn-primary" title="View Gaming Group details"><span class="fa fa-arrow-left fa-lg"></span> View my Gaming Group</a>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <button id="btn-gotorecentlycreatedplayedgame" class="btn btn-primary" v-on:click="gotoRecentlyPlayedGame" title="View Played Game details"><span class="fa fa-share fa-lg"></span>View this Played Game</button>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <button id="btn-gotorecentlycreatedplayedgame" class="btn btn-primary" v-on:click="gotoRecentlyPlayedGame" title="View Played Game details"><span class="fa fa-share fa-lg"></span>View this Played Game</button>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <button id="btn-gotocreateother" class="btn btn-default" v-on:click="reload" title="Record a new Played Game"><span class="fa fa-plus-circle fa-lg"></span> Record another Played Game</button>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <button id="btn-tweetrecentplayedgame" class="btn btn-twitter" v-on:click="postTweet" title="Post a link to this Played Game on Twitter"><span class="fa fa-twitter fa-lg"></span> Post on Twitter!</button>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <button id="btn-gotocreateother" class="btn btn-default" v-on:click="reload" title="Record a new Played Game"><span class="fa fa-plus-circle fa-lg"></span> Record another Played Game</button>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <button id="btn-tweetrecentplayedgame" class="btn btn-twitter" v-on:click="postTweet" title="Post a link to this Played Game on Twitter"><span class="fa fa-twitter fa-lg"></span> Post on Twitter!</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -264,37 +264,36 @@
                 </div>
             </div>
         </div>
+        <div class="loading" style="display: none" v-show="serverRequestInProgress">
+            <span class="fa fa-spinner fa-spin fa-3x fa-fw"></span>
+        </div>
     </div>
-    <div class="loading" style="display: none" v-show="serverRequestInProgress">
-        <span class="fa fa-spinner fa-spin fa-3x fa-fw"></span>
-    </div>
-</div>
 
-@section Scripts{
-    @Scripts.Render("~/bundles/moment")
-    <script type="text/javascript">
-        //Creation
-        $(document).ready(function () {
-            var createPlayedGame = new window.Views.PlayedGame.CreatePlayedGame();
-            createPlayedGame.init();
-        });
-    </script>
-}
+    @section Scripts{
+        @Scripts.Render("~/bundles/moment")
+        <script type="text/javascript">
+            //Creation
+            $(document).ready(function () {
+                var createPlayedGame = new window.Views.PlayedGame.CreatePlayedGame();
+                createPlayedGame.init();
+            });
+        </script>
+    }
 
-@helper SelectGame(string title, IList<GameDefinitionDisplayInfoViewModel> games, string gtaClass)
-{
-    <h4 class="title">@title</h4>
-foreach (var game in games)
-{
-        <span class="game-image" v-on:click="selectGame(@game.Id,'@game.Name.Replace("'","\"")' )" title="Select @game.Name as the game that was played">
-            @if (!string.IsNullOrEmpty(game.ThumbnailImageUrl))
-            {
-                <img src="@game.ThumbnailImageUrl" class="@gtaClass" alt="@game.Name" />
-            }
-            else
-            {
-                <span class="name">@game.Name</span>
-            }
-        </span>
-}
-}
+    @helper SelectGame(string title, IList<GameDefinitionDisplayInfoViewModel> games, string gtaClass)
+    {
+        <h4 class="title">@title</h4>
+    foreach (var game in games)
+    {
+            <span class="game-image" v-on:click="selectGame(@game.Id,'@game.Name.Replace("'","\"")' )" title="Select @game.Name as the game that was played">
+                @if (!string.IsNullOrEmpty(game.ThumbnailImageUrl))
+                {
+                    <img src="@game.ThumbnailImageUrl" class="@gtaClass" alt="@game.Name" />
+                }
+                else
+                {
+                    <span class="name">@game.Name</span>
+                }
+            </span>
+    }
+    }
