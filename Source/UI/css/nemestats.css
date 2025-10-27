@@ -263,7 +263,7 @@
     .home-features .description .imgs {
       text-align: center; }
       .home-features .description .imgs img {
-        width: 65px;
+        height: 65px;
         margin-top: 10px; }
 
 .forgot-password {
@@ -742,6 +742,7 @@ button > i.fa {
   .open > .btn.btn-google.dropdown-toggle {
     color: white;
     background-color: #0c7cd5;
+    background-image: none;
     border-color: #0b76cc; }
     .btn.btn-google:active:hover, .btn.btn-google:active:focus, .btn.btn-google:active.focus, .btn.btn-google.active:hover, .btn.btn-google.active:focus, .btn.btn-google.active.focus,
     .open > .btn.btn-google.dropdown-toggle:hover,
@@ -750,16 +751,10 @@ button > i.fa {
       color: white;
       background-color: #0a68b4;
       border-color: #08528d; }
-  .btn.btn-google:active, .btn.btn-google.active,
-  .open > .btn.btn-google.dropdown-toggle {
-    background-image: none; }
-  .btn.btn-google.disabled, .btn.btn-google.disabled:hover, .btn.btn-google.disabled:focus, .btn.btn-google.disabled.focus, .btn.btn-google.disabled:active, .btn.btn-google.disabled.active, .btn.btn-google[disabled], .btn.btn-google[disabled]:hover, .btn.btn-google[disabled]:focus, .btn.btn-google[disabled].focus, .btn.btn-google[disabled]:active, .btn.btn-google[disabled].active,
-  fieldset[disabled] .btn.btn-google,
+  .btn.btn-google.disabled:hover, .btn.btn-google.disabled:focus, .btn.btn-google.disabled.focus, .btn.btn-google[disabled]:hover, .btn.btn-google[disabled]:focus, .btn.btn-google[disabled].focus,
   fieldset[disabled] .btn.btn-google:hover,
   fieldset[disabled] .btn.btn-google:focus,
-  fieldset[disabled] .btn.btn-google.focus,
-  fieldset[disabled] .btn.btn-google:active,
-  fieldset[disabled] .btn.btn-google.active {
+  fieldset[disabled] .btn.btn-google.focus {
     background-color: #2196F3;
     border-color: #2196F3; }
   .btn.btn-google .badge {
@@ -783,6 +778,7 @@ button > i.fa {
   .open > .btn.btn-action.dropdown-toggle {
     color: white;
     background-color: #2480bc;
+    background-image: none;
     border-color: #1e2632; }
     .btn.btn-action:active:hover, .btn.btn-action:active:focus, .btn.btn-action:active.focus, .btn.btn-action.active:hover, .btn.btn-action.active:focus, .btn.btn-action.active.focus,
     .open > .btn.btn-action.dropdown-toggle:hover,
@@ -791,16 +787,10 @@ button > i.fa {
       color: white;
       background-color: #1e6b9e;
       border-color: #050708; }
-  .btn.btn-action:active, .btn.btn-action.active,
-  .open > .btn.btn-action.dropdown-toggle {
-    background-image: none; }
-  .btn.btn-action.disabled, .btn.btn-action.disabled:hover, .btn.btn-action.disabled:focus, .btn.btn-action.disabled.focus, .btn.btn-action.disabled:active, .btn.btn-action.disabled.active, .btn.btn-action[disabled], .btn.btn-action[disabled]:hover, .btn.btn-action[disabled]:focus, .btn.btn-action[disabled].focus, .btn.btn-action[disabled]:active, .btn.btn-action[disabled].active,
-  fieldset[disabled] .btn.btn-action,
+  .btn.btn-action.disabled:hover, .btn.btn-action.disabled:focus, .btn.btn-action.disabled.focus, .btn.btn-action[disabled]:hover, .btn.btn-action[disabled]:focus, .btn.btn-action[disabled].focus,
   fieldset[disabled] .btn.btn-action:hover,
   fieldset[disabled] .btn.btn-action:focus,
-  fieldset[disabled] .btn.btn-action.focus,
-  fieldset[disabled] .btn.btn-action:active,
-  fieldset[disabled] .btn.btn-action.active {
+  fieldset[disabled] .btn.btn-action.focus {
     background-color: #3A9AD9;
     border-color: #354458; }
   .btn.btn-action .badge {
@@ -823,6 +813,7 @@ button > i.fa {
   .open > .btn.btn-twitter.dropdown-toggle {
     color: white;
     background-color: #4296d5;
+    background-image: none;
     border-color: #3a91d3; }
     .btn.btn-twitter:active:hover, .btn.btn-twitter:active:focus, .btn.btn-twitter:active.focus, .btn.btn-twitter.active:hover, .btn.btn-twitter.active:focus, .btn.btn-twitter.active.focus,
     .open > .btn.btn-twitter.dropdown-toggle:hover,
@@ -831,16 +822,10 @@ button > i.fa {
       color: white;
       background-color: #2d84c7;
       border-color: #256ea5; }
-  .btn.btn-twitter:active, .btn.btn-twitter.active,
-  .open > .btn.btn-twitter.dropdown-toggle {
-    background-image: none; }
-  .btn.btn-twitter.disabled, .btn.btn-twitter.disabled:hover, .btn.btn-twitter.disabled:focus, .btn.btn-twitter.disabled.focus, .btn.btn-twitter.disabled:active, .btn.btn-twitter.disabled.active, .btn.btn-twitter[disabled], .btn.btn-twitter[disabled]:hover, .btn.btn-twitter[disabled]:focus, .btn.btn-twitter[disabled].focus, .btn.btn-twitter[disabled]:active, .btn.btn-twitter[disabled].active,
-  fieldset[disabled] .btn.btn-twitter,
+  .btn.btn-twitter.disabled:hover, .btn.btn-twitter.disabled:focus, .btn.btn-twitter.disabled.focus, .btn.btn-twitter[disabled]:hover, .btn.btn-twitter[disabled]:focus, .btn.btn-twitter[disabled].focus,
   fieldset[disabled] .btn.btn-twitter:hover,
   fieldset[disabled] .btn.btn-twitter:focus,
-  fieldset[disabled] .btn.btn-twitter.focus,
-  fieldset[disabled] .btn.btn-twitter:active,
-  fieldset[disabled] .btn.btn-twitter.active {
+  fieldset[disabled] .btn.btn-twitter.focus {
     background-color: #6cadde;
     border-color: #6cadde; }
   .btn.btn-twitter .badge {
@@ -1203,27 +1188,27 @@ table tbody tr td.edit-col {
     min-height: 40px; }
 
 .ui-pnotify.bronze .alert {
+  color: #ba7f10;
   background-color: #F5CF87;
-  border-color: #efb340;
-  color: #ba7f10; }
+  border-color: #efb340; }
   .ui-pnotify.bronze .alert hr {
     border-top-color: #eda929; }
   .ui-pnotify.bronze .alert .alert-link {
     color: #8b5f0c; }
 
 .ui-pnotify.silver .alert {
+  color: #8b8b80;
   background-color: #E0E0DD;
-  border-color: #bcbcb5;
-  color: #8b8b80; }
+  border-color: #bcbcb5; }
   .ui-pnotify.silver .alert hr {
     border-top-color: #afafa8; }
   .ui-pnotify.silver .alert .alert-link {
     color: #717167; }
 
 .ui-pnotify.gold .alert {
+  color: #b39c00;
   background-color: #FFDF00;
-  border-color: #b39c00;
-  color: #b39c00; }
+  border-color: #b39c00; }
   .ui-pnotify.gold .alert hr {
     border-top-color: #998600; }
   .ui-pnotify.gold .alert .alert-link {

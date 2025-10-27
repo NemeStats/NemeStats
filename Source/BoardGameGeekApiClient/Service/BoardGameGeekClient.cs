@@ -20,14 +20,13 @@ namespace BoardGameGeekApiClient.Service
         private readonly IApiDownloadService _apiDownloadService;
         private readonly IRollbarClient _rollbar;
 
-
         public BoardGameGeekClient(IApiDownloadService apiDownloadService, IRollbarClient rollbarClient)
         {
             _apiDownloadService = apiDownloadService;
             _rollbar = rollbarClient;
         }
 
-        public const string BASE_URL_API_V2 = "https://www.boardgamegeek.com/xmlapi2";
+        public const string BASE_URL_API_V2 = "https://boardgamegeek.com/xmlapi2";
 
         public string GetGameThumbnail(int gameId)
         {
@@ -58,22 +57,17 @@ namespace BoardGameGeekApiClient.Service
 
         public GameDetails GetGameDetails(int gameId)
         {
-
             GameDetails details = null;
-
 
             try
             {
                 var apiUri = new Uri(BASE_URL_API_V2 + $"/thing?id={gameId}&stats=1");
-
                 var xDoc = _apiDownloadService.DownloadApiResult(apiUri);
-
 
                 // LINQ to XML.
                 var xElements = xDoc.Descendants("items").ToList();
                 if (xElements.Count() == 1)
                 {
-
                     var gameCollection = xElements.Select(boardgame => new GameDetails
                     {
                         Name = boardgame.Element("item").GetBoardGameName(),
@@ -121,7 +115,6 @@ namespace BoardGameGeekApiClient.Service
                     });
 
                     details = gameCollection.FirstOrDefault();
-
                 }
             }
             catch (Exception ex)
@@ -137,14 +130,10 @@ namespace BoardGameGeekApiClient.Service
         {
             UserDetails details = null;
 
-
             try
             {
                 var teamDataURI = new Uri(string.Format(BASE_URL_API_V2 + "/user?name={0}", userName));
-
                 var xDoc = _apiDownloadService.DownloadApiResult(teamDataURI);
-
-
                 var xElements = xDoc.Descendants("user").ToList();
                 if (xElements.Count() == 1)
                 {
@@ -229,7 +218,6 @@ namespace BoardGameGeekApiClient.Service
 
                 var searchUrl = new Uri(uriString);
 
-
                 var xDoc = _apiDownloadService.DownloadApiResult(searchUrl);
 
                 // LINQ to XML.
@@ -254,11 +242,5 @@ namespace BoardGameGeekApiClient.Service
                 return new List<SearchBoardGameResult>();
             }
         }
-
-
-
-
-
-
     }
 }

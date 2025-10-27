@@ -1,4 +1,5 @@
 using System;
+using System.Configuration.Abstractions;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -24,28 +25,27 @@ namespace BoardGameGeekApiClient.Service
     public class ApiDownloaderService : IApiDownloadService
     {
         private readonly RetryPolicy<BGGTransientErrorDetectionStrategy> _retryPolicy;
+        private readonly IConfigurationManager _configManager;
 
-        public ApiDownloaderService()
+        public ApiDownloaderService(IConfigurationManager configManager)
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
             var retryStrategy = new Incremental(5, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2));
             _retryPolicy = new RetryPolicy<BGGTransientErrorDetectionStrategy>(retryStrategy);
+            _configManager = configManager;
         }
 
         public XDocument DownloadApiResult(Uri requestUrl)
         {
             Debug.WriteLine("Downloading " + requestUrl);
 
-            
-
             XDocument result = null;
             _retryPolicy.ExecuteAction(() => ReadApiResult(requestUrl, out result));
-
 
             return result;
         }
 
-        private static void ReadApiResult(Uri requestUrl, out XDocument data)
+        private void ReadApiResult(Uri requestUrl, out XDocument data)
         {
             // Due to malformed header I cannot use GetContentAsync and ReadAsStringAsync :(
             // UTF-8 is now hard-coded...
@@ -60,6 +60,7 @@ namespace BoardGameGeekApiClient.Service
                 request.Timeout = 10000;
                 //--setting this so BGG can see the request from NemeStats
                 request.UserAgent = "NemeStats website/2.96";
+                request.Headers.Add(HttpRequestHeader.Authorization, $"Bearer {_configManager.AppSettings["BGGBearerToken"]}");
                 using (var response = (HttpWebResponse)(request.GetResponse()))
                 {
                     if (response.StatusCode != HttpStatusCode.OK)
