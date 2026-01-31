@@ -32,9 +32,10 @@ jobs:
 
     - name: Run tests (excluding Integration)
       run: |
+        $vstestPath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"
         $testDlls = Get-ChildItem -Recurse -Filter *.Tests.dll | Where-Object { $_.FullName -notmatch 'Integration' }
         foreach ($dll in $testDlls) {
-          & "${{ env.ProgramFiles(x86) }}\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe" $dll.FullName
+          & $vstestPath $dll.FullName
         }
       shell: pwsh
 
