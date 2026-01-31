@@ -1,0 +1,47 @@
+# GitHub Actions CI for NemeStats
+# Windows, .NET Framework, NuGet restore, build, test (excluding Integration)
+
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      NUGET_PACKAGES: ${{ github.workspace }}\.nuget\packages
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v2
+
+    - name: Restore NuGet packages
+      run: nuget restore NemeStats.sln
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Build solution
+      run: msbuild NemeStats.sln /p:Configuration=Release /p:Platform="Any CPU"
+
+    - name: Run tests (excluding Integration)
+      run: |
+        $testDlls = Get-ChildItem -Recurse -Filter *.Tests.dll | Where-Object { $_.FullName -notmatch 'Integration' }
+        foreach ($dll in $testDlls) {
+          & "${{ env.ProgramFiles(x86) }}\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe" $dll.FullName
+        }
+      shell: pwsh
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: BuildArtifacts
+        path: |
+          **/bin/Release/
+          **/bin/Release/*
