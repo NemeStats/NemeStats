@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2022
     env:
       NUGET_PACKAGES: ${{ github.workspace }}\.nuget\packages
     steps:
@@ -32,7 +32,8 @@ jobs:
 
     - name: Run tests (excluding Integration)
       run: |
-        $vstestPath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"
+        $vsPath = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.PackageGroup.TestTools.Core -property installationPath
+        $vstestPath = Join-Path $vsPath "Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"
         $testDlls = Get-ChildItem -Recurse -Filter *.Tests.dll | Where-Object { $_.FullName -notmatch 'Integration' }
         foreach ($dll in $testDlls) {
           & $vstestPath $dll.FullName

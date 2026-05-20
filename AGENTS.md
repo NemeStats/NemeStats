@@ -5,7 +5,7 @@
 **Branch:** master
 
 ## OVERVIEW
-NemeStats is a free ASP.NET MVC website for tracking board game results among groups of players. Core stack: .NET Framework 4.5.2, EF6 code-first, StructureMap IoC, SignalR, Azure WebJobs.
+NemeStats is a free ASP.NET MVC website for tracking board game results among groups of players. Core stack: .NET Framework 4.8, EF6 code-first, StructureMap IoC, SignalR, Azure WebJobs.
 
 ## STRUCTURE
 ```
