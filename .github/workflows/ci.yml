@@ -35,7 +35,7 @@ jobs:
         $vsPath = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.PackageGroup.TestTools.Core -property installationPath
         $vstestPath = Join-Path $vsPath "Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"
         $testDlls = Get-ChildItem -Recurse -Filter *.Tests.dll | Where-Object {
-          $_.FullName -notmatch '\obj\' -and $_.FullName -notmatch '\packages\'
+          $_.FullName -notlike '*\obj\*' -and $_.FullName -notlike '*\packages\*'
         }
         $dllPaths = $testDlls | ForEach-Object { $_.FullName }
         & $vstestPath $dllPaths /TestCaseFilter:"FullyQualifiedName!~Integration" /Logger:trx
