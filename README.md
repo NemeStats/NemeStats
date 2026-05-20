@@ -1,5 +1,6 @@
+
 [![Stories in Ready](https://badge.waffle.io/nemestats/nemestats.png?label=ready&title=Ready)](https://waffle.io/nemestats/nemestats)
-NemeStats  [![Build status](https://ci.appveyor.com/api/projects/status/q5d26a5d8v7occ16?svg=true)](https://ci.appveyor.com/project/cracker4o/nemestats) [![Code Triagers Badge](https://www.codetriage.com/nemestats/nemestats/badges/users.svg)](https://www.codetriage.com/nemestats/nemestats)
+NemeStats  [![CI](https://github.com/NemeStats/NemeStats/actions/workflows/ci.yml/badge.svg)](https://github.com/NemeStats/NemeStats/actions/workflows/ci.yml) [![Code Triagers Badge](https://www.codetriage.com/nemestats/nemestats/badges/users.svg)](https://www.codetriage.com/nemestats/nemestats)
 ===============
 
 NemeStats.com was created as a fun and completely free website for tracking games played and won among a fairly stable group of players. Recording your games will reveal each player's Nemesis (and their Minions), will assign Champions to games (and other badges), will award [Achievements](https://nemestats.com/achievements) and will provide many other interesting statistics.
@@ -15,7 +16,7 @@ The following GitHub projects and corresponding NuGet packages were spawned as a
 
 If you are interested in contributing, check out [the contributors readme](https://github.com/NemeStats/NemeStats/blob/master/Contributors.md)
 
-Catch us @nemestats or @jakejgordon on Twitter, or via nemestats@gmail.com.
+Catch us @nemestats or @HolisticDevelop on X, or via nemestats@gmail.com.
 
 ### Manually Regenerating Sitemaps
 To manually regenerate sitemap.xml files, run the RegenerateSitemapsIntegrationTests.It_Regenerates_All_Of_The_Sitemaps_And_The_Sitemap_Index_Files() integration test with the BusinessLogic.Tests app.config pointed to the production database. Files will be placed in the designated location from the app.config sitemapLocationFilePath app setting. These files then need to be copied into the Web.UI/sitemaps/ folder to overwrite that is there. Make sure you don't check in the production database connection string!
