@@ -34,10 +34,15 @@ jobs:
       run: |
         $vsPath = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.PackageGroup.TestTools.Core -property installationPath
         $vstestPath = Join-Path $vsPath "Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"
-        $testDlls = Get-ChildItem -Recurse -Filter *.Tests.dll | Where-Object { $_.FullName -notmatch 'Integration' }
+        $testDlls = Get-ChildItem -Recurse -Filter *.Tests.dll
+        $exitCode = 0
         foreach ($dll in $testDlls) {
-          & $vstestPath $dll.FullName
+          & $vstestPath $dll.FullName /TestCaseFilter:"FullyQualifiedName!~Integration"
+          if ($LASTEXITCODE -ne 0) {
+            $exitCode = $LASTEXITCODE
+          }
         }
+        exit $exitCode
       shell: pwsh
 
     - name: Upload build artifacts
