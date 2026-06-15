@@ -2,6 +2,11 @@ name: Build And Test
 
 on:
   workflow_call:
+    inputs:
+      create_deployment_package:
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   build_and_test:
@@ -9,6 +14,8 @@ jobs:
     runs-on: windows-2022
     env:
       NUGET_PACKAGES: ${{ github.workspace }}\.nuget\packages
+      PUBLISH_OUTPUT: ${{ github.workspace }}\artifacts\publish
+      PACKAGE_PATH: ${{ github.workspace }}\artifacts\nemestats-web.zip
     steps:
     - name: Checkout code
       uses: actions/checkout@v6
@@ -60,3 +67,35 @@ jobs:
         path: |
           **/bin/Release/
           **/bin/Release/*
+
+    - name: Publish web app locally
+      if: ${{ inputs.create_deployment_package }}
+      run: |
+        if (Test-Path $env:PUBLISH_OUTPUT) {
+          Remove-Item -LiteralPath $env:PUBLISH_OUTPUT -Recurse -Force
+        }
+        New-Item -ItemType Directory -Path $env:PUBLISH_OUTPUT | Out-Null
+        msbuild Source\UI\UI.csproj `
+          /p:Configuration=Release `
+          /p:Platform=AnyCPU `
+          /p:DeployOnBuild=true `
+          /p:WebPublishMethod=FileSystem `
+          /p:DeleteExistingFiles=true `
+          /p:publishUrl="$env:PUBLISH_OUTPUT"
+      shell: pwsh
+
+    - name: Package published site
+      if: ${{ inputs.create_deployment_package }}
+      run: |
+        if (Test-Path $env:PACKAGE_PATH) {
+          Remove-Item -LiteralPath $env:PACKAGE_PATH -Force
+        }
+        Compress-Archive -Path "$env:PUBLISH_OUTPUT\*" -DestinationPath $env:PACKAGE_PATH
+      shell: pwsh
+
+    - name: Upload deployment package
+      if: ${{ inputs.create_deployment_package }}
+      uses: actions/upload-artifact@v7
+      with:
+        name: nemestats-web-package
+        path: ${{ env.PACKAGE_PATH }}

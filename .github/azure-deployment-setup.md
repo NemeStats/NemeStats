@@ -39,9 +39,9 @@ On a push to `master`, the deploy workflow will:
 
 1. Build the solution.
 2. Run non-integration tests.
-3. Publish `Source/UI/UI.csproj` to a local folder.
+3. Publish `Source/UI/UI.csproj` and package it as a deployment artifact.
 4. Wait for production environment approval.
-5. Deploy that package to the production App Service.
+5. Deploy that already-built package to the production App Service.
 6. Run the production smoke test.
 
 ## Notes
