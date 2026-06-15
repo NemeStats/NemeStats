@@ -1,0 +1,109 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: deploy-master
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    name: Validate Build And Tests
+    uses: ./.github/workflows/build-and-test.yml
+
+  deploy_production:
+    name: Deploy To Production
+    needs: validate
+    runs-on: windows-2022
+    environment: production
+    env:
+      NUGET_PACKAGES: ${{ github.workspace }}\.nuget\packages
+      PUBLISH_OUTPUT: ${{ github.workspace }}\artifacts\publish
+      PACKAGE_PATH: ${{ github.workspace }}\artifacts\nemestats-web.zip
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v4
+
+    - name: Restore NuGet packages
+      run: nuget restore NemeStats.sln
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v3
+
+    - name: Publish web app locally
+      run: |
+        if (Test-Path $env:PUBLISH_OUTPUT) {
+          Remove-Item -LiteralPath $env:PUBLISH_OUTPUT -Recurse -Force
+        }
+        New-Item -ItemType Directory -Path $env:PUBLISH_OUTPUT | Out-Null
+        msbuild Source\UI\UI.csproj `
+          /p:Configuration=Release `
+          /p:Platform="Any CPU" `
+          /p:DeployOnBuild=true `
+          /p:WebPublishMethod=FileSystem `
+          /p:DeleteExistingFiles=true `
+          /p:publishUrl="$env:PUBLISH_OUTPUT"
+      shell: pwsh
+
+    - name: Package published site
+      run: |
+        if (Test-Path $env:PACKAGE_PATH) {
+          Remove-Item -LiteralPath $env:PACKAGE_PATH -Force
+        }
+        Compress-Archive -Path "$env:PUBLISH_OUTPUT\*" -DestinationPath $env:PACKAGE_PATH
+      shell: pwsh
+
+    - name: Upload deployment package
+      uses: actions/upload-artifact@v7
+      with:
+        name: nemestats-web-package
+        path: ${{ env.PACKAGE_PATH }}
+
+    - name: Azure login
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: Deploy to production app service
+      uses: azure/webapps-deploy@v3
+      with:
+        app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
+        package: ${{ env.PACKAGE_PATH }}
+
+    - name: Smoke test production deployment
+      run: |
+        $attempts = 12
+        $delaySeconds = 10
+        $targetUrl = "${{ secrets.PRODUCTION_SMOKE_TEST_URL }}"
+
+        for ($attempt = 1; $attempt -le $attempts; $attempt++) {
+          try {
+            $response = Invoke-WebRequest -Uri $targetUrl -UseBasicParsing -TimeoutSec 30
+            if ($response.StatusCode -ge 200 -and $response.StatusCode -lt 400) {
+              Write-Host "Smoke test succeeded with status code $($response.StatusCode)."
+              exit 0
+            }
+          } catch {
+            Write-Host "Smoke test attempt $attempt failed: $($_.Exception.Message)"
+          }
+
+          if ($attempt -lt $attempts) {
+            Start-Sleep -Seconds $delaySeconds
+          }
+        }
+
+        throw "Smoke test failed for $targetUrl after $attempts attempts."
+      shell: pwsh
