@@ -137,7 +137,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.Abstractions, Version=2.0.2.26, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Source\NemeStats.ScheduledJobs\bin\Release\System.Configuration.Abstractions.dll</HintPath>
+      <HintPath>..\..\packages\System.Configuration.Abstractions.2.0.2.26\lib\net45\System.Configuration.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
