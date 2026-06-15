@@ -17,6 +17,7 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Configuration.Abstractions;
 using System.Linq;
 using BoardGameGeekApiClient.Service;
 using BusinessLogic.DataAccess;
@@ -163,7 +164,8 @@ namespace UI.Tests.IntegrationTests.BoardGameGeekTests
                     };
 
                     var rollbarMock = MockRepository.GenerateMock<IRollbarClient>();
-                    var bggSearcher = new BoardGameGeekClient(new ApiDownloaderService(), rollbarMock);
+                    var configMock = MockRepository.GenerateMock<IConfigurationManager>();
+                    var bggSearcher = new BoardGameGeekClient(new ApiDownloaderService(configMock), rollbarMock);
 
                     foreach (string gameName in gameNames)
                     {
@@ -181,7 +183,8 @@ namespace UI.Tests.IntegrationTests.BoardGameGeekTests
         [Test, Ignore("Integration test")]
         public void ItUpdatesExistingGameDefinitions()
         {
-            BoardGameGeekDataLinker dataLinker = new BoardGameGeekDataLinker();
+            var configMock = MockRepository.GenerateMock<IConfigurationManager>();
+            BoardGameGeekDataLinker dataLinker = new BoardGameGeekDataLinker(configMock);
             dataLinker.CleanUpExistingRecords();
         }
     }

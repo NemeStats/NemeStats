@@ -508,6 +508,8 @@
     <Content Include="Content\Images\Home\Banner.jpg" />
     <Content Include="Content\Images\Home\BGStats.png" />
     <Content Include="Content\Images\Home\boardgamegeek.png" />
+    <Content Include="Content\Images\Home\BoardGameGeek_Logo.svg" />
+    <Content Include="Content\Images\Home\powered_by_BGG_01_SM.png" />
     <Content Include="Content\Images\NemeStats-White.png" />
     <Content Include="Content\Images\NemeStats.png" />
     <Content Include="Content\Images\spinner.gif" />

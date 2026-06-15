@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using System;
+using System.Configuration.Abstractions;
 using System.Linq;
 using BoardGameGeekApiClient.Service;
 using BusinessLogic.DataAccess;
@@ -28,6 +29,13 @@ namespace BusinessLogic.Logic.OneTimeJobs
 {
     public class BoardGameGeekDataLinker
     {
+        private readonly IConfigurationManager configManager;
+
+        public BoardGameGeekDataLinker(IConfigurationManager configManager)
+        {
+            this.configManager = configManager;
+        }
+
         public void CleanUpExistingRecords()
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
@@ -38,7 +46,7 @@ namespace BusinessLogic.Logic.OneTimeJobs
                                                             .Where(game => game.BoardGameGeekGameDefinitionId == null)
                                                             .ToList();
 
-                    var bggSearcher = new BoardGameGeekClient(new ApiDownloaderService(), new RollbarClient());
+                    var bggSearcher = new BoardGameGeekClient(new ApiDownloaderService(configManager), new RollbarClient());
                     int updateCount = 0;
 
                     foreach (GameDefinition game in games)
