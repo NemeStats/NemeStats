@@ -6,6 +6,7 @@ using BusinessLogic.Jobs.BoardGameGeekBatchUpdate;
 using NUnit.Framework;
 using Rhino.Mocks;
 using RollbarSharp;
+using System.Configuration.Abstractions;
 
 namespace BusinessLogic.Tests.IntegrationTests.JobsTests.BoardGameGeekBatchUpdateServiceTests
 {
@@ -19,7 +20,7 @@ namespace BusinessLogic.Tests.IntegrationTests.JobsTests.BoardGameGeekBatchUpdat
             {
                 using (var dataContext = new NemeStatsDataContext(nemeStatsDbContext, new SecuredEntityValidatorFactory()))
                 {
-                    var apiDownloaderService = new ApiDownloaderService();
+                    var apiDownloaderService = new ApiDownloaderService(ConfigurationManager.Instance);
                     //API failures won't get logged!
                     var rollbarClient = MockRepository.GenerateMock<IRollbarClient>();
                     var boardGameGeekClient = new BoardGameGeekClient(apiDownloaderService, rollbarClient);

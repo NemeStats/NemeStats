@@ -31,6 +31,7 @@ using System.Linq;
 using BoardGameGeekApiClient.Service;
 using BusinessLogic.Logic.BoardGameGeek;
 using RollbarSharp;
+using System.Configuration.Abstractions;
 using UniversalAnalyticsHttpWrapper;
 
 namespace BusinessLogic.Tests.IntegrationTests
@@ -173,7 +174,7 @@ namespace BusinessLogic.Tests.IntegrationTests
 
         private BoardGameGeekGameDefinition SaveBoardGameGeekGameDefinition()
         {
-            var boardGameGeekDefinitionCreator = new BoardGameGeekGameDefinitionCreator(_dataContext, new BoardGameGeekClient(new ApiDownloaderService(), MockRepository.GenerateMock<IRollbarClient>()));
+            var boardGameGeekDefinitionCreator = new BoardGameGeekGameDefinitionCreator(_dataContext, new BoardGameGeekClient(new ApiDownloaderService(ConfigurationManager.Instance), MockRepository.GenerateMock<IRollbarClient>()));
             return boardGameGeekDefinitionCreator.CreateBoardGameGeekGameDefinition(BOARD_GAME_GEEK_ID_FOR_RACE_FOR_THE_GALAXY);
         }
 
