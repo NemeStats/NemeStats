@@ -16,16 +16,16 @@ jobs:
       NUGET_PACKAGES: ${{ github.workspace }}\.nuget\packages
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Setup NuGet
-      uses: NuGet/setup-nuget@v2
+      uses: NuGet/setup-nuget@v4
 
     - name: Restore NuGet packages
       run: nuget restore NemeStats.sln
 
     - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v2
+      uses: microsoft/setup-msbuild@v3
 
     - name: Build solution
       run: msbuild NemeStats.sln /p:Configuration=Release /p:Platform="Any CPU"
@@ -44,14 +44,14 @@ jobs:
 
     - name: Upload test results
       if: success() || failure()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: test-results
         path: '**/*.trx'
 
     - name: Publish test results
       if: success() || failure()
-      uses: dorny/test-reporter@v1
+      uses: dorny/test-reporter@v3
       with:
         name: VSTest Results
         path: '**/*.trx'
@@ -59,7 +59,7 @@ jobs:
         fail-on-error: false
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: BuildArtifacts
         path: |
