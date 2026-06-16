@@ -68,6 +68,11 @@ jobs:
           **/bin/Release/
           **/bin/Release/*
 
+    - name: Seed safe PrivateAppSettings for publish
+      if: ${{ inputs.create_deployment_package }}
+      run: Copy-Item -LiteralPath Miscellaneous\PrivateAppSettings.config -Destination Source\UI\PrivateAppSettings.config -Force
+      shell: pwsh
+
     - name: Publish web app locally
       if: ${{ inputs.create_deployment_package }}
       run: |

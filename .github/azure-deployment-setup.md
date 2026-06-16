@@ -24,6 +24,20 @@ Add these secrets to the `production` environment:
 
 `PRODUCTION_SMOKE_TEST_URL` should point at a lightweight production URL that returns a successful response when the deployment is healthy.
 
+## Azure App Service Settings
+
+Store the real application secrets in the App Service `Configuration` > `Application settings`:
+
+- `Database.ConnectionString`
+- `authTokenSalt`
+- `googleAppId`
+- `googleClientSecret`
+- `sendgridApiKey`
+- `emailConfirmationCallbackUrl`
+- `BGGBearerToken` if you need the BGG bearer-token flow
+
+Configure the corresponding App Service application settings in Azure so the production app can resolve them at runtime.
+
 ## Azure Authentication
 
 Use GitHub OIDC with an Azure service principal:
@@ -39,14 +53,16 @@ On a push to `master`, the deploy workflow will:
 
 1. Build the solution.
 2. Run non-integration tests.
-3. Publish `Source/UI/UI.csproj` and package it as a deployment artifact.
-4. Wait for production environment approval.
-5. Deploy that already-built package to the production App Service.
-6. Run the production smoke test.
+3. Seed a sanitized `PrivateAppSettings.config` from `Miscellaneous/PrivateAppSettings.config`.
+4. Publish `Source/UI/UI.csproj` and package it as a deployment artifact.
+5. Wait for production environment approval.
+6. Deploy that already-built package to the production App Service.
+7. Run the production smoke test.
 
 ## Notes
 
 - No Azure subscription IDs, app names, smoke test URLs, or publish profiles are stored in git.
 - The web app publish step uses MSBuild filesystem publish and does not rely on any checked-in `.pubxml`.
+- The deployment artifact contains only the sanitized template values from `Miscellaneous/PrivateAppSettings.config`; production secrets stay in Azure App Service settings.
 - The `UI` project already includes `Properties/webjobs-list.json`, so the continuous WebJob should publish with the site artifact.
 - This workflow is designed for App Service tiers such as `Shared D1` that do not support deployment slots.
