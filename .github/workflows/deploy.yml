@@ -17,51 +17,64 @@ concurrency:
 jobs:
   validate:
     name: Validate Build And Tests
-    uses: ./.github/workflows/build-and-test.yml
-
-  deploy_production:
-    name: Deploy To Production
-    needs: validate
     runs-on: windows-2022
-    environment: production
     env:
       NUGET_PACKAGES: ${{ github.workspace }}\.nuget\packages
-      PUBLISH_OUTPUT: ${{ github.workspace }}\artifacts\publish
+      PACKAGE_TMP_PATH: ${{ github.workspace }}\Source\UI\obj\Release\Package\PackageTmp
       PACKAGE_PATH: ${{ github.workspace }}\artifacts\nemestats-web.zip
     steps:
     - name: Checkout code
       uses: actions/checkout@v6
 
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v4
+    - name: Build and test
+      uses: ./.github/actions/build-and-test
 
-    - name: Restore NuGet packages
-      run: nuget restore NemeStats.sln
-
-    - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v3
+    - name: Seed safe PrivateAppSettings for publish
+      run: Copy-Item -LiteralPath Miscellaneous\PrivateAppSettings.config -Destination Source\UI\PrivateAppSettings.config -Force
+      shell: pwsh
 
     - name: Publish web app locally
       run: |
-        if (Test-Path $env:PUBLISH_OUTPUT) {
-          Remove-Item -LiteralPath $env:PUBLISH_OUTPUT -Recurse -Force
+        if (Test-Path $env:PACKAGE_TMP_PATH) {
+          Remove-Item -LiteralPath $env:PACKAGE_TMP_PATH -Recurse -Force
         }
-        New-Item -ItemType Directory -Path $env:PUBLISH_OUTPUT | Out-Null
+        if (Test-Path -LiteralPath $env:PACKAGE_PATH) {
+          Remove-Item -LiteralPath $env:PACKAGE_PATH -Force
+        }
         msbuild Source\UI\UI.csproj `
           /p:Configuration=Release `
-          /p:Platform="Any CPU" `
+          /p:Platform=AnyCPU `
           /p:DeployOnBuild=true `
           /p:WebPublishMethod=FileSystem `
           /p:DeleteExistingFiles=true `
-          /p:publishUrl="$env:PUBLISH_OUTPUT"
+          /p:publishUrl="${{ github.workspace }}\artifacts\publish"
       shell: pwsh
 
-    - name: Package published site
+    - name: Create Zip Deploy package
       run: |
-        if (Test-Path $env:PACKAGE_PATH) {
-          Remove-Item -LiteralPath $env:PACKAGE_PATH -Force
+        if (-not (Test-Path -LiteralPath $env:PACKAGE_TMP_PATH)) {
+          throw "MSBuild package temp directory was not created: $env:PACKAGE_TMP_PATH"
         }
-        Compress-Archive -Path "$env:PUBLISH_OUTPUT\*" -DestinationPath $env:PACKAGE_PATH
+
+        $packageItems = Get-ChildItem -LiteralPath $env:PACKAGE_TMP_PATH -Force
+        if (-not $packageItems) {
+          throw "No packaged site files found in $env:PACKAGE_TMP_PATH"
+        }
+
+        $packageDirectory = Split-Path -Parent $env:PACKAGE_PATH
+        if (-not (Test-Path -LiteralPath $packageDirectory)) {
+          New-Item -ItemType Directory -Path $packageDirectory -Force | Out-Null
+        }
+
+        Compress-Archive -LiteralPath $packageItems.FullName -DestinationPath $env:PACKAGE_PATH
+
+        if (-not (Test-Path -LiteralPath $env:PACKAGE_PATH)) {
+          throw "Zip Deploy package was not created: $env:PACKAGE_PATH"
+        }
+
+        Get-Item -LiteralPath $env:PACKAGE_PATH |
+          Select-Object FullName, Length, LastWriteTime |
+          Format-Table -AutoSize
       shell: pwsh
 
     - name: Upload deployment package
@@ -69,9 +82,22 @@ jobs:
       with:
         name: nemestats-web-package
         path: ${{ env.PACKAGE_PATH }}
+        if-no-files-found: error
+
+  deploy_production:
+    name: Deploy To Production
+    needs: validate
+    runs-on: windows-2022
+    environment: production
+    steps:
+    - name: Download deployment package
+      uses: actions/download-artifact@v8
+      with:
+        name: nemestats-web-package
+        path: ${{ github.workspace }}\deployment-package
 
     - name: Azure login
-      uses: azure/login@v2
+      uses: azure/login@v3
       with:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -81,7 +107,7 @@ jobs:
       uses: azure/webapps-deploy@v3
       with:
         app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
-        package: ${{ env.PACKAGE_PATH }}
+        package: ${{ github.workspace }}\deployment-package\nemestats-web.zip
 
     - name: Smoke test production deployment
       run: |
