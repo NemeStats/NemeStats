@@ -9,4 +9,13 @@ on:
 
 jobs:
   build:
-    uses: ./.github/workflows/build-and-test.yml
+    name: Validate Build And Tests
+    runs-on: windows-2022
+    env:
+      NUGET_PACKAGES: ${{ github.workspace }}\.nuget\packages
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6
+
+    - name: Build and test
+      uses: ./.github/actions/build-and-test

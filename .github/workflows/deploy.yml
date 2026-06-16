@@ -17,9 +17,50 @@ concurrency:
 jobs:
   validate:
     name: Validate Build And Tests
-    uses: ./.github/workflows/build-and-test.yml
-    with:
-      create_deployment_package: true
+    runs-on: windows-2022
+    env:
+      NUGET_PACKAGES: ${{ github.workspace }}\.nuget\packages
+      PUBLISH_OUTPUT: ${{ github.workspace }}\artifacts\publish
+      PACKAGE_PATH: ${{ github.workspace }}\artifacts\nemestats-web.zip
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6
+
+    - name: Build and test
+      uses: ./.github/actions/build-and-test
+
+    - name: Seed safe PrivateAppSettings for publish
+      run: Copy-Item -LiteralPath Miscellaneous\PrivateAppSettings.config -Destination Source\UI\PrivateAppSettings.config -Force
+      shell: pwsh
+
+    - name: Publish web app locally
+      run: |
+        if (Test-Path $env:PUBLISH_OUTPUT) {
+          Remove-Item -LiteralPath $env:PUBLISH_OUTPUT -Recurse -Force
+        }
+        New-Item -ItemType Directory -Path $env:PUBLISH_OUTPUT | Out-Null
+        msbuild Source\UI\UI.csproj `
+          /p:Configuration=Release `
+          /p:Platform=AnyCPU `
+          /p:DeployOnBuild=true `
+          /p:WebPublishMethod=FileSystem `
+          /p:DeleteExistingFiles=true `
+          /p:publishUrl="$env:PUBLISH_OUTPUT"
+      shell: pwsh
+
+    - name: Package published site
+      run: |
+        if (Test-Path $env:PACKAGE_PATH) {
+          Remove-Item -LiteralPath $env:PACKAGE_PATH -Force
+        }
+        Compress-Archive -Path "$env:PUBLISH_OUTPUT\*" -DestinationPath $env:PACKAGE_PATH
+      shell: pwsh
+
+    - name: Upload deployment package
+      uses: actions/upload-artifact@v4
+      with:
+        name: nemestats-web-package
+        path: ${{ env.PACKAGE_PATH }}
 
   deploy_production:
     name: Deploy To Production
