@@ -20,35 +20,14 @@ jobs:
     runs-on: windows-2022
     env:
       NUGET_PACKAGES: ${{ github.workspace }}\.nuget\packages
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v6
-
-    - name: Build and test
-      uses: ./.github/actions/build-and-test
-
-  deploy_production:
-    name: Deploy To Production
-    needs: validate
-    runs-on: windows-2022
-    environment: production
-    env:
-      NUGET_PACKAGES: ${{ github.workspace }}\.nuget\packages
       PACKAGE_TMP_PATH: ${{ github.workspace }}\Source\UI\obj\Release\Package\PackageTmp
       PACKAGE_PATH: ${{ github.workspace }}\artifacts\nemestats-web.zip
     steps:
     - name: Checkout code
       uses: actions/checkout@v6
 
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v4
-
-    - name: Restore NuGet packages
-      run: nuget restore NemeStats.sln
-      shell: pwsh
-
-    - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v3
+    - name: Build and test
+      uses: ./.github/actions/build-and-test
 
     - name: Seed safe PrivateAppSettings for publish
       run: Copy-Item -LiteralPath Miscellaneous\PrivateAppSettings.config -Destination Source\UI\PrivateAppSettings.config -Force
@@ -71,7 +50,7 @@ jobs:
           /p:publishUrl="${{ github.workspace }}\artifacts\publish"
       shell: pwsh
 
-    - name: Inspect package temp output
+    - name: Create Zip Deploy package
       run: |
         if (-not (Test-Path -LiteralPath $env:PACKAGE_TMP_PATH)) {
           throw "MSBuild package temp directory was not created: $env:PACKAGE_TMP_PATH"
@@ -79,25 +58,12 @@ jobs:
 
         $packageItems = Get-ChildItem -LiteralPath $env:PACKAGE_TMP_PATH -Force
         if (-not $packageItems) {
-          throw "MSBuild package temp directory is empty: $env:PACKAGE_TMP_PATH"
+          throw "No packaged site files found in $env:PACKAGE_TMP_PATH"
         }
 
-        Write-Host "MSBuild package temp contents:"
-        $packageItems |
-          Select-Object FullName, Length, LastWriteTime |
-          Format-Table -AutoSize
-      shell: pwsh
-
-    - name: Create Zip Deploy package
-      run: |
         $packageDirectory = Split-Path -Parent $env:PACKAGE_PATH
         if (-not (Test-Path -LiteralPath $packageDirectory)) {
           New-Item -ItemType Directory -Path $packageDirectory -Force | Out-Null
-        }
-
-        $packageItems = Get-ChildItem -LiteralPath $env:PACKAGE_TMP_PATH -Force
-        if (-not $packageItems) {
-          throw "No packaged site files found in $env:PACKAGE_TMP_PATH"
         }
 
         Compress-Archive -LiteralPath $packageItems.FullName -DestinationPath $env:PACKAGE_PATH
@@ -111,8 +77,27 @@ jobs:
           Format-Table -AutoSize
       shell: pwsh
 
+    - name: Upload deployment package
+      uses: actions/upload-artifact@v4
+      with:
+        name: nemestats-web-package
+        path: ${{ env.PACKAGE_PATH }}
+        if-no-files-found: error
+
+  deploy_production:
+    name: Deploy To Production
+    needs: validate
+    runs-on: windows-2022
+    environment: production
+    steps:
+    - name: Download deployment package
+      uses: actions/download-artifact@v4
+      with:
+        name: nemestats-web-package
+        path: ${{ github.workspace }}\deployment-package
+
     - name: Azure login
-      uses: azure/login@v2
+      uses: azure/login@v3
       with:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -122,7 +107,7 @@ jobs:
       uses: azure/webapps-deploy@v3
       with:
         app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
-        package: ${{ env.PACKAGE_PATH }}
+        package: ${{ github.workspace }}\deployment-package\nemestats-web.zip
 
     - name: Smoke test production deployment
       run: |
