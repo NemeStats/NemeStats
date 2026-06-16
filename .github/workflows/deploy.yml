@@ -20,14 +20,35 @@ jobs:
     runs-on: windows-2022
     env:
       NUGET_PACKAGES: ${{ github.workspace }}\.nuget\packages
-      PUBLISH_OUTPUT: ${{ github.workspace }}\artifacts\publish
-      PACKAGE_PATH: ${{ github.workspace }}\artifacts\nemestats-web.zip
     steps:
     - name: Checkout code
       uses: actions/checkout@v6
 
     - name: Build and test
       uses: ./.github/actions/build-and-test
+
+  deploy_production:
+    name: Deploy To Production
+    needs: validate
+    runs-on: windows-2022
+    environment: production
+    env:
+      NUGET_PACKAGES: ${{ github.workspace }}\.nuget\packages
+      PUBLISH_OUTPUT: ${{ github.workspace }}\artifacts\publish
+      PACKAGE_PATH: ${{ github.workspace }}\Source\UI\obj\Release\Package\UI.zip
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v4
+
+    - name: Restore NuGet packages
+      run: nuget restore NemeStats.sln
+      shell: pwsh
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v3
 
     - name: Seed safe PrivateAppSettings for publish
       run: Copy-Item -LiteralPath Miscellaneous\PrivateAppSettings.config -Destination Source\UI\PrivateAppSettings.config -Force
@@ -37,6 +58,9 @@ jobs:
       run: |
         if (Test-Path $env:PUBLISH_OUTPUT) {
           Remove-Item -LiteralPath $env:PUBLISH_OUTPUT -Recurse -Force
+        }
+        if (Test-Path -LiteralPath $env:PACKAGE_PATH) {
+          Remove-Item -LiteralPath $env:PACKAGE_PATH -Force
         }
         New-Item -ItemType Directory -Path $env:PUBLISH_OUTPUT | Out-Null
         msbuild Source\UI\UI.csproj `
@@ -48,31 +72,33 @@ jobs:
           /p:publishUrl="$env:PUBLISH_OUTPUT"
       shell: pwsh
 
-    - name: Package published site
+    - name: Verify published output
       run: |
-        if (Test-Path $env:PACKAGE_PATH) {
-          Remove-Item -LiteralPath $env:PACKAGE_PATH -Force
+        if (-not (Test-Path -LiteralPath $env:PUBLISH_OUTPUT)) {
+          throw "Publish output directory was not created: $env:PUBLISH_OUTPUT"
         }
-        Compress-Archive -Path "$env:PUBLISH_OUTPUT\*" -DestinationPath $env:PACKAGE_PATH
+
+        $publishedItems = Get-ChildItem -LiteralPath $env:PUBLISH_OUTPUT -Force
+        if (-not $publishedItems) {
+          throw "Publish output directory is empty: $env:PUBLISH_OUTPUT"
+        }
+
+        Write-Host "Published output contents:"
+        $publishedItems |
+          Select-Object FullName, Length, LastWriteTime |
+          Format-Table -AutoSize
       shell: pwsh
 
-    - name: Upload deployment package
-      uses: actions/upload-artifact@v4
-      with:
-        name: nemestats-web-package
-        path: ${{ env.PACKAGE_PATH }}
+    - name: Verify MSBuild package
+      run: |
+        if (-not (Test-Path -LiteralPath $env:PACKAGE_PATH)) {
+          throw "MSBuild deployment package was not created: $env:PACKAGE_PATH"
+        }
 
-  deploy_production:
-    name: Deploy To Production
-    needs: validate
-    runs-on: windows-2022
-    environment: production
-    steps:
-    - name: Download deployment package
-      uses: actions/download-artifact@v4
-      with:
-        name: nemestats-web-package
-        path: ${{ github.workspace }}\deployment-package
+        Get-Item -LiteralPath $env:PACKAGE_PATH |
+          Select-Object FullName, Length, LastWriteTime |
+          Format-Table -AutoSize
+      shell: pwsh
 
     - name: Azure login
       uses: azure/login@v2
@@ -85,7 +111,7 @@ jobs:
       uses: azure/webapps-deploy@v3
       with:
         app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
-        package: ${{ github.workspace }}\deployment-package\nemestats-web.zip
+        package: ${{ env.PACKAGE_PATH }}
 
     - name: Smoke test production deployment
       run: |
