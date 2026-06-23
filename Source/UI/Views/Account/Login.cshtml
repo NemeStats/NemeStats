@@ -32,19 +32,4 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
-        // Detect when Safari restores this tab after being force-closed or tombstoned.
-        // sessionStorage is cleared when the tab closes, but localStorage survives.
-        // If localStorage has our marker but sessionStorage doesn't, this is a restored tab.
-        (function() {
-            var marker = 'nemestats_login_loaded';
-            if (localStorage.getItem(marker) && !sessionStorage.getItem(marker)) {
-                sessionStorage.setItem(marker, '1');
-                window.location.reload();
-                return;
-            }
-            localStorage.setItem(marker, '1');
-            sessionStorage.setItem(marker, '1');
-        })();
-    </script>
 }
