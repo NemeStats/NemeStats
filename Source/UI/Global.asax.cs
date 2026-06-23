@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+using System.Reflection;
+using System.Web.Helpers;
 using System.Web.Http;
 using BusinessLogic.DataAccess;
 using StructureMap.Web.Pipeline;
@@ -32,6 +34,23 @@ namespace UI
     {
         protected void Application_Start()
         {
+            // Configure anti-forgery cookie for modern SameSite behavior.
+            // The project currently references Microsoft.AspNet.WebPages 3.2.3 (Feb 2015),
+            // whose AntiForgeryConfig does not yet expose CookieSameSite. We use reflection
+            // so the code compiles against the old package while still setting the property
+            // at runtime on patched servers. Remove this reflection once packages are upgraded.
+            var antiforgeryConfigType = typeof(AntiForgeryConfig);
+            var cookieSameSiteProperty = antiforgeryConfigType.GetProperty("CookieSameSite", BindingFlags.Public | BindingFlags.Static);
+            if (cookieSameSiteProperty != null)
+            {
+                cookieSameSiteProperty.SetValue(null, 0); // SameSiteMode.None
+            }
+            var requireSslProperty = antiforgeryConfigType.GetProperty("RequireSsl", BindingFlags.Public | BindingFlags.Static);
+            if (requireSslProperty != null)
+            {
+                requireSslProperty.SetValue(null, true);
+            }
+
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
