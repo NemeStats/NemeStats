@@ -1,4 +1,4 @@
-﻿﻿﻿#region LICENSE
+﻿#region LICENSE
 // NemeStats is a free website for tracking the results of board games.
 //     Copyright (C) 2015 Jacob Gordon
 //
@@ -192,7 +192,7 @@ namespace UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize]
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HandledValidateAntiForgeryToken(AntiForgeryFailureMode.ForbiddenJson)]
         [UserContext]
         public virtual ActionResult Save(SavePlayedGameRequest request, ApplicationUser currentUser)
         {
@@ -321,7 +321,7 @@ namespace UI.Controllers
         // POST: /PlayedGame/Delete/5
         [Authorize]
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        [HandledValidateAntiForgeryToken(AntiForgeryFailureMode.ForbiddenHtml)]
         [UserContext]
         public virtual ActionResult DeleteConfirmed(int id, ApplicationUser currentUser)
         {

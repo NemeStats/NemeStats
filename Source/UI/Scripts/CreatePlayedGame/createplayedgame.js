@@ -597,9 +597,27 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                                     component.alertVisible = true;
                                 }
                             },
-                            error: function (XMLHTttpRequest, status, error) {
+                            error: function (XMLHttpRequest, status, error) {
+                                var response = XMLHttpRequest.responseJSON;
+
                                 component.serverRequestInProgress = false;
-                                component.alertText = "Error creating played game. Please, try again later :_(";
+                                if (XMLHttpRequest.status === 403) {
+                                    if (!response && XMLHttpRequest.responseText) {
+                                        try {
+                                            response = JSON.parse(XMLHttpRequest.responseText);
+                                        } catch (e) {
+                                            response = null;
+                                        }
+                                    }
+
+                                    if (response && response.message) {
+                                        component.alertText = response.message;
+                                    } else {
+                                        component.alertText = "This page expired. Please try again.";
+                                    }
+                                } else {
+                                    component.alertText = "Error creating played game. Please, try again later :_(";
+                                }
                                 component.alertVisible = true;
                             }
                         });
