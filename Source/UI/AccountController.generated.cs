@@ -433,13 +433,14 @@ namespace UI.Controllers
         public T4MVC_AccountController() : base(Dummy.Instance) { }
 
         [NonAction]
-        partial void LoginFormOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void LoginFormOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string origin);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult LoginForm()
+        public override System.Web.Mvc.ActionResult LoginForm(string origin = null)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LoginForm);
-            LoginFormOverride(callInfo);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "origin", origin);
+            LoginFormOverride(callInfo, origin);
             return callInfo;
         }
 

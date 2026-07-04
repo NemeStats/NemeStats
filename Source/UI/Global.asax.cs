@@ -15,6 +15,9 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+using System.Reflection;
+using System.Web;
+using System.Web.Helpers;
 using System.Web.Http;
 using BusinessLogic.DataAccess;
 using StructureMap.Web.Pipeline;
@@ -32,6 +35,16 @@ namespace UI
     {
         protected void Application_Start()
         {
+            // Force Secure flag on the anti-forgery cookie.
+            // Use reflection because AntiForgeryConfig.RequireSsl exists at runtime
+            // but may not be in the reference assembly for WebPages 3.2.3.
+            var antiforgeryConfigType = typeof(AntiForgeryConfig);
+            var requireSslProperty = antiforgeryConfigType.GetProperty("RequireSsl", BindingFlags.Public | BindingFlags.Static);
+            if (requireSslProperty != null)
+            {
+                requireSslProperty.SetValue(null, true);
+            }
+
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
@@ -42,6 +55,48 @@ namespace UI
             //  and the Configuration will call the DataSeeder.
             Database.SetInitializer<NemeStatsDbContext>(null);
             AutomapperConfiguration.Configure();
+        }
+
+        protected void Application_BeginRequest(object sender, EventArgs e)
+        {
+            // If the client already has an anti-forgery cookie without SameSite,
+            // the server won't re-send it. Explicitly overwrite it so the client
+            // gets the updated SameSite=None + Secure attributes.
+            var requestCookie = Request.Cookies["__RequestVerificationToken"];
+            if (requestCookie != null)
+            {
+                var overwrite = new HttpCookie("__RequestVerificationToken", requestCookie.Value)
+                {
+                    HttpOnly = true,
+                    Secure = true
+                };
+                var sameSiteProperty = typeof(HttpCookie).GetProperty("SameSite");
+                if (sameSiteProperty != null)
+                {
+                    sameSiteProperty.SetValue(overwrite, 0); // SameSiteMode.None
+                }
+                Response.Cookies.Set(overwrite);
+            }
+
+            // Also intercept any new anti-forgery cookies the framework adds later
+            // in this request (e.g. when rendering a fresh form).
+            Response.AddOnSendingHeaders(context =>
+            {
+                var cookies = context.Response.Cookies;
+                for (var i = 0; i < cookies.Count; i++)
+                {
+                    var cookie = cookies[i];
+                    if (cookie.Name == "__RequestVerificationToken")
+                    {
+                        var sameSiteProp = typeof(HttpCookie).GetProperty("SameSite");
+                        if (sameSiteProp != null)
+                        {
+                            sameSiteProp.SetValue(cookie, 0); // SameSiteMode.None
+                        }
+                        cookie.Secure = true;
+                    }
+                }
+            });
         }
 
         protected void Application_EndRequest(object sender, EventArgs e)

@@ -5,6 +5,7 @@ namespace UI.Controllers.Helpers
 
     public static class TempMessageKeys
     {
+        public const string ANTIFORGERY_ERROR_TEMPMESSAGE = "AntiForgeryError";
         public const string CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE = "creategamedefinitionresult";
         public const string MANAGE_ACCOUNT_RESULT_TEMPMESSAGE = "manageaccountresult";
         public const string TEMP_MESSAGE_KEY_PLAYED_GAME_RECORDED = "playedgamerecorded";

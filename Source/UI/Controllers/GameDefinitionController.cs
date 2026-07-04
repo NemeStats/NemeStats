@@ -132,7 +132,7 @@ namespace UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize]
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HandledValidateAntiForgeryToken(AntiForgeryFailureMode.ForbiddenHtml)]
         [UserContext]
         public virtual ActionResult Create(CreateGameDefinitionViewModel createGameDefinitionViewModel, ApplicationUser currentUser)
         {
@@ -253,7 +253,7 @@ namespace UI.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HandledValidateAntiForgeryToken(AntiForgeryFailureMode.ForbiddenHtml)]
         [Authorize]
         [UserContext]
         public virtual ActionResult Edit(GameDefinitionEditViewModel viewModel, ApplicationUser currentUser)

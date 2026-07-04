@@ -1,4 +1,4 @@
-﻿#region LICENSE
+#region LICENSE
 // NemeStats is a free website for tracking the results of board games.
 //     Copyright (C) 2015 Jacob Gordon
 // 
@@ -81,9 +81,12 @@ namespace UI.Controllers
         }
 
         [AllowAnonymous]
-        public virtual ActionResult LoginForm()
+        public virtual ActionResult LoginForm(string origin = null)
         {
-            var model = new LoginViewModel();
+            var model = new LoginViewModel
+            {
+                Origin = origin
+            };
             return PartialView(MVC.Account.Views.LoginForm, model);
         }
 
@@ -99,7 +102,7 @@ namespace UI.Controllers
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        [HandledValidateAntiForgeryToken(AntiForgeryFailureMode.RetryLogin)]
         public virtual async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)
@@ -130,7 +133,7 @@ namespace UI.Controllers
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        [HandledValidateAntiForgeryToken(AntiForgeryFailureMode.RetryRegister)]
         public virtual async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -185,7 +188,7 @@ namespace UI.Controllers
         //
         // POST: /Account/Disassociate
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HandledValidateAntiForgeryToken(AntiForgeryFailureMode.ForbiddenHtml)]
         public virtual async Task<ActionResult> Disassociate(string loginProvider, string providerKey)
         {
             ManageMessageId? message = null;
@@ -256,7 +259,7 @@ namespace UI.Controllers
         //TODO how to test async methods?
         // POST: /Account/SetPassword
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HandledValidateAntiForgeryToken(AntiForgeryFailureMode.ForbiddenHtml)]
         public virtual async Task<ActionResult> SetPassword(SetPasswordViewModel model)
         {
             var parentViewModel = GetBaseManageAccountViewModel();
@@ -278,7 +281,7 @@ namespace UI.Controllers
 
         // POST: /Account/ChangePassword
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HandledValidateAntiForgeryToken(AntiForgeryFailureMode.ForbiddenHtml)]
         public virtual async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             var parentViewModel = GetBaseManageAccountViewModel();
@@ -300,7 +303,7 @@ namespace UI.Controllers
         //TODO how to test async methods?
         // POST: /Account/ChangeEmailAddress
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HandledValidateAntiForgeryToken(AntiForgeryFailureMode.ForbiddenHtml)]
         public virtual async Task<ActionResult> ChangeEmailAddress(ChangeEmailViewModel model)
         {
             if (!ModelState.IsValid)
@@ -358,7 +361,7 @@ namespace UI.Controllers
         // POST: /Account/ExternalLogin
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        [HandledValidateAntiForgeryToken(AntiForgeryFailureMode.RetryLogin)]
         public virtual ActionResult ExternalLogin(string provider, string returnUrl)
         {
             // Request a redirect to the external login provider
@@ -401,7 +404,7 @@ namespace UI.Controllers
         //
         // POST: /Account/LinkLogin
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HandledValidateAntiForgeryToken(AntiForgeryFailureMode.ForbiddenHtml)]
         public virtual ActionResult LinkLogin(string provider)
         {
             // Request a redirect to the external login provider to link a login for the current user
@@ -429,7 +432,7 @@ namespace UI.Controllers
         // POST: /Account/ExternalLoginConfirmation
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        [HandledValidateAntiForgeryToken(AntiForgeryFailureMode.ForbiddenHtml)]
         public virtual async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
         {
             if (User.Identity.IsAuthenticated)
@@ -471,7 +474,7 @@ namespace UI.Controllers
         //
         // POST: /Account/LogOff
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HandledValidateAntiForgeryToken(AntiForgeryFailureMode.ForbiddenHtml)]
         public virtual ActionResult LogOff()
         {
             _authenticationManager.SignOut();
@@ -633,7 +636,7 @@ namespace UI.Controllers
         // POST: /Account/ForgotPassword
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        [HandledValidateAntiForgeryToken(AntiForgeryFailureMode.ForbiddenHtml)]
         public virtual async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
             if (ModelState.IsValid)
@@ -688,7 +691,7 @@ namespace UI.Controllers
         // POST: /Account/ResetPassword
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        [HandledValidateAntiForgeryToken(AntiForgeryFailureMode.ForbiddenHtml)]
         public virtual async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
             if (!ModelState.IsValid)

@@ -1,4 +1,5 @@
-﻿@model UI.Models.RegisterViewModel
+﻿@using UI.Controllers.Helpers
+@model UI.Models.RegisterViewModel
 @{
     //TODO This file has so much redundancy with Register.cshtml they really should be combined
     ViewBag.Title = "Register";
@@ -7,6 +8,7 @@
 
 <h2 class="page-header">@ViewBag.Title</h2>
 <hr />
+@Html.RenderTempDataMessage(TempMessageKeys.ANTIFORGERY_ERROR_TEMPMESSAGE)
 
 <div class="row">
     <div class="col-md-8">
