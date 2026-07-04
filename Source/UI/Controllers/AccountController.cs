@@ -133,7 +133,7 @@ namespace UI.Controllers
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        [HandledValidateAntiForgeryToken(AntiForgeryFailureMode.RetryRegister)]
         public virtual async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
