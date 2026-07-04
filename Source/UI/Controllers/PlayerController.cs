@@ -267,7 +267,7 @@ namespace UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize]
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HandledValidateAntiForgeryToken(AntiForgeryFailureMode.ForbiddenHtml)]
         [UserContext]
         public virtual ActionResult Edit([Bind(Include = "Id,Name,Active,GamingGroupId")] Player player, ApplicationUser currentUser)
         {
@@ -303,7 +303,7 @@ namespace UI.Controllers
         // POST: /Player/Delete/5
         [Authorize]
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HandledValidateAntiForgeryToken(AntiForgeryFailureMode.ForbiddenHtml)]
         [UserContext]
         public virtual ActionResult Delete(int id, ApplicationUser currentUser)
         {
