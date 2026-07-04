@@ -214,15 +214,20 @@
     <Compile Include="UnitTests\AttributesTests\ApiAuthenticationAttributeTests.cs" />
     <Compile Include="UnitTests\AttributesTests\ApiExceptionFilterAttributeTests.cs" />
     <Compile Include="UnitTests\AttributesTests\ApiModelValidationAttributeTests.cs" />
+    <Compile Include="UnitTests\AttributesTests\HandledValidateAntiForgeryTokenAttributeTests.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\AccountControllerTestBase.cs" />
+    <Compile Include="UnitTests\ControllerTests\AccountControllerTests\AccountControllerForbiddenAntiForgeryTests.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\GetBaseManageAccountViewModelTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\AccountControllerTests\LoginAntiForgeryHandlingTests.cs" />
     <Compile Include="UnitTests\ControllerTests\AchievementControllerTests\AchievementControllerTestBase.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\AddExistingUserToGamingGroup.cs" />
+    <Compile Include="UnitTests\ControllerTests\AccountControllerTests\RegisterAntiForgeryHandlingTests.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\RegisterHttpPostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\AchievementControllerTests\DetailsForCurrentUserTests.cs" />
     <Compile Include="UnitTests\ControllerTests\AchievementControllerTests\IndexTests.cs" />
     <Compile Include="UnitTests\ControllerTests\AchievementControllerTests\PlayerAchievementTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\CreateHttpGetTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\GameDefinitionControllerAntiForgeryTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\CreateHttpPostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\DetailsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\EditHttpGetTests.cs" />
@@ -258,6 +263,7 @@
     <Compile Include="UnitTests\ControllerTests\HomeControllerTests\TrendingGamesTests.cs" />
     <Compile Include="UnitTests\ControllerTests\HomeControllerTests\TopGamesEverTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\SaveTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\PlayedGameControllerAntiForgeryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\DeleteConfirmedTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\DetailsTests.cs" />
@@ -274,6 +280,7 @@
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\DetailsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\CreateHttpGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\EditHttpGetTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\PlayerControllerAntiForgeryTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\EditHttpPostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\PlayerControllerTestBase.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\ShowRecentNemesisChangesTests.cs" />

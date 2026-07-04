@@ -347,6 +347,8 @@
     <Compile Include="Controllers\PlayedGameController.cs" />
     <Compile Include="Controllers\UniversalGameController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
+    <Compile Include="Attributes\Filters\AntiForgeryFailureMode.cs" />
+    <Compile Include="Attributes\Filters\HandledValidateAntiForgeryTokenAttribute.cs" />
     <Compile Include="Attributes\Filters\InjectingActionInvoker.cs" />
     <Compile Include="Attributes\Filters\ExternalServiceExceptionFilter.cs" />
     <Compile Include="Attributes\Filters\UserContextAttribute.cs" />
