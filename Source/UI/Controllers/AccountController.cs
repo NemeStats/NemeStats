@@ -81,9 +81,12 @@ namespace UI.Controllers
         }
 
         [AllowAnonymous]
-        public virtual ActionResult LoginForm()
+        public virtual ActionResult LoginForm(string origin = null)
         {
-            var model = new LoginViewModel();
+            var model = new LoginViewModel
+            {
+                Origin = origin
+            };
             return PartialView(MVC.Account.Views.LoginForm, model);
         }
 
@@ -99,7 +102,7 @@ namespace UI.Controllers
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        [HandledValidateAntiForgeryToken(AntiForgeryFailureMode.RetryLogin)]
         public virtual async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)
@@ -358,7 +361,7 @@ namespace UI.Controllers
         // POST: /Account/ExternalLogin
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        [HandledValidateAntiForgeryToken(AntiForgeryFailureMode.RetryLogin)]
         public virtual ActionResult ExternalLogin(string provider, string returnUrl)
         {
             // Request a redirect to the external login provider

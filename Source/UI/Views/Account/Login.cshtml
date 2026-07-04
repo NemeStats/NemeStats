@@ -1,4 +1,5 @@
-﻿@model UI.Models.LoginViewModel
+﻿@using UI.Controllers.Helpers
+@model UI.Models.LoginViewModel
 
 @{
     ViewBag.Title = "Sign In";
@@ -8,13 +9,14 @@
 
 <h2 class="page-header">@ViewBag.Title</h2>
 <hr/> 
+@Html.RenderTempDataMessage(TempMessageKeys.ANTIFORGERY_ERROR_TEMPMESSAGE)
 <div class="panel panel-primary">
     <div class="panel-heading hidden-xs">
         <h4>Login with Google or local account</h4>
     </div>
     <div class="panel-body">
         @Html.ValidationSummary(true)
-        @{ Html.RenderAction(MVC.Account.LoginForm()); }
+        @{ Html.RenderAction(MVC.Account.ActionNames.LoginForm, MVC.Account.Name, new { origin = Model != null && !string.IsNullOrWhiteSpace(Model.Origin) ? Model.Origin : "login" }); }
     </div>
     @*<div>
         <p>

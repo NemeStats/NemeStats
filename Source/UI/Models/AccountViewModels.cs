@@ -80,6 +80,8 @@ namespace UI.Models
 
     public class LoginViewModel
     {
+        public string Origin { get; set; }
+
         [Required]
         [Display(Name = "User name")]
         public string UserName { get; set; }

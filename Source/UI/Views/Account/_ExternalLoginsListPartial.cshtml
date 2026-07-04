@@ -25,7 +25,10 @@
     {
         string action = Model.Action;
         string returnUrl = Model.ReturnUrl;
-        using (Html.BeginForm(action, "Account", new { ReturnUrl = returnUrl }))
+        object routeValues = string.Equals(action, MVC.Account.ActionNames.ExternalLogin, StringComparison.InvariantCultureIgnoreCase)
+            ? new { ReturnUrl = returnUrl, origin = Model.Origin }
+            : new { ReturnUrl = returnUrl };
+        using (Html.BeginForm(action, MVC.Account.Name, routeValues))
         {
             @Html.AntiForgeryToken()
             <div id="socialLoginList">
