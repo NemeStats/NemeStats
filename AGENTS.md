@@ -60,6 +60,7 @@ NemeStats/
 - **Configs**: `PrivateAppSettings.config` (gitignored) holds connection strings and API keys. Created by `GetStarted.ps1`.
 
 ## ANTI-PATTERNS (THIS PROJECT)
+- **Do not push directly to `master`** — the repository requires PRs with status checks ("Validate Build And Tests"). Always open a feature branch and create a pull request.
 - **Do not edit `*.generated.cs` files** — these are T4MVC outputs. Edit the T4MVC template instead.
 - **Do not set EF database initializer** — explicitly set to `null` in `Global.asax`; migrations handle schema.
 - **Do not check in `PrivateAppSettings.config`** — contains secrets and environment-specific settings.
