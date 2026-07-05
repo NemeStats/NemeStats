@@ -27,7 +27,7 @@
         string returnUrl = Model.ReturnUrl;
         object routeValues = string.Equals(action, MVC.Account.ActionNames.ExternalLogin, StringComparison.InvariantCultureIgnoreCase)
             ? new { ReturnUrl = returnUrl, origin = Model.Origin }
-            : new { ReturnUrl = returnUrl };
+            : new { ReturnUrl = returnUrl, origin = (string)null };
         using (Html.BeginForm(action, MVC.Account.Name, routeValues))
         {
             @Html.AntiForgeryToken()
