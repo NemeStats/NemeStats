@@ -175,6 +175,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IntegrationTests\DataAccessTests\NemeStatsDataContextTests\FindByIdIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\LogicTests\BoardGameGeekGameDefinitions\UniversalStatsRetrieverIntegrationTests.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\NemeStatsDataContextTests\GetQueryableIntegrationTests.cs" />
     <Compile Include="IntegrationTests\EntityFrameworkTransactionTests.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\ChamionRepositoryTests\GetChampionDataTests.cs" />

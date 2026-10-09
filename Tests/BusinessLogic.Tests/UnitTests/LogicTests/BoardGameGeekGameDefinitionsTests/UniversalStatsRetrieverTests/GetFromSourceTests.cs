@@ -1,226 +1,116 @@
-﻿using System.Collections.Generic;
+#region LICENSE
+// NemeStats is a free website for tracking the results of board games.
+//     Copyright (C) 2015 Jacob Gordon
+//
+//     This program is free software: you can redistribute it and/or modify
+//     it under the terms of the GNU General Public License as published by
+//     the Free Software Foundation, either version 3 of the License, or
+//     (at your option) any later version.
+//
+//     This program is distributed in the hope that it will be useful,
+//     but WITHOUT ANY WARRANTY; without even the implied warranty of
+//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//     GNU General Public License for more details.
+//
+//     You should have received a copy of the GNU General Public License
+//     along with this program.  If not, see <http://www.gnu.org/licenses/>
+#endregion
+
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
+using BusinessLogic.Models.User;
 using NUnit.Framework;
-using Rhino.Mocks;
-using Shouldly;
-using StructureMap.AutoMocking;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsTests.UniversalStatsRetrieverTests
 {
     public class GetFromSourceTests
     {
-        private readonly int _boardGameGeekGameDefinitionId = 1;
-        private RhinoAutoMocker<UniversalStatsRetriever> _autoMocker;
-        private BoardGameGeekGameDefinition _expectedBoardGameGeekGameDefinition;
-
-        [SetUp]
-        public void SetUp()
+        [Test]
+        public void It_Returns_The_Aggregated_Statistics_For_The_Requested_Game()
         {
-            _autoMocker = new RhinoAutoMocker<UniversalStatsRetriever>();
-
-            _expectedBoardGameGeekGameDefinition = new BoardGameGeekGameDefinition
+            var statistics = new UniversalGameStats
             {
-                Id = _boardGameGeekGameDefinitionId,
-                GameDefinitions = new List<GameDefinition>
-                {
-                    new GameDefinition
-                    {
-                        GamingGroupId = 1,
-                        PlayedGames = new List<PlayedGame>
-                        {
-                            new PlayedGame
-                            {
-                                NumberOfPlayers = 2
-                            },
-                            new PlayedGame
-                            {
-                                NumberOfPlayers = 2
-                            },
-                            new PlayedGame
-                            {
-                                NumberOfPlayers = 2
-                            },
-                        }
-                    },
-                    new GameDefinition
-                    {
-                        GamingGroupId = 2,
-                        PlayedGames = new List<PlayedGame>
-                        {
-                            new PlayedGame
-                            {
-                                NumberOfPlayers = 3
-                            }
-                        }
-                    }
-                }
+                AveragePlayersPerGame = 2.5,
+                TotalNumberOfGamesPlayed = 4,
+                TotalGamingGroupsWithThisGame = 2
             };
+            var context = new TestDataContext(new[] { statistics });
 
-            var queryable = new List<BoardGameGeekGameDefinition>
-            {
-                _expectedBoardGameGeekGameDefinition
-            }.AsQueryable();
+            var result = MakeRetriever(context).GetFromSource(123);
 
-            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<BoardGameGeekGameDefinition>()).Return(queryable);
+            Assert.That(result.AveragePlayersPerGame, Is.EqualTo(2.5));
+            Assert.That(result.TotalNumberOfGamesPlayed, Is.EqualTo(4));
+            Assert.That(result.TotalGamingGroupsWithThisGame, Is.EqualTo(2));
+            Assert.That(context.Parameters.Length, Is.EqualTo(1));
+            var parameter = (SqlParameter)context.Parameters[0];
+            Assert.That(parameter.ParameterName, Is.EqualTo("boardGameGeekGameDefinitionId"));
+            Assert.That(parameter.Value, Is.EqualTo(123));
         }
 
         [Test]
         public void It_Throws_An_EntityDoesNotExistException_If_The_BoardGameGeekId_Doesnt_Map_To_A_Record()
         {
-            //--arrange
-            int invalidBoardGameGeekGameDefinitionId = -100;
-            var expectedException = new EntityDoesNotExistException<BoardGameGeekGameDefinition>(invalidBoardGameGeekGameDefinitionId);
+            var context = new TestDataContext(new UniversalGameStats[0]);
 
-            //--act
-            var exception = Assert.Throws<EntityDoesNotExistException<BoardGameGeekGameDefinition>>(() => _autoMocker.ClassUnderTest.GetFromSource(invalidBoardGameGeekGameDefinitionId));
-
-            //--assert
-            exception.Message.ShouldBe(expectedException.Message);
+            Assert.Throws<EntityDoesNotExistException<BoardGameGeekGameDefinition>>(
+                () => MakeRetriever(context).GetFromSource(-100));
         }
 
-        [Test]
-        public void It_Returns_The_Average_Players_Per_Game()
+        private static UniversalStatsRetriever MakeRetriever(IDataContext context)
         {
-            //--arrange
-
-            //--act
-            var result = _autoMocker.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId);
-
-            //--assert
-            result.AveragePlayersPerGame.ShouldBe(2.5D);
+            return new UniversalStatsRetriever(null, null, context);
         }
 
-        [Test]
-        public void It_Returns_The_Total_Number_Of_Games_Played()
+        private class TestDataContext : IDataContext
         {
-            //--arrange
+            private readonly DbRawSqlQuery<UniversalGameStats> _query;
+            public object[] Parameters { get; private set; }
 
-            //--act
-            var result = _autoMocker.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId);
+            public TestDataContext(IEnumerable<UniversalGameStats> statistics)
+            {
+                _query = new TestQuery(statistics);
+            }
 
-            //--assert
-            result.TotalNumberOfGamesPlayed.ShouldBe(4);
+            public DbRawSqlQuery<T> MakeRawSqlQuery<T>(string sql, params object[] parameters)
+            {
+                Parameters = parameters;
+                return (DbRawSqlQuery<T>)(object)_query;
+            }
+
+            public void CommitAllChanges() { throw new System.NotSupportedException(); }
+            public void MakeScarySqlAlteration(string sql, params object[] parameters) { throw new System.NotSupportedException(); }
+            public IQueryable<TEntity> GetQueryable<TEntity>() where TEntity : class, IEntityWithTechnicalKey { throw new System.NotSupportedException(); }
+            public TEntity FindById<TEntity>(object id) where TEntity : class, IEntityWithTechnicalKey { throw new System.NotSupportedException(); }
+            public TEntity Save<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : class, IEntityWithTechnicalKey { throw new System.NotSupportedException(); }
+            public void Delete<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : class, IEntityWithTechnicalKey { throw new System.NotSupportedException(); }
+            public void DeleteById<TEntity>(object id, ApplicationUser currentUser) where TEntity : class, IEntityWithTechnicalKey { throw new System.NotSupportedException(); }
+            public DbContextTransaction CurrentTransaction() { throw new System.NotSupportedException(); }
+            public DbContextTransaction BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted) { throw new System.NotSupportedException(); }
+            public void DetachEntities<TEntity>() where TEntity : class, IEntityWithTechnicalKey { throw new System.NotSupportedException(); }
+            public TEntity AdminSave<TEntity>(TEntity entity) where TEntity : class, IEntityWithTechnicalKey { throw new System.NotSupportedException(); }
+            public void SetCommandTimeout(int timeoutInSeconds) { throw new System.NotSupportedException(); }
+            public void Dispose() { }
         }
 
-        [Test]
-        public void It_Returns_The_Total_Number_Of_Gaming_Groups_That_Have_Played_This_Game()
+        private class TestQuery : DbSqlQuery<UniversalGameStats>
         {
-            //--arrange
+            private readonly IEnumerable<UniversalGameStats> _statistics;
 
-            //--act
-            var result = _autoMocker.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId);
-
-            //--assert
-            result.TotalGamingGroupsWithThisGame.ShouldBe(2);
-        }
-
-        [Test]
-        public void It_Returns_Defaults_If_There_Are_No_Game_Definitions()
-        {
-            //--arrange
-            var expectedBggDefinition = new BoardGameGeekGameDefinition
+            public TestQuery(IEnumerable<UniversalGameStats> statistics)
             {
-                Id = _boardGameGeekGameDefinitionId,
-                GameDefinitions = new List<GameDefinition>(),
-            };
-            var queryable = new List<BoardGameGeekGameDefinition>
-            {
-                expectedBggDefinition,
-            }.AsQueryable();
-            var mockRetriever = new RhinoAutoMocker<UniversalStatsRetriever>();
-            mockRetriever.Get<IDataContext>().Expect(mock => mock.GetQueryable<BoardGameGeekGameDefinition>()).Return(queryable);
+                _statistics = statistics;
+            }
 
-            //--act
-            var result = mockRetriever.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId);
-
-            //--assert
-            result.AveragePlayersPerGame.ShouldBe(null);
-            result.TotalGamingGroupsWithThisGame.ShouldBe(0);
-            result.TotalNumberOfGamesPlayed.ShouldBe(0);
-        }
-
-        [Test]
-        public void It_Handles_Game_Definitions_With_No_PlayedGames()
-        {
-            //--arrange
-            var expectedBggDefinition = new BoardGameGeekGameDefinition
-            {
-                Id = _boardGameGeekGameDefinitionId,
-                GameDefinitions = new List<GameDefinition>
-                {
-                    new GameDefinition
-                    {
-                        GamingGroupId = 1,
-                        PlayedGames = new List<PlayedGame>(),
-                    },
-                    new GameDefinition
-                    {
-                        GamingGroupId = 2,
-                        PlayedGames = new List<PlayedGame>
-                        {
-                            new PlayedGame
-                            {
-                                NumberOfPlayers = 3
-                            }
-                        }
-                    }
-                },
-            };
-            var queryable = new List<BoardGameGeekGameDefinition>
-            {
-                expectedBggDefinition,
-            }.AsQueryable();
-            var mockRetriever = new RhinoAutoMocker<UniversalStatsRetriever>();
-            mockRetriever.Get<IDataContext>().Expect(mock => mock.GetQueryable<BoardGameGeekGameDefinition>()).Return(queryable);
-
-            //--act
-            var result = mockRetriever.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId);
-
-            //--assert
-            result.AveragePlayersPerGame.ShouldBe(3);
-            result.TotalGamingGroupsWithThisGame.ShouldBe(1);
-            result.TotalNumberOfGamesPlayed.ShouldBe(1);
-        }
-
-        [Test]
-        public void It_Handles_When_All_Game_Definitions_Have_No_PlayedGames()
-        {
-            //--arrange
-            var expectedBggDefinition = new BoardGameGeekGameDefinition
-            {
-                Id = _boardGameGeekGameDefinitionId,
-                GameDefinitions = new List<GameDefinition>
-                {
-                    new GameDefinition
-                    {
-                        GamingGroupId = 1,
-                        PlayedGames = new List<PlayedGame>(),
-                    },
-                    new GameDefinition
-                    {
-                        GamingGroupId = 2,
-                        PlayedGames = new List<PlayedGame>(),
-                    }
-                },
-            };
-            var queryable = new List<BoardGameGeekGameDefinition>
-            {
-                expectedBggDefinition,
-            }.AsQueryable();
-            var mockRetriever = new RhinoAutoMocker<UniversalStatsRetriever>();
-            mockRetriever.Get<IDataContext>().Expect(mock => mock.GetQueryable<BoardGameGeekGameDefinition>()).Return(queryable);
-
-            //--act
-            var result = mockRetriever.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId);
-
-            //--assert
-            result.AveragePlayersPerGame.ShouldBe(0);
-            result.TotalGamingGroupsWithThisGame.ShouldBe(0);
-            result.TotalNumberOfGamesPlayed.ShouldBe(0);
+            public override IEnumerator<UniversalGameStats> GetEnumerator() => _statistics.GetEnumerator();
         }
     }
 }
