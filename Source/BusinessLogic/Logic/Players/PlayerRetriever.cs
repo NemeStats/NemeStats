@@ -174,13 +174,13 @@ namespace BusinessLogic.Logic.Players
 
             ValidatePlayerWasFound(playerId, returnPlayer);
 
-            var playerStatistics = GetPlayerStatistics(playerId);
+            var playerGameSummaries = _playerRepository.GetPlayerGameSummaries(playerId, _dataContext);
+            var playerStatistics = GetPlayerStatistics(
+                playerId, GetGameDefinitionTotals(playerGameSummaries));
 
             var playerGameResults = GetPlayerGameResultsWithPlayedGameAndGameDefinition(playerId, numberOfRecentGamesToRetrieve);
 
             var minions = GetMinions(returnPlayer.Id);
-
-            var playerGameSummaries = _playerRepository.GetPlayerGameSummaries(playerId, _dataContext);
 
             var championedGames = GetChampionedGames(returnPlayer.Id);
 
@@ -274,8 +274,13 @@ namespace BusinessLogic.Logic.Players
 
         public virtual PlayerStatistics GetPlayerStatistics(int playerId)
         {
-            var playerStatistics = new PlayerStatistics();
             var gameDefinitionTotals = GetGameDefinitionTotals(playerId);
+            return GetPlayerStatistics(playerId, gameDefinitionTotals);
+        }
+
+        internal virtual PlayerStatistics GetPlayerStatistics(int playerId, GameDefinitionTotals gameDefinitionTotals)
+        {
+            var playerStatistics = new PlayerStatistics();
             playerStatistics.GameDefinitionTotals = gameDefinitionTotals;
 
             var topLevelTotals = GetTopLevelTotals(gameDefinitionTotals);
@@ -315,6 +320,11 @@ namespace BusinessLogic.Logic.Players
         internal virtual GameDefinitionTotals GetGameDefinitionTotals(int playerId)
         {
             var playerGameSummaries = _playerRepository.GetPlayerGameSummaries(playerId, _dataContext);
+            return GetGameDefinitionTotals(playerGameSummaries);
+        }
+
+        internal virtual GameDefinitionTotals GetGameDefinitionTotals(IList<PlayerGameSummary> playerGameSummaries)
+        {
             var gameDefinitionTotals = new GameDefinitionTotals
             {
                 SummariesOfGameDefinitionTotals = playerGameSummaries.Select(playerGameSummary => new GameDefinitionTotal

@@ -148,7 +148,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                 NemePointsSummary = new NemePointsSummary(1, 2, 4)
             };
 
-            _autoMocker.ClassUnderTest.Expect(repo => repo.GetPlayerStatistics(Arg<int>.Is.Anything))
+            var expectedGameDefinitionTotals = new GameDefinitionTotals();
+            _autoMocker.ClassUnderTest.Expect(repo =>
+                    repo.GetGameDefinitionTotals(Arg<IList<PlayerGameSummary>>.Is.Anything))
+                .Return(expectedGameDefinitionTotals);
+            _autoMocker.ClassUnderTest.Expect(repo => repo.GetPlayerStatistics(
+                    Arg<int>.Is.Anything, Arg<GameDefinitionTotals>.Is.Same(expectedGameDefinitionTotals)))
                 .Repeat.Once()
                 .Return(_expectedPlayerStatistics);
 
