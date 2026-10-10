@@ -83,6 +83,7 @@ namespace UI.Controllers
             public readonly string RecentPlayedGames = "RecentPlayedGames";
             public readonly string TopGamesEver = "TopGamesEver";
             public readonly string About = "About";
+            public readonly string NemeStatsAndroidApp = "NemeStatsAndroidApp";
             public readonly string AboutNemePoints = "AboutNemePoints";
             public readonly string AboutBadgesAndAchievements = "AboutBadgesAndAchievements";
             public readonly string PrivacyNotice = "PrivacyNotice";
@@ -96,6 +97,7 @@ namespace UI.Controllers
             public const string RecentPlayedGames = "RecentPlayedGames";
             public const string TopGamesEver = "TopGamesEver";
             public const string About = "About";
+            public const string NemeStatsAndroidApp = "NemeStatsAndroidApp";
             public const string AboutNemePoints = "AboutNemePoints";
             public const string AboutBadgesAndAchievements = "AboutBadgesAndAchievements";
             public const string PrivacyNotice = "PrivacyNotice";
@@ -125,6 +127,7 @@ namespace UI.Controllers
                 public readonly string AboutBadgesAndAchievements = "AboutBadgesAndAchievements";
                 public readonly string AboutNemePoints = "AboutNemePoints";
                 public readonly string Index = "Index";
+                public readonly string NemeStatsAndroidApp = "NemeStatsAndroidApp";
                 public readonly string PrivacyNotice = "PrivacyNotice";
             }
             public readonly string _HomeFeatures = "~/Views/Home/_HomeFeatures.cshtml";
@@ -132,6 +135,7 @@ namespace UI.Controllers
             public readonly string AboutBadgesAndAchievements = "~/Views/Home/AboutBadgesAndAchievements.cshtml";
             public readonly string AboutNemePoints = "~/Views/Home/AboutNemePoints.cshtml";
             public readonly string Index = "~/Views/Home/Index.cshtml";
+            public readonly string NemeStatsAndroidApp = "~/Views/Home/NemeStatsAndroidApp.cshtml";
             public readonly string PrivacyNotice = "~/Views/Home/PrivacyNotice.cshtml";
         }
     }
@@ -194,6 +198,17 @@ namespace UI.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.About);
             AboutOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void NemeStatsAndroidAppOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult NemeStatsAndroidApp()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.NemeStatsAndroidApp);
+            NemeStatsAndroidAppOverride(callInfo);
             return callInfo;
         }
 

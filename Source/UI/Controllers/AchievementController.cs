@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Logic;
@@ -54,9 +54,14 @@ namespace UI.Controllers
 
         [Route("{achievementId}/currentplayer")]
         [UserContext]
-        public virtual ActionResult DetailsForCurrentUser(AchievementId achievementId, ApplicationUser currentUser)
+        public virtual ActionResult DetailsForCurrentUser(AchievementId? achievementId, ApplicationUser currentUser)
         {
-            var achievementQuery = new PlayerAchievementQuery(achievementId, currentUser.Id, currentUser.CurrentGamingGroupId.Value);
+            if (!achievementId.HasValue)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var achievementQuery = new PlayerAchievementQuery(achievementId.Value, currentUser.Id, currentUser.CurrentGamingGroupId.Value);
             var playerAchievementDetails = _playerAchievementRetriever.GetPlayerAchievement(achievementQuery);
             var playerAchievementViewModel =
                 _transformer.Transform<PlayerAchievementViewModel>(playerAchievementDetails);
@@ -66,23 +71,34 @@ namespace UI.Controllers
 
         [Route("{achievementId}")]
         [UserContext(RequiresGamingGroup = false)]
-        public virtual ActionResult Details(AchievementId achievementId, ApplicationUser currentUser)
+        public virtual ActionResult Details(AchievementId? achievementId, ApplicationUser currentUser)
         {
-            if (currentUser != null && currentUser.CurrentGamingGroupId > 0)
+            if (!achievementId.HasValue)
             {
-                return DetailsForCurrentUser(achievementId, currentUser);
+                return new HttpNotFoundResult();
             }
 
-            var achievement = _achievementRetriever.GetAchievement(achievementId);
+            var id = achievementId.Value;
+            if (currentUser != null && currentUser.CurrentGamingGroupId > 0)
+            {
+                return DetailsForCurrentUser(id, currentUser);
+            }
+
+            var achievement = _achievementRetriever.GetAchievement(id);
 
             var viewModel = _transformer.Transform<PlayerAchievementViewModel>(achievement);
             return View(MVC.Achievement.Views.Details, viewModel);
         }
 
         [Route("{achievementId}/player/{playerId}")]
-        public virtual ActionResult PlayerAchievement(AchievementId achievementId, int playerId)
+        public virtual ActionResult PlayerAchievement(AchievementId? achievementId, int? playerId)
         {
-            var query = new PlayerAchievementQuery(achievementId, playerId);
+            if (!achievementId.HasValue || !playerId.HasValue)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var query = new PlayerAchievementQuery(achievementId.Value, playerId.Value);
 
             try
             {

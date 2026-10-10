@@ -1,4 +1,4 @@
-﻿<#
+<#
 /*
 T4MVC Version 3.16.5
 Find latest version and documentation at https://github.com/T4MVC/T4MVC/wiki/Documentation
@@ -1168,7 +1168,7 @@ public static class <#= settings.AssetsNamespace #>
             if (projectItem.Name.EndsWith(".js")  && !projectItem.Name.Contains("-vsdoc")) 
             {
 #>
-public const string <#=name#> = "<#=bundleAssetPath#>"; 
+public const string <#=name#> = "<#=bundleAssetPath#>";
 <#+
             }
             else if (projectItem.Name.EndsWith(".css")) 

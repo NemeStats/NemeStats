@@ -1,4 +1,4 @@
-﻿#region LICENSE
+#region LICENSE
 // NemeStats is a free website for tracking the results of board games.
 //     Copyright (C) 2015 Jacob Gordon
 // 
@@ -97,6 +97,29 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 
             PlayedGameDetailsViewModel viewModel = (PlayedGameDetailsViewModel)result.ViewData.Model;
             Assert.AreEqual(playedGameDetails, viewModel);
+        }
+    }
+
+    [TestFixture]
+    public class MissingRequiredIdTests : PlayedGameControllerTestBase
+    {
+        private static void AssertNotFound(ActionResult actionResult)
+        {
+            var result = actionResult as HttpStatusCodeResult;
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.StatusCode, Is.EqualTo((int)HttpStatusCode.NotFound));
+        }
+
+        [Test]
+        public void PlayedGameEditWithoutIdReturnsNotFound()
+        {
+            AssertNotFound(AutoMocker.ClassUnderTest.Edit(null, CurrentUser));
+        }
+
+        [Test]
+        public void PlayedGameDeleteWithoutIdReturnsNotFound()
+        {
+            AssertNotFound(AutoMocker.ClassUnderTest.DeleteConfirmed(null, CurrentUser));
         }
     }
 }

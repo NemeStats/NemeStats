@@ -239,10 +239,10 @@ namespace UI.Controllers
         public T4MVC_PlayerController() : base(Dummy.Instance) { }
 
         [NonAction]
-        partial void DetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void DetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Details(int id, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult Details(int? id, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Details);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
@@ -274,15 +274,28 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void InvitePlayerOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void InvitePlayerOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult InvitePlayer(int id, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult InvitePlayer(int? id, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.InvitePlayer);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
             InvitePlayerOverride(callInfo, id, currentUser);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void InvitePlayerOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, UI.Models.Players.PlayerInvitationViewModel playerInvitationViewModel, BusinessLogic.Models.User.ApplicationUser currentUser);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult InvitePlayer(UI.Models.Players.PlayerInvitationViewModel playerInvitationViewModel, BusinessLogic.Models.User.ApplicationUser currentUser)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.InvitePlayer);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "playerInvitationViewModel", playerInvitationViewModel);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            InvitePlayerOverride(callInfo, playerInvitationViewModel, currentUser);
             return callInfo;
         }
 
@@ -305,19 +318,6 @@ namespace UI.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ShowRecentNemesisChanges);
             ShowRecentNemesisChangesOverride(callInfo);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void InvitePlayerOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, UI.Models.Players.PlayerInvitationViewModel playerInvitationViewModel, BusinessLogic.Models.User.ApplicationUser currentUser);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult InvitePlayer(UI.Models.Players.PlayerInvitationViewModel playerInvitationViewModel, BusinessLogic.Models.User.ApplicationUser currentUser)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.InvitePlayer);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "playerInvitationViewModel", playerInvitationViewModel);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
-            InvitePlayerOverride(callInfo, playerInvitationViewModel, currentUser);
             return callInfo;
         }
 
@@ -360,10 +360,10 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void DeleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void DeleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Delete(int id, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult Delete(int? id, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);

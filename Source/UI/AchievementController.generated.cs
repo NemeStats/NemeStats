@@ -197,10 +197,10 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void DetailsForCurrentUserOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Achievements.AchievementId achievementId, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void DetailsForCurrentUserOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Achievements.AchievementId? achievementId, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult DetailsForCurrentUser(BusinessLogic.Models.Achievements.AchievementId achievementId, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult DetailsForCurrentUser(BusinessLogic.Models.Achievements.AchievementId? achievementId, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DetailsForCurrentUser);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "achievementId", achievementId);
@@ -210,10 +210,10 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void DetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Achievements.AchievementId achievementId, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void DetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Achievements.AchievementId? achievementId, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Details(BusinessLogic.Models.Achievements.AchievementId achievementId, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult Details(BusinessLogic.Models.Achievements.AchievementId? achievementId, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Details);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "achievementId", achievementId);
@@ -223,10 +223,10 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void PlayerAchievementOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Achievements.AchievementId achievementId, int playerId);
+        partial void PlayerAchievementOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Achievements.AchievementId? achievementId, int? playerId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult PlayerAchievement(BusinessLogic.Models.Achievements.AchievementId achievementId, int playerId)
+        public override System.Web.Mvc.ActionResult PlayerAchievement(BusinessLogic.Models.Achievements.AchievementId? achievementId, int? playerId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.PlayerAchievement);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "achievementId", achievementId);

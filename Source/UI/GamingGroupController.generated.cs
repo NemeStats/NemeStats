@@ -347,10 +347,10 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void DetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, BusinessLogic.Models.User.ApplicationUser currentUser, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter);
+        partial void DetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id, BusinessLogic.Models.User.ApplicationUser currentUser, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Details(int id, BusinessLogic.Models.User.ApplicationUser currentUser, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter)
+        public override System.Web.Mvc.ActionResult Details(int? id, BusinessLogic.Models.User.ApplicationUser currentUser, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Details);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
@@ -361,10 +361,10 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void GetGamingGroupPlayersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, BusinessLogic.Models.User.ApplicationUser currentUser, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter);
+        partial void GetGamingGroupPlayersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id, BusinessLogic.Models.User.ApplicationUser currentUser, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult GetGamingGroupPlayers(int id, BusinessLogic.Models.User.ApplicationUser currentUser, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter)
+        public override System.Web.Mvc.ActionResult GetGamingGroupPlayers(int? id, BusinessLogic.Models.User.ApplicationUser currentUser, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GetGamingGroupPlayers);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
@@ -375,10 +375,10 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void GetGamingGroupGameDefinitionsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, BusinessLogic.Models.User.ApplicationUser currentUser, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter);
+        partial void GetGamingGroupGameDefinitionsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id, BusinessLogic.Models.User.ApplicationUser currentUser, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult GetGamingGroupGameDefinitions(int id, BusinessLogic.Models.User.ApplicationUser currentUser, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter)
+        public override System.Web.Mvc.ActionResult GetGamingGroupGameDefinitions(int? id, BusinessLogic.Models.User.ApplicationUser currentUser, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GetGamingGroupGameDefinitions);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
@@ -389,10 +389,10 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void GetGamingGroupPlayedGamesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, BusinessLogic.Models.User.ApplicationUser currentUser, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter, int numberOfItems);
+        partial void GetGamingGroupPlayedGamesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id, BusinessLogic.Models.User.ApplicationUser currentUser, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter, int numberOfItems);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult GetGamingGroupPlayedGames(int id, BusinessLogic.Models.User.ApplicationUser currentUser, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter, int numberOfItems)
+        public override System.Web.Mvc.ActionResult GetGamingGroupPlayedGames(int? id, BusinessLogic.Models.User.ApplicationUser currentUser, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter, int numberOfItems)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GetGamingGroupPlayedGames);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
@@ -427,10 +427,10 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void GetGamingGroupStatsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int gamingGroupId, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter);
+        partial void GetGamingGroupStatsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? gamingGroupId, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult GetGamingGroupStats(int gamingGroupId, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter)
+        public override System.Web.Mvc.ActionResult GetGamingGroupStats(int? gamingGroupId, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GetGamingGroupStats);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamingGroupId", gamingGroupId);
@@ -440,10 +440,10 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void GetRecentChangesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int gamingGroupId, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter);
+        partial void GetRecentChangesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? gamingGroupId, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult GetRecentChanges(int gamingGroupId, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter)
+        public override System.Web.Mvc.ActionResult GetRecentChanges(int? gamingGroupId, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GetRecentChanges);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamingGroupId", gamingGroupId);
@@ -453,10 +453,10 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void GetCurrentUserGamingGroupGameDefinitionsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void GetCurrentUserGamingGroupGameDefinitionsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult GetCurrentUserGamingGroupGameDefinitions(int id, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult GetCurrentUserGamingGroupGameDefinitions(int? id, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GetCurrentUserGamingGroupGameDefinitions);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
@@ -466,10 +466,10 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void SwitchGamingGroupsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int gamingGroupId, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void SwitchGamingGroupsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? gamingGroupId, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult SwitchGamingGroups(int gamingGroupId, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult SwitchGamingGroups(int? gamingGroupId, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SwitchGamingGroups);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamingGroupId", gamingGroupId);
@@ -492,10 +492,10 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Edit(int id, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult Edit(int? id, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
@@ -518,10 +518,10 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void DeleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int gamingGroupId, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void DeleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? gamingGroupId, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Delete(int gamingGroupId, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult Delete(int? gamingGroupId, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamingGroupId", gamingGroupId);

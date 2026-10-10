@@ -1,4 +1,4 @@
-﻿using System.Web.Mvc;
+using System.Web.Mvc;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.PlayerAchievements;
 using BusinessLogic.Models.Achievements;
@@ -63,6 +63,22 @@ namespace UI.Tests.UnitTests.ControllerTests.AchievementControllerTests
             var viewModel = result.Model as PlayerAchievementViewModel;
             viewModel.ShouldNotBeNull();
             viewModel.ShouldBeSameAs(expectedViewModel);
+        }
+
+        [Test]
+        public void It_Returns_404_When_The_Achievement_Id_Is_Missing()
+        {
+            var result = _autoMocker.ClassUnderTest.PlayerAchievement(null, 1);
+
+            result.ShouldBeAssignableTo<HttpNotFoundResult>();
+        }
+
+        [Test]
+        public void It_Returns_404_When_The_Player_Id_Is_Missing()
+        {
+            var result = _autoMocker.ClassUnderTest.PlayerAchievement(AchievementId.BusyBee, null);
+
+            result.ShouldBeAssignableTo<HttpNotFoundResult>();
         }
 
     }

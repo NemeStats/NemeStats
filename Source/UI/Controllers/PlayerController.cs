@@ -1,4 +1,4 @@
-﻿#region LICENSE
+#region LICENSE
 // NemeStats is a free website for tracking the results of board games.
 //     Copyright (C) 2015 Jacob Gordon
 // 
@@ -91,17 +91,24 @@ namespace UI.Controllers
 
         // GET: /Player/Details/5
         [UserContext(RequiresGamingGroup = false)]
-        public virtual ActionResult Details(int id, ApplicationUser currentUser)
+        public virtual ActionResult Details(int? id, ApplicationUser currentUser)
         {
+            if (!id.HasValue)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var playerId = id.Value;
+
             try
             {
-                var player = playerRetriever.GetPlayerDetails(id, NUMBER_OF_RECENT_GAMES_TO_RETRIEVE);
+                var player = playerRetriever.GetPlayerDetails(playerId, NUMBER_OF_RECENT_GAMES_TO_RETRIEVE);
             
-                var fullUrl = Url.Action(MVC.Player.ActionNames.Details, MVC.Player.Name, new { id }, Request.Url.Scheme) + "#minions";
+                var fullUrl = Url.Action(MVC.Player.ActionNames.Details, MVC.Player.Name, new { id = playerId }, Request.Url.Scheme) + "#minions";
 
                 var playerIds = player.PlayerVersusPlayersStatistics.Select(x => x.OpposingPlayerId).ToList();
                 //--include the current player so we can attempt to get their email address as well
-                playerIds.Add(id);
+                playerIds.Add(playerId);
                 var playerIdToRegisteredUserEmailAddressDictionary =
                     playerRetriever.GetRegisteredUserEmailAddresses(playerIds, currentUser);
                 var playerDetailsViewModel = playerDetailsViewModelBuilder.Build(player, playerIdToRegisteredUserEmailAddressDictionary, fullUrl, currentUser);
@@ -135,14 +142,20 @@ namespace UI.Controllers
         // GET: /Player/InvitePlayer/5
         [Authorize]
         [UserContext]
-        public virtual ActionResult InvitePlayer(int id, ApplicationUser currentUser)
+        public virtual ActionResult InvitePlayer(int? id, ApplicationUser currentUser)
         {
+            if (!id.HasValue)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var playerId = id.Value;
             PlayerDetails playerDetails;
 
             try
             {
                 //TODO this method is overkill for just getting the player name
-                playerDetails = playerRetriever.GetPlayerDetails(id, 0);
+                playerDetails = playerRetriever.GetPlayerDetails(playerId, 0);
             }
             catch (KeyNotFoundException)
             {
@@ -267,7 +280,8 @@ namespace UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize]
         [HttpPost]
-        [HandledValidateAntiForgeryToken(AntiForgeryFailureMode.ForbiddenHtml)]
+        [HandledValidateAntiForgeryToken(
+            AntiForgeryFailureMode.ForbiddenHtml)]
         [UserContext]
         public virtual ActionResult Edit([Bind(Include = "Id,Name,Active,GamingGroupId")] Player player, ApplicationUser currentUser)
         {
@@ -303,11 +317,17 @@ namespace UI.Controllers
         // POST: /Player/Delete/5
         [Authorize]
         [HttpPost]
-        [HandledValidateAntiForgeryToken(AntiForgeryFailureMode.ForbiddenHtml)]
+        [HandledValidateAntiForgeryToken(
+            AntiForgeryFailureMode.ForbiddenHtml)]
         [UserContext]
-        public virtual ActionResult Delete(int id, ApplicationUser currentUser)
+        public virtual ActionResult Delete(int? id, ApplicationUser currentUser)
         {
-            _playerDeleter.DeletePlayer(id, currentUser);
+            if (!id.HasValue)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            _playerDeleter.DeletePlayer(id.Value, currentUser);
             
             SetToastMessage(TempMessageKeys.TEMP_MESSAGE_KEY_PLAYER_DELETED, "Player deleted successfully");
 

@@ -1,4 +1,4 @@
-﻿#region LICENSE
+#region LICENSE
 
 // NemeStats is a free website for tracking the results of board games. Copyright (C) 2015 Jacob Gordon
 // 
@@ -123,6 +123,79 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             var result = autoMocker.ClassUnderTest.Details(nonExistentGamingGroupId, currentUser) as HttpStatusCodeResult;
 
             Assert.That(result.StatusCode, Is.EqualTo((int)HttpStatusCode.NotFound));
+        }
+
+        [Test]
+        public void ItReturnsAnHttpNotFoundStatusCodeWhenGamingGroupIdIsMissing()
+        {
+            var result = autoMocker.ClassUnderTest.Details(null, currentUser) as HttpStatusCodeResult;
+
+            Assert.That(result.StatusCode, Is.EqualTo((int)HttpStatusCode.NotFound));
+        }
+    }
+
+    [TestFixture]
+    public class MissingRequiredIdTests : GamingGroupControllerTestBase
+    {
+        private static void AssertNotFound(ActionResult actionResult)
+        {
+            var result = actionResult as HttpStatusCodeResult;
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.StatusCode, Is.EqualTo((int)HttpStatusCode.NotFound));
+        }
+
+        [Test]
+        public void GamingGroupPlayersWithoutIdReturnsNotFound()
+        {
+            AssertNotFound(autoMocker.ClassUnderTest.GetGamingGroupPlayers(null, currentUser));
+        }
+
+        [Test]
+        public void GamingGroupGameDefinitionsWithoutIdReturnsNotFound()
+        {
+            AssertNotFound(autoMocker.ClassUnderTest.GetGamingGroupGameDefinitions(null, currentUser));
+        }
+
+        [Test]
+        public void GamingGroupPlayedGamesWithoutIdReturnsNotFound()
+        {
+            AssertNotFound(autoMocker.ClassUnderTest.GetGamingGroupPlayedGames(null, currentUser));
+        }
+
+        [Test]
+        public void GamingGroupStatsWithoutIdReturnsNotFound()
+        {
+            AssertNotFound(autoMocker.ClassUnderTest.GetGamingGroupStats(null));
+        }
+
+        [Test]
+        public void RecentGamingGroupChangesWithoutIdReturnsNotFound()
+        {
+            AssertNotFound(autoMocker.ClassUnderTest.GetRecentChanges(null));
+        }
+
+        [Test]
+        public void CurrentUserGamingGroupDefinitionsWithoutIdReturnsNotFound()
+        {
+            AssertNotFound(autoMocker.ClassUnderTest.GetCurrentUserGamingGroupGameDefinitions(null, currentUser));
+        }
+
+        [Test]
+        public void SwitchingGamingGroupsWithoutIdReturnsNotFound()
+        {
+            AssertNotFound(autoMocker.ClassUnderTest.SwitchGamingGroups(null, currentUser));
+        }
+
+        [Test]
+        public void GamingGroupEditWithoutIdReturnsNotFound()
+        {
+            AssertNotFound(autoMocker.ClassUnderTest.Edit((int?)null, currentUser));
+        }
+
+        [Test]
+        public void GamingGroupDeleteWithoutIdReturnsNotFound()
+        {
+            AssertNotFound(autoMocker.ClassUnderTest.Delete(null, currentUser));
         }
     }
 }
