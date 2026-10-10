@@ -1,4 +1,4 @@
-﻿#region LICENSE
+#region LICENSE
 
 // NemeStats is a free website for tracking the results of board games. Copyright (C) 2015 Jacob Gordon
 // 
@@ -119,8 +119,15 @@ namespace UI.Controllers
         }
 
         [UserContext(RequiresGamingGroup = false)]
-        public virtual ActionResult Details(int id, ApplicationUser currentUser, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null)
+        public virtual ActionResult Details(int? id, ApplicationUser currentUser, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null)
         {
+            if (!id.HasValue)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var gamingGroupId = id.Value;
+
             if (dateRangeFilter == null)
             {
                 dateRangeFilter = new BasicDateRangeFilter();
@@ -135,7 +142,7 @@ namespace UI.Controllers
 
             try
             {
-                gamingGroupSummary = GetGamingGroupSummary(id, dateRangeFilter);
+                gamingGroupSummary = GetGamingGroupSummary(gamingGroupId, dateRangeFilter);
             }
             catch (EntityDoesNotExistException<GamingGroup>)
             {
@@ -153,7 +160,7 @@ namespace UI.Controllers
                     Active = gamingGroupSummary.Active
                 },
                 DateRangeFilter = dateRangeFilter,
-                UserCanEdit = currentUser.CurrentGamingGroupId == id
+                UserCanEdit = currentUser.CurrentGamingGroupId == gamingGroupId
             };
 
             return View(MVC.GamingGroup.Views.Details, viewModel);
@@ -179,16 +186,22 @@ namespace UI.Controllers
 
         [HttpGet]
         [UserContext(RequiresGamingGroup = false)]
-        public virtual ActionResult GetGamingGroupPlayers(int id, ApplicationUser currentUser, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null)
+        public virtual ActionResult GetGamingGroupPlayers(int? id, ApplicationUser currentUser, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null)
         {
-            var playersWithNemesis = _playerRetriever.GetAllPlayersWithNemesisInfo(id, dateRangeFilter);
+            if (!id.HasValue)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var gamingGroupId = id.Value;
+            var playersWithNemesis = _playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId, dateRangeFilter);
             var playerIds = playersWithNemesis.Select(x => x.PlayerId).ToList();
             var playerIdToRegisteredUserEmailAddressDictionary =
                 _playerRetriever.GetRegisteredUserEmailAddresses(playerIds, currentUser);
 
             var viewModels = ConstructPlwyerWithNemesisViewModels(currentUser, playersWithNemesis, playerIdToRegisteredUserEmailAddressDictionary);
 
-            ViewBag.canEdit = currentUser.CurrentGamingGroupId == id;
+            ViewBag.canEdit = currentUser.CurrentGamingGroupId == gamingGroupId;
 
             return PartialView(MVC.Player.Views._PlayersPartial, viewModels);
         }
@@ -214,31 +227,43 @@ namespace UI.Controllers
 
         [HttpGet]
         [UserContext(RequiresGamingGroup = false)]
-        public virtual ActionResult GetGamingGroupGameDefinitions(int id, ApplicationUser currentUser, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null)
+        public virtual ActionResult GetGamingGroupGameDefinitions(int? id, ApplicationUser currentUser, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null)
         {
+            if (!id.HasValue)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var gamingGroupId = id.Value;
             var games =
-                _gameDefinitionRetriever.GetAllGameDefinitions(id, dateRangeFilter)
+                _gameDefinitionRetriever.GetAllGameDefinitions(gamingGroupId, dateRangeFilter)
                     .Select(gameDefinition => _gameDefinitionSummaryViewModelBuilder.Build(gameDefinition, currentUser))
                     .OrderByDescending(x => x.TotalNumberOfGamesPlayed)
                     .ThenBy(x => x.Name)
                     .ToList();
 
-            ViewBag.canEdit = currentUser.CurrentGamingGroupId == id;
+            ViewBag.canEdit = currentUser.CurrentGamingGroupId == gamingGroupId;
 
             return PartialView(MVC.GameDefinition.Views._GameDefinitionsPartial, games);
         }
 
         [HttpGet]
         [UserContext(RequiresGamingGroup = false)]
-        public virtual ActionResult GetGamingGroupPlayedGames(int id, ApplicationUser currentUser, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null, [System.Web.Http.FromUri]int numberOfItems = 100)
+        public virtual ActionResult GetGamingGroupPlayedGames(int? id, ApplicationUser currentUser, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null, [System.Web.Http.FromUri]int numberOfItems = 100)
         {
-            var games = _playedGameRetriever.GetRecentGames(numberOfItems, id, dateRangeFilter);
+            if (!id.HasValue)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var gamingGroupId = id.Value;
+            var games = _playedGameRetriever.GetRecentGames(numberOfItems, gamingGroupId, dateRangeFilter);
             var viewModel = new PlayedGamesViewModel
             {
-                GamingGroupId = id,
+                GamingGroupId = gamingGroupId,
                 ShowSearchLinkInResultsHeader = true,
                 PlayedGameDetailsViewModels = games.Select(playedGame => _playedGameDetailsViewModelBuilder.Build(playedGame, currentUser)).ToList(),
-                UserCanEdit = currentUser.CurrentGamingGroupId == id
+                UserCanEdit = currentUser.CurrentGamingGroupId == gamingGroupId
             };
 
             return PartialView(MVC.PlayedGame.Views._PlayedGamesPartial, viewModel);
@@ -274,22 +299,34 @@ namespace UI.Controllers
 
 
         [HttpGet]
-        public virtual ActionResult GetGamingGroupStats(int gamingGroupId, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null)
+        public virtual ActionResult GetGamingGroupStats(int? gamingGroupId, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null)
         {
-            var gamingGroupStats = _gamingGroupRetriever.GetGamingGroupStats(gamingGroupId, dateRangeFilter);
+            if (!gamingGroupId.HasValue)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var id = gamingGroupId.Value;
+            var gamingGroupStats = _gamingGroupRetriever.GetGamingGroupStats(id, dateRangeFilter);
             var viewModel = _transformer.Transform<GamingGroupStatsViewModel>(gamingGroupStats);
 
             return PartialView(MVC.GamingGroup.Views._GamingGroupStatsPartial, viewModel);
         }
 
         [HttpGet]
-        public virtual ActionResult GetRecentChanges(int gamingGroupId, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null)
+        public virtual ActionResult GetRecentChanges(int? gamingGroupId, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null)
         {
-            var recentChanges = _gamingGroupRetriever.GetRecentChanges(gamingGroupId, dateRangeFilter);
+            if (!gamingGroupId.HasValue)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var id = gamingGroupId.Value;
+            var recentChanges = _gamingGroupRetriever.GetRecentChanges(id, dateRangeFilter);
 
             var getRecentNemesisChangesRequest = new GetRecentNemesisChangesRequest
             {
-                GamingGroupId = gamingGroupId,
+                GamingGroupId = id,
                 NumberOfRecentChangesToRetrieve = NUMBER_OF_RECENT_NEMESIS_TO_SHOW
             };
             var recentNemesisChanges = _nemesisHistoryRetriever.GetRecentNemesisChanges(getRecentNemesisChangesRequest);
@@ -300,7 +337,7 @@ namespace UI.Controllers
                     .ToTransformedPagedList<PlayerAchievementWinner, PlayerAchievementWinnerViewModel>(_transformer);
 
             var getRecentChampionChangesFilter =
-                new GetRecentChampionChangesFilter(gamingGroupId, NUMBER_OF_RECENT_CHAMPION_CHANGES_TO_SHOW);
+                new GetRecentChampionChangesFilter(id, NUMBER_OF_RECENT_CHAMPION_CHANGES_TO_SHOW);
             var recentChampionChanges =
                 _recentChampionRetriever.GetRecentChampionChanges(getRecentChampionChangesFilter);
             var recentChampionChangesViewModels =
@@ -318,9 +355,15 @@ namespace UI.Controllers
 
         [HttpGet]
         [UserContext]
-        public virtual ActionResult GetCurrentUserGamingGroupGameDefinitions(int id, ApplicationUser currentUser)
+        public virtual ActionResult GetCurrentUserGamingGroupGameDefinitions(int? id, ApplicationUser currentUser)
         {
-            var model = _gameDefinitionRetriever.GetAllGameDefinitions(id)
+            if (!id.HasValue)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var gamingGroupId = id.Value;
+            var model = _gameDefinitionRetriever.GetAllGameDefinitions(gamingGroupId)
                 .Select(summary => _gameDefinitionSummaryViewModelBuilder.Build(summary, currentUser)).ToList();
 
             ViewData["canEdit"] = true;
@@ -330,14 +373,20 @@ namespace UI.Controllers
 
         [Authorize]
         [UserContext]
-        public virtual ActionResult SwitchGamingGroups(int gamingGroupId, ApplicationUser currentUser)
+        public virtual ActionResult SwitchGamingGroups(int? gamingGroupId, ApplicationUser currentUser)
         {
-            if (gamingGroupId != currentUser.CurrentGamingGroupId)
+            if (!gamingGroupId.HasValue)
             {
-                _gamingGroupContextSwitcher.SwitchGamingGroupContext(gamingGroupId, currentUser);
+                return new HttpNotFoundResult();
             }
 
-            return RedirectToAction(MVC.GamingGroup.Details().AddRouteValue("id", gamingGroupId));
+            var id = gamingGroupId.Value;
+            if (id != currentUser.CurrentGamingGroupId)
+            {
+                _gamingGroupContextSwitcher.SwitchGamingGroupContext(id, currentUser);
+            }
+
+            return RedirectToAction(MVC.GamingGroup.Details().AddRouteValue("id", id));
         }
 
         [HttpPost]
@@ -357,14 +406,20 @@ namespace UI.Controllers
         [HttpGet]
         [Authorize]
         [UserContext(RequiresGamingGroup = false)] //--a user with only inactive gaming groups should be able to reactivate one
-        public virtual ActionResult Edit(int id, ApplicationUser currentUser)
+        public virtual ActionResult Edit(int? id, ApplicationUser currentUser)
         {
-            var gamingGroup = _gamingGroupRetriever.GetGamingGroupWithUsers(id, currentUser);
+            if (!id.HasValue)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var gamingGroupId = id.Value;
+            var gamingGroup = _gamingGroupRetriever.GetGamingGroupWithUsers(gamingGroupId, currentUser);
 
             var model = new GamingGroupPublicDetailsViewModel
             {
                 GamingGroupName = gamingGroup.GamingGroupName,
-                GamingGroupId = id,
+                GamingGroupId = gamingGroupId,
                 PublicDescription = gamingGroup.PublicDescription,
                 Website = gamingGroup.PublicGamingGroupWebsite,
                 Active = gamingGroup.Active,
@@ -393,9 +448,14 @@ namespace UI.Controllers
         [HttpPost]
         [Authorize]
         [UserContext(RequiresGamingGroup = false)] //--a user with only inactive gaming groups should be able to delete one
-        public virtual ActionResult Delete(int gamingGroupId, ApplicationUser currentUser)
+        public virtual ActionResult Delete(int? gamingGroupId, ApplicationUser currentUser)
         {
-            _deleteGamingGroupComponent.Execute(gamingGroupId, currentUser);
+            if (!gamingGroupId.HasValue)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            _deleteGamingGroupComponent.Execute(gamingGroupId.Value, currentUser);
 
             return MakeRedirectResultToManageAccountPageGamingGroupsTab(AccountController.ManageMessageId.GamingGroupDeleted);
         }

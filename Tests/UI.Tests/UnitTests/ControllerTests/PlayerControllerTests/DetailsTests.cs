@@ -1,4 +1,4 @@
-﻿#region LICENSE
+#region LICENSE
 // NemeStats is a free website for tracking the results of board games.
 //     Copyright (C) 2015 Jacob Gordon
 // 
@@ -222,6 +222,39 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             var result = autoMocker.ClassUnderTest.Details(nonExistentPlayerId, currentUser) as HttpStatusCodeResult;
 
             Assert.That(result.StatusCode, Is.EqualTo((int)HttpStatusCode.NotFound));
+        }
+
+        [Test]
+        public void ItReturnsAnHttpNotFoundStatusCodeWhenPlayerIdIsMissing()
+        {
+            autoMocker.Get<IPlayerRetriever>().BackToRecord(BackToRecordOptions.All);
+
+            var result = autoMocker.ClassUnderTest.Details(null, currentUser) as HttpStatusCodeResult;
+
+            Assert.That(result.StatusCode, Is.EqualTo((int)HttpStatusCode.NotFound));
+        }
+    }
+
+    [TestFixture]
+    public class MissingRequiredIdTests : PlayerControllerTestBase
+    {
+        private static void AssertNotFound(ActionResult actionResult)
+        {
+            var result = actionResult as HttpStatusCodeResult;
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.StatusCode, Is.EqualTo((int)HttpStatusCode.NotFound));
+        }
+
+        [Test]
+        public void PlayerInviteWithoutIdReturnsNotFound()
+        {
+            AssertNotFound(autoMocker.ClassUnderTest.InvitePlayer((int?)null, currentUser));
+        }
+
+        [Test]
+        public void PlayerDeleteWithoutIdReturnsNotFound()
+        {
+            AssertNotFound(autoMocker.ClassUnderTest.Delete(null, currentUser));
         }
     }
 }

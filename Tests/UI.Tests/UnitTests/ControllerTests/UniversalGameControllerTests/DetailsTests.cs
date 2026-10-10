@@ -1,4 +1,4 @@
-﻿using BusinessLogic.Exceptions;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Models;
@@ -213,6 +213,17 @@ namespace UI.Tests.UnitTests.ControllerTests.UniversalGameControllerTests
             _autoMocker.Get<IUniversalGameRetriever>().Replay();
 
             var result = _autoMocker.ClassUnderTest.Details(nonExistentGameId, _currentUser) as HttpStatusCodeResult;
+
+            Assert.That(result.StatusCode, Is.EqualTo((int)HttpStatusCode.NotFound));
+        }
+
+        [Test]
+        public void ItReturnsAnHttpNotFoundStatusCodeWhenGameIdIsMissing()
+        {
+            _autoMocker.Get<IUniversalGameRetriever>().BackToRecord(BackToRecordOptions.All);
+            _autoMocker.Get<ITransformer>().BackToRecord(BackToRecordOptions.All);
+
+            var result = _autoMocker.ClassUnderTest.Details(null, _currentUser) as HttpStatusCodeResult;
 
             Assert.That(result.StatusCode, Is.EqualTo((int)HttpStatusCode.NotFound));
         }

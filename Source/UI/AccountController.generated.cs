@@ -227,6 +227,14 @@ namespace UI.Controllers
         }
 
 
+        static readonly ActionParamsClass_LoginForm s_params_LoginForm = new ActionParamsClass_LoginForm();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_LoginForm LoginFormParams { get { return s_params_LoginForm; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_LoginForm
+        {
+            public readonly string origin = "origin";
+        }
         static readonly ActionParamsClass_Login s_params_Login = new ActionParamsClass_Login();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_Login LoginParams { get { return s_params_Login; } }
@@ -436,7 +444,7 @@ namespace UI.Controllers
         partial void LoginFormOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string origin);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult LoginForm(string origin = null)
+        public override System.Web.Mvc.ActionResult LoginForm(string origin)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LoginForm);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "origin", origin);

@@ -1,4 +1,4 @@
-﻿#region LICENSE
+#region LICENSE
 // NemeStats is a free website for tracking the results of board games.
 //     Copyright (C) 2015 Jacob Gordon
 //
@@ -242,14 +242,20 @@ namespace UI.Controllers
         [Authorize]
         [UserContext]
         [HttpGet]
-        public virtual ActionResult Edit(int id, ApplicationUser currentUser)
+        public virtual ActionResult Edit(int? id, ApplicationUser currentUser)
         {
+            if (!id.HasValue)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var playedGameId = id.Value;
             var viewModel = MakeBaseCreatePlayedGameViewModel<EditPlayedGameViewModel>(currentUser.CurrentGamingGroupId.Value);
 
             viewModel.EditMode = true;
-            viewModel.PlayedGameId = id;
+            viewModel.PlayedGameId = playedGameId;
 
-            var playedGameInfo = _playedGameRetriever.GetInfoForEditingPlayedGame(id, currentUser);
+            var playedGameInfo = _playedGameRetriever.GetInfoForEditingPlayedGame(playedGameId, currentUser);
 
             viewModel.OtherPlayers = playedGameInfo.OtherPlayers;
             viewModel.RecentPlayers = playedGameInfo.RecentPlayers;
@@ -323,9 +329,14 @@ namespace UI.Controllers
         [HttpPost, ActionName("Delete")]
         [HandledValidateAntiForgeryToken(AntiForgeryFailureMode.ForbiddenHtml)]
         [UserContext]
-        public virtual ActionResult DeleteConfirmed(int id, ApplicationUser currentUser)
+        public virtual ActionResult DeleteConfirmed(int? id, ApplicationUser currentUser)
         {
-            _playedGameDeleter.DeletePlayedGame(id, currentUser);
+            if (!id.HasValue)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            _playedGameDeleter.DeletePlayedGame(id.Value, currentUser);
 
             return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
                             + "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);
