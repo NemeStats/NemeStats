@@ -141,7 +141,7 @@ namespace UI.Areas.Api.Controllers
         [ApiModelValidation]
         public HttpResponseMessage RecordPlayedGameVersion2([FromBody] PlayedGameMessage playedGameMessage)
         {
-            return RecordPlayedGame(playedGameMessage, 0);
+            return RecordPlayedGameCore(playedGameMessage, null);
         }
 
         [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames/", AcceptedVersions = new[] { 1 })]
@@ -150,7 +150,16 @@ namespace UI.Areas.Api.Controllers
         [ApiModelValidation]
         public HttpResponseMessage RecordPlayedGame([FromBody]PlayedGameMessage playedGameMessage, [FromUri]int gamingGroupId)
         {
+            return RecordPlayedGameCore(playedGameMessage, gamingGroupId);
+        }
+
+        private HttpResponseMessage RecordPlayedGameCore(PlayedGameMessage playedGameMessage, int? gamingGroupId)
+        {
             var newlyCompletedGame = _transformer.Transform<NewlyCompletedGame>(playedGameMessage);
+            if (gamingGroupId.HasValue)
+            {
+                newlyCompletedGame.GamingGroupId = gamingGroupId;
+            }
             newlyCompletedGame.TransactionSource = TransactionSource.RestApi;
 
             var playedGame = _createPlayedGameComponent.Execute(newlyCompletedGame, CurrentUser);

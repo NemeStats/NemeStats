@@ -36,6 +36,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
 
         private void SetupExpectationsForExistingPlayedGame()
         {
+            var securedEntityValidator = AutoMocker.Get<ISecuredEntityValidator>();
+            securedEntityValidator.BackToRecord(BackToRecordOptions.All);
+            securedEntityValidator.Expect(mock => mock.RetrieveAndValidateAccess<GamingGroup>(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+                .Return(new GamingGroup());
+            securedEntityValidator.Expect(mock => mock.RetrieveAndValidateAccess<PlayedGame>(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+                .Return(new PlayedGame());
+            securedEntityValidator.Expect(mock => mock.RetrieveAndValidateAccess<GameDefinition>(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+                .Return(new GameDefinition
+                {
+                    Id = _existingGameDefinitionId,
+                    GamingGroupId = GAMING_GROUP_ID
+                });
+            securedEntityValidator.Replay();
+
             _existingPlayedGame = new PlayedGame
             {
                 Id = 1,
@@ -43,6 +57,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
                 GameDefinitionId = _existingGameDefinitionId,
                 GameDefinition = new GameDefinition
                 {
+                    Id = _existingGameDefinitionId,
+                    GamingGroupId = GAMING_GROUP_ID,
                     BoardGameGeekGameDefinitionId = _existingBoardGameGeekGameDefinitionId
                 },
                 PlayerGameResults = new List<PlayerGameResult>
@@ -75,13 +91,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
             }.AsQueryable();
 
             AutoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayedGame>()).Return(playedGameQueryable);
-
-            AutoMocker.Get<ISecuredEntityValidator>().Expect(mock => mock.RetrieveAndValidateAccess<GamingGroup>(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
-                .Return(new GamingGroup());
-            AutoMocker.Get<ISecuredEntityValidator>().Expect(mock => mock.RetrieveAndValidateAccess<PlayedGame>(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
-                .Return(new PlayedGame());
-            AutoMocker.Get<ISecuredEntityValidator>().Expect(mock => mock.RetrieveAndValidateAccess<GameDefinition>(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
-                .Return(new GameDefinition());
 
             AutoMocker.ClassUnderTest.Expect(partialMock => partialMock.ValidateAccessToPlayers(
                 Arg<List<PlayerRank>>.Is.Anything,
@@ -175,7 +184,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
             {
                 PlayedGameId = _existingPlayedGameId,
                 GameDefinitionId = differentGameDefinitionId,
-                GamingGroupId = 42
+                GamingGroupId = GAMING_GROUP_ID
             };
 
             //--act
@@ -183,6 +192,51 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
 
             //--assert
             AutoMocker.Get<ISecuredEntityValidator>().AssertWasCalled(mock => mock.RetrieveAndValidateAccess<GamingGroup>(updatedGame.GamingGroupId.Value, CurrentUser));
+        }
+
+        [Test]
+        public void It_Rejects_A_Game_Definition_From_A_Different_Gaming_Group()
+        {
+            //--arrange
+            SetupExpectationsForExistingPlayedGame();
+
+            var updatedGame = new UpdatedGame
+            {
+                PlayedGameId = _existingPlayedGameId,
+                GameDefinitionId = _existingGameDefinitionId,
+                GamingGroupId = GAMING_GROUP_ID + 1
+            };
+
+            //--act
+            var exception = Assert.Throws<GameDefinitionNotInGamingGroupException>(
+                () => AutoMocker.ClassUnderTest.UpdatePlayedGame(updatedGame, TransactionSource.RestApi, CurrentUser));
+
+            //--assert
+            exception.ShouldNotBeNull();
+        }
+
+        [Test]
+        public void It_Allows_Editing_An_Unchanged_Legacy_Group_And_Definition_Pair()
+        {
+            //--arrange
+            SetupExpectationsForExistingPlayedGame();
+            _existingPlayedGame.GamingGroupId = GAMING_GROUP_ID + 1;
+
+            var updatedGame = new UpdatedGame
+            {
+                PlayedGameId = _existingPlayedGameId,
+                GameDefinitionId = _existingGameDefinitionId,
+                PlayerRanks = new List<PlayerRank>()
+            };
+
+            //--act
+            var updatedPlayedGame = AutoMocker.ClassUnderTest.UpdatePlayedGame(
+                updatedGame,
+                TransactionSource.RestApi,
+                CurrentUser);
+
+            //--assert
+            updatedPlayedGame.ShouldNotBeNull();
         }
 
         [Test]

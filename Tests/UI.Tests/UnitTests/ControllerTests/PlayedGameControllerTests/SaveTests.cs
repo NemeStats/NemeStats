@@ -18,6 +18,7 @@
 
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.PlayedGames;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
@@ -98,6 +99,24 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             var firstCall = arguments[0];
             var actualNewlyCompletedGame = firstCall[0] as NewlyCompletedGame;
             actualNewlyCompletedGame.ShouldNotBeNull();
+        }
+
+        [Test]
+        public void Then_Returns_Validation_Json_When_The_Definition_Belongs_To_Another_Group()
+        {
+            var createPlayedGameComponent = AutoMocker.Get<ICreatePlayedGameComponent>();
+            createPlayedGameComponent.BackToRecord(BackToRecordOptions.All);
+            createPlayedGameComponent.Expect(mock => mock.Execute(
+                    Arg<NewlyCompletedGame>.Is.Anything,
+                    Arg<ApplicationUser>.Is.Equal(CurrentUser)))
+                .Throw(new GameDefinitionNotInGamingGroupException(Request.GameDefinitionId.Value, EXPECTED_GAMING_GROUP_ID));
+            createPlayedGameComponent.Replay();
+
+            var result = AutoMocker.ClassUnderTest.Save(Request, CurrentUser) as JsonResult;
+
+            Assert.IsNotNull(result);
+            dynamic json = result.Data;
+            Assert.IsFalse(json.success);
         }
     }
 

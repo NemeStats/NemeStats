@@ -1,4 +1,4 @@
-﻿#region LICENSE
+#region LICENSE
 // NemeStats is a free website for tracking the results of board games.
 //     Copyright (C) 2015 Jacob Gordon
 // 
@@ -32,6 +32,8 @@ using BoardGameGeekApiClient.Service;
 using BusinessLogic.Logic.BoardGameGeek;
 using RollbarSharp;
 using System.Configuration.Abstractions;
+using System.IO;
+using System.Xml.Linq;
 using UniversalAnalyticsHttpWrapper;
 
 namespace BusinessLogic.Tests.IntegrationTests
@@ -174,7 +176,32 @@ namespace BusinessLogic.Tests.IntegrationTests
 
         private BoardGameGeekGameDefinition SaveBoardGameGeekGameDefinition()
         {
-            var boardGameGeekDefinitionCreator = new BoardGameGeekGameDefinitionCreator(_dataContext, new BoardGameGeekClient(new ApiDownloaderService(ConfigurationManager.Instance), MockRepository.GenerateMock<IRollbarClient>()));
+            var configurationFilePath = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+            var privateSettingsFilePath = Path.GetFullPath(Path.Combine(
+                Path.GetDirectoryName(configurationFilePath),
+                ConfigurationManager.Instance.AppSettings["PrivateAppSettingsFile"]));
+            var privateSettings = XDocument.Load(privateSettingsFilePath);
+            var bearerToken = privateSettings.Root
+                .Elements("add")
+                .Where(setting => (string)setting.Attribute("key") == "BGGBearerToken")
+                .Select(setting => (string)setting.Attribute("value"))
+                .SingleOrDefault();
+
+            if (string.IsNullOrWhiteSpace(bearerToken))
+            {
+                throw new InvalidOperationException("BGGBearerToken was not found in the UI PrivateAppSettings.config file.");
+            }
+
+            var appSettings = MockRepository.GenerateMock<IAppSettings>();
+            appSettings.Stub(settings => settings["BGGBearerToken"]).Return(bearerToken);
+            var configurationManager = MockRepository.GenerateMock<IConfigurationManager>();
+            configurationManager.Stub(config => config.AppSettings).Return(appSettings);
+
+            var boardGameGeekDefinitionCreator = new BoardGameGeekGameDefinitionCreator(
+                _dataContext,
+                new BoardGameGeekClient(
+                    new ApiDownloaderService(configurationManager),
+                    MockRepository.GenerateMock<IRollbarClient>()));
             return boardGameGeekDefinitionCreator.CreateBoardGameGeekGameDefinition(BOARD_GAME_GEEK_ID_FOR_RACE_FOR_THE_GALAXY);
         }
 

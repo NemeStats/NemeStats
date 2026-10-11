@@ -245,7 +245,9 @@ namespace BusinessLogic.Logic.GameDefinitions
             int numberOfPlayedGamesToRetrieve,
             GameDefinitionSummary gameDefinitionSummary)
         {
-            IList<PlayedGame> playedGames = _dataContext.GetQueryable<PlayedGame>().Include(playedGame => playedGame.PlayerGameResults)
+            IList<PlayedGame> playedGames = _dataContext.GetQueryable<PlayedGame>()
+                .Include(playedGame => playedGame.PlayerGameResults)
+                .Include(playedGame => playedGame.GamingGroup)
                 .Where(playedGame => playedGame.GameDefinitionId == gameDefinitionSummary.Id)
                 .OrderByDescending(playedGame => playedGame.DatePlayed)
                 .Take(numberOfPlayedGamesToRetrieve)

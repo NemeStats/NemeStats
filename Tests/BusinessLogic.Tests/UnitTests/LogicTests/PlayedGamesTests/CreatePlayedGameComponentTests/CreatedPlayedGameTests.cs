@@ -116,6 +116,28 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
             _dataContext.AssertWasCalled(mock => mock.Save(Arg<PlayedGame>.Is.Same(_expectedPlayedGame), Arg<ApplicationUser>.Is.Same(_currentUser)));
         }
 
+        [Test]
+        public void It_Rejects_A_Game_Definition_From_A_Different_Gaming_Group()
+        {
+            //--arrange
+            var request = new NewlyCompletedGame
+            {
+                GameDefinitionId = _expectedGameDefinition.Id,
+                GamingGroupId = GAMING_GROUP_ID + 1,
+                PlayerRanks = new List<PlayerRank>()
+            };
+
+            //--act
+            var exception = Assert.Throws<GameDefinitionNotInGamingGroupException>(
+                () => _autoMocker.ClassUnderTest.Execute(request, _currentUser, _dataContext));
+
+            //--assert
+            exception.ShouldNotBeNull();
+            _dataContext.AssertWasNotCalled(mock => mock.Save(
+                Arg<PlayedGame>.Is.Anything,
+                Arg<ApplicationUser>.Is.Anything));
+        }
+
         private NewlyCompletedGame CreateValidNewlyCompletedGame()
         {
             List<PlayerRank> playerRanks;
@@ -197,7 +219,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
             {
                 GameDefinitionId = _expectedGameDefinition.Id,
                 PlayerRanks = playerRanks,
-                GamingGroupId = 42
+                GamingGroupId = GAMING_GROUP_ID
             };
             
             _autoMocker.ClassUnderTest.Execute(newlyCompletedGame, _currentUser, _dataContext);
