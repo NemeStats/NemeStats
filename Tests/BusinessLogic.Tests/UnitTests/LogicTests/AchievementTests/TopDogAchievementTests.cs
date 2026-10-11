@@ -65,6 +65,26 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
             results.LevelAwarded.ShouldBe(AchievementLevel.Silver);
         }
 
+        [Test]
+        public void ItDoesNotAwardTheAchievementWhenTheGamingGroupHasNoPlayerGameResults()
+        {
+            var players = new List<Player>
+            {
+                new Player
+                {
+                    Id = _playerId,
+                    GamingGroupId = _gamingGroupId
+                }
+            };
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>()).Return(players.AsQueryable());
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerGameResult>())
+                .Return(new List<PlayerGameResult>().AsQueryable());
+
+            var result = _autoMocker.ClassUnderTest.IsAwardedForThisPlayer(_playerId);
+
+            result.LevelAwarded.ShouldBeNull();
+        }
+
         private void SetupPlayedGames(int winnerId, int loserId, int winnerPoints)
         {
             var results = new List<PlayerGameResult>()
