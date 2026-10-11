@@ -55,7 +55,23 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
 
             var actualNewlyCompletedGame = arguments.AssertFirstCallIsType<NewlyCompletedGame>(0);
             actualNewlyCompletedGame.ShouldBeSameAs(_expectedNewlyCompletedGame);
+            actualNewlyCompletedGame.GamingGroupId.ShouldBe(EXPECTED_GAMING_GROUP_ID);
             actualNewlyCompletedGame.TransactionSource.ShouldBe(TransactionSource.RestApi);
+        }
+
+        [Test]
+        public void ItUsesTheGamingGroupInTheVersionTwoRequestBody()
+        {
+            _expectedNewlyCompletedGame.GamingGroupId = EXPECTED_GAMING_GROUP_ID + 1;
+
+            _autoMocker.ClassUnderTest.RecordPlayedGameVersion2(_playedGameMessage);
+
+            var arguments = _autoMocker.Get<ICreatePlayedGameComponent>().GetArgumentsForCallsMadeOn(mock => mock.Execute(
+                Arg<NewlyCompletedGame>.Is.Anything,
+                Arg<ApplicationUser>.Is.Same(_applicationUser)));
+            var actualNewlyCompletedGame = arguments.AssertFirstCallIsType<NewlyCompletedGame>(0);
+
+            actualNewlyCompletedGame.GamingGroupId.ShouldBe(EXPECTED_GAMING_GROUP_ID + 1);
         }
 
         [Test]

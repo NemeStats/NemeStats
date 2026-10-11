@@ -200,35 +200,43 @@ namespace UI.Controllers
             {
                 int? resultId;
 
-                if (request.GameDefinitionId == null)
+                try
                 {
-                    if (string.IsNullOrEmpty(request.GameDefinitionName))
+                    if (request.GameDefinitionId == null)
                     {
-                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                        if (string.IsNullOrEmpty(request.GameDefinitionName))
+                        {
+                            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                        }
+
+                        request.GameDefinitionId = _createGameDefinitionComponent.Execute(new CreateGameDefinitionRequest
+                        {
+                            Name = request.GameDefinitionName,
+                            GamingGroupId = request.GameDefinitionId ?? currentUser.CurrentGamingGroupId,
+                            BoardGameGeekGameDefinitionId = request.BoardGameGeekGameDefinitionId
+                        }, currentUser).Id;
                     }
 
-                    request.GameDefinitionId = _createGameDefinitionComponent.Execute(new CreateGameDefinitionRequest
+                    if (request.EditMode && request.PlayedGameId.HasValue)
                     {
-                        Name = request.GameDefinitionName,
-                        GamingGroupId = request.GameDefinitionId ?? currentUser.CurrentGamingGroupId,
-                        BoardGameGeekGameDefinitionId = request.BoardGameGeekGameDefinitionId
-                    }, currentUser).Id;
-                }
+                        _playedGameSaver.UpdatePlayedGame(
+                            _mapperFactory.GetMapper<SavePlayedGameRequest, UpdatedGame>().Map(request),
+                            TransactionSource.WebApplication, currentUser);
 
-                if (request.EditMode && request.PlayedGameId.HasValue)
-                {
-                    _playedGameSaver.UpdatePlayedGame(
-                        _mapperFactory.GetMapper<SavePlayedGameRequest, UpdatedGame>().Map(request),
-                        TransactionSource.WebApplication, currentUser);
-
-                    resultId = request.PlayedGameId;
+                        resultId = request.PlayedGameId;
+                    }
+                    else
+                    {
+                        var newlyCompletedGame = _mapperFactory.GetMapper<SavePlayedGameRequest, NewlyCompletedGame>().Map(request);
+                        newlyCompletedGame.TransactionSource = TransactionSource.WebApplication;
+                        resultId =
+                            _createPlayedGameComponent.Execute(newlyCompletedGame, currentUser).Id;
+                    }
                 }
-                else
+                catch (ApiFriendlyException exception)
                 {
-                    var newlyCompletedGame = _mapperFactory.GetMapper<SavePlayedGameRequest, NewlyCompletedGame>().Map(request);
-                    newlyCompletedGame.TransactionSource = TransactionSource.WebApplication;
-                    resultId =
-                        _createPlayedGameComponent.Execute(newlyCompletedGame, currentUser).Id;
+                    ModelState.AddModelError(nameof(request.GameDefinitionId), exception.Message);
+                    return Json(new { success = false, errors = ModelState.Errors() }, JsonRequestBehavior.AllowGet);
                 }
 
 

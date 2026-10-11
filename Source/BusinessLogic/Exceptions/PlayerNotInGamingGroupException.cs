@@ -12,4 +12,15 @@ namespace BusinessLogic.Exceptions
         {
         }
     }
+
+    public class GameDefinitionNotInGamingGroupException : ApiFriendlyException
+    {
+        internal const string EXCEPTION_MESSAGE_FORMAT =
+            "Game definition with id '{0}' does not belong to gaming group '{1}'.";
+
+        public GameDefinitionNotInGamingGroupException(int gameDefinitionId, int gamingGroupId)
+            : base(string.Format(EXCEPTION_MESSAGE_FORMAT, gameDefinitionId, gamingGroupId), HttpStatusCode.Conflict)
+        {
+        }
+    }
 }

@@ -36,6 +36,10 @@ namespace BusinessLogic.Logic.PlayedGames
             var gamingGroupId = ValidateAndGetGamingGroupId(newlyCompletedGame.GamingGroupId, currentUser);
 
             var gameDefinition = _securedEntityValidator.RetrieveAndValidateAccess<GameDefinition>(newlyCompletedGame.GameDefinitionId, currentUser);
+            if (gameDefinition.GamingGroupId != gamingGroupId)
+            {
+                throw new GameDefinitionNotInGamingGroupException(gameDefinition.Id, gamingGroupId);
+            }
 
             _linkedPlayedGameValidator.Validate(newlyCompletedGame);
 

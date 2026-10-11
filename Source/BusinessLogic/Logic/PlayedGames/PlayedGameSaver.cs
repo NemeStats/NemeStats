@@ -152,7 +152,7 @@ namespace BusinessLogic.Logic.PlayedGames
                 _securedEntityValidator.RetrieveAndValidateAccess<GamingGroup>(updatedGame.GamingGroupId.Value, currentUser);
             }
             _securedEntityValidator.RetrieveAndValidateAccess<PlayedGame>(updatedGame.PlayedGameId, currentUser);
-            _securedEntityValidator.RetrieveAndValidateAccess<GameDefinition>(updatedGame.GameDefinitionId, currentUser);
+            var gameDefinition = _securedEntityValidator.RetrieveAndValidateAccess<GameDefinition>(updatedGame.GameDefinitionId, currentUser);
 
             var playedGameWithStuff = _dataContext.GetQueryable<PlayedGame>()
                 .Where(x => x.Id == updatedGame.PlayedGameId)
@@ -167,6 +167,12 @@ namespace BusinessLogic.Logic.PlayedGames
             }
 
             var gamingGroupId = updatedGame.GamingGroupId ?? playedGameWithStuff.GamingGroupId;
+            var unchangedLegacyAssociation = gameDefinition.Id == playedGameWithStuff.GameDefinitionId
+                                             && gamingGroupId == playedGameWithStuff.GamingGroupId;
+            if (gameDefinition.GamingGroupId != gamingGroupId && !unchangedLegacyAssociation)
+            {
+                throw new GameDefinitionNotInGamingGroupException(gameDefinition.Id, gamingGroupId);
+            }
 
             ValidateAccessToPlayers(updatedGame.PlayerRanks, gamingGroupId, currentUser, _dataContext);
             
