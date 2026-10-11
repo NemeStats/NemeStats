@@ -52,7 +52,8 @@ namespace BusinessLogic.Logic.Achievements
                                     value.WeightBonusPoints))
                     .OrderByDescending(r => r.Value.TotalPoints);
 
-                if (nemePointsDictionary.First().Key == player.Id && nemePointsDictionary.First().Value.TotalPoints >= MinNemePointsToUnlock)
+                var topPlayer = nemePointsDictionary.FirstOrDefault();
+                if (topPlayer.Value != null && topPlayer.Key == player.Id && topPlayer.Value.TotalPoints >= MinNemePointsToUnlock)
                 {
                     result.LevelAwarded = LevelThresholds.First().Key;
                     result.PlayerProgress = 1;
