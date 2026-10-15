@@ -1,4 +1,4 @@
-﻿#region LICENSE
+#region LICENSE
 // NemeStats is a free website for tracking the results of board games.
 //     Copyright (C) 2015 Jacob Gordon
 // 
@@ -50,7 +50,7 @@ namespace UI
                 .Include("~/Scripts/handlebars.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/signalr")
-                .Include("~/Scripts/jquery.signalR-2.2.0.js"));
+                .Include("~/Scripts/jquery.signalR-2.4.3.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/vue")
                 .Include(Links.Bundles.Scripts.Assets.vue_js)
