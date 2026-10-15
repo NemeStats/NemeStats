@@ -51,7 +51,7 @@ Views.GameDefinition.CreateGameDefinitionPartial.prototype = {
         }
     },
     configureViewModel: function () {
-        var componentSelector = "#importGameDefinitionPartial";
+        var componentSelector = ".createGameDefinitionPartial";
         var gaminggroupcontainer = $(componentSelector);
         if (gaminggroupcontainer) {
 
@@ -82,6 +82,7 @@ Views.GameDefinition.CreateGameDefinitionPartial.prototype = {
                 }
             });
 
+            this.init();
             var gameDefinitionAutoComplete = new Views.GameDefinition.GameDefinitionAutoComplete();
             gameDefinitionAutoComplete.init(this.$gameNameInput, this.$boardGameId);
 

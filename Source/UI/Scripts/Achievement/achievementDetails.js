@@ -1,4 +1,4 @@
-﻿//Usings
+//Usings
 Namespace("Views.Achievement");
 
 //Initialization
@@ -47,7 +47,7 @@ Views.Achievement.Details.prototype = {
         if (ResponsiveBootstrapToolkit.is('>=md')) {
             new List(playersTablesIds, { valueNames: playersValues, page: 10, plugins: [ListPagination({ innerWindow: 10 })] });
         } else {
-            new List(playersTablesIds, { valueNames: winnerplayersValuessValues });
+            new List(playersTablesIds, { valueNames: playersValues });
         }
     },
 };
