@@ -1,0 +1,689 @@
+{
+  "schemaVersion": 1,
+  "scope": "Task3 baseline of every reachable task8/task9 workflow; unused toEditBox is source-only inventory under plan clarification",
+  "cellMatrix": [
+    "debug-desktop",
+    "debug-mobile",
+    "optimized-desktop",
+    "optimized-mobile"
+  ],
+  "rows": [
+    {
+      "id": "account-login",
+      "scenarioIds": [
+        "account-login"
+      ],
+      "mechanism": "Actual protected authentication",
+      "page": "/Account/Login",
+      "action": "Original owned login form POST in shared startup, then group identity",
+      "selectors": "#UserName,#Password,#currentuserid",
+      "outcome": "happy",
+      "happyAssertion": "Actual HTTPS POST302, secure authentication cookie and rendered owned user ID",
+      "failureAssertion": null,
+      "proof": "Real original anti-forgery form request and local persistence-backed identity",
+      "eventBarrier": "Network response/Page.load before requestSubmit",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/account-login.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "registration-validation",
+      "scenarioIds": [
+        "registration-validation"
+      ],
+      "mechanism": "unobtrusive validation",
+      "page": "/Account/Register",
+      "action": "Submit empty and mismatched forms, then validate complete fields",
+      "selectors": "form[action=\"/Account/Register\"],#UserName,#EmailAddress,#Password,#ConfirmPassword",
+      "outcome": "invalid and valid",
+      "happyAssertion": "Required/mismatch errors and invalid-form event; zero save POST; valid complete form accepted",
+      "failureAssertion": "Required/mismatch errors and invalid-form event; zero save POST; valid complete form accepted",
+      "proof": "Required/mismatch errors and invalid-form event; zero save POST; valid complete form accepted",
+      "eventBarrier": "invalid-form.validate subscribed before submit",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/registration-validation.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "account-invalid-login",
+      "scenarioIds": [
+        "account-invalid-login"
+      ],
+      "mechanism": "protected authentication",
+      "page": "/Account/Login",
+      "action": "Submit owned username with incorrect password, then real correct login",
+      "selectors": "#UserName,#Password",
+      "outcome": "failure",
+      "happyAssertion": null,
+      "failureAssertion": "POST200 with rendered validation summary; subsequent owned POST302 and secure auth cookie",
+      "proof": "POST200 with rendered validation summary; subsequent owned POST302 and secure auth cookie",
+      "eventBarrier": "Network response and Page.load before form.requestSubmit",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/account-invalid-login.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "player-create-invalid",
+      "scenarioIds": [
+        "player-create-invalid"
+      ],
+      "mechanism": "unobtrusive validation",
+      "page": "/GamingGroup",
+      "action": "Click Create Player with empty Name",
+      "selectors": ".createOrUpdatePartial form,#btnSubmitCreatePlayer",
+      "outcome": "failure",
+      "happyAssertion": null,
+      "failureAssertion": "invalid-form event and DOM errors; zero /player/save AJAX sends",
+      "proof": "invalid-form event and DOM errors; zero /player/save AJAX sends",
+      "eventBarrier": "invalid-form.validate and ajaxSend before click",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/player-create-invalid.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "player-create",
+      "scenarioIds": [
+        "player-create"
+      ],
+      "mechanism": "serialize/ajax success",
+      "page": "/GamingGroup",
+      "action": "Fill name and click Create Player",
+      "selectors": ".createOrUpdatePartial #Name,#btnSubmitCreatePlayer",
+      "outcome": "happy",
+      "happyAssertion": "POST payload Name, response Id, appended row, fresh group GET persistence",
+      "failureAssertion": null,
+      "proof": "POST payload Name, response Id, appended row, fresh group GET persistence",
+      "eventBarrier": "ajaxComplete and MutationObserver before click",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/player-create.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "player-create-error",
+      "scenarioIds": [
+        "player-create-error"
+      ],
+      "mechanism": "ajax error/switchClass",
+      "page": "/GamingGroup",
+      "action": "One controlled /player/save POST500",
+      "selectors": "#btnSubmitCreatePlayer,.field-validation-error",
+      "outcome": "failure",
+      "happyAssertion": null,
+      "failureAssertion": "Actual UI request status500; rendered error and input retained",
+      "proof": "Actual UI request status500; rendered error and input retained",
+      "eventBarrier": "ajaxComplete and MutationObserver before click",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/player-create-error.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "player-edit",
+      "scenarioIds": [
+        "player-edit"
+      ],
+      "mechanism": "protected form persistence",
+      "page": "/Player/Edit/<actual-created-id>",
+      "action": "Edit Name and submit real form",
+      "selectors": "#Name,input[type=submit]",
+      "outcome": "happy",
+      "happyAssertion": "POST302; fresh Edit GET Name equals saved edit",
+      "failureAssertion": null,
+      "proof": "POST302; fresh Edit GET Name equals saved edit",
+      "eventBarrier": "Network response and Page.load before form.requestSubmit",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/player-edit.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "game-create-invalid",
+      "scenarioIds": [
+        "game-create-invalid"
+      ],
+      "mechanism": "post-Vue unobtrusive validation",
+      "page": "/GamingGroup Games tab",
+      "action": "Click Create Game with empty Name",
+      "selectors": "#js-createGameForm,#createGameDefinitionFromPartial",
+      "outcome": "failure",
+      "happyAssertion": null,
+      "failureAssertion": "Original validator invalid-form/errors; zero ajaxcreate POST",
+      "proof": "Original validator invalid-form/errors; zero ajaxcreate POST",
+      "eventBarrier": "invalid-form.validate and ajaxSend before click",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/game-create-invalid.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "bgg-autocomplete",
+      "scenarioIds": [
+        "bgg-autocomplete"
+      ],
+      "mechanism": "jQuery UI autocomplete remote/select/change",
+      "page": "/GamingGroup Games tab",
+      "action": "Type fixture success term and click original suggestion, then clear",
+      "selectors": "#gameNameInput,.ui-autocomplete .ui-menu-item-wrapper,#BoardGameGeekGameDefinitionId",
+      "outcome": "happy",
+      "happyAssertion": "Real BGG-boundary lookup response; hidden selected910003 then empty clears hidden ID",
+      "failureAssertion": null,
+      "proof": "Real BGG-boundary lookup response; hidden selected910003 then empty clears hidden ID",
+      "eventBarrier": "ajaxComplete and MutationObserver before input; autocompletechange before actual blur",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/bgg-autocomplete.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "bgg-autocomplete-uncommitted-clear",
+      "scenarioIds": ["bgg-autocomplete-uncommitted-clear"],
+      "mechanism": "jQuery UI previous-value/change baseline edge",
+      "page": "/GamingGroup Games tab",
+      "action": "Select actual BGG suggestion, clear before first blur, then blur without saving",
+      "selectors": "#gameNameInput,.ui-autocomplete .ui-menu-item-wrapper,#BoardGameGeekGameDefinitionId",
+      "outcome": "known baseline defect",
+      "happyAssertion": null,
+      "failureAssertion": "Original hidden BGG910003 remains after text becomes empty; this defect is recorded, not repaired or called correct behavior",
+      "proof": "Actual lookup/selection/empty-value DOM and explicit knownBaselineDefects finding; no save is triggered",
+      "eventBarrier": "ajaxComplete and menu MutationObserver before input; actual blur completes the original synchronous previous-value comparison",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/bgg-autocomplete-uncommitted-clear.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "bgg-autocomplete-empty",
+      "scenarioIds": [
+        "bgg-autocomplete-empty"
+      ],
+      "mechanism": "jQuery UI autocomplete empty/complete",
+      "page": "/GamingGroup Games tab",
+      "action": "Type Browser QA empty",
+      "selectors": "#gameNameInput,.ui-autocomplete",
+      "outcome": "failure",
+      "happyAssertion": null,
+      "failureAssertion": "Real GET200[]; spinner removed and empty menu hidden",
+      "proof": "Real GET200[]; spinner removed and empty menu hidden",
+      "eventBarrier": "ajaxComplete before input",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/bgg-autocomplete-empty.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "bgg-autocomplete-error",
+      "scenarioIds": [
+        "bgg-autocomplete-error"
+      ],
+      "mechanism": "jQuery UI autocomplete error/complete",
+      "page": "/GamingGroup Games tab",
+      "action": "Bounded GET500 on real lookup action",
+      "selectors": "#gameNameInput",
+      "outcome": "failure",
+      "happyAssertion": null,
+      "failureAssertion": "Actual status500; original alert outcome; spinner removed",
+      "proof": "Actual status500; original alert outcome; spinner removed",
+      "eventBarrier": "ajaxComplete and dialog event before input",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/bgg-autocomplete-error.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "game-create",
+      "scenarioIds": [
+        "game-create"
+      ],
+      "mechanism": "serialize/ajax callback and List rendering",
+      "page": "/GamingGroup Games tab",
+      "action": "Create uniquely named game",
+      "selectors": "#gameNameInput,#createGameDefinitionFromPartial",
+      "outcome": "happy",
+      "happyAssertion": "POST Name response200; DOM update and independent subsequent group HTML link/Id",
+      "failureAssertion": null,
+      "proof": "POST Name response200; DOM update and independent subsequent group HTML link/Id",
+      "eventBarrier": "ajaxComplete and MutationObserver before click",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/game-create.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "game-create-error",
+      "scenarioIds": [
+        "game-create-error"
+      ],
+      "mechanism": "ajax error alert",
+      "page": "/GamingGroup Games tab",
+      "action": "Bounded real ajaxcreate POST400",
+      "selectors": "#gameNameInput,#createGameDefinitionFromPartial",
+      "outcome": "failure",
+      "happyAssertion": null,
+      "failureAssertion": "Actual status400; original error dialog and retained input",
+      "proof": "Actual status400; original error dialog and retained input",
+      "eventBarrier": "ajaxComplete/dialog event before click",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/game-create-error.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "table-pagination-search-navigation",
+      "scenarioIds": [
+        "table-pagination-search-navigation"
+      ],
+      "mechanism": "List pagination/search and actual links",
+      "page": "/GamingGroup Games tab",
+      "action": "Desktop page2 or mobile full list; search original game; follow its actual local link",
+      "selectors": "#gameDefinitionsList .pagination,#gameDefinitionsList .search,tbody a.name",
+      "outcome": "happy",
+      "happyAssertion": "Bounded page size/active page, single filtered real row and real GameDefinition Details navigation",
+      "failureAssertion": null,
+      "proof": "Bounded page size/active page, single filtered real row and real GameDefinition Details navigation",
+      "eventBarrier": "MutationObserver before page/search; Page.load before click",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/table-pagination-search-navigation.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "played-game-invalid",
+      "scenarioIds": [
+        "played-game-invalid"
+      ],
+      "mechanism": "Vue visibility/date validation",
+      "page": "/PlayedGame/Create",
+      "action": "Continue with empty date",
+      "selectors": "#btn-setDateCustom,.alert-danger",
+      "outcome": "failure",
+      "happyAssertion": null,
+      "failureAssertion": "Actual date validation DOM; no busy/save state",
+      "proof": "Actual date validation DOM; no busy/save state",
+      "eventBarrier": "MutationObserver before click",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/played-game-invalid.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "group-game-typeahead",
+      "scenarioIds": [
+        "group-game-typeahead"
+      ],
+      "mechanism": "Bloodhound/typeahead group remote/select",
+      "page": "/PlayedGame/Create",
+      "action": "Today then type own group game and select",
+      "selectors": "#btn-setDateToday,#search-game-definition,.tt-suggestion",
+      "outcome": "happy",
+      "happyAssertion": "Actual SearchGameDefinition response includes owned ID; selection transitions wizard to players",
+      "failureAssertion": null,
+      "proof": "Actual SearchGameDefinition response includes owned ID; selection transitions wizard to players",
+      "eventBarrier": "ajaxComplete and MutationObserver before input",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/group-game-typeahead.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "group-game-typeahead-empty",
+      "scenarioIds": [
+        "group-game-typeahead-empty"
+      ],
+      "mechanism": "Bloodhound/typeahead empty",
+      "page": "/PlayedGame/Create",
+      "action": "Search unique nonexistent owned game",
+      "selectors": "#search-game-definition,.tt-menu .empty-message",
+      "outcome": "failure",
+      "happyAssertion": null,
+      "failureAssertion": "Real GET200[]; original visible no-match message",
+      "proof": "Real GET200[]; original visible no-match message",
+      "eventBarrier": "ajaxComplete and MutationObserver before input",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/group-game-typeahead-empty.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "bgg-typeahead",
+      "scenarioIds": [
+        "bgg-typeahead"
+      ],
+      "mechanism": "Bloodhound/typeahead BGG remote/select",
+      "page": "/PlayedGame/Create",
+      "action": "Today then type Browser QA BGG and select",
+      "selectors": "#search-bgg,.tt-suggestion",
+      "outcome": "happy",
+      "happyAssertion": "Actual deterministic BGG response; selected view model BGG910003",
+      "failureAssertion": null,
+      "proof": "Actual deterministic BGG response; selected view model BGG910003",
+      "eventBarrier": "ajaxComplete and MutationObserver before input",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/bgg-typeahead.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "bgg-typeahead-empty",
+      "scenarioIds": [
+        "bgg-typeahead-empty"
+      ],
+      "mechanism": "Bloodhound/typeahead empty custom-game branch",
+      "page": "/PlayedGame/Create",
+      "action": "Type Browser QA empty and click original empty action",
+      "selectors": "#search-bgg,#bggsearchnotfound",
+      "outcome": "failure",
+      "happyAssertion": null,
+      "failureAssertion": "Real GET[]; original empty action selects entered custom-game name",
+      "proof": "Real GET[]; original empty action selects entered custom-game name",
+      "eventBarrier": "ajaxComplete and MutationObserver before input",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/bgg-typeahead-empty.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "played-game-create-ranks-ties",
+      "scenarioIds": [
+        "played-game-create-ranks-ties"
+      ],
+      "mechanism": "Vue rank binding/serialize/real save",
+      "page": "/PlayedGame/Create",
+      "action": "Today, actual recent game, three actual player checkboxes, enter ties and save",
+      "selectors": ".game-image,.selectplayers input[type=checkbox],#ranked-game .rank,button[title=\"Save this game now\"]",
+      "outcome": "happy",
+      "happyAssertion": "POST PlayerRanks tied1/1 plus response Id and summary; fresh Edit GET persisted ranks/notes",
+      "failureAssertion": null,
+      "proof": "POST PlayerRanks tied1/1 plus response Id and summary; fresh Edit GET persisted ranks/notes",
+      "eventBarrier": "MutationObserver for step/summary and ajaxComplete before actions",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/played-game-create-ranks-ties.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "played-game-edit",
+      "scenarioIds": [
+        "played-game-edit"
+      ],
+      "mechanism": "Vue edit-state/real save/persistence",
+      "page": "/PlayedGame/Edit/<actual-saved-id>",
+      "action": "Edit notes then save",
+      "selectors": "#record-played-game textarea,button[title=\"Save this game now\"]",
+      "outcome": "happy",
+      "happyAssertion": "Actual EditMode true POST, same playedGameId, fresh Details renders saved edited note",
+      "failureAssertion": null,
+      "proof": "Actual EditMode true POST, same playedGameId, fresh Details renders saved edited note",
+      "eventBarrier": "ajaxComplete/MutationObserver before save; actual navigation load",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/played-game-edit.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "played-game-error",
+      "scenarioIds": [
+        "played-game-error"
+      ],
+      "mechanism": "real form ajax error/visibility/busy state",
+      "page": "/PlayedGame/Edit/<actual-saved-id>",
+      "action": "One bounded save POST500",
+      "selectors": "button[title=\"Save this game now\"],.alert-danger",
+      "outcome": "failure",
+      "happyAssertion": null,
+      "failureAssertion": "Actual500; original error visible, busy false, recorded false; no mocked success",
+      "proof": "Actual500; original error visible, busy false, recorded false; no mocked success",
+      "eventBarrier": "ajaxComplete and MutationObserver before save",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/played-game-error.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "date-native-filter",
+      "scenarioIds": [
+        "date-native-filter"
+      ],
+      "mechanism": "native date values/param/history",
+      "page": "/GamingGroup",
+      "action": "Set dates and Filter Statistics",
+      "selectors": "#from-date-picker,#to-date-picker,#dateFilterButton",
+      "outcome": "happy",
+      "happyAssertion": "Actual filtered GET status/payload and history query",
+      "failureAssertion": null,
+      "proof": "Actual filtered GET status/payload and history query",
+      "eventBarrier": "ajaxComplete before Filter click",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/date-native-filter.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "date-fallback-filter",
+      "scenarioIds": [
+        "date-fallback-filter"
+      ],
+      "mechanism": "Modernizr false/jQuery UI datepicker",
+      "page": "/GamingGroup",
+      "action": "Only approved Modernizr response sets date capability false before app setup; original calendar selection and filter",
+      "selectors": ".ui-datepicker-trigger,#ui-datepicker-div,#dateFilterButton",
+      "outcome": "happy",
+      "happyAssertion": "Actual fallback2 buttons, calendar visibility/select, real filtered GET200",
+      "failureAssertion": null,
+      "proof": "Actual fallback2 buttons, calendar visibility/select, real filtered GET200",
+      "eventBarrier": "Original script interception before setup; ajaxComplete before filter",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/date-fallback-filter.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "played-search",
+      "scenarioIds": [
+        "played-search"
+      ],
+      "mechanism": "real search form/navigation",
+      "page": "/PlayedGame/Search",
+      "action": "Dates then real Search submit",
+      "selectors": "#Filter_DatePlayedStart,#Filter_DatePlayedEnd,input[value=\"Search\"]",
+      "outcome": "happy",
+      "happyAssertion": "Actual POST200 and persisted .game-result rows",
+      "failureAssertion": null,
+      "proof": "Actual POST200 and persisted .game-result rows",
+      "eventBarrier": "Network response and Page.load before click",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/played-search.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "group-plays-tab",
+      "scenarioIds": [
+        "group-plays-tab"
+      ],
+      "mechanism": "Original group plays AJAX/List branch",
+      "page": "/GamingGroup Plays tab",
+      "action": "Click original Plays tab with persisted games",
+      "selectors": "#playedGamesTab,#playedGamesList .game-result",
+      "outcome": "happy",
+      "happyAssertion": "Actual GET200 and persisted game-result DOM; console exceptions separately classified",
+      "failureAssertion": "Known mobile undefined gamedefinitionsValues branch is captured if observed, not repaired",
+      "proof": "Original server response and rendered stored games before any original List callback failure",
+      "eventBarrier": "Network response and MutationObserver before tab click",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/group-plays-tab.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "charts",
+      "scenarioIds": [
+        "charts"
+      ],
+      "mechanism": "D3/NVD3 actual AJAX/geometry",
+      "page": "/GamingGroup Stats tab",
+      "action": "Click Stats",
+      "selectors": "#statsTab,#statsDivId svg .nv-linesWrap path",
+      "outcome": "happy",
+      "happyAssertion": "Real API persisted playedGames data; rendered nonzero SVG/chart path geometry",
+      "failureAssertion": null,
+      "proof": "Real API persisted playedGames data; rendered nonzero SVG/chart path geometry",
+      "eventBarrier": "ajaxComplete and MutationObserver before tab click",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/charts.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "bootstrap-dropdown-modal",
+      "scenarioIds": [
+        "bootstrap-dropdown-modal"
+      ],
+      "mechanism": "Bootstrap dropdown/modal lifecycle",
+      "page": "/",
+      "action": "Open/close actual dropdown; original modal open/close",
+      "selectors": ".dropdown-toggle,[data-target=\"#homefeature1\"],#homefeature1 [data-dismiss=\"modal\"]",
+      "outcome": "happy",
+      "happyAssertion": "Actual open/closed DOM; shown/hidden original modal events and visible DOM",
+      "failureAssertion": null,
+      "proof": "Actual open/closed DOM; shown/hidden original modal events and visible DOM",
+      "eventBarrier": "shown.bs.modal and hidden.bs.modal before trigger",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/bootstrap-dropdown-modal.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "rank-vote-cookie",
+      "scenarioIds": [
+        "rank-vote-cookie"
+      ],
+      "mechanism": "rank plugin cookie/ajax/persistence",
+      "page": "/",
+      "action": "Actual RecentGlobalGames upvote then fresh page and repeated click",
+      "selectors": "#recentGamesVote .upvote-link,.upvote-count",
+      "outcome": "happy",
+      "happyAssertion": "Actual feature/VoteUp payload204, count persisted GET, rankCookie, repeat sends0",
+      "failureAssertion": null,
+      "proof": "Actual feature/VoteUp payload204, count persisted GET, rankCookie, repeat sends0",
+      "eventBarrier": "ajaxComplete/ajaxSend before clicks",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/rank-vote-cookie.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "rank-vote-error",
+      "scenarioIds": [
+        "rank-vote-error"
+      ],
+      "mechanism": "rank plugin failure/cookie baseline",
+      "page": "/",
+      "action": "One bounded TopGamesEver POST400",
+      "selectors": "#topGamesVote .upvote-link",
+      "outcome": "failure",
+      "happyAssertion": null,
+      "failureAssertion": "Actual failed POST; original dialog/cookie baseline behavior retained",
+      "proof": "Actual failed POST; original dialog/cookie baseline behavior retained",
+      "eventBarrier": "ajaxComplete/dialog before click",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/rank-vote-error.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "bgg-import-success",
+      "scenarioIds": [
+        "bgg-import-success"
+      ],
+      "mechanism": "actual authenticated controller/importer/repositories",
+      "page": "/GamingGroup Games tab",
+      "action": "Original Import from BGG button",
+      "selectors": "#gtm-import-games-from-bgg",
+      "outcome": "happy",
+      "happyAssertion": "Two known per-cell pending names absent before real POST302; independent unpaginated group HTML after response contains both stored games; another actual UI Join receives importer1/2 and2/2 exact payloads",
+      "failureAssertion": null,
+      "proof": "Fresh persistence GET parses untouched server HTML outside client List pagination; actual importer progress is recorded separately and is not the persistence assertion",
+      "eventBarrier": "Original UI Join before action; Network POST and Page.load before click; persistence after response",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/bgg-import-success.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "readmore-expand-collapse",
+      "scenarioIds": [
+        "readmore-expand-collapse"
+      ],
+      "mechanism": "readmore original measurement/height/toggle DOM",
+      "page": "/GameDefinition/Details/<owned-BGG-game-with-actual-recorded-play>",
+      "action": "Observe original load measurement; expand and collapse actual long metadata",
+      "selectors": "[data-readmore-toggle],.bggdescription",
+      "outcome": "happy",
+      "happyAssertion": "Actual expanded geometry increases then collapses to original height; original button labels change",
+      "failureAssertion": "Retain observed generated-CSS-selector/aria transition defect as a known baseline finding; no accessibility repair claimed",
+      "proof": "Before/expanded/collapsed height, CSS transition, aria and labels; original measurement clone DOM mutation precedes actions",
+      "eventBarrier": "Original load/resize clone addition/removal MutationObserver; toggle MutationObserver and applicable transitionend subscription before each click",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/readmore-expand-collapse.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "bootstrap-tooltip-popover",
+      "scenarioIds": ["bootstrap-tooltip-popover"],
+      "mechanism": "Bootstrap tooltip/popover hover lifecycle",
+      "page": "/GameDefinition/Details/<owned-BGG-game-with-actual-recorded-play>",
+      "action": "Hover original metadata tooltip and popover consumers",
+      "selectors": "[data-toggle=tooltip],[data-toggle=popover],.tooltip,.popover",
+      "outcome": "happy",
+      "happyAssertion": "Original shown events and visible rendered tooltip/popover DOM",
+      "failureAssertion": null,
+      "proof": "Separate from readmore so a baseline defect cannot hide required hover execution",
+      "eventBarrier": "shown.bs.tooltip/popover before each actual hover",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/bootstrap-tooltip-popover.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "realtime-original-ui-membership",
+      "scenarioIds": [
+        "realtime-original-ui-membership"
+      ],
+      "mechanism": "original SignalR factories/proxy/Join Deferred",
+      "page": "/GamingGroup Games tab",
+      "action": "Two actual primary clients plus actual second-account/different-group client via original pages",
+      "selectors": "#gamesTab,.createGameDefinitionPartial,#currentuserid",
+      "outcome": "happy",
+      "happyAssertion": "Original Join promises succeeded with owned user/group keys and distinct actual connection IDs; no extra Join or test proxy",
+      "failureAssertion": null,
+      "proof": "Original Join promises succeeded with owned user/group keys and distinct actual connection IDs; no extra Join or test proxy",
+      "eventBarrier": "Observer injected after actual SignalR before app setup; original done/fail barriers",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/realtime-original-ui-membership.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "realtime-achievement-routing",
+      "knownBaselineFailure": "Mobile /achievements/7 landing page throws winnerplayersValuessValues ReferenceError from unchanged achievementDetails.js:50 after the real notification/link contract succeeds; retain the exception and nonzero runner exit",
+      "visualReadiness": "Original notice opacity reaches 1 through the pretrigger DOM subscription; do not stop or advance its animation",
+      "scenarioIds": [
+        "realtime-achievement-routing"
+      ],
+      "mechanism": "same-AppDomain group send/real PNotify/link",
+      "page": "/GamingGroup Games tab",
+      "action": "Send exact five args to primary user group, mark excluded second-user connection; original notice click",
+      "selectors": ".ui-pnotify.gold,.fa-trophy",
+      "outcome": "happy",
+      "happyAssertion": "Two real transport events/payloads and one visible expected notice each; zero excluded events through correlated marker; validated local achievement navigation",
+      "failureAssertion": null,
+      "proof": "Two real transport events/payloads and one visible expected notice each; zero excluded events through correlated marker; validated local achievement navigation",
+      "eventBarrier": "Original EACH UI Join; proxy event, marker and DOM subscriptions before pipe send; all independently awaited",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/realtime-achievement-routing.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "realtime-progress-routing",
+      "scenarioIds": [
+        "realtime-progress-routing"
+      ],
+      "mechanism": "same-AppDomain group send/real Vue progress",
+      "page": "/GamingGroup Games tab",
+      "action": "Send1/2 to primary group with excluded second-group marker, then2/2 completion",
+      "selectors": ".createGameDefinitionPartial .alert-info,.progress-bar",
+      "outcome": "happy",
+      "happyAssertion": "Two real callbacks exact count/name/50% visible; excluded zero through marker;2/2 hides progress",
+      "failureAssertion": null,
+      "proof": "Two real callbacks exact count/name/50% visible; excluded zero through marker;2/2 hides progress",
+      "eventBarrier": "Original EACH UI Join; positive events/DOM and excluded marker before send; no callback/marker ordering assumption",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/realtime-progress-routing.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "realtime-reload-next-event",
+      "scenarioIds": [
+        "realtime-reload-next-event"
+      ],
+      "mechanism": "single approved reload/Join/next-event recovery",
+      "page": "/GamingGroup Games tab",
+      "action": "1/2, actual Page.reload, new original UI Join, next1/2 then2/2",
+      "selectors": ".createGameDefinitionPartial .alert-info,.progress-bar",
+      "outcome": "happy",
+      "happyAssertion": "Restored count/name/total/50% visibility from next event; completion hides; exactly one real callback per post-reload controlled event; no replay claim",
+      "failureAssertion": null,
+      "proof": "Restored count/name/total/50% visibility from next event; completion hides; exactly one real callback per post-reload controlled event; no replay claim",
+      "eventBarrier": "Page.load before reload; new original UI Join; proxy event/marker/DOM before EACH send",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/realtime-reload-next-event.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "bgg-import-boundary-failure",
+      "scenarioIds": [
+        "bgg-import-boundary-failure"
+      ],
+      "mechanism": "actual importer external GetUserGames exception",
+      "page": "/GamingGroup Games tab as second owned user",
+      "action": "Original Import from BGG button",
+      "selectors": "#gtm-import-games-from-bgg",
+      "outcome": "failure",
+      "happyAssertion": null,
+      "failureAssertion": "Real controlled boundary exception propagates actual POST500/error baseline; fresh group HTML equal before/after; no unintended persistence",
+      "proof": "Real controlled boundary exception propagates actual POST500/error baseline; fresh group HTML equal before/after; no unintended persistence",
+      "eventBarrier": "Original UI Join before action; Network response/Page.load before click; independent page query after response",
+      "screenshot": "baseline/<bundle>-<viewport>/screenshots/bgg-import-boundary-failure.png",
+      "status": "required-executed-evidence"
+    },
+    {
+      "id": "unused-toEditBox-source-inventory",
+      "scenarioIds": [],
+      "mechanism": "Unused toEditBox asset inventory",
+      "status": "source-only-inventory",
+      "page": null,
+      "action": null,
+      "selectors": null,
+      "happyAssertion": null,
+      "failureAssertion": null,
+      "proof": "Complete no-caller repository evidence; source-only per plan task8 line152. No runtime invocation or pass.",
+      "eventBarrier": null,
+      "screenshot": null,
+      "source": "Source/UI/Scripts/Plugins/toEditBoxPlugin.js:38",
+      "evidence": ".omo/evidence/jquery-3-migration/wave1/task-3/task-3-inline-editor-blocker.json"
+    }
+  ]
+}

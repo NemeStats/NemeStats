@@ -1,0 +1,396 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nemestats.local/schemas/browser-run-manifest.schema.json",
+  "title": "NemeStats isolated browser QA run manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "runId", "repositoryRoot", "phase", "bundle", "stage", "evidenceRoot", "stagedHost", "stagedWebConfig", "iisUserHome", "iisProfile", "httpsOrigin", "httpsPort", "evidenceOwnerSid", "ownerIntentRecordedUtc", "resourceOwnershipRecordedBeforeCreation", "stagedHostCreateRequested", "migrateCliFlagsUsed", "tools", "firewallManifest", "firewallRuleNames", "ownedIisExpress", "firewallVerified", "firewallVerificationUtc", "effectiveConfigValidated", "callbackIsLocal", "database", "localDbInstance", "certificate", "urlReservation", "tlsBindings", "applicationHost", "httpsBindingPrepared", "certificatePrepared", "databaseCatalogCreated", "migrationsApplied", "preparationReady", "resourceSetup", "applicationStarted"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "runId": { "type": "string", "format": "uuid" },
+    "repositoryRoot": { "type": "string", "format": "uri-reference" },
+    "phase": { "enum": ["prepare", "seed", "stage", "check", "cleanup"] },
+    "bundle": { "enum": ["debug", "optimized"] },
+    "stage": { "enum": ["app", "published"] },
+    "infrastructureManifest": { "type": "string", "format": "uri-reference" },
+    "publishedStages": {
+      "type": "array",
+      "maxItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["runId", "manifestPath", "database"],
+        "properties": {
+          "runId": { "type": "string", "format": "uuid" },
+          "manifestPath": { "type": "string", "format": "uri-reference" },
+          "database": { "$ref": "#/properties/database" }
+        }
+      }
+    },
+    "evidenceRoot": { "type": "string", "format": "uri-reference" },
+    "stagedHost": { "type": "string", "format": "uri-reference" },
+    "stagedWebConfig": { "type": "string", "format": "uri-reference" },
+    "iisUserHome": { "type": "string", "format": "uri-reference" },
+    "iisProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["userHome", "aspnetConfigTemplate", "createRequested", "prepared"],
+      "properties": {
+        "userHome": { "type": "string", "format": "uri-reference" },
+        "aspnetConfigTemplate": { "type": "string", "format": "uri-reference" },
+        "createRequested": { "type": "boolean" },
+        "prepared": { "type": "boolean" },
+        "removedUtc": { "type": "string", "format": "date-time" }
+      }
+    },
+    "httpsOrigin": { "type": "string", "format": "uri" },
+    "httpsPort": { "type": "integer", "minimum": 1, "maximum": 65535 },
+    "evidenceOwnerSid": { "type": "string", "minLength": 1 },
+    "ownerIntentRecordedUtc": { "type": "string", "format": "date-time" },
+    "resourceOwnershipRecordedBeforeCreation": { "const": true },
+    "stagedHostCreateRequested": { "type": "boolean" },
+    "migrateCliFlagsUsed": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "tools": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["vswhere", "msbuild", "migrate", "sqlLocalDb", "sqlCmd", "sourceIisExpress"],
+      "properties": {
+        "vswhere": { "$ref": "#/$defs/tool" },
+        "msbuild": { "$ref": "#/$defs/tool" },
+        "migrate": { "$ref": "#/$defs/tool" },
+        "migrateCliFlags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        },
+        "sqlLocalDb": { "oneOf": [{ "$ref": "#/$defs/tool" }, { "type": "null" }] },
+        "sqlCmd": { "oneOf": [{ "$ref": "#/$defs/tool" }, { "type": "null" }] },
+        "sourceIisExpress": { "$ref": "#/$defs/tool" }
+      }
+    },
+    "firewallManifest": { "type": "string", "format": "uri-reference" },
+    "firewallRuleNames": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "ownedIisExpress": { "type": "string", "format": "uri-reference" },
+    "firewallVerified": { "type": "boolean" },
+    "firewallVerificationUtc": { "type": "string", "format": "date-time" },
+    "effectiveConfigValidated": { "type": "boolean" },
+    "effectiveConfigValidatedUtc": { "type": "string", "format": "date-time" },
+    "effectiveConfigFingerprint": { "type": ["string", "null"] },
+    "urlRoot": { "type": "string", "format": "uri" },
+    "callbackIsLocal": { "type": "boolean" },
+    "database": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["server", "instance", "catalog", "ownerRunId", "catalogExistedBefore", "createRequested", "created", "ownershipMarkerCreated", "migrationAssembly", "migrationLog", "migrationRequested", "migrationsApplied"],
+      "properties": {
+        "server": { "type": "string", "minLength": 1 },
+        "instance": { "type": "string", "minLength": 1 },
+        "catalog": { "type": "string", "pattern": "^NemeStatsJQueryMigration_[0-9a-f]{32}$" },
+        "role": { "const": "application" },
+        "dataFile": { "type": "string", "format": "uri-reference" },
+        "logFile": { "type": "string", "format": "uri-reference" },
+        "dropRequestedUtc": { "type": "string", "format": "date-time" },
+        "ownerRunId": { "type": "string", "format": "uuid" },
+        "catalogExistedBefore": { "type": ["boolean", "null"] },
+        "catalogRefusedUtc": { "type": "string", "format": "date-time" },
+        "createRequested": { "type": "boolean" },
+        "createRequestedUtc": { "type": "string", "format": "date-time" },
+        "created": { "type": "boolean" },
+        "createdUtc": { "type": "string", "format": "date-time" },
+        "ownershipMarkerCreated": { "type": "boolean" },
+        "migrationAssembly": { "type": "string", "format": "uri-reference" },
+        "migrationStartupDirectory": { "type": "string", "format": "uri-reference" },
+        "migrationLog": { "type": "string", "format": "uri-reference" },
+        "migrationRequested": { "type": "boolean" },
+        "migrationRequestedUtc": { "type": "string", "format": "date-time" },
+        "migrationExitCode": { "type": "integer" },
+        "migrationCompletedUtc": { "type": "string", "format": "date-time" },
+        "migrationsApplied": { "type": "boolean" },
+        "migrationCount": { "type": "integer", "minimum": 0 },
+        "latestMigration": { "type": "string" },
+        "droppedUtc": { "type": "string", "format": "date-time" }
+      }
+    },
+    "localDbInstance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "stateBefore", "startedByRun", "stoppedAfterMigration"],
+      "properties": {
+        "name": { "type": "string", "pattern": "^(MSSQLLocalDB|NemeStatsJq3_[0-9a-f]{32})$" },
+        "ownerRunId": { "type": "string", "format": "uuid" },
+        "ownerSid": { "type": "string", "minLength": 1 },
+        "requestedVersion": { "const": "17.0" },
+        "existedBefore": { "const": false },
+        "createRequested": { "type": "boolean" },
+        "created": { "type": "boolean" },
+        "createRequestedUtc": { "type": "string", "format": "date-time" },
+        "createdUtc": { "type": "string", "format": "date-time" },
+        "createExitCode": { "type": "integer" },
+        "dataDirectory": { "type": "string", "format": "uri-reference" },
+        "systemDirectory": { "type": "string", "format": "uri-reference" },
+        "dataDirectoryCreateRequested": { "type": "boolean" },
+        "dataDirectoryCreated": { "type": "boolean" },
+        "ownershipMarkerCreated": { "type": "boolean" },
+        "pipe": { "type": "string", "minLength": 1 },
+        "sqlProcessId": { "type": "integer", "minimum": 1 },
+        "sqlExecutable": { "type": "string", "format": "uri-reference" },
+        "sqlCommandLine": { "type": "string" },
+        "deletedUtc": { "type": "string", "format": "date-time" },
+        "stateBefore": { "type": ["string", "null"], "enum": ["Stopped", "Running", null] },
+        "engineVersion": { "type": "string", "minLength": 1 },
+        "startRequested": { "type": "boolean" },
+        "startOutput": { "type": "string" },
+        "startedByRun": { "type": "boolean" },
+        "stopExitCode": { "type": "integer" },
+        "stopOutput": { "type": "string" },
+        "stoppedAfterMigration": { "type": "boolean" },
+        "stoppedAfterCleanup": { "type": "boolean" }
+      }
+    },
+    "certificate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subject", "dnsName", "friendlyName", "storeName", "trustStore", "appId", "thumbprint", "createRequested", "created", "trustedForCurrentUser", "verified"],
+      "properties": {
+        "subject": { "const": "CN=localhost" },
+        "dnsName": { "const": "localhost" },
+        "friendlyName": { "type": "string", "minLength": 1 },
+        "storeName": { "const": "MY" },
+        "trustStore": { "const": "CurrentUser\\Root" },
+        "appId": { "type": "string", "minLength": 1 },
+        "thumbprint": { "type": ["string", "null"], "pattern": "^[A-Fa-f0-9]{40}$" },
+        "createRequested": { "type": "boolean" },
+        "created": { "type": "boolean" },
+        "createdUtc": { "type": "string", "format": "date-time" },
+        "trustedForCurrentUser": { "type": "boolean" },
+        "verified": { "type": "boolean" },
+        "removedUtc": { "type": "string", "format": "date-time" }
+      }
+    },
+    "urlReservation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url", "userSid", "userName", "createRequested", "created", "verified"],
+      "properties": {
+        "url": { "type": "string", "format": "uri" },
+        "userSid": { "type": "string", "minLength": 1 },
+        "userName": { "type": "string", "minLength": 1 },
+        "createRequested": { "type": "boolean" },
+        "created": { "type": "boolean" },
+        "verified": { "type": "boolean" },
+        "removedUtc": { "type": "string", "format": "date-time" }
+      }
+    },
+    "tlsBindings": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["ipPort", "createRequested", "created", "thumbprint"],
+        "properties": {
+          "ipPort": { "type": "string", "minLength": 1 },
+          "createRequested": { "type": "boolean" },
+          "created": { "type": "boolean" },
+          "thumbprint": { "type": ["string", "null"], "pattern": "^[A-Fa-f0-9]{40}$" },
+          "removedUtc": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "applicationHost": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["configPath", "templatePath", "siteName", "siteId", "physicalPath", "binding", "launchArguments", "createRequested", "created"],
+      "properties": {
+        "configPath": { "type": "string", "format": "uri-reference" },
+        "templatePath": { "type": "string", "format": "uri-reference" },
+        "siteName": { "type": "string", "minLength": 1 },
+        "siteId": { "type": "integer", "minimum": 1 },
+        "physicalPath": { "type": "string", "format": "uri-reference" },
+        "binding": { "type": "string", "minLength": 1 },
+        "launchArguments": { "type": "array", "minItems": 4, "maxItems": 4, "items": { "type": "string" } },
+        "createRequested": { "type": "boolean" },
+        "created": { "type": "boolean" },
+        "createdUtc": { "type": "string", "format": "date-time" },
+        "removedUtc": { "type": "string", "format": "date-time" }
+      }
+    },
+    "applicationProcess": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["processId", "executable"],
+          "properties": {
+            "processId": { "type": "integer", "minimum": 1 },
+            "executable": { "type": "string", "format": "uri-reference" },
+            "startedUtc": { "type": "string", "format": "date-time" },
+            "stoppedUtc": { "type": "string", "format": "date-time" }
+          }
+        }
+      ]
+    },
+    "httpsBindingPrepared": { "type": "boolean" },
+    "certificatePrepared": { "type": "boolean" },
+    "databaseCatalogCreated": { "type": "boolean" },
+    "migrationsApplied": { "type": "boolean" },
+    "preparationReady": { "type": "boolean" },
+    "resourceSetup": { "enum": ["planned", "not-performed", "configuration-staged", "verified", "failed", "cleaned"] },
+    "failureType": { "type": "string" },
+    "failureUtc": { "type": "string", "format": "date-time" },
+    "cleanupComplete": { "type": "boolean" },
+    "cleanupStartedUtc": { "type": "string", "format": "date-time" },
+    "cleanupCompletedUtc": { "type": "string", "format": "date-time" },
+    "firewallRulesRemovedUtc": { "type": "string", "format": "date-time" },
+    "stagedHostRemovedUtc": { "type": "string", "format": "date-time" },
+    "preparedUtc": { "type": "string", "format": "date-time" },
+    "privateCompatibilityAuthorization": { "type": "string", "minLength": 1 },
+    "privateProvisionRequestedUtc": { "type": "string", "format": "date-time" },
+    "privateSqlVerifiedUtc": { "type": "string", "format": "date-time" },
+    "retiredDatabases": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": { "$ref": "#/properties/database" }
+    },
+    "compatibilityDatabase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["server", "instance", "catalog", "role", "ownerRunId", "catalogExistedBefore", "createRequested", "created", "ownershipMarkerCreated", "tableCreateRequested", "tableCreated", "dataFile", "logFile"],
+      "properties": {
+        "server": { "type": "string", "pattern": "^\\(localdb\\)\\\\NemeStatsJq3_[0-9a-f]{32}$" },
+        "instance": { "type": "string", "pattern": "^NemeStatsJq3_[0-9a-f]{32}$" },
+        "catalog": { "const": "NerdScorekeeper" },
+        "role": { "const": "compatibility" },
+        "ownerRunId": { "type": "string", "format": "uuid" },
+        "catalogExistedBefore": { "const": false },
+        "createRequested": { "type": "boolean" },
+        "created": { "type": "boolean" },
+        "ownershipMarkerCreated": { "type": "boolean" },
+        "tableCreateRequested": { "type": "boolean" },
+        "tableCreated": { "type": "boolean" },
+        "dataFile": { "type": "string", "format": "uri-reference" },
+        "logFile": { "type": "string", "format": "uri-reference" },
+        "createRequestedUtc": { "type": "string", "format": "date-time" },
+        "createdUtc": { "type": "string", "format": "date-time" },
+        "dropRequestedUtc": { "type": "string", "format": "date-time" },
+        "droppedUtc": { "type": "string", "format": "date-time" }
+      }
+    },
+    "qaPipeName": { "type": "string", "pattern": "^NemeStatsQa_[0-9a-f]{32}$" },
+    "qaPipeSecret": { "type": "string", "minLength": 40 },
+    "qaFixturePassword": { "type": "string", "minLength": 20 },
+    "qaStagedUtc": { "type": "string", "format": "date-time" },
+    "qaCertificatePem": { "type": "string", "format": "uri-reference" },
+    "browserPath": { "type": "string", "minLength": 1 },
+    "qaFixtureCell": { "enum": ["debug-desktop", "debug-mobile", "optimized-desktop", "optimized-mobile"] },
+    "qaFixtureGeneration": { "type": "integer", "minimum": 0, "maximum": 1000 },
+    "qaEvidenceMode": { "enum": ["baseline", "upgraded"] },
+    "task3NegativeControlStarted": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["attemptId", "assertionId", "intentionallyWrongExpected", "actual"],
+      "properties": {
+        "attemptId": { "type": "string", "format": "uuid" },
+        "assertionId": { "const": "core-jquery-version" },
+        "intentionallyWrongExpected": { "const": "0.0.0" },
+        "actual": { "type": "string", "minLength": 1 }
+      }
+    },
+    "fixtures": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["userId", "userName", "gamingGroupId", "ownerRunId"],
+      "properties": {
+        "userId": { "type": "string", "format": "uuid" },
+        "userName": { "type": "string", "pattern": "^qa_[0-9a-f]{32}$" },
+        "gamingGroupId": { "$ref": "#/$defs/fixtureId" },
+        "ownerRunId": { "type": "string", "format": "uuid" },
+        "gameDefinitionId": { "$ref": "#/$defs/fixtureId" },
+        "gameDefinitionName": { "type": "string", "pattern": "^Browser QA game [0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$" },
+        "secondUserId": { "type": "string", "format": "uuid" },
+        "secondUserName": { "type": "string", "pattern": "^qa_second_[0-9a-f]{32}$" },
+        "secondGamingGroupId": { "$ref": "#/$defs/fixtureId" },
+        "readmoreGameDefinitionId": { "$ref": "#/$defs/fixtureId" },
+        "readmoreBoardGameGeekId": { "const": 910003 },
+        "playerIds": { "$ref": "#/$defs/primaryPlayerIds" },
+        "primaryPlayerIds": { "$ref": "#/$defs/primaryPlayerIds" },
+        "secondPlayerIds": { "$ref": "#/$defs/secondPlayerIds" },
+        "gameDefinitionIds": { "type": "array", "minItems": 21, "maxItems": 21, "uniqueItems": true, "items": { "$ref": "#/$defs/fixtureId" } },
+        "secondGameDefinitionIds": { "type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": { "$ref": "#/$defs/fixtureId" } },
+        "playedGameId": { "$ref": "#/$defs/fixtureId" },
+        "secondPlayedGameId": { "$ref": "#/$defs/fixtureId" },
+        "primaryPersistedPlayerCount": { "const": 3 },
+        "primaryPersistedGameCount": { "const": 21 },
+        "secondPersistedPlayerCount": { "const": 2 },
+        "secondPersistedGameCount": { "const": 2 },
+        "passwordCapable": { "const": true },
+        "ownershipVerified": { "const": true },
+        "boardGameGeekUserName": { "type": "string", "pattern": "^qa_[0-9a-f]{32}$" },
+        "secondBoardGameGeekUserName": { "type": "string", "pattern": "^qa_second_[0-9a-f]{32}$" },
+        "bggSearchSuccess": { "const": "Browser QA BGG" },
+        "bggSearchEmpty": { "const": "Browser QA empty" },
+        "bggSearchFailure": { "const": "Browser QA error" },
+        "bggSearchIds": { "type": "array", "minItems": 1, "maxItems": 1, "items": { "const": 910003 } },
+        "bggSearchNames": { "type": "array", "minItems": 1, "maxItems": 1, "items": { "const": "Browser QA BGG lookup" } },
+        "bggImportIds": { "$ref": "#/$defs/importGameIds" },
+        "bggImportNames": { "$ref": "#/$defs/importGameNames" },
+        "importBatches": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["debug-desktop", "debug-mobile", "optimized-desktop", "optimized-mobile"],
+          "properties": {
+            "debug-desktop": { "$ref": "#/$defs/importBatch" },
+            "debug-mobile": { "$ref": "#/$defs/importBatch" },
+            "optimized-desktop": { "$ref": "#/$defs/importBatch" },
+            "optimized-mobile": { "$ref": "#/$defs/importBatch" }
+          }
+        }
+      },
+      "patternProperties": {
+        "^primaryPlayer[12]Id$": { "$ref": "#/$defs/fixtureId" },
+        "^secondPlayer1Id$": { "$ref": "#/$defs/fixtureId" },
+        "^primaryGame([1-9]|1[0-9]|20)Id$": { "$ref": "#/$defs/fixtureId" },
+        "^secondGame[12]Id$": { "$ref": "#/$defs/fixtureId" }
+      }
+    },
+    "applicationStarted": { "type": "boolean" }
+  },
+  "$defs": {
+    "fixtureId": { "type": "integer", "minimum": 1 },
+    "primaryPlayerIds": { "type": "array", "minItems": 3, "maxItems": 3, "uniqueItems": true, "items": { "$ref": "#/$defs/fixtureId" } },
+    "secondPlayerIds": { "type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": { "$ref": "#/$defs/fixtureId" } },
+    "importGameIds": { "type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": { "type": "integer", "minimum": 910101, "maximum": 918108 } },
+    "importGameNames": { "type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+    "importBatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gameIds", "gameNames"],
+      "properties": {
+        "gameIds": { "$ref": "#/$defs/importGameIds" },
+        "gameNames": { "$ref": "#/$defs/importGameNames" }
+      }
+    },
+    "tool": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "version"],
+      "properties": {
+        "path": { "type": "string", "format": "uri-reference" },
+        "version": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}
