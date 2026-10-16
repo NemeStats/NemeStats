@@ -1,4 +1,4 @@
-﻿//Usings
+//Usings
 Namespace("Views.GamingGroup");
 
 //Initialization
@@ -297,7 +297,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
                 if (ResponsiveBootstrapToolkit.is('>=md')) {
                     new List(playedGamesTableID, { valueNames: playedGamesValues, page: 8, plugins: [ListPagination({ innerWindow: 12 })] });
                 } else {
-                   new List(playedGamesTableID, { valueNames: gamedefinitionsValues });
+                   new List(playedGamesTableID, { valueNames: playedGamesValues });
                 }
                 var layout = new window.Views.Shared.Layout();
                 layout.initializePopoversAndTooltips(parent);

@@ -50,8 +50,8 @@ namespace BoardGameGeekApiClient.Service
             // Due to malformed header I cannot use GetContentAsync and ReadAsStringAsync :(
             // UTF-8 is now hard-coded...
 
-            //--wait 500ms before each read to avoid BGG block
-            Thread.Sleep(500);
+            //--wait 2000ms before each read to avoid BGG block
+            Thread.Sleep(2000);
             data = null;
             var tryCount = 0;
             while (tryCount < 2)
