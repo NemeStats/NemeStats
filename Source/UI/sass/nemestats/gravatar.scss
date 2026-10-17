@@ -1,4 +1,4 @@
-﻿@import "nemestats-variables.scss";
+@import "nemestats-variables.scss";
 
 @media (min-width: $screen-sm-max) {
     table tbody tr td.gravatar-col {
@@ -14,7 +14,7 @@ table thead tr th span.gravatar-header {
 }
 
 @media (max-width: $screen-sm-max) {
-    &.flip-scroll {
+    .flip-scroll {
         table tbody tr td.gravatar-col {
             height: 37px;
             text-align: center;
