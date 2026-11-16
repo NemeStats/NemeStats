@@ -174,8 +174,6 @@ namespace Links
         public static readonly string jquery_3_7_1_min_map = Url("jquery-3.7.1.min.map");
         public static readonly string jquery_ui_1_12_1_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-ui-1.12.1.min.js") ? Url("jquery-ui-1.12.1.min.js") : Url("jquery-ui-1.12.1.js");
         public static readonly string jquery_ui_1_12_1_min_js = Url("jquery-ui-1.12.1.min.js");
-        public static readonly string jquery_cookie_1_4_1_min_js = Url("jquery.cookie-1.4.1.min.js");
-        public static readonly string jquery_cookie_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.cookie.min.js") ? Url("jquery.cookie.min.js") : Url("jquery.cookie.js");
         public static readonly string jquery_signalR_2_4_3_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.signalR-2.4.3.min.js") ? Url("jquery.signalR-2.4.3.min.js") : Url("jquery.signalR-2.4.3.js");
         public static readonly string jquery_signalR_2_4_3_min_js = Url("jquery.signalR-2.4.3.min.js");
         public static readonly string jquery_validate_vsdoc_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.validate-vsdoc.min.js") ? Url("jquery.validate-vsdoc.min.js") : Url("jquery.validate-vsdoc.js");
@@ -453,8 +451,6 @@ namespace Links
                 public const string jquery_3_7_1_min_js = "~/Scripts/jquery-3.7.1.min.js";
                 public const string jquery_ui_1_12_1_js = "~/Scripts/jquery-ui-1.12.1.js";
                 public const string jquery_ui_1_12_1_min_js = "~/Scripts/jquery-ui-1.12.1.min.js";
-                public const string jquery_cookie_1_4_1_min_js = "~/Scripts/jquery.cookie-1.4.1.min.js";
-                public const string jquery_cookie_js = "~/Scripts/jquery.cookie.js";
                 public const string jquery_signalR_2_4_3_js = "~/Scripts/jquery.signalR-2.4.3.js";
                 public const string jquery_signalR_2_4_3_min_js = "~/Scripts/jquery.signalR-2.4.3.min.js";
                 public const string jquery_validate_js = "~/Scripts/jquery.validate.js";
