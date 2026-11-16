@@ -1,5 +1,4 @@
 using System.Linq;
-using AutoMapper;
 using BusinessLogic.Models.Games;
 using UI.Models.GameDefinitionModels;
 
@@ -8,25 +7,12 @@ namespace UI.Mappers.CustomMappers
     public class GameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper :
         BaseCustomMapper<GameDefinitionDisplayInfo, GameDefinitionDisplayInfoViewModel>
     {
-        static GameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper()
-        {
-            Mapper.CreateMap<GameDefinitionDisplayInfo, GameDefinitionDisplayInfoViewModel>();
-        }
     }
 
     public class CreatePlayedGameRequestToNewlyCompletedGameMapper :
         BaseCustomMapper<SavePlayedGameRequest, NewlyCompletedGame>
     {
         private readonly CreatePlayerRankRequestToPlayerRankMapper _createPlayerRankRequestToPlayerRankMapper;
-
-        static CreatePlayedGameRequestToNewlyCompletedGameMapper()
-        {
-            Mapper.CreateMap<SavePlayedGameRequest, NewlyCompletedGame>()
-                .ForMember(m => m.PlayerRanks, o => o.Ignore())
-                .ForMember(m => m.GamingGroupId, o => o.Ignore())
-                .ForMember(m => m.ApplicationLinkages, opt => opt.Ignore())
-                .ForMember(m => m.TransactionSource, opt => opt.Ignore());
-        }
 
         public CreatePlayedGameRequestToNewlyCompletedGameMapper(CreatePlayerRankRequestToPlayerRankMapper createPlayerRankRequestToPlayerRankMapper)
         {
@@ -46,9 +32,5 @@ namespace UI.Mappers.CustomMappers
     public class CreatePlayerRankRequestToPlayerRankMapper :
        BaseCustomMapper<CreatePlayerRankRequest, PlayerRank>
     {
-        static CreatePlayerRankRequestToPlayerRankMapper()
-        {
-            Mapper.CreateMap<CreatePlayerRankRequest, PlayerRank>();
-        }
     }
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using AutoMapper.Internal;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Nemeses;
@@ -108,7 +107,10 @@ namespace BusinessLogic.Logic.Players
 
         private void RecalculateChampions(IEnumerable<int> gameDefinitionIds, ApplicationUser currentUser)
         {
-            gameDefinitionIds.Each(x => _championRecalculator.RecalculateChampion(x, currentUser, _dataContext));
+            foreach (var gameDefinitionId in gameDefinitionIds)
+            {
+                _championRecalculator.RecalculateChampion(gameDefinitionId, currentUser, _dataContext);
+            }
         }
 
         private void DeletePlayerNemesesRecords(int playerId, ApplicationUser currentUser)
@@ -161,7 +163,10 @@ namespace BusinessLogic.Logic.Players
 
         private void RecalculateNemesis(IEnumerable<int> playerIdsThatNeedNewNemesis, ApplicationUser currentUser)
         {
-            playerIdsThatNeedNewNemesis.Each(x => _nemesisRecalculator.RecalculateNemesis(x, currentUser, _dataContext));
+            foreach (var playerId in playerIdsThatNeedNewNemesis)
+            {
+                _nemesisRecalculator.RecalculateNemesis(playerId, currentUser, _dataContext);
+            }
         }
     }
 }

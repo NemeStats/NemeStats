@@ -16,7 +16,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using AutoMapper;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.Players;
@@ -340,7 +339,7 @@ namespace UI.Controllers
         {
             var homePagePlayerSummary = _homePagePlayerSummaryRetriever.GetHomePagePlayerSummaryForUser(currentUser.Id, currentUser.CurrentGamingGroupId.Value);
 
-            var playerQuickStatsViewModel = Mapper.Map<PlayerQuickStatsViewModel>(homePagePlayerSummary);
+            var playerQuickStatsViewModel = AutomapperConfiguration.Mapper.Map<PlayerQuickStatsViewModel>(homePagePlayerSummary);
 
             return PartialView(MVC.Player.Views._CurrentPlayerQuickStatsPartial, playerQuickStatsViewModel);
         }

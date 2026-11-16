@@ -18,7 +18,6 @@
 
 #endregion LICENSE
 
-using AutoMapper;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
@@ -110,7 +109,7 @@ namespace UI.Transformations.PlayerTransformations
             playerDetailsViewModel.Minions = (from Player player in playerDetails.Minions
                                               select _minionViewModelBuilder.Build(player)).ToList();
 
-            playerDetailsViewModel.PlayerGameSummaries = playerDetails.PlayerGameSummaries.Select(Mapper.Map<PlayerGameSummaryViewModel>).ToList();
+            playerDetailsViewModel.PlayerGameSummaries = playerDetails.PlayerGameSummaries.Select(x => AutomapperConfiguration.Mapper.Map<PlayerGameSummaryViewModel>(x)).ToList();
 
             SetChampionedGames(playerDetails, playerDetailsViewModel);
 

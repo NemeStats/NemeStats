@@ -5,7 +5,6 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
-using AutoMapper;
 using BusinessLogic.Export;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.PlayedGames;
@@ -14,6 +13,7 @@ using BusinessLogic.Models.PlayedGames;
 using UI.Areas.Api.Models;
 using UI.Attributes;
 using UI.HtmlHelpers;
+using UI.Transformations;
 using VersionedRestApi;
 
 namespace UI.Areas.Api.Controllers
@@ -127,7 +127,7 @@ namespace UI.Areas.Api.Controllers
 
             var playedGamesSearchResultMessage = new PlayedGameSearchResultsMessage
             {
-                PlayedGames = searchResults.Select(Mapper.Map<PlayedGameSearchResultMessage>).ToList()
+                PlayedGames = searchResults.Select(x => AutomapperConfiguration.Mapper.Map<PlayedGameSearchResultMessage>(x)).ToList()
             };
 
             playedGamesSearchResultMessage.PlayedGames.ForEach(x => x.NemeStatsUrl = AbsoluteUrlBuilder.GetPlayedGameDetailsUrl(x.PlayedGameId));
