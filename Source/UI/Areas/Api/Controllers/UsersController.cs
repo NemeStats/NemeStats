@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using AutoMapper;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
@@ -11,6 +10,7 @@ using Microsoft.Ajax.Utilities;
 using UI.Areas.Api.Models;
 using UI.Attributes;
 using UI.HtmlHelpers;
+using UI.Transformations;
 using VersionedRestApi;
 
 namespace UI.Areas.Api.Controllers
@@ -34,14 +34,14 @@ namespace UI.Areas.Api.Controllers
         [HttpPost]
         public virtual async Task<HttpResponseMessage> RegisterNewUser(NewUserMessage newUserMessage)
         {
-            var newUser = Mapper.Map<NewUserMessage, NewUser>(newUserMessage);
+            var newUser = AutomapperConfiguration.Mapper.Map<NewUserMessage, NewUser>(newUserMessage);
 
 		    var registerNewUserResult = await _userRegisterer.RegisterUser(newUser);
 
             if (registerNewUserResult.Result.Succeeded)
             {
                 var authToken = _authTokenGenerator.GenerateAuthToken(registerNewUserResult.NewlyRegisteredUser.UserId, newUserMessage.UniqueDeviceId);
-                var newlyRegisteredUserMessage = Mapper.Map<NewlyRegisteredUser, NewlyRegisteredUserMessage>(registerNewUserResult.NewlyRegisteredUser);
+                var newlyRegisteredUserMessage = AutomapperConfiguration.Mapper.Map<NewlyRegisteredUser, NewlyRegisteredUserMessage>(registerNewUserResult.NewlyRegisteredUser);
                 newlyRegisteredUserMessage.AuthenticationToken = authToken.AuthenticationTokenString;
                 newlyRegisteredUserMessage.AuthenticationTokenExpirationDateTime =
                     authToken.AuthenticationTokenExpirationDateTime;

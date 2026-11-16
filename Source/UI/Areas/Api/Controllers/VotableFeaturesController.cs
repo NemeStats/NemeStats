@@ -17,12 +17,12 @@
 #endregion
 using System.Net;
 using System.Web.Http;
-using AutoMapper;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.VotableFeatures;
 using BusinessLogic.Models;
 using UI.Areas.Api.Models;
 using UI.Models;
+using UI.Transformations;
 
 namespace UI.Areas.Api.Controllers
 {
@@ -45,7 +45,7 @@ namespace UI.Areas.Api.Controllers
             try
             {
                 VotableFeature votableFeature = votableFeatureRetriever.RetrieveVotableFeature(id);
-                return Mapper.Map<VotableFeature, VotableFeatureViewModel>(votableFeature);
+                return AutomapperConfiguration.Mapper.Map<VotableFeature, VotableFeatureViewModel>(votableFeature);
             }
             catch (EntityDoesNotExistException<VotableFeature>)
             {

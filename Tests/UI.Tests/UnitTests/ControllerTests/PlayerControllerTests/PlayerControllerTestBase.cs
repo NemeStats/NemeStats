@@ -31,7 +31,6 @@ using BusinessLogic.Logic.Nemeses;
 using UI.Models.Nemeses;
 using UI.Models.Players;
 using StructureMap.AutoMocking;
-using AutoMapper;
 using BusinessLogic.Models.Nemeses;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests

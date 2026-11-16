@@ -15,8 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using AutoMapper;
 using NUnit.Framework;
+using UI.Transformations;
 
 namespace UI.Tests.UnitTests.TransformationsTests
 {
@@ -26,7 +26,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
         [Test]
         public void TestConfiguration()
         {
-            Mapper.AssertConfigurationIsValid();
+            AutomapperConfiguration.Mapper.ConfigurationProvider.AssertConfigurationIsValid();
         }
     }
 }

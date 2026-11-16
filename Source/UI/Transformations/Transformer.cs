@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using BusinessLogic.Logic;
+﻿using BusinessLogic.Logic;
 
 namespace UI.Transformations
 {
@@ -7,7 +6,7 @@ namespace UI.Transformations
     {
         public TDestination Transform<TDestination>(object source)
         {
-            return Mapper.Map<TDestination>(source);
+            return AutomapperConfiguration.Mapper.Map<TDestination>(source);
         }
     }
 }

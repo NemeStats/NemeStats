@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using AutoMapper;
 using UI.Mappers.Interfaces;
+using UI.Transformations;
 
 namespace UI.Mappers.CustomMappers
 {
@@ -8,12 +8,12 @@ namespace UI.Mappers.CustomMappers
     {
         public virtual TResult Map(TSource source)
         {
-            return Mapper.Map<TResult>(source);
+            return AutomapperConfiguration.Mapper.Map<TResult>(source);
         }
 
         public virtual IEnumerable<TResult> Map(IEnumerable<TSource> source)
         {
-            return Mapper.Map<IEnumerable<TResult>>(source);
+            return AutomapperConfiguration.Mapper.Map<IEnumerable<TResult>>(source);
         }
     }
 

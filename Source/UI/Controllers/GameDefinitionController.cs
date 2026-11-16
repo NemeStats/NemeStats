@@ -18,7 +18,6 @@
 
 #endregion LICENSE
 
-using AutoMapper;
 using BoardGameGeekApiClient.Interfaces;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.BoardGameGeek;
@@ -139,7 +138,7 @@ namespace UI.Controllers
             if (ModelState.IsValid)
             {
                 createGameDefinitionViewModel.Name = createGameDefinitionViewModel.Name.Trim();
-                var createGameDefinitionRequest = Mapper.Map<CreateGameDefinitionViewModel, CreateGameDefinitionRequest>(createGameDefinitionViewModel);
+                var createGameDefinitionRequest = AutomapperConfiguration.Mapper.Map<CreateGameDefinitionViewModel, CreateGameDefinitionRequest>(createGameDefinitionViewModel);
 
                 var savedResult = _createGameDefinitionComponent.Execute(createGameDefinitionRequest, currentUser);
 
@@ -166,7 +165,7 @@ namespace UI.Controllers
             if (ModelState.IsValid)
             {
                 createGameDefinitionViewModel.Name = createGameDefinitionViewModel.Name.Trim();
-                var createGameDefinitionRequest = Mapper.Map<CreateGameDefinitionRequest>(createGameDefinitionViewModel);
+                var createGameDefinitionRequest = AutomapperConfiguration.Mapper.Map<CreateGameDefinitionRequest>(createGameDefinitionViewModel);
 
                 try
                 {
@@ -239,7 +238,7 @@ namespace UI.Controllers
             try
             {
                 var gameDefinition = _gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, 0);
-                gameDefinitionEditViewModel = Mapper.Map<GameDefinitionEditViewModel>(gameDefinition);
+                gameDefinitionEditViewModel = AutomapperConfiguration.Mapper.Map<GameDefinitionEditViewModel>(gameDefinition);
             }
             catch (KeyNotFoundException)
             {
@@ -261,7 +260,7 @@ namespace UI.Controllers
             if (ModelState.IsValid)
             {
                 viewModel.Name = viewModel.Name.Trim();
-                var gameDefinitionUpdateRequest = Mapper.Map<GameDefinitionUpdateRequest>(viewModel);
+                var gameDefinitionUpdateRequest = AutomapperConfiguration.Mapper.Map<GameDefinitionUpdateRequest>(viewModel);
                 _gameDefinitionSaver.UpdateGameDefinition(gameDefinitionUpdateRequest, currentUser);
                 return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
                                           + "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);

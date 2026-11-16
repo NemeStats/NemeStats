@@ -18,7 +18,6 @@
 using System;
 using System.Net;
 using System.Web.Http;
-using AutoMapper;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.VotableFeatures;
 using BusinessLogic.Models;
@@ -54,7 +53,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
             };
             autoMocker.Get<IVotableFeatureRetriever>().Expect(mock => mock.RetrieveVotableFeature(featureId))
                       .Return(expectedVotableFeature);
-            VotableFeatureViewModel expectedVotableFeatureViewModel = Mapper.Map<VotableFeature, VotableFeatureViewModel>(expectedVotableFeature);
+            VotableFeatureViewModel expectedVotableFeatureViewModel = AutomapperConfiguration.Mapper.Map<VotableFeature, VotableFeatureViewModel>(expectedVotableFeature);
 
             autoMocker.ClassUnderTest.Get(featureId);
 
