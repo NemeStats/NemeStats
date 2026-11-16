@@ -25,6 +25,28 @@
             });
         }
 
+        function readRankCookie() {
+            var prefix = cookieName + "=";
+            var cookies = document.cookie ? document.cookie.split("; ") : [];
+            for (var i = 0; i < cookies.length; i++) {
+                if (cookies[i].indexOf(prefix) === 0) {
+                    try {
+                        return JSON.parse(decodeURIComponent(cookies[i].substring(prefix.length).replace(/\+/g, " ")));
+                    } catch (e) {
+                        return null;
+                    }
+                }
+            }
+            return null;
+        }
+
+        function writeRankCookie(values) {
+            var expires = new Date();
+            expires.setDate(expires.getDate() + 20);
+            document.cookie = cookieName + "=" + encodeURIComponent(JSON.stringify(values)) +
+                "; expires=" + expires.toUTCString() + "; path=/";
+        }
+
         function sendValues(direction) {
             $.ajax({
                 type: "POST",
@@ -62,12 +84,11 @@
         $originalElement.html(template);
         $originalElement.find('[data-toggle="popover"]').popover({ trigger: 'hover' });
 
-        var cookieValues = {};
         var cookieName = "rankCookie";
-        if (!$.cookie(cookieName)) {
-            $.cookie(cookieName, JSON.stringify(cookieValues), { path: '/', expires: 20 });
-        } else {
-            cookieValues = JSON.parse($.cookie(cookieName));
+        var cookieValues = readRankCookie();
+        if (cookieValues === null) {
+            cookieValues = {};
+            writeRankCookie(cookieValues);
         }
 
         var elementId = settings.votableFeatureId != null ? settings.votableFeatureId : $originalElement.attr("id");
@@ -94,7 +115,7 @@
 
             sendValues(!decrease);
             cookieValues[elementId] = true;
-            $.cookie(cookieName, JSON.stringify(cookieValues), { path:'/', expires: 20 });
+            writeRankCookie(cookieValues);
         };
 
         $upVote.on("click", function (e) {

@@ -737,8 +737,6 @@
     <Content Include="Scripts\jquery-3.7.1.min.map" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
-    <Content Include="Scripts\jquery.cookie-1.4.1.min.js" />
-    <Content Include="Scripts\jquery.cookie.js" />
     <Content Include="Scripts\jquery.signalR-2.4.3.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.signalR-2.4.3.min.js" />
